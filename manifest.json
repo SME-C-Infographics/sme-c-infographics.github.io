@@ -1,7 +1,12 @@
 {
   "azure-sql": {
     "displayName": "Azure SQL",
-    "items": []
+    "items": [
+      {
+        "file": "sql-2016-eol-customer-guide.html",
+        "title": "SQL Server 2016 End of Support — Your Complete Guide"
+      }
+    ]
   },
   "fabric": {
     "displayName": "Fabric",
