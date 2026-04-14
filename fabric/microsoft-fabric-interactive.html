@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Microsoft Fabric — Unified Analytics Platform</title>
+<style>
+  /* ========== RESET & BASE ========== */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; font-size: 16px; }
+  body {
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: #0a0a1a;
+    color: #e0e0e0;
+    overflow-x: hidden;
+    line-height: 1.6;
+  }
+
+  /* ========== ANIMATED BACKGROUND ========== */
+  .bg-particles {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    z-index: 0; pointer-events: none;
+    background: radial-gradient(ellipse at 20% 50%, rgba(0,120,212,0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 20%, rgba(134,97,193,0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 80%, rgba(0,183,195,0.06) 0%, transparent 50%);
+  }
+  .bg-particles::before {
+    content: ''; position: absolute; inset: 0;
+    background-image:
+      radial-gradient(2px 2px at 20% 30%, rgba(255,255,255,0.15), transparent),
+      radial-gradient(2px 2px at 40% 70%, rgba(255,255,255,0.1), transparent),
+      radial-gradient(2px 2px at 60% 40%, rgba(255,255,255,0.12), transparent),
+      radial-gradient(2px 2px at 80% 60%, rgba(255,255,255,0.08), transparent),
+      radial-gradient(1px 1px at 10% 90%, rgba(255,255,255,0.1), transparent),
+      radial-gradient(1px 1px at 90% 10%, rgba(255,255,255,0.1), transparent);
+    animation: twinkle 8s ease-in-out infinite alternate;
+  }
+  @keyframes twinkle { 0% { opacity: 0.5; } 100% { opacity: 1; } }
+
+  /* ========== LAYOUT ========== */
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; position: relative; z-index: 1; }
+
+  /* ========== NAVIGATION ========== */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(10,10,26,0.85); backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    transition: box-shadow 0.3s;
+  }
+  nav.scrolled { box-shadow: 0 4px 30px rgba(0,0,0,0.4); }
+  .nav-inner {
+    max-width: 1200px; margin: 0 auto; padding: 0 2rem;
+    display: flex; align-items: center; justify-content: space-between; height: 60px;
+  }
+  .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+  .nav-logo svg { width: 28px; height: 28px; }
+  .nav-logo span { font-weight: 600; font-size: 1rem; color: #fff; }
+  .nav-links { display: flex; gap: 0.25rem; }
+  .nav-links a {
+    color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.8rem;
+    padding: 0.4rem 0.75rem; border-radius: 6px; transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .nav-links a:hover, .nav-links a.active { color: #fff; background: rgba(255,255,255,0.08); }
+  .nav-hamburger { display: none; background: none; border: none; color: #fff; cursor: pointer; padding: 0.5rem; }
+  @media (max-width: 900px) {
+    .nav-links {
+      display: none; flex-direction: column; position: absolute; top: 60px; left: 0; right: 0;
+      background: rgba(10,10,26,0.97); backdrop-filter: blur(20px); padding: 1rem;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .nav-links.open { display: flex; }
+    .nav-hamburger { display: block; }
+  }
+
+  /* ========== PROGRESS BAR ========== */
+  .progress-bar {
+    position: fixed; top: 60px; left: 0; height: 3px; z-index: 99;
+    background: linear-gradient(90deg, #0078d4, #8661c1, #00b7c3);
+    width: 0%; transition: width 0.1s linear;
+  }
+
+  /* ========== HERO ========== */
+  .hero {
+    min-height: 100vh; display: flex; align-items: center; justify-content: center;
+    text-align: center; padding: 8rem 2rem 4rem; position: relative;
+  }
+  .hero-content { max-width: 800px; }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(0,120,212,0.15); border: 1px solid rgba(0,120,212,0.3);
+    border-radius: 100px; padding: 0.4rem 1.2rem; font-size: 0.85rem;
+    color: #5ba9e0; margin-bottom: 2rem;
+    opacity: 0; animation: fadeUp 0.8s 0.2s forwards;
+  }
+  .hero h1 {
+    font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 700;
+    background: linear-gradient(135deg, #ffffff 0%, #a8d4ff 50%, #c4a7e8 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text; line-height: 1.15; margin-bottom: 1.5rem;
+    opacity: 0; animation: fadeUp 0.8s 0.4s forwards;
+  }
+  .hero p {
+    font-size: 1.15rem; color: rgba(255,255,255,0.6); max-width: 600px; margin: 0 auto 2.5rem;
+    opacity: 0; animation: fadeUp 0.8s 0.6s forwards;
+  }
+  .hero-cta {
+    display: inline-flex; gap: 1rem; flex-wrap: wrap; justify-content: center;
+    opacity: 0; animation: fadeUp 0.8s 0.8s forwards;
+  }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px; padding: 0.8rem 1.8rem;
+    border-radius: 8px; font-size: 0.95rem; font-weight: 600;
+    text-decoration: none; transition: all 0.3s; cursor: pointer; border: none;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, #0078d4, #5c2d91);
+    color: #fff; box-shadow: 0 4px 20px rgba(0,120,212,0.3);
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,120,212,0.4); }
+  .btn-outline {
+    background: transparent; color: #fff;
+    border: 1px solid rgba(255,255,255,0.2);
+  }
+  .btn-outline:hover { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.4); }
+
+  /* Floating shapes behind hero */
+  .hero-shapes { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+  .hero-shapes .shape {
+    position: absolute; border-radius: 50%; opacity: 0.08;
+    animation: float 20s ease-in-out infinite;
+  }
+  .hero-shapes .shape:nth-child(1) { width: 400px; height: 400px; top: 10%; left: -5%; background: #0078d4; animation-delay: 0s; }
+  .hero-shapes .shape:nth-child(2) { width: 300px; height: 300px; top: 60%; right: -5%; background: #8661c1; animation-delay: -7s; }
+  .hero-shapes .shape:nth-child(3) { width: 200px; height: 200px; bottom: 10%; left: 30%; background: #00b7c3; animation-delay: -14s; }
+  @keyframes float {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    33% { transform: translateY(-30px) rotate(5deg); }
+    66% { transform: translateY(20px) rotate(-3deg); }
+  }
+
+  /* Scroll indicator */
+  .scroll-hint {
+    position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+    color: rgba(255,255,255,0.3); font-size: 0.75rem; letter-spacing: 0.1em;
+    opacity: 0; animation: fadeUp 0.8s 1.2s forwards;
+  }
+  .scroll-hint .mouse {
+    width: 24px; height: 38px; border: 2px solid rgba(255,255,255,0.3); border-radius: 12px;
+    position: relative;
+  }
+  .scroll-hint .mouse::after {
+    content: ''; position: absolute; top: 6px; left: 50%; transform: translateX(-50%);
+    width: 3px; height: 8px; background: rgba(255,255,255,0.5); border-radius: 2px;
+    animation: scrollDown 2s infinite;
+  }
+  @keyframes scrollDown { 0% { opacity: 1; top: 6px; } 100% { opacity: 0; top: 22px; } }
+
+  /* ========== STATS BAR ========== */
+  .stats-bar {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem; padding: 3rem 0;
+  }
+  .stat-card {
+    text-align: center; padding: 2rem; border-radius: 16px;
+    background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06);
+    opacity: 0; transform: translateY(30px);
+    transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .stat-card.visible { opacity: 1; transform: translateY(0); }
+  .stat-card:hover { background: rgba(255,255,255,0.06); transform: translateY(-4px); }
+  .stat-number {
+    font-size: 2.5rem; font-weight: 700;
+    background: linear-gradient(135deg, #0078d4, #00b7c3);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  }
+  .stat-label { font-size: 0.85rem; color: rgba(255,255,255,0.5); margin-top: 0.5rem; }
+
+  /* ========== SECTIONS ========== */
+  .section {
+    padding: 6rem 0; position: relative;
+  }
+  .section-header {
+    text-align: center; max-width: 700px; margin: 0 auto 4rem;
+  }
+  .section-number {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 48px; height: 48px; border-radius: 14px; font-weight: 700; font-size: 1.2rem;
+    margin-bottom: 1rem; position: relative;
+  }
+  .section-header h2 {
+    font-size: clamp(1.8rem, 3.5vw, 2.5rem); font-weight: 700;
+    color: #fff; margin-bottom: 1rem; line-height: 1.2;
+  }
+  .section-header p {
+    font-size: 1.05rem; color: rgba(255,255,255,0.55); line-height: 1.7;
+  }
+
+  /* ========== FEATURE CARDS ========== */
+  .features-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+  .feature-card {
+    position: relative; padding: 2rem; border-radius: 16px;
+    background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06);
+    transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    overflow: hidden;
+    opacity: 0; transform: translateY(40px);
+  }
+  .feature-card.visible { opacity: 1; transform: translateY(0); }
+  .feature-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: var(--accent); opacity: 0; transition: opacity 0.3s;
+  }
+  .feature-card:hover { transform: translateY(-6px); border-color: rgba(255,255,255,0.12); }
+  .feature-card:hover::before { opacity: 1; }
+  .feature-icon {
+    width: 52px; height: 52px; border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 1.25rem; font-size: 1.4rem;
+    background: var(--accent-bg); color: var(--accent);
+  }
+  .feature-card h3 { font-size: 1.1rem; font-weight: 600; color: #fff; margin-bottom: 0.75rem; }
+  .feature-card p { font-size: 0.9rem; color: rgba(255,255,255,0.55); line-height: 1.7; }
+
+  /* Accent colors per section */
+  .theme-blue { --accent: #0078d4; --accent-bg: rgba(0,120,212,0.12); --accent-glow: rgba(0,120,212,0.06); }
+  .theme-purple { --accent: #8661c1; --accent-bg: rgba(134,97,193,0.12); --accent-glow: rgba(134,97,193,0.06); }
+  .theme-teal { --accent: #00b7c3; --accent-bg: rgba(0,183,195,0.12); --accent-glow: rgba(0,183,195,0.06); }
+  .theme-green { --accent: #0ea55b; --accent-bg: rgba(14,165,91,0.12); --accent-glow: rgba(14,165,91,0.06); }
+  .theme-orange { --accent: #f7630c; --accent-bg: rgba(247,99,12,0.12); --accent-glow: rgba(247,99,12,0.06); }
+  .theme-pink { --accent: #e3008c; --accent-bg: rgba(227,0,140,0.12); --accent-glow: rgba(227,0,140,0.06); }
+
+  /* ========== INTERACTIVE DIAGRAM ========== */
+  .diagram-wrapper {
+    max-width: 800px; margin: 3rem auto 0; position: relative;
+  }
+  .hub-diagram {
+    display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem;
+    padding: 2rem;
+  }
+  .hub-center {
+    width: 160px; height: 160px; border-radius: 50%;
+    background: linear-gradient(135deg, #0078d4, #5c2d91);
+    display: flex; align-items: center; justify-content: center; flex-direction: column;
+    color: #fff; font-weight: 700; font-size: 1rem; text-align: center;
+    box-shadow: 0 0 60px rgba(0,120,212,0.3);
+    animation: pulse-glow 3s ease-in-out infinite;
+    padding: 1rem; position: relative; z-index: 2;
+  }
+  .hub-center svg { width: 36px; height: 36px; margin-bottom: 0.5rem; }
+  @keyframes pulse-glow {
+    0%, 100% { box-shadow: 0 0 40px rgba(0,120,212,0.2); }
+    50% { box-shadow: 0 0 80px rgba(0,120,212,0.4); }
+  }
+  .spoke-items {
+    display: flex; flex-wrap: wrap; justify-content: center; gap: 0.75rem;
+    max-width: 700px;
+  }
+  .spoke-item {
+    padding: 0.75rem 1.25rem; border-radius: 12px;
+    background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+    font-size: 0.85rem; color: rgba(255,255,255,0.7);
+    display: flex; align-items: center; gap: 8px;
+    transition: all 0.3s; cursor: default;
+    opacity: 0; transform: scale(0.8);
+  }
+  .spoke-item.visible { opacity: 1; transform: scale(1); }
+  .spoke-item:hover { background: rgba(255,255,255,0.08); border-color: var(--accent); color: #fff; transform: scale(1.05); }
+  .spoke-dot {
+    width: 8px; height: 8px; border-radius: 50%; background: var(--accent);
+    flex-shrink: 0;
+  }
+
+  /* ========== COMPARISON / BEFORE-AFTER ========== */
+  .compare-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;
+    max-width: 800px; margin: 3rem auto 0;
+  }
+  @media (max-width: 600px) { .compare-grid { grid-template-columns: 1fr; } }
+  .compare-card {
+    padding: 2rem; border-radius: 16px; position: relative;
+    opacity: 0; transform: translateY(30px);
+    transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .compare-card.visible { opacity: 1; transform: translateY(0); }
+  .compare-before {
+    background: rgba(255,75,75,0.05); border: 1px solid rgba(255,75,75,0.15);
+  }
+  .compare-after {
+    background: rgba(14,165,91,0.05); border: 1px solid rgba(14,165,91,0.15);
+  }
+  .compare-label {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 0.75rem; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.08em; margin-bottom: 1.25rem; padding: 0.3rem 0.8rem;
+    border-radius: 6px;
+  }
+  .compare-before .compare-label { background: rgba(255,75,75,0.15); color: #ff6b6b; }
+  .compare-after .compare-label { background: rgba(14,165,91,0.15); color: #4cdf8b; }
+  .compare-card ul { list-style: none; }
+  .compare-card li {
+    padding: 0.5rem 0; font-size: 0.9rem; color: rgba(255,255,255,0.6);
+    display: flex; align-items: flex-start; gap: 10px; line-height: 1.5;
+  }
+  .compare-card li::before {
+    content: ''; width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; margin-top: 8px;
+  }
+  .compare-before li::before { background: rgba(255,75,75,0.5); }
+  .compare-after li::before { background: rgba(14,165,91,0.5); }
+
+  /* ========== ANIMATED COUNTER BARS ========== */
+  .metric-bars { max-width: 700px; margin: 3rem auto 0; display: flex; flex-direction: column; gap: 1.5rem; }
+  .metric-item {
+    opacity: 0; transform: translateX(-30px);
+    transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .metric-item.visible { opacity: 1; transform: translateX(0); }
+  .metric-header { display: flex; justify-content: space-between; margin-bottom: 0.5rem; }
+  .metric-name { font-size: 0.9rem; color: rgba(255,255,255,0.7); }
+  .metric-value { font-size: 0.9rem; font-weight: 700; color: var(--accent); }
+  .metric-track {
+    height: 8px; background: rgba(255,255,255,0.06); border-radius: 100px; overflow: hidden;
+  }
+  .metric-fill {
+    height: 100%; border-radius: 100px; width: 0%;
+    background: linear-gradient(90deg, var(--accent), var(--accent-light, var(--accent)));
+    transition: width 1.5s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  /* ========== TIMELINE ========== */
+  .timeline { max-width: 700px; margin: 3rem auto 0; position: relative; padding-left: 2rem; }
+  .timeline::before {
+    content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 2px;
+    background: linear-gradient(180deg, var(--accent), transparent);
+  }
+  .timeline-item {
+    position: relative; padding: 0 0 2.5rem 2rem;
+    opacity: 0; transform: translateX(-20px);
+    transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .timeline-item.visible { opacity: 1; transform: translateX(0); }
+  .timeline-item::before {
+    content: ''; position: absolute; left: -2rem; top: 4px;
+    width: 14px; height: 14px; border-radius: 50%;
+    background: var(--accent); border: 3px solid #0a0a1a;
+    margin-left: -6px;
+  }
+  .timeline-item h4 { font-size: 1rem; font-weight: 600; color: #fff; margin-bottom: 0.4rem; }
+  .timeline-item p { font-size: 0.88rem; color: rgba(255,255,255,0.5); line-height: 1.6; }
+
+  /* ========== INTERACTIVE TABS ========== */
+  .tabs-container { max-width: 800px; margin: 3rem auto 0; }
+  .tabs-header { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
+  .tab-btn {
+    padding: 0.6rem 1.2rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1);
+    background: rgba(255,255,255,0.03); color: rgba(255,255,255,0.5);
+    font-size: 0.85rem; cursor: pointer; transition: all 0.3s;
+    font-family: inherit;
+  }
+  .tab-btn:hover { color: #fff; border-color: rgba(255,255,255,0.2); }
+  .tab-btn.active { background: var(--accent-bg); color: var(--accent); border-color: var(--accent); }
+  .tab-panel { display: none; padding: 2rem; border-radius: 16px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); }
+  .tab-panel.active { display: block; animation: fadeIn 0.4s ease; }
+  .tab-panel h4 { font-size: 1.05rem; color: #fff; margin-bottom: 0.75rem; }
+  .tab-panel p { font-size: 0.9rem; color: rgba(255,255,255,0.55); line-height: 1.7; }
+
+  /* ========== ANIMATED FLOW DIAGRAM ========== */
+  .flow-diagram {
+    display: flex; align-items: center; justify-content: center; flex-wrap: wrap;
+    gap: 0.5rem; max-width: 900px; margin: 3rem auto 0;
+  }
+  .flow-step {
+    display: flex; align-items: center; gap: 0.5rem;
+    opacity: 0; transform: translateY(20px);
+    transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .flow-step.visible { opacity: 1; transform: translateY(0); }
+  .flow-box {
+    padding: 1rem 1.5rem; border-radius: 12px;
+    background: var(--accent-bg); border: 1px solid rgba(255,255,255,0.08);
+    font-size: 0.85rem; font-weight: 600; color: var(--accent); white-space: nowrap;
+    transition: all 0.3s;
+  }
+  .flow-box:hover { transform: scale(1.05); border-color: var(--accent); }
+  .flow-arrow { color: rgba(255,255,255,0.2); font-size: 1.2rem; }
+
+  /* ========== KPI GRID ========== */
+  .kpi-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1.25rem; max-width: 800px; margin: 3rem auto 0;
+  }
+  .kpi-card {
+    text-align: center; padding: 1.5rem; border-radius: 14px;
+    background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06);
+    opacity: 0; transform: scale(0.9);
+    transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .kpi-card.visible { opacity: 1; transform: scale(1); }
+  .kpi-card:hover { transform: scale(1.04); border-color: var(--accent); }
+  .kpi-icon { font-size: 2rem; margin-bottom: 0.75rem; }
+  .kpi-number { font-size: 1.8rem; font-weight: 700; color: var(--accent); }
+  .kpi-desc { font-size: 0.8rem; color: rgba(255,255,255,0.5); margin-top: 0.4rem; }
+
+  /* ========== CTA SECTION ========== */
+  .cta-section {
+    padding: 6rem 0; text-align: center;
+  }
+  .cta-box {
+    max-width: 700px; margin: 0 auto; padding: 4rem 3rem; border-radius: 24px;
+    background: linear-gradient(135deg, rgba(0,120,212,0.12), rgba(92,45,145,0.12));
+    border: 1px solid rgba(0,120,212,0.2); position: relative; overflow: hidden;
+  }
+  .cta-box::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(circle at 30% 50%, rgba(0,120,212,0.1), transparent 60%);
+  }
+  .cta-box h2 {
+    font-size: clamp(1.5rem, 3vw, 2rem); color: #fff; margin-bottom: 1rem; position: relative;
+  }
+  .cta-box p { color: rgba(255,255,255,0.55); margin-bottom: 2rem; position: relative; }
+
+  /* ========== FOOTER ========== */
+  footer {
+    text-align: center; padding: 3rem 2rem; color: rgba(255,255,255,0.25);
+    font-size: 0.8rem; border-top: 1px solid rgba(255,255,255,0.04);
+  }
+
+  /* ========== SECTION DIVIDER ========== */
+  .section-divider {
+    height: 1px; max-width: 200px; margin: 0 auto;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+  }
+
+  /* ========== ANIMATIONS ========== */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  /* ========== TOOLTIP ========== */
+  .tooltip-wrap { position: relative; cursor: help; }
+  .tooltip-wrap .tooltip {
+    position: absolute; bottom: calc(100% + 10px); left: 50%; transform: translateX(-50%);
+    background: #1a1a2e; border: 1px solid rgba(255,255,255,0.1);
+    padding: 0.75rem 1rem; border-radius: 10px;
+    font-size: 0.8rem; color: rgba(255,255,255,0.7); line-height: 1.5;
+    white-space: normal; width: 240px; text-align: left;
+    opacity: 0; pointer-events: none; transition: all 0.2s;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4); z-index: 10;
+  }
+  .tooltip-wrap:hover .tooltip { opacity: 1; pointer-events: auto; }
+
+  /* ========== RESPONSIVE ========== */
+  @media (max-width: 600px) {
+    .hero { padding: 7rem 1.5rem 3rem; }
+    .section { padding: 4rem 0; }
+    .features-grid { grid-template-columns: 1fr; }
+    .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+    .cta-box { padding: 3rem 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-particles"></div>
+
+<!-- ========== NAVIGATION ========== -->
+<nav id="mainNav">
+  <div class="nav-inner">
+    <a href="#hero" class="nav-logo">
+      <svg viewBox="0 0 24 24" fill="none">
+        <rect x="2" y="2" width="9" height="9" rx="1.5" fill="#0078d4"/>
+        <rect x="13" y="2" width="9" height="9" rx="1.5" fill="#5c2d91"/>
+        <rect x="2" y="13" width="9" height="9" rx="1.5" fill="#00b7c3"/>
+        <rect x="13" y="13" width="9" height="9" rx="1.5" fill="#0ea55b"/>
+      </svg>
+      <span>Microsoft Fabric</span>
+    </a>
+    <button class="nav-hamburger" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+    <div class="nav-links">
+      <a href="#ecosystem">Ecosystem</a>
+      <a href="#operations">Operations</a>
+      <a href="#warehouse">Warehousing</a>
+      <a href="#datascience">Data Science</a>
+      <a href="#realtime">Real-Time</a>
+      <a href="#bi">Intelligence</a>
+    </div>
+  </div>
+</nav>
+<div class="progress-bar" id="progressBar"></div>
+
+<!-- ========== HERO ========== -->
+<section class="hero" id="hero">
+  <div class="hero-shapes">
+    <div class="shape"></div>
+    <div class="shape"></div>
+    <div class="shape"></div>
+  </div>
+  <div class="hero-content">
+    <div class="hero-badge">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="1" width="6" height="6" rx="1" fill="#0078d4"/><rect x="9" y="1" width="6" height="6" rx="1" fill="#5c2d91"/><rect x="1" y="9" width="6" height="6" rx="1" fill="#00b7c3"/><rect x="9" y="9" width="6" height="6" rx="1" fill="#0ea55b"/></svg>
+      Unified Analytics Platform
+    </div>
+    <h1>Transform Your Data Strategy with Microsoft Fabric</h1>
+    <p>One platform to unify your analytics, data engineering, data science, and business intelligence &mdash; all built on a single foundation of trust and scale.</p>
+    <div class="hero-cta">
+      <a href="#ecosystem" class="btn btn-primary">Explore Capabilities &darr;</a>
+      <a href="#cta" class="btn btn-outline">Get Started</a>
+    </div>
+  </div>
+  <div class="scroll-hint">
+    <div class="mouse"></div>
+    SCROLL TO EXPLORE
+  </div>
+</section>
+
+<!-- ========== STATS BAR ========== -->
+<div class="container">
+  <div class="stats-bar">
+    <div class="stat-card" data-animate>
+      <div class="stat-number" data-count="6">0</div>
+      <div class="stat-label">Core Workloads</div>
+    </div>
+    <div class="stat-card" data-animate>
+      <div class="stat-number">1</div>
+      <div class="stat-label">Unified Platform</div>
+    </div>
+    <div class="stat-card" data-animate>
+      <div class="stat-number">100%</div>
+      <div class="stat-label">Azure Integrated</div>
+    </div>
+    <div class="stat-card" data-animate>
+      <div class="stat-number">&infin;</div>
+      <div class="stat-label">Scale Potential</div>
+    </div>
+  </div>
+</div>
+
+<!-- =====================================================================
+     SECTION 1: UNIFIED ANALYTICS ECOSYSTEM
+     ===================================================================== -->
+<section class="section theme-blue" id="ecosystem">
+  <div class="container">
+    <div class="section-header" data-animate>
+      <div class="section-number" style="background: var(--accent-bg); color: var(--accent);">01</div>
+      <h2>Unified Analytics Ecosystem</h2>
+      <p>Microsoft Fabric integrates data engineering, data science, real-time analytics, and BI into a single, cohesive platform &mdash; eliminating data silos and unifying your entire analytics workflow.</p>
+    </div>
+
+    <!-- Hub & Spoke Diagram -->
+    <div class="diagram-wrapper theme-blue">
+      <div class="hub-diagram">
+        <div class="hub-center">
+          <svg viewBox="0 0 36 36" fill="none"><rect x="2" y="2" width="14" height="14" rx="2" fill="#fff" fill-opacity=".9"/><rect x="20" y="2" width="14" height="14" rx="2" fill="#fff" fill-opacity=".7"/><rect x="2" y="20" width="14" height="14" rx="2" fill="#fff" fill-opacity=".7"/><rect x="20" y="20" width="14" height="14" rx="2" fill="#fff" fill-opacity=".5"/></svg>
+          Microsoft Fabric
+        </div>
+      </div>
+      <div class="spoke-items">
+        <div class="spoke-item" data-animate><span class="spoke-dot"></span>Data Engineering</div>
+        <div class="spoke-item" data-animate><span class="spoke-dot"></span>Data Science</div>
+        <div class="spoke-item" data-animate><span class="spoke-dot"></span>Real-Time Analytics</div>
+        <div class="spoke-item" data-animate><span class="spoke-dot"></span>Business Intelligence</div>
+        <div class="spoke-item" data-animate><span class="spoke-dot"></span>Data Warehouse</div>
+        <div class="spoke-item" data-animate><span class="spoke-dot"></span>Data Integration</div>
+        <div class="spoke-item" data-animate><span class="spoke-dot"></span>OneLake Storage</div>
+        <div class="spoke-item" data-animate><span class="spoke-dot"></span>Governance</div>
+      </div>
+    </div>
+
+    <div class="features-grid" style="margin-top: 3rem;">
+      <div class="feature-card theme-blue" data-animate style="--delay: 0.1s">
+        <div class="feature-icon">&#x1F517;</div>
+        <h3>Seamless Integration</h3>
+        <p>All analytics services connect natively &mdash; no glue code, no complex pipelines between tools. Data flows effortlessly from ingestion to insight.</p>
+      </div>
+      <div class="feature-card theme-blue" data-animate style="--delay: 0.2s">
+        <div class="feature-icon">&#x1F4CA;</div>
+        <h3>Shared Data Foundation</h3>
+        <p>OneLake provides a single copy of data accessible to all workloads, eliminating duplication and ensuring every team works from the same source of truth.</p>
+      </div>
+      <div class="feature-card theme-blue" data-animate style="--delay: 0.3s">
+        <div class="feature-icon">&#x1F6E1;</div>
+        <h3>Unified Governance</h3>
+        <p>Centralized security, compliance, and data governance applied consistently across all analytics services &mdash; from engineering to BI.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- =====================================================================
+     SECTION 2: STREAMLINED DATA OPERATIONS
+     ===================================================================== -->
+<section class="section theme-purple" id="operations">
+  <div class="container">
+    <div class="section-header" data-animate>
+      <div class="section-number" style="background: var(--accent-bg); color: var(--accent);">02</div>
+      <h2>Streamlined Data Operations</h2>
+      <p>Simplify data management with intuitive tools that reduce complexity, automate pipelines, and let your team focus on deriving value &mdash; not managing infrastructure.</p>
+    </div>
+
+    <!-- Before / After Comparison -->
+    <div class="compare-grid theme-purple">
+      <div class="compare-card compare-before" data-animate>
+        <div class="compare-label">&#x26A0;&#xFE0F; Without Fabric</div>
+        <ul>
+          <li>Multiple disconnected tools and vendors</li>
+          <li>Manual data movement between systems</li>
+          <li>Inconsistent security policies across tools</li>
+          <li>Complex, fragile ETL pipelines</li>
+          <li>High infrastructure management overhead</li>
+        </ul>
+      </div>
+      <div class="compare-card compare-after" data-animate>
+        <div class="compare-label">&#x2705; With Fabric</div>
+        <ul>
+          <li>Single integrated platform for all workloads</li>
+          <li>Automatic data orchestration via OneLake</li>
+          <li>Unified security and compliance everywhere</li>
+          <li>Low-code / no-code pipeline creation</li>
+          <li>Fully managed SaaS &mdash; zero infra management</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Flow Diagram -->
+    <div class="flow-diagram theme-purple">
+      <div class="flow-step" data-animate><div class="flow-box">Ingest</div></div>
+      <div class="flow-step" data-animate><span class="flow-arrow">&rarr;</span></div>
+      <div class="flow-step" data-animate><div class="flow-box">Transform</div></div>
+      <div class="flow-step" data-animate><span class="flow-arrow">&rarr;</span></div>
+      <div class="flow-step" data-animate><div class="flow-box">Store</div></div>
+      <div class="flow-step" data-animate><span class="flow-arrow">&rarr;</span></div>
+      <div class="flow-step" data-animate><div class="flow-box">Analyze</div></div>
+      <div class="flow-step" data-animate><span class="flow-arrow">&rarr;</span></div>
+      <div class="flow-step" data-animate><div class="flow-box">Visualize</div></div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- =====================================================================
+     SECTION 3: SCALABLE DATA WAREHOUSING
+     ===================================================================== -->
+<section class="section theme-teal" id="warehouse">
+  <div class="container">
+    <div class="section-header" data-animate>
+      <div class="section-number" style="background: var(--accent-bg); color: var(--accent);">03</div>
+      <h2>Scalable Data Warehousing</h2>
+      <p>High-performance, elastic data warehousing that separates compute from storage &mdash; scale resources independently to match any workload without over-provisioning.</p>
+    </div>
+
+    <!-- Metric Bars -->
+    <div class="metric-bars theme-teal">
+      <div class="metric-item" data-animate>
+        <div class="metric-header">
+          <span class="metric-name">Query Performance</span>
+          <span class="metric-value">95%</span>
+        </div>
+        <div class="metric-track"><div class="metric-fill" data-width="95"></div></div>
+      </div>
+      <div class="metric-item" data-animate>
+        <div class="metric-header">
+          <span class="metric-name">Storage Efficiency</span>
+          <span class="metric-value">90%</span>
+        </div>
+        <div class="metric-track"><div class="metric-fill" data-width="90"></div></div>
+      </div>
+      <div class="metric-item" data-animate>
+        <div class="metric-header">
+          <span class="metric-name">Auto-Scale Responsiveness</span>
+          <span class="metric-value">88%</span>
+        </div>
+        <div class="metric-track"><div class="metric-fill" data-width="88"></div></div>
+      </div>
+      <div class="metric-item" data-animate>
+        <div class="metric-header">
+          <span class="metric-name">Cost Optimization</span>
+          <span class="metric-value">85%</span>
+        </div>
+        <div class="metric-track"><div class="metric-fill" data-width="85"></div></div>
+      </div>
+    </div>
+
+    <div class="features-grid" style="margin-top: 3rem;">
+      <div class="feature-card theme-teal" data-animate>
+        <div class="feature-icon">&#x26A1;</div>
+        <h3>Elastic Compute</h3>
+        <p>Scale compute resources up or down in seconds. Only pay for what you use, with automatic pause and resume for idle workloads.</p>
+      </div>
+      <div class="feature-card theme-teal" data-animate>
+        <div class="feature-icon">&#x1F4BE;</div>
+        <h3>Open Format Storage</h3>
+        <p>Data stored in Delta Lake / Parquet format in OneLake &mdash; no vendor lock-in. Query with T-SQL, Spark, or any compatible engine.</p>
+      </div>
+      <div class="feature-card theme-teal" data-animate>
+        <div class="feature-icon">&#x1F504;</div>
+        <h3>Cross-Database Queries</h3>
+        <p>Query across warehouses, lakehouses, and mirrored databases seamlessly &mdash; no data movement required.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- =====================================================================
+     SECTION 4: ADVANCED DATA SCIENCE CAPABILITIES
+     ===================================================================== -->
+<section class="section theme-green" id="datascience">
+  <div class="container">
+    <div class="section-header" data-animate>
+      <div class="section-number" style="background: var(--accent-bg); color: var(--accent);">04</div>
+      <h2>Advanced Data Science Capabilities</h2>
+      <p>Built-in machine learning tools, notebook experiences, and experiment tracking let data scientists build, train, and deploy models without leaving the platform.</p>
+    </div>
+
+    <!-- Interactive Tabs -->
+    <div class="tabs-container theme-green">
+      <div class="tabs-header">
+        <button class="tab-btn active" data-tab="notebooks">Notebooks</button>
+        <button class="tab-btn" data-tab="mlmodels">ML Models</button>
+        <button class="tab-btn" data-tab="experiments">Experiments</button>
+        <button class="tab-btn" data-tab="deployment">Deployment</button>
+      </div>
+      <div class="tab-panel active" id="tab-notebooks">
+        <h4>Collaborative Notebooks</h4>
+        <p>Apache Spark-powered notebooks with real-time collaboration. Write in Python, R, Scala, or SQL with IntelliSense and built-in visualizations. Share notebooks across teams and schedule them as automated jobs.</p>
+      </div>
+      <div class="tab-panel" id="tab-mlmodels">
+        <h4>End-to-End ML Workflows</h4>
+        <p>Build models with popular frameworks like Scikit-Learn, TensorFlow, and PyTorch. AutoML capabilities help accelerate model development, while MLflow integration provides full model lifecycle management.</p>
+      </div>
+      <div class="tab-panel" id="tab-experiments">
+        <h4>Experiment Tracking</h4>
+        <p>Track every experiment run with automatic parameter, metric, and artifact logging. Compare models side-by-side and identify the best-performing configuration with visual dashboards.</p>
+      </div>
+      <div class="tab-panel" id="tab-deployment">
+        <h4>Seamless Model Deployment</h4>
+        <p>Deploy models directly to Power BI for real-time scoring, or publish REST endpoints for application integration. Built-in monitoring tracks model performance and detects drift automatically.</p>
+      </div>
+    </div>
+
+    <!-- Timeline -->
+    <div class="timeline theme-green" style="margin-top: 3rem;">
+      <div class="timeline-item" data-animate>
+        <h4>Data Preparation</h4>
+        <p>Clean, transform, and feature-engineer data using Spark DataFrames and built-in connectors to OneLake.</p>
+      </div>
+      <div class="timeline-item" data-animate>
+        <h4>Model Training</h4>
+        <p>Train models at scale with distributed Spark clusters. Use AutoML or bring your own framework.</p>
+      </div>
+      <div class="timeline-item" data-animate>
+        <h4>Evaluation & Tuning</h4>
+        <p>Evaluate model performance with built-in metrics. Use hyperparameter sweeps to optimize results.</p>
+      </div>
+      <div class="timeline-item" data-animate>
+        <h4>Production Deployment</h4>
+        <p>Register models in MLflow, deploy to endpoints, and integrate predictions directly into BI reports.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- =====================================================================
+     SECTION 5: REAL-TIME ANALYTICS AND ACTIONABLE INSIGHTS
+     ===================================================================== -->
+<section class="section theme-orange" id="realtime">
+  <div class="container">
+    <div class="section-header" data-animate>
+      <div class="section-number" style="background: var(--accent-bg); color: var(--accent);">05</div>
+      <h2>Real-Time Analytics &amp; Actionable Insights</h2>
+      <p>Ingest, process, and analyze streaming data in real time. Detect patterns, trigger alerts, and empower teams to act on insights as events unfold &mdash; not hours later.</p>
+    </div>
+
+    <!-- Animated KPIs -->
+    <div class="kpi-grid theme-orange">
+      <div class="kpi-card" data-animate>
+        <div class="kpi-icon">&#x23F1;</div>
+        <div class="kpi-number">&lt;1s</div>
+        <div class="kpi-desc">Ingestion Latency</div>
+      </div>
+      <div class="kpi-card" data-animate>
+        <div class="kpi-icon">&#x1F4E1;</div>
+        <div class="kpi-number">M+</div>
+        <div class="kpi-desc">Events per Second</div>
+      </div>
+      <div class="kpi-card" data-animate>
+        <div class="kpi-icon">&#x1F50D;</div>
+        <div class="kpi-number">KQL</div>
+        <div class="kpi-desc">Native Query Language</div>
+      </div>
+      <div class="kpi-card" data-animate>
+        <div class="kpi-icon">&#x1F514;</div>
+        <div class="kpi-number">Live</div>
+        <div class="kpi-desc">Anomaly Detection Alerts</div>
+      </div>
+    </div>
+
+    <div class="features-grid" style="margin-top: 3rem;">
+      <div class="feature-card theme-orange" data-animate>
+        <div class="feature-icon">&#x1F30A;</div>
+        <h3>Event Streams</h3>
+        <p>Capture data from IoT devices, applications, and cloud services with no-code Eventstream. Route, filter, and transform data before it lands.</p>
+      </div>
+      <div class="feature-card theme-orange" data-animate>
+        <div class="feature-icon">&#x1F9E0;</div>
+        <h3>KQL Databases</h3>
+        <p>Purpose-built for time-series and log analytics. KQL provides lightning-fast queries across billions of rows with intuitive syntax.</p>
+      </div>
+      <div class="feature-card theme-orange" data-animate>
+        <div class="feature-icon">&#x1F4C8;</div>
+        <h3>Real-Time Dashboards</h3>
+        <p>Build live dashboards that auto-refresh in seconds. Set data-driven alerts to notify your team the moment thresholds are crossed.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- =====================================================================
+     SECTION 6: EMPOWERING BUSINESS INTELLIGENCE
+     ===================================================================== -->
+<section class="section theme-pink" id="bi">
+  <div class="container">
+    <div class="section-header" data-animate>
+      <div class="section-number" style="background: var(--accent-bg); color: var(--accent);">06</div>
+      <h2>Empowering Business Intelligence</h2>
+      <p>World-class Power BI experiences directly integrated into Fabric. From self-service exploration to enterprise-grade semantic models &mdash; insights reach every decision-maker.</p>
+    </div>
+
+    <div class="features-grid">
+      <div class="feature-card theme-pink" data-animate>
+        <div class="feature-icon">&#x1F3AF;</div>
+        <h3>Direct Lake Mode</h3>
+        <p>Query data directly from OneLake without importing. Get the speed of in-memory analysis with the freshness of live data &mdash; no duplication needed.</p>
+      </div>
+      <div class="feature-card theme-pink" data-animate>
+        <div class="feature-icon">&#x1F4AC;</div>
+        <h3>Copilot for Power BI</h3>
+        <p>Generate reports, create DAX measures, and summarize insights using natural language. AI-powered assistance makes BI accessible to every business user.</p>
+      </div>
+      <div class="feature-card theme-pink" data-animate>
+        <div class="feature-icon">&#x1F465;</div>
+        <h3>Self-Service Analytics</h3>
+        <p>Empower business teams to explore data independently with drag-and-drop report building, while IT maintains governance over certified datasets.</p>
+      </div>
+      <div class="feature-card theme-pink" data-animate>
+        <div class="feature-icon">&#x1F310;</div>
+        <h3>Enterprise Semantic Models</h3>
+        <p>Create a single source of truth with shared semantic models. Define metrics once and use them consistently across all reports and dashboards.</p>
+      </div>
+      <div class="feature-card theme-pink" data-animate>
+        <div class="feature-icon">&#x1F4F1;</div>
+        <h3>Paginated Reports</h3>
+        <p>Pixel-perfect, printable reports for operational and regulatory needs. Auto-distribute via subscriptions on a schedule your stakeholders set.</p>
+      </div>
+      <div class="feature-card theme-pink" data-animate>
+        <div class="feature-icon">&#x1F512;</div>
+        <h3>Row-Level Security</h3>
+        <p>Define data access rules so each user sees only what they're authorized to. Security follows the data across all reports and apps automatically.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== CTA ========== -->
+<section class="cta-section" id="cta">
+  <div class="container">
+    <div class="cta-box">
+      <h2>Ready to Unify Your Analytics?</h2>
+      <p>Start your Microsoft Fabric journey today and transform how your organization works with data.</p>
+      <a href="https://www.microsoft.com/microsoft-fabric" class="btn btn-primary" target="_blank" rel="noopener">Learn More About Microsoft Fabric</a>
+    </div>
+  </div>
+</section>
+
+<!-- ========== FOOTER ========== -->
+<footer>
+  <div class="container">
+    <p>&copy; Microsoft Corporation. All rights reserved. Microsoft Fabric &mdash; Unified Analytics Platform.</p>
+  </div>
+</footer>
+
+<!-- ========== JAVASCRIPT ========== -->
+<script>
+(function() {
+  'use strict';
+
+  // === Scroll-triggered animations via IntersectionObserver ===
+  const animateElements = document.querySelectorAll('[data-animate]');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        // Stagger animations for siblings
+        const siblings = entry.target.parentElement.querySelectorAll('[data-animate]');
+        let delay = 0;
+        siblings.forEach((sib, idx) => {
+          if (sib === entry.target) delay = idx * 100;
+        });
+        setTimeout(() => {
+          entry.target.classList.add('visible');
+          // Animate metric bars
+          const fill = entry.target.querySelector('.metric-fill');
+          if (fill) {
+            fill.style.width = fill.dataset.width + '%';
+          }
+        }, delay);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
+
+  animateElements.forEach(el => observer.observe(el));
+
+  // === Navigation scroll effects ===
+  const nav = document.getElementById('mainNav');
+  const progressBar = document.getElementById('progressBar');
+  const sections = document.querySelectorAll('.section, .hero');
+  const navLinks = document.querySelectorAll('.nav-links a');
+
+  window.addEventListener('scroll', () => {
+    // Nav shadow
+    nav.classList.toggle('scrolled', window.scrollY > 20);
+
+    // Progress bar
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const scrollPct = (window.scrollY / docHeight) * 100;
+    progressBar.style.width = scrollPct + '%';
+
+    // Active nav link
+    let current = '';
+    sections.forEach(section => {
+      const rect = section.getBoundingClientRect();
+      if (rect.top <= 150) current = section.id;
+    });
+    navLinks.forEach(link => {
+      link.classList.toggle('active', link.getAttribute('href') === '#' + current);
+    });
+
+    // Close mobile nav on scroll
+    document.querySelector('.nav-links').classList.remove('open');
+  }, { passive: true });
+
+  // === Tab switching ===
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const container = btn.closest('.tabs-container');
+      container.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      container.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+    });
+  });
+
+  // === Animated counters ===
+  const counterElements = document.querySelectorAll('[data-count]');
+  const counterObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const el = entry.target;
+        const target = parseInt(el.dataset.count);
+        let current = 0;
+        const increment = Math.ceil(target / 40);
+        const timer = setInterval(() => {
+          current += increment;
+          if (current >= target) {
+            current = target;
+            clearInterval(timer);
+          }
+          el.textContent = current;
+        }, 30);
+        counterObserver.unobserve(el);
+      }
+    });
+  }, { threshold: 0.5 });
+  counterElements.forEach(el => counterObserver.observe(el));
+
+  // === Smooth scroll for nav links ===
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', (e) => {
+      e.preventDefault();
+      const target = document.querySelector(anchor.getAttribute('href'));
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        document.querySelector('.nav-links').classList.remove('open');
+      }
+    });
+  });
+
+})();
+</script>
+
+</body>
+</html>
