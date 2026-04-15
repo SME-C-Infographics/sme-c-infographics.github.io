@@ -1,0 +1,1310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Microsoft AI Platform Decision Guide</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; font-size: 16px; }
+  body {
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: #1a1a1a;
+    background: #f5f5f5;
+    line-height: 1.65;
+    overflow-x: hidden;
+  }
+  a { color: #0078d4; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  /* ── NAV ── */
+  .nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+    background: rgba(255,255,255,.94); backdrop-filter: blur(14px);
+    border-bottom: 1px solid #e0e0e0;
+    display: flex; align-items: center; height: 56px; padding: 0 2rem;
+    transition: box-shadow .3s;
+  }
+  .nav.scrolled { box-shadow: 0 2px 16px rgba(0,0,0,.08); }
+  .nav-logo {
+    font-weight: 700; font-size: .95rem; color: #0078d4;
+    white-space: nowrap; margin-right: 2rem;
+    display: flex; align-items: center; gap: .5rem;
+  }
+  .nav-logo svg { width: 20px; height: 20px; }
+  .nav-links { display: flex; gap: .2rem; overflow-x: auto; scrollbar-width: none; }
+  .nav-links::-webkit-scrollbar { display: none; }
+  .nav-links a {
+    padding: .4rem .7rem; border-radius: 6px; font-size: .78rem;
+    white-space: nowrap; color: #555; transition: all .2s;
+  }
+  .nav-links a:hover, .nav-links a.active { background: #e8f4fd; color: #0078d4; text-decoration: none; }
+  .progress-bar {
+    position: fixed; top: 56px; left: 0; height: 3px;
+    background: linear-gradient(90deg,#0078d4,#50e6ff);
+    z-index: 999; width: 0; transition: width .1s;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; text-align: center;
+    padding: 6rem 2rem 4rem;
+    background: linear-gradient(135deg, #0078d4 0%, #005a9e 35%, #002050 100%);
+    color: #fff; position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content:''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 20% 80%, rgba(80,230,255,.08) 0%, transparent 55%),
+                radial-gradient(ellipse at 75% 20%, rgba(255,255,255,.04) 0%, transparent 50%);
+  }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: .5rem;
+    padding: .4rem 1.2rem; border-radius: 20px;
+    background: rgba(255,255,255,.12); font-size: .85rem;
+    margin-bottom: 1.5rem; backdrop-filter: blur(4px);
+    animation: fadeDown .7s ease-out;
+  }
+  .hero-badge svg { width: 18px; height: 18px; fill: #50e6ff; }
+  .hero h1 {
+    font-size: clamp(2rem, 5vw, 3.4rem); font-weight: 700;
+    max-width: 900px; animation: fadeDown .7s ease-out .1s both; line-height: 1.2;
+  }
+  .hero p {
+    font-size: clamp(1rem, 2vw, 1.2rem); max-width: 680px;
+    margin-top: 1rem; opacity: .9; animation: fadeDown .7s ease-out .2s both;
+  }
+  .hero-cta {
+    margin-top: 2.5rem; display: flex; gap: 1rem; flex-wrap: wrap;
+    justify-content: center; animation: fadeDown .7s ease-out .35s both;
+  }
+  .btn {
+    display: inline-flex; align-items: center; gap: .5rem;
+    padding: .75rem 1.75rem; border-radius: 8px; font-size: .95rem;
+    font-weight: 600; transition: transform .2s, box-shadow .2s;
+    cursor: pointer; border: none;
+  }
+  .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,.2); text-decoration: none; }
+  .btn-primary { background: #fff; color: #0078d4; }
+  .btn-outline { background: transparent; color: #fff; border: 2px solid rgba(255,255,255,.45); }
+
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── SECTIONS ── */
+  section { padding: 5rem 2rem; }
+  .container { max-width: 1200px; margin: 0 auto; }
+  .section-label {
+    display: inline-block; font-size: .72rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: .12em; color: #0078d4;
+    margin-bottom: .5rem;
+  }
+  .section-title {
+    font-size: clamp(1.5rem, 3vw, 2.2rem); font-weight: 700; margin-bottom: .75rem;
+  }
+  .section-sub { font-size: 1.05rem; color: #555; max-width: 700px; margin-bottom: 2.5rem; }
+
+  /* ── REVEAL ── */
+  .reveal { opacity: 0; transform: translateY(28px); transition: opacity .65s ease-out, transform .65s ease-out; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* ── SPECTRUM ── */
+  .spectrum-wrap {
+    background: #fff; border-radius: 16px; box-shadow: 0 2px 12px rgba(0,0,0,.05);
+    padding: 2rem; margin-bottom: 2.5rem;
+  }
+  .spectrum-title { font-size: 1rem; font-weight: 700; color: #002050; margin-bottom: 1rem; text-align: center; }
+  .spectrum-bar {
+    display: flex; height: 52px; border-radius: 26px; overflow: hidden;
+    box-shadow: inset 0 2px 6px rgba(0,0,0,.08); margin-bottom: .75rem;
+  }
+  .spectrum-bar div {
+    flex: 1; display: flex; align-items: center; justify-content: center;
+    color: #fff; font-weight: 600; font-size: .82rem; letter-spacing: .3px;
+    transition: flex .3s;
+  }
+  .spectrum-bar div:hover { flex: 1.3; }
+  .s-copilot { background: linear-gradient(135deg, #0078d4, #2b88d8); }
+  .s-studio { background: linear-gradient(135deg, #5C2D91, #8661c5); }
+  .s-openai { background: linear-gradient(135deg, #008575, #00b294); }
+  .s-foundry { background: linear-gradient(135deg, #d29200, #f2a900); }
+  .s-aiservices { background: linear-gradient(135deg, #d13438, #e74c4c); }
+  .new-badge {
+    display: inline-block; font-size: .62rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: .06em;
+    padding: .12rem .4rem; border-radius: 4px;
+    background: #50e6ff; color: #002050; margin-left: .4rem; vertical-align: middle;
+  }
+  .new-badge-card {
+    display: inline-block; font-size: .6rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: .04em;
+    padding: .1rem .35rem; border-radius: 3px;
+    background: rgba(255,255,255,.25); color: #fff; margin-left: .3rem;
+  }
+  .migration-note {
+    background: linear-gradient(135deg, rgba(193,154,0,.12), rgba(209,52,56,.08));
+    border: 1px solid rgba(193,154,0,.35); border-radius: 10px;
+    padding: .75rem 1rem; margin-bottom: 1rem;
+    font-size: .82rem; line-height: 1.55; color: #5a4500;
+    display: flex; align-items: flex-start; gap: .5rem;
+  }
+  .migration-note svg { flex-shrink: 0; width: 18px; height: 18px; fill: #c19a00; margin-top: .1rem; }
+  .migration-note a { color: var(--foundry); font-weight: 600; }
+  .plat-link {
+    display: inline-flex; align-items: center; gap: .35rem;
+    margin-top: .75rem; padding: .45rem 1rem; border-radius: 8px;
+    background: rgba(255,255,255,.18); color: #fff; font-size: .82rem;
+    font-weight: 600; transition: background .2s; text-decoration: none;
+    border: 1px solid rgba(255,255,255,.2);
+  }
+  .plat-link:hover { background: rgba(255,255,255,.3); text-decoration: none; }
+  .plat-link svg { width: 14px; height: 14px; fill: currentColor; }
+  .spectrum-labels {
+    display: flex; justify-content: space-between;
+    font-size: .78rem; color: #888; padding: 0 .5rem;
+  }
+
+  /* ── PLATFORM CARDS ── */
+  :root {
+    --copilot: #0078d4; --copilot-light: #e8f4fd; --copilot-mid: #b4d6f4;
+    --studio: #5C2D91; --studio-light: #f3effa; --studio-mid: #d8cce8;
+    --openai: #008575; --openai-light: #e6f5f2; --openai-mid: #b8e6dd;
+    --foundry: #c19a00; --foundry-light: #fff8e1; --foundry-mid: #ffe082;
+    --aiservices: #d13438; --aiservices-light: #fde7e9; --aiservices-mid: #f4b4b6;
+  }
+
+  .platform-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 1.5rem; margin-bottom: 2.5rem;
+  }
+  .plat-card {
+    background: #fff; border-radius: 16px; overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0,0,0,.05);
+    transition: transform .3s, box-shadow .3s;
+    display: flex; flex-direction: column;
+  }
+  .plat-card:hover { transform: translateY(-4px); box-shadow: 0 8px 30px rgba(0,0,0,.1); }
+
+  .plat-hdr { padding: 1.5rem; color: #fff; position: relative; }
+  .plat-hdr.copilot-bg { background: linear-gradient(135deg, #0062AD, #0078d4); }
+  .plat-hdr.studio-bg { background: linear-gradient(135deg, #5C2D91, #7B4DB5); }
+  .plat-hdr.openai-bg { background: linear-gradient(135deg, #006B5E, #008575); }
+  .plat-hdr.foundry-bg { background: linear-gradient(135deg, #a07800, #c19a00); }
+  .plat-hdr.aiservices-bg { background: linear-gradient(135deg, #a4262c, #d13438); }
+
+  .plat-icon {
+    width: 44px; height: 44px; background: rgba(255,255,255,.2);
+    border-radius: 12px; display: flex; align-items: center; justify-content: center;
+    margin-bottom: .75rem;
+  }
+  .plat-icon svg { width: 26px; height: 26px; fill: #fff; }
+
+  .plat-hdr h3 { font-size: 1.15rem; font-weight: 700; margin-bottom: .25rem; }
+  .plat-hdr .subtitle { font-size: .8rem; opacity: .85; }
+
+  .plat-body { padding: 1.5rem; flex: 1; display: flex; flex-direction: column; }
+  .plat-body h4 {
+    font-size: .72rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .08em; margin-bottom: .5rem; padding-bottom: .4rem;
+    border-bottom: 2px solid #eee;
+  }
+  .plat-body h4.copilot-a { color: var(--copilot); border-color: var(--copilot-mid); }
+  .plat-body h4.studio-a { color: var(--studio); border-color: var(--studio-mid); }
+  .plat-body h4.openai-a { color: var(--openai); border-color: var(--openai-mid); }
+  .plat-body h4.foundry-a { color: var(--foundry); border-color: var(--foundry-mid); }
+  .plat-body h4.aiservices-a { color: var(--aiservices); border-color: var(--aiservices-mid); }
+
+  .plat-body ul { list-style: none; margin-bottom: 1.25rem; }
+  .plat-body li {
+    position: relative; padding: .35rem 0 .35rem 1.3rem;
+    font-size: .88rem; line-height: 1.5;
+  }
+  .plat-body li::before {
+    content: ''; position: absolute; left: 0; top: .7rem;
+    width: 7px; height: 7px; border-radius: 50%;
+  }
+  .copilot-card li::before { background: var(--copilot); }
+  .studio-card li::before { background: var(--studio); }
+  .openai-card li::before { background: var(--openai); }
+  .foundry-card li::before { background: var(--foundry); }
+  .aiservices-card li::before { background: var(--aiservices); }
+
+  .tag-row { display: flex; flex-wrap: wrap; gap: .4rem; margin-bottom: 1rem; }
+  .tag {
+    font-size: .72rem; font-weight: 600; padding: .2rem .6rem; border-radius: 6px;
+  }
+  .tag.copilot-t { background: var(--copilot-light); color: var(--copilot); }
+  .tag.studio-t { background: var(--studio-light); color: var(--studio); }
+  .tag.openai-t { background: var(--openai-light); color: var(--openai); }
+  .tag.foundry-t { background: var(--foundry-light); color: var(--foundry); }
+  .tag.aiservices-t { background: var(--aiservices-light); color: var(--aiservices); }
+
+  /* ── METER BARS ── */
+  .meter-group { margin-top: auto; }
+  .meter-label {
+    display: flex; justify-content: space-between;
+    font-size: .78rem; margin-bottom: .2rem; font-weight: 600; color: #444;
+  }
+  .meter {
+    height: 7px; background: #eee; border-radius: 4px;
+    overflow: hidden; margin-bottom: .6rem;
+  }
+  .meter-fill { height: 100%; border-radius: 4px; transition: width 1s ease-out; width: 0; }
+  .mf-copilot { background: linear-gradient(90deg, #0062AD, #4ba3e3); }
+  .mf-studio { background: linear-gradient(90deg, #5C2D91, #9B6FCF); }
+  .mf-openai { background: linear-gradient(90deg, #006B5E, #3DBFAD); }
+  .mf-foundry { background: linear-gradient(90deg, #a07800, #e6c200); }
+  .mf-aiservices { background: linear-gradient(90deg, #a4262c, #e66a6e); }
+
+  /* ── COMPARISON TABLE ── */
+  .cmp-wrap {
+    background: #fff; border-radius: 16px; padding: 2rem;
+    box-shadow: 0 2px 12px rgba(0,0,0,.05); overflow-x: auto;
+  }
+  .cmp-tbl { width: 100%; border-collapse: collapse; min-width: 800px; }
+  .cmp-tbl th {
+    padding: .75rem 1rem; text-align: left; font-size: .78rem;
+    background: #f5f5f5; border-bottom: 2px solid #ddd;
+    text-transform: uppercase; letter-spacing: .04em;
+  }
+  .cmp-tbl th:nth-child(2) { color: var(--copilot); }
+  .cmp-tbl th:nth-child(3) { color: var(--studio); }
+  .cmp-tbl th:nth-child(4) { color: var(--openai); }
+  .cmp-tbl th:nth-child(5) { color: var(--foundry); }
+  .cmp-tbl th:nth-child(6) { color: var(--aiservices); }
+  .cmp-tbl td {
+    padding: .65rem 1rem; border-bottom: 1px solid #eee; font-size: .85rem;
+  }
+  .cmp-tbl tr:hover td { background: #f9fbfd; }
+  .cmp-tbl td:first-child { font-weight: 600; color: #002050; white-space: nowrap; }
+  .check { color: #008575; font-weight: 700; }
+  .partial { color: #c19a00; font-weight: 600; }
+  .no { color: #d13438; }
+
+  /* ── DECISION TREE ── */
+  .dt-wrap { max-width: 720px; margin: 0 auto; }
+  .dt-node {
+    background: #fff; border-radius: 14px; padding: 1.5rem;
+    text-align: center; box-shadow: 0 2px 12px rgba(0,0,0,.06);
+    margin-bottom: .75rem; border: 2px solid #e0e0e0;
+    cursor: pointer; transition: all .3s;
+  }
+  .dt-node:hover { border-color: #0078d4; box-shadow: 0 4px 20px rgba(0,120,212,.15); }
+  .dt-node.question { border-color: #0078d4; background: #f0f8ff; }
+  .dt-node.active { border-color: #0078d4; background: #e8f4fd; }
+  .dt-node h4 { font-size: 1rem; margin-bottom: .5rem; color: #002050; }
+  .dt-node p { font-size: .88rem; color: #555; }
+  .dt-choices {
+    display: flex; gap: .75rem; justify-content: center;
+    margin-top: 1rem; flex-wrap: wrap;
+  }
+  .dt-choice {
+    padding: .55rem 1.3rem; border-radius: 8px; font-weight: 600;
+    font-size: .88rem; cursor: pointer; border: 2px solid #0078d4;
+    color: #0078d4; background: #f0f8ff; transition: all .2s;
+  }
+  .dt-choice:hover { background: #0078d4; color: #fff; }
+  .dt-result {
+    padding: 1.5rem; border-radius: 14px; text-align: center;
+    margin-top: .75rem; animation: fadeDown .4s ease-out;
+  }
+  .dt-result h4 { font-size: 1.1rem; margin-bottom: .5rem; }
+  .dt-result p { font-size: .9rem; }
+  .dt-result.copilot-r { background: var(--copilot-light); border: 2px solid var(--copilot-mid); color: #003a6a; }
+  .dt-result.studio-r { background: var(--studio-light); border: 2px solid var(--studio-mid); color: #3b1662; }
+  .dt-result.openai-r { background: var(--openai-light); border: 2px solid var(--openai-mid); color: #004d42; }
+  .dt-result.foundry-r { background: var(--foundry-light); border: 2px solid var(--foundry-mid); color: #6b5000; }
+  .dt-result.aiservices-r { background: var(--aiservices-light); border: 2px solid var(--aiservices-mid); color: #7a1e21; }
+
+  .dt-connector {
+    width: 2px; height: 20px; background: #d0d0d0; margin: 0 auto;
+  }
+  .dt-hidden { display: none; }
+  .dt-restart {
+    display: inline-flex; align-items: center; gap: .4rem;
+    margin-top: 1rem; padding: .5rem 1.2rem; border-radius: 8px;
+    background: #f0f0f0; color: #333; font-size: .85rem; font-weight: 600;
+    cursor: pointer; border: none; transition: background .2s;
+  }
+  .dt-restart:hover { background: #e0e0e0; }
+
+  /* ── SCENARIO CARDS ── */
+  .scenario-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.25rem;
+  }
+  .scenario-card {
+    background: #fff; border-radius: 14px; padding: 1.5rem;
+    box-shadow: 0 2px 10px rgba(0,0,0,.04); border-left: 5px solid;
+    transition: transform .3s;
+  }
+  .scenario-card:hover { transform: translateY(-3px); }
+  .scenario-card.copilot-b { border-color: var(--copilot); }
+  .scenario-card.studio-b { border-color: var(--studio); }
+  .scenario-card.openai-b { border-color: var(--openai); }
+  .scenario-card.foundry-b { border-color: var(--foundry); }
+  .scenario-card.aiservices-b { border-color: var(--aiservices); }
+  .sc-label {
+    font-size: .72rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .08em; margin-bottom: .35rem;
+  }
+  .scenario-card.copilot-b .sc-label { color: var(--copilot); }
+  .scenario-card.studio-b .sc-label { color: var(--studio); }
+  .scenario-card.openai-b .sc-label { color: var(--openai); }
+  .scenario-card.foundry-b .sc-label { color: var(--foundry); }
+  .scenario-card.aiservices-b .sc-label { color: var(--aiservices); }
+  .scenario-card h3 { font-size: 1rem; margin-bottom: .4rem; color: #002050; }
+  .scenario-card p { font-size: .85rem; color: #555; line-height: 1.55; }
+
+  /* ── COST SECTION ── */
+  .cost-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+    gap: 1.25rem;
+  }
+  .cost-card {
+    padding: 1.5rem; border-radius: 14px; text-align: center;
+  }
+  .cost-card.copilot-c { background: var(--copilot-light); border: 2px solid var(--copilot-mid); }
+  .cost-card.studio-c { background: var(--studio-light); border: 2px solid var(--studio-mid); }
+  .cost-card.openai-c { background: var(--openai-light); border: 2px solid var(--openai-mid); }
+  .cost-card.foundry-c { background: var(--foundry-light); border: 2px solid var(--foundry-mid); }
+  .cost-card.aiservices-c { background: var(--aiservices-light); border: 2px solid var(--aiservices-mid); }
+  .cost-card h3 { font-size: .92rem; margin-bottom: .75rem; }
+  .cost-card.copilot-c h3 { color: var(--copilot); }
+  .cost-card.studio-c h3 { color: var(--studio); }
+  .cost-card.openai-c h3 { color: var(--openai); }
+  .cost-card.foundry-c h3 { color: var(--foundry); }
+  .cost-card.aiservices-c h3 { color: var(--aiservices); }
+  .cost-items { text-align: left; list-style: none; }
+  .cost-items li {
+    font-size: .82rem; padding: .3rem 0 .3rem 1.3rem;
+    position: relative; color: #333;
+  }
+  .cost-items li::before {
+    content: '\25B8'; position: absolute; left: 0; color: #888;
+  }
+
+  /* ── GETTING STARTED ── */
+  .gs-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.25rem;
+  }
+  .gs-card {
+    background: #fff; border-radius: 14px; padding: 1.5rem;
+    text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,.04);
+    transition: transform .3s; border-top: 3px solid;
+  }
+  .gs-card:hover { transform: translateY(-3px); }
+  .gs-card:nth-child(1) { border-color: #0078d4; }
+  .gs-card:nth-child(2) { border-color: #5C2D91; }
+  .gs-card:nth-child(3) { border-color: #008575; }
+  .gs-card:nth-child(4) { border-color: #c19a00; }
+  .gs-ico {
+    width: 52px; height: 52px; border-radius: 14px;
+    margin: 0 auto .75rem; display: flex; align-items: center;
+    justify-content: center; font-size: 1.5rem;
+  }
+  .gs-card:nth-child(1) .gs-ico { background: var(--copilot-light); }
+  .gs-card:nth-child(2) .gs-ico { background: var(--studio-light); }
+  .gs-card:nth-child(3) .gs-ico { background: var(--openai-light); }
+  .gs-card:nth-child(4) .gs-ico { background: var(--foundry-light); }
+  .gs-card h4 { font-size: .95rem; margin-bottom: .3rem; }
+  .gs-card p { font-size: .82rem; color: #555; }
+
+  /* ── CTA BANNER ── */
+  .cta-banner {
+    background: linear-gradient(135deg, #0078d4 0%, #005a9e 50%, #002050 100%);
+    border-radius: 16px; padding: 3rem; text-align: center; color: #fff;
+    position: relative; overflow: hidden;
+  }
+  .cta-banner::before {
+    content:''; position: absolute; right: -40px; top: -40px;
+    width: 200px; height: 200px; border-radius: 50%;
+    background: rgba(255,255,255,.06);
+  }
+  .cta-banner h3 { font-size: 1.4rem; margin-bottom: .5rem; }
+  .cta-banner p { font-size: 1rem; opacity: .9; margin-bottom: 1.5rem; max-width: 600px; margin-left: auto; margin-right: auto; }
+
+  /* ── FOOTER ── */
+  .footer {
+    text-align: center; padding: 2rem; color: #888; font-size: .82rem;
+    border-top: 1px solid #e0e0e0; margin-top: 2rem;
+  }
+
+  /* ── TOOLTIP ── */
+  [data-tooltip] { position: relative; cursor: help; }
+  [data-tooltip]:hover::after {
+    content: attr(data-tooltip);
+    position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%);
+    background: #002050; color: #fff; padding: .4rem .8rem;
+    border-radius: 6px; font-size: .78rem; white-space: nowrap;
+    z-index: 10; margin-bottom: 6px;
+    animation: fadeDown .2s ease-out;
+  }
+
+  /* ── FILTER TABS ── */
+  .filter-bar {
+    display: flex; gap: .5rem; flex-wrap: wrap; margin-bottom: 1.5rem;
+  }
+  .filter-btn {
+    padding: .45rem 1rem; border-radius: 20px; font-size: .82rem;
+    font-weight: 600; cursor: pointer; border: 2px solid #ddd;
+    background: #fff; color: #555; transition: all .2s;
+  }
+  .filter-btn:hover { border-color: #0078d4; color: #0078d4; }
+  .filter-btn.active { background: #0078d4; color: #fff; border-color: #0078d4; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    .nav { padding: 0 1rem; }
+    .nav-logo { font-size: .85rem; margin-right: 1rem; }
+    section { padding: 3rem 1rem; }
+    .platform-grid { grid-template-columns: 1fr; }
+    .cost-grid { grid-template-columns: 1fr 1fr; }
+  }
+
+  /* ── PRINT ── */
+  @media print {
+    .nav, .progress-bar { display: none; }
+    body { background: #fff; }
+    .hero { min-height: auto; padding: 3rem 2rem; }
+    .plat-card:hover, .scenario-card:hover { transform: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <div class="nav-logo">
+    <svg viewBox="0 0 23 23" fill="#0078d4"><path d="M0 0h11v11H0zM12 0h11v11H12zM0 12h11v11H0zM12 12h11v11H12z"/></svg>
+    AI Decision Guide
+  </div>
+  <div class="nav-links">
+    <a href="#overview">Overview</a>
+    <a href="#platforms">Platforms</a>
+    <a href="#compare">Compare</a>
+    <a href="#decide">Decision Tree</a>
+    <a href="#scenarios">Scenarios</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#start">Get Started</a>
+  </div>
+</nav>
+<div class="progress-bar" id="progressBar"></div>
+
+<!-- HERO -->
+<header class="hero" id="overview">
+  <div class="hero-badge">
+    <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+    Microsoft AI Platform Guide
+  </div>
+  <h1>Choose the Right AI Tool from the Microsoft Ecosystem</h1>
+  <p>An interactive guide to help you navigate Microsoft's AI platforms and services &mdash; from ready-to-use productivity tools to fully custom AI solutions.</p>
+  <div class="hero-cta">
+    <a href="#decide" class="btn btn-primary">Start Decision Tree</a>
+    <a href="#platforms" class="btn btn-outline">Explore Platforms</a>
+  </div>
+</header>
+
+<!-- ═══════════ SPECTRUM ═══════════ -->
+<section id="spectrum">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label">The AI Spectrum</span>
+      <h2 class="section-title">From Ready-Made to Fully Custom</h2>
+      <p class="section-sub">Microsoft offers AI tools across the entire complexity spectrum. The right choice depends on your team's technical depth, customization needs, and time to value.</p>
+    </div>
+    <div class="spectrum-wrap reveal">
+      <div class="spectrum-title">Complexity &amp; Customization Spectrum</div>
+      <div class="spectrum-bar">
+        <div class="s-copilot">M365 Copilot</div>
+        <div class="s-studio">Copilot Studio</div>
+        <div class="s-openai">Azure OpenAI</div>
+        <div class="s-foundry">Foundry</div>
+        <div class="s-aiservices">Foundry Tools</div>
+      </div>
+      <div class="spectrum-labels">
+        <span>&larr; Ready to use &bull; No code</span>
+        <span>Full customization &bull; Pro code &rarr;</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ PLATFORM CARDS ═══════════ -->
+<section id="platforms" style="background:#fff;">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label">Platform Deep Dive</span>
+      <h2 class="section-title">Five Pillars of Microsoft AI</h2>
+      <p class="section-sub">Each platform serves a distinct audience and use case. Updated with the latest features as of April 2026.</p>
+    </div>
+
+    <!-- Filter -->
+    <div class="filter-bar reveal">
+      <button class="filter-btn active" data-filter="all">All Platforms</button>
+      <button class="filter-btn" data-filter="no-code">No / Low Code</button>
+      <button class="filter-btn" data-filter="pro-code">Pro Code</button>
+      <button class="filter-btn" data-filter="api">API-First</button>
+    </div>
+
+    <div class="platform-grid" id="platformGrid">
+
+      <!-- 1 · Microsoft 365 Copilot -->
+      <div class="plat-card copilot-card reveal" data-tags="no-code">
+        <div class="plat-hdr copilot-bg">
+          <div class="plat-icon">
+            <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4V8l8 5 8-5v10zm-8-7L4 6h16l-8 5z"/></svg>
+          </div>
+          <h3>Microsoft 365 Copilot <span class="new-badge-card">Updated</span></h3>
+          <div class="subtitle">AI assistant embedded in Word, Excel, Outlook, Teams &amp; PowerPoint</div>
+          <a href="https://www.microsoft.com/en-us/microsoft-365-copilot/" target="_blank" class="plat-link"><svg viewBox="0 0 24 24"><path d="M14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/><path d="M5 5v14h14v-7h-2v5H7V7h5V5H5z"/></svg>Learn more</a>
+        </div>
+        <div class="plat-body">
+          <h4 class="copilot-a">What It Is</h4>
+          <ul>
+            <li>AI-powered assistant built directly into Microsoft 365 apps</li>
+            <li>Powered by GPT-5 reasoning engine, grounded in your org's Microsoft Graph data</li>
+            <li>Enterprise-grade security, compliance, and data protection included</li>
+          </ul>
+          <h4 class="copilot-a">Best For</h4>
+          <div class="tag-row">
+            <span class="tag copilot-t">Productivity</span>
+            <span class="tag copilot-t">Agents</span>
+            <span class="tag copilot-t">No Code</span>
+          </div>
+          <ul>
+            <li>Drafting documents, emails, and presentations instantly</li>
+            <li>Summarizing meetings, email threads, and PDFs in-context</li>
+            <li><strong>Agent Mode</strong> in Word, Excel &amp; PowerPoint for content creation <span class="new-badge">New</span></li>
+            <li><strong>Copilot Search</strong> across M365 and 3rd-party apps (ServiceNow, Jira, etc.) <span class="new-badge">New</span></li>
+            <li><strong>Copilot Notebooks</strong> for deep research with voice interactions <span class="new-badge">New</span></li>
+            <li>Real-time voice conversations and memory personalization</li>
+          </ul>
+          <h4 class="copilot-a">Operational Profile</h4>
+          <div class="meter-group">
+            <div class="meter-label"><span>Technical Skill Required</span><span>None</span></div>
+            <div class="meter"><div class="meter-fill mf-copilot" data-width="8"></div></div>
+            <div class="meter-label"><span>Time to Value</span><span>Instant</span></div>
+            <div class="meter"><div class="meter-fill mf-copilot" data-width="98"></div></div>
+            <div class="meter-label"><span>Customization</span><span>Low</span></div>
+            <div class="meter"><div class="meter-fill mf-copilot" data-width="15"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2 · Copilot Studio -->
+      <div class="plat-card studio-card reveal" data-tags="no-code">
+        <div class="plat-hdr studio-bg">
+          <div class="plat-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+          </div>
+          <h3>Microsoft Copilot Studio <span class="new-badge-card">Updated</span></h3>
+          <div class="subtitle">Enterprise platform for building autonomous AI agents and chatbots</div>
+          <a href="https://www.microsoft.com/en-us/microsoft-copilot/microsoft-copilot-studio" target="_blank" class="plat-link"><svg viewBox="0 0 24 24"><path d="M14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/><path d="M5 5v14h14v-7h-2v5H7V7h5V5H5z"/></svg>Learn more</a>
+        </div>
+        <div class="plat-body">
+          <h4 class="studio-a">What It Is</h4>
+          <ul>
+            <li>Enterprise-grade platform to create custom Copilots and <strong>autonomous agents</strong></li>
+            <li>Supports GPT-5, Claude Sonnet 4.6, Claude Opus, and bring-your-own models</li>
+            <li>Connects to 1,000+ data sources via connectors, MCP, and plugins</li>
+          </ul>
+          <h4 class="studio-a">Best For</h4>
+          <div class="tag-row">
+            <span class="tag studio-t">AI Agents</span>
+            <span class="tag studio-t">Low-Code</span>
+            <span class="tag studio-t">Voice</span>
+            <span class="tag studio-t">Multi-Model</span>
+          </div>
+          <ul>
+            <li><strong>Autonomous agents</strong> that monitor events and act independently <span class="new-badge">GA</span></li>
+            <li><strong>Agent evaluations</strong> with multi-turn testing for quality assurance <span class="new-badge">GA</span></li>
+            <li><strong>Human-in-the-Loop</strong> controls for governance and compliance <span class="new-badge">New</span></li>
+            <li>Voice-enabled agents with post-call actions and auto language detection</li>
+            <li>Multi-channel: Teams, web, mobile, WhatsApp, and Dynamics 365</li>
+            <li>ROI analytics and Work IQ integration for M365 context</li>
+          </ul>
+          <h4 class="studio-a">Operational Profile</h4>
+          <div class="meter-group">
+            <div class="meter-label"><span>Technical Skill Required</span><span>Low</span></div>
+            <div class="meter"><div class="meter-fill mf-studio" data-width="25"></div></div>
+            <div class="meter-label"><span>Time to Value</span><span>Days</span></div>
+            <div class="meter"><div class="meter-fill mf-studio" data-width="82"></div></div>
+            <div class="meter-label"><span>Customization</span><span>Medium</span></div>
+            <div class="meter"><div class="meter-fill mf-studio" data-width="55"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3 · Azure OpenAI Service -->
+      <div class="plat-card openai-card reveal" data-tags="api pro-code">
+        <div class="plat-hdr openai-bg">
+          <div class="plat-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/><path d="M2 17l10 5 10-5" fill="none" stroke="#fff" stroke-width="1.5"/><path d="M2 12l10 5 10-5" fill="none" stroke="#fff" stroke-width="1.5"/></svg>
+          </div>
+          <h3>Azure OpenAI Service <span class="new-badge-card">Updated</span></h3>
+          <div class="subtitle">Enterprise API access to GPT-5.2, GPT-o3, Realtime, Audio &amp; Image models</div>
+          <a href="https://azure.microsoft.com/en-us/products/ai-services/openai-service/" target="_blank" class="plat-link"><svg viewBox="0 0 24 24"><path d="M14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/><path d="M5 5v14h14v-7h-2v5H7V7h5V5H5z"/></svg>Learn more</a>
+        </div>
+        <div class="plat-body">
+          <div class="migration-note">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+            <div><strong>Migration recommended:</strong> Azure OpenAI Service remains fully available, but Microsoft highly recommends migrating to <a href="https://azure.microsoft.com/en-us/products/ai-foundry/" target="_blank">Microsoft Foundry</a> for a unified AI development experience. You can upgrade your existing Azure OpenAI resource to a Foundry resource while preserving your endpoint, API keys, and existing state.</div>
+          </div>
+          <h4 class="openai-a">What It Is</h4>
+          <ul>
+            <li>Managed API access to OpenAI's frontier models with Azure's enterprise security</li>
+            <li>Your data stays private &mdash; not used to train models</li>
+            <li>Content safety filters, RBAC, VNet integration, and compliance certifications</li>
+          </ul>
+          <h4 class="openai-a">Best For</h4>
+          <div class="tag-row">
+            <span class="tag openai-t">LLM Apps</span>
+            <span class="tag openai-t">API-First</span>
+            <span class="tag openai-t">RAG</span>
+            <span class="tag openai-t">Voice AI</span>
+          </div>
+          <ul>
+            <li><strong>GPT-5.2</strong> for enterprise reasoning &mdash; top benchmarks in math, science &amp; code <span class="new-badge">GA</span></li>
+            <li><strong>GPT-Realtime-1.5</strong> and <strong>GPT-Audio-1.5</strong> for voice-first apps <span class="new-badge">New</span></li>
+            <li><strong>GPT-image-1.5</strong> for advanced image generation and editing <span class="new-badge">New</span></li>
+            <li>Retrieval-Augmented Generation (RAG) with Azure AI Search</li>
+            <li>GPT-5.1 Codex Max for autonomous coding (400K context, 50+ languages)</li>
+            <li><strong>Voice Live API</strong> for real-time, two-way voice agent conversations <span class="new-badge">New</span></li>
+          </ul>
+          <h4 class="openai-a">Operational Profile</h4>
+          <div class="meter-group">
+            <div class="meter-label"><span>Technical Skill Required</span><span>Medium&ndash;High</span></div>
+            <div class="meter"><div class="meter-fill mf-openai" data-width="65"></div></div>
+            <div class="meter-label"><span>Time to Value</span><span>Weeks</span></div>
+            <div class="meter"><div class="meter-fill mf-openai" data-width="60"></div></div>
+            <div class="meter-label"><span>Customization</span><span>High</span></div>
+            <div class="meter"><div class="meter-fill mf-openai" data-width="80"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4 · Microsoft Foundry -->
+      <div class="plat-card foundry-card reveal" data-tags="pro-code">
+        <div class="plat-hdr foundry-bg">
+          <div class="plat-icon">
+            <svg viewBox="0 0 24 24"><path d="M22 9V7h-2V5c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-2h2v-2h-2v-2h2v-2h-2V9h2zM18 19H4V5h14v14zM6 13h5v4H6v-4zm6-6h4v3h-4V7zM6 7h5v5H6V7zm6 4h4v6h-4v-6z"/></svg>
+          </div>
+          <h3>Microsoft Foundry <span class="new-badge-card">Rebranded</span></h3>
+          <div class="subtitle">Unified platform to build, evaluate, and deploy AI apps at scale</div>
+          <a href="https://azure.microsoft.com/en-us/products/ai-foundry/" target="_blank" class="plat-link"><svg viewBox="0 0 24 24"><path d="M14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/><path d="M5 5v14h14v-7h-2v5H7V7h5V5H5z"/></svg>Learn more</a>
+        </div>
+        <div class="plat-body">
+          <h4 class="foundry-a">What It Is</h4>
+          <ul>
+            <li>Microsoft's unified AI development platform (rebranded from Azure AI Foundry)</li>
+            <li>1,800+ model catalog: GPT-5.2, Meta Llama, Mistral Large 3, Phi, DeepSeek &amp; more</li>
+            <li>Built-in tools for fine-tuning, evaluation, prompt engineering, and observability</li>
+          </ul>
+          <h4 class="foundry-a">Best For</h4>
+          <div class="tag-row">
+            <span class="tag foundry-t">Multi-Model</span>
+            <span class="tag foundry-t">Fine-Tuning</span>
+            <span class="tag foundry-t">Agent Builder</span>
+          </div>
+          <ul>
+            <li><strong>GPT-5.2 &amp; Codex Max</strong> for enterprise reasoning and autonomous coding <span class="new-badge">GA</span></li>
+            <li><strong>Mistral Large 3</strong> (Apache 2.0, 675B params) in model catalog <span class="new-badge">New</span></li>
+            <li><strong>Agent framework</strong> for building multi-agent AI applications</li>
+            <li>End-to-end lifecycle: build, test, evaluate, deploy, and monitor</li>
+            <li>Fine-tuning with your proprietary data across any model</li>
+            <li>Integrated with Azure AI Search, Content Safety, and Responsible AI tools</li>
+          </ul>
+          <h4 class="foundry-a">Operational Profile</h4>
+          <div class="meter-group">
+            <div class="meter-label"><span>Technical Skill Required</span><span>High</span></div>
+            <div class="meter"><div class="meter-fill mf-foundry" data-width="80"></div></div>
+            <div class="meter-label"><span>Time to Value</span><span>Weeks&ndash;Months</span></div>
+            <div class="meter"><div class="meter-fill mf-foundry" data-width="35"></div></div>
+            <div class="meter-label"><span>Customization</span><span>Very High</span></div>
+            <div class="meter"><div class="meter-fill mf-foundry" data-width="92"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5 · Azure AI Services -->
+      <div class="plat-card aiservices-card reveal" data-tags="api pro-code">
+        <div class="plat-hdr aiservices-bg">
+          <div class="plat-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+          </div>
+          <h3>Foundry Tools (AI Services) <span class="new-badge-card">Updated</span></h3>
+          <div class="subtitle">Pre-built APIs for Vision, Speech, Language, Content Understanding &amp; Search</div>
+          <a href="https://azure.microsoft.com/en-us/products/ai-services/" target="_blank" class="plat-link"><svg viewBox="0 0 24 24"><path d="M14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/><path d="M5 5v14h14v-7h-2v5H7V7h5V5H5z"/></svg>Learn more</a>
+        </div>
+        <div class="plat-body">
+          <h4 class="aiservices-a">What It Is</h4>
+          <ul>
+            <li>Task-specific AI models by Microsoft &mdash; accurate, cost-efficient, ready to use</li>
+            <li>Now part of the Microsoft Foundry platform as "Foundry Tools"</li>
+            <li>Covers vision, speech, language, content safety, and document processing</li>
+          </ul>
+          <h4 class="aiservices-a">Best For</h4>
+          <div class="tag-row">
+            <span class="tag aiservices-t">Vision</span>
+            <span class="tag aiservices-t">Speech</span>
+            <span class="tag aiservices-t">Content Understanding</span>
+            <span class="tag aiservices-t">Search</span>
+          </div>
+          <ul>
+            <li><strong>Content Understanding</strong> &mdash; multimodal processing of text, images, audio &amp; video <span class="new-badge">GA</span></li>
+            <li><strong>Document Intelligence v4.0</strong> with batch API, searchable PDF, and signature detection <span class="new-badge">GA</span></li>
+            <li><strong>Voice Live API</strong> for real-time, two-way AI voice agents <span class="new-badge">New</span></li>
+            <li>Content Safety with multi-modal detection (text, image, AI-generated)</li>
+            <li>Azure AI Search with vector, semantic, and hybrid search capabilities</li>
+            <li>PII detection, language translation, and custom neural voice</li>
+          </ul>
+          <h4 class="aiservices-a">Operational Profile</h4>
+          <div class="meter-group">
+            <div class="meter-label"><span>Technical Skill Required</span><span>Medium</span></div>
+            <div class="meter"><div class="meter-fill mf-aiservices" data-width="50"></div></div>
+            <div class="meter-label"><span>Time to Value</span><span>Days&ndash;Weeks</span></div>
+            <div class="meter"><div class="meter-fill mf-aiservices" data-width="72"></div></div>
+            <div class="meter-label"><span>Customization</span><span>Medium&ndash;High</span></div>
+            <div class="meter"><div class="meter-fill mf-aiservices" data-width="65"></div></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ COMPARISON TABLE ═══════════ -->
+<section id="compare">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label">Side-by-Side</span>
+      <h2 class="section-title">Feature Comparison</h2>
+      <p class="section-sub">How the five platforms stack up across key capabilities.</p>
+    </div>
+    <div class="cmp-wrap reveal">
+      <table class="cmp-tbl">
+        <thead>
+          <tr>
+            <th>Capability</th>
+            <th>M365 Copilot</th>
+            <th>Copilot Studio</th>
+            <th>Azure OpenAI <span style="display:block;font-size:.62rem;font-weight:500;text-transform:none;letter-spacing:0;color:#c19a00;">Migration to Foundry recommended</span></th>
+            <th>Foundry</th>
+            <th>Foundry Tools</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Target Audience</td>
+            <td>All employees</td>
+            <td>Citizen devs / IT</td>
+            <td>Developers</td>
+            <td>Data scientists / Dev</td>
+            <td>Developers</td>
+          </tr>
+          <tr>
+            <td>Coding Required</td>
+            <td><span class="check">&#10004; None</span></td>
+            <td><span class="check">&#10004; Minimal</span></td>
+            <td><span class="partial">&#9679; Yes (API)</span></td>
+            <td><span class="no">&#10006; Yes (SDK/Code)</span></td>
+            <td><span class="partial">&#9679; Yes (API)</span></td>
+          </tr>
+          <tr>
+            <td>LLM / GPT Access</td>
+            <td><span class="check">&#10004; GPT-5 built-in</span></td>
+            <td><span class="check">&#10004; GPT-5, Claude, BYOM</span></td>
+            <td><span class="check">&#10004; GPT-5.2 API</span></td>
+            <td><span class="check">&#10004; 1,800+ model catalog</span></td>
+            <td><span class="no">&#10006; Not primary</span></td>
+          </tr>
+          <tr>
+            <td>Custom Model Training</td>
+            <td><span class="no">&#10006; No</span></td>
+            <td><span class="no">&#10006; No</span></td>
+            <td><span class="partial">&#9679; Fine-tuning</span></td>
+            <td><span class="check">&#10004; Full ML lifecycle</span></td>
+            <td><span class="partial">&#9679; Custom training</span></td>
+          </tr>
+          <tr>
+            <td>Voice / Realtime AI</td>
+            <td><span class="check">&#10004; Voice conversations</span></td>
+            <td><span class="check">&#10004; Voice agents (GA)</span></td>
+            <td><span class="check">&#10004; Realtime-1.5 API</span></td>
+            <td><span class="check">&#10004; Via integration</span></td>
+            <td><span class="check">&#10004; Voice Live API</span></td>
+          </tr>
+          <tr>
+            <td>Vision / Speech / OCR</td>
+            <td><span class="partial">&#9679; Image generation</span></td>
+            <td><span class="partial">&#9679; Image input</span></td>
+            <td><span class="check">&#10004; GPT-5 vision + image</span></td>
+            <td><span class="check">&#10004; Via integration</span></td>
+            <td><span class="check">&#10004; Core strength</span></td>
+          </tr>
+          <tr>
+            <td>Agent / Bot Builder</td>
+            <td><span class="partial">&#9679; Agent Mode</span></td>
+            <td><span class="check">&#10004; Autonomous agents</span></td>
+            <td><span class="partial">&#9679; Build your own</span></td>
+            <td><span class="check">&#10004; Agent framework</span></td>
+            <td><span class="no">&#10006; No</span></td>
+          </tr>
+          <tr>
+            <td>Multi-Channel Deploy</td>
+            <td><span class="check">&#10004; M365 apps</span></td>
+            <td><span class="check">&#10004; Teams, web, WhatsApp+</span></td>
+            <td><span class="partial">&#9679; Any (via API)</span></td>
+            <td><span class="check">&#10004; Any endpoint</span></td>
+            <td><span class="partial">&#9679; Any (via API)</span></td>
+          </tr>
+          <tr>
+            <td>Data Privacy / VNet</td>
+            <td><span class="check">&#10004; M365 boundary</span></td>
+            <td><span class="check">&#10004; M365 + MIP labels</span></td>
+            <td><span class="check">&#10004; VNet, RBAC</span></td>
+            <td><span class="check">&#10004; Full Azure security</span></td>
+            <td><span class="check">&#10004; VNet, RBAC</span></td>
+          </tr>
+          <tr>
+            <td>Model Choice</td>
+            <td>GPT-5 (managed)</td>
+            <td>GPT-5, Claude, custom</td>
+            <td>OpenAI family</td>
+            <td>1,800+ models</td>
+            <td>Task-specific models</td>
+          </tr>
+          <tr>
+            <td>RAG / Your Data</td>
+            <td><span class="check">&#10004; Microsoft Graph</span></td>
+            <td><span class="check">&#10004; MCP + connectors</span></td>
+            <td><span class="check">&#10004; On Your Data</span></td>
+            <td><span class="check">&#10004; AI Search + more</span></td>
+            <td><span class="check">&#10004; Content Understanding</span></td>
+          </tr>
+          <tr>
+            <td>Eval &amp; Monitoring</td>
+            <td><span class="partial">&#9679; Usage analytics</span></td>
+            <td><span class="check">&#10004; Agent evals (GA)</span></td>
+            <td><span class="partial">&#9679; Basic metrics</span></td>
+            <td><span class="check">&#10004; Full observability</span></td>
+            <td><span class="partial">&#9679; Usage metrics</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ DECISION TREE ═══════════ -->
+<section id="decide" style="background:#fff;">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label">Interactive</span>
+      <h2 class="section-title">Which AI Platform Is Right for You?</h2>
+      <p class="section-sub">Answer a few questions to get a personalized recommendation.</p>
+    </div>
+
+    <div class="dt-wrap reveal" id="decisionTree">
+      <!-- Q1 -->
+      <div class="dt-node question active" id="q1">
+        <h4>What is your primary goal?</h4>
+        <p>Select the option that best describes what you want to achieve with AI.</p>
+        <div class="dt-choices">
+          <button class="dt-choice" onclick="dtAnswer('q1','productivity')">Boost employee productivity</button>
+          <button class="dt-choice" onclick="dtAnswer('q1','chatbot')">Build a custom chatbot or agent</button>
+          <button class="dt-choice" onclick="dtAnswer('q1','app')">Build a custom AI application</button>
+          <button class="dt-choice" onclick="dtAnswer('q1','specific')">Add specific AI capabilities (vision, speech, etc.)</button>
+        </div>
+      </div>
+
+      <!-- Q2 - chatbot path -->
+      <div class="dt-node question dt-hidden" id="q2-chatbot">
+        <h4>What is your team's technical depth?</h4>
+        <div class="dt-choices">
+          <button class="dt-choice" onclick="dtAnswer('q2-chatbot','low')">Business users / low-code</button>
+          <button class="dt-choice" onclick="dtAnswer('q2-chatbot','high')">Developers / data scientists</button>
+        </div>
+      </div>
+
+      <!-- Q2 - app path -->
+      <div class="dt-node question dt-hidden" id="q2-app">
+        <h4>What kind of AI application?</h4>
+        <div class="dt-choices">
+          <button class="dt-choice" onclick="dtAnswer('q2-app','llm')">LLM-powered app (chat, summarization, RAG)</button>
+          <button class="dt-choice" onclick="dtAnswer('q2-app','multi')">Multi-model / fine-tuned / custom ML</button>
+        </div>
+      </div>
+
+      <!-- Q3 - llm sub-path -->
+      <div class="dt-node question dt-hidden" id="q3-llm">
+        <h4>Do you need to compare multiple models or use non-OpenAI models?</h4>
+        <div class="dt-choices">
+          <button class="dt-choice" onclick="dtAnswer('q3-llm','openai-only')">OpenAI models are sufficient</button>
+          <button class="dt-choice" onclick="dtAnswer('q3-llm','multi-model')">I want to evaluate multiple models</button>
+        </div>
+      </div>
+
+      <!-- Results -->
+      <div class="dt-result copilot-r dt-hidden" id="r-copilot">
+        <h4>&#x2192; Microsoft 365 Copilot</h4>
+        <p>The fastest path to AI value. Powered by GPT-5, Copilot is embedded in M365 apps with Agent Mode, Copilot Search, real-time voice, and Notebooks. No setup, no code, enterprise-grade security.</p>
+        <p style="margin-top:.75rem;"><a href="https://www.microsoft.com/en-us/microsoft-365-copilot/" target="_blank" style="font-weight:600;">Explore Microsoft 365 Copilot &rarr;</a></p>
+        <button class="dt-restart" onclick="dtReset()">&#x21bb; Start Over</button>
+      </div>
+      <div class="dt-result studio-r dt-hidden" id="r-studio">
+        <h4>&#x2192; Microsoft Copilot Studio</h4>
+        <p>Build autonomous AI agents with a low-code interface. Supports GPT-5 and Claude models, voice agents, human-in-the-loop governance, agent evaluations, and 1,000+ data connectors. Deploy to Teams, web, WhatsApp, and more.</p>
+        <p style="margin-top:.75rem;"><a href="https://www.microsoft.com/en-us/microsoft-copilot/microsoft-copilot-studio" target="_blank" style="font-weight:600;">Explore Copilot Studio &rarr;</a></p>
+        <button class="dt-restart" onclick="dtReset()">&#x21bb; Start Over</button>
+      </div>
+      <div class="dt-result openai-r dt-hidden" id="r-openai">
+        <h4>&#x2192; Azure OpenAI Service</h4>
+        <p>Direct API access to GPT-5.2, Realtime-1.5 voice, GPT-image-1.5, and Codex Max with Azure's enterprise security. Ideal for developers building LLM-powered, voice-enabled, or multimodal AI apps.</p>
+        <p style="margin-top:.75rem;padding:.6rem;background:rgba(193,154,0,.1);border-radius:8px;font-size:.85rem;"><strong>&#x26A0; Recommendation:</strong> Azure OpenAI Service is fully available, but Microsoft highly recommends migrating to <a href="https://azure.microsoft.com/en-us/products/ai-foundry/" target="_blank" style="font-weight:600;">Microsoft Foundry</a> for a unified AI development experience. Existing endpoints and API keys are preserved during migration.</p>
+        <p style="margin-top:.5rem;"><a href="https://azure.microsoft.com/en-us/products/ai-services/openai-service/" target="_blank" style="font-weight:600;">Explore Azure OpenAI Service &rarr;</a></p>
+        <button class="dt-restart" onclick="dtReset()">&#x21bb; Start Over</button>
+      </div>
+      <div class="dt-result foundry-r dt-hidden" id="r-foundry">
+        <h4>&#x2192; Microsoft Foundry</h4>
+        <p>The unified AI development platform (rebranded from Azure AI Foundry). Access 1,800+ models including GPT-5.2, Mistral Large 3, and Llama. Fine-tune, evaluate, and deploy to production with full observability.</p>
+        <p style="margin-top:.75rem;"><a href="https://azure.microsoft.com/en-us/products/ai-foundry/" target="_blank" style="font-weight:600;">Explore Microsoft Foundry &rarr;</a></p>
+        <button class="dt-restart" onclick="dtReset()">&#x21bb; Start Over</button>
+      </div>
+      <div class="dt-result aiservices-r dt-hidden" id="r-aiservices">
+        <h4>&#x2192; Foundry Tools (Azure AI Services)</h4>
+        <p>Pre-built, task-specific APIs now part of Microsoft Foundry. Includes Content Understanding (multimodal), Document Intelligence v4.0, Voice Live API, Content Safety, and AI-powered search.</p>
+        <p style="margin-top:.75rem;"><a href="https://azure.microsoft.com/en-us/products/ai-services/" target="_blank" style="font-weight:600;">Explore Foundry Tools &rarr;</a></p>
+        <button class="dt-restart" onclick="dtReset()">&#x21bb; Start Over</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ SCENARIOS ═══════════ -->
+<section id="scenarios">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label">Real-World Use Cases</span>
+      <h2 class="section-title">See It in Action</h2>
+      <p class="section-sub">Common scenarios mapped to the best Microsoft AI platform for each.</p>
+    </div>
+    <div class="scenario-grid">
+
+      <div class="scenario-card copilot-b reveal">
+        <div class="sc-label">M365 Copilot</div>
+        <h3>Executive Email &amp; Meeting Triage</h3>
+        <p>A busy VP uses Copilot to reason across their entire inbox and calendar, generate meeting prep briefs, and draft follow-ups &mdash; with real-time voice interaction.</p>
+      </div>
+
+      <div class="scenario-card copilot-b reveal">
+        <div class="sc-label">M365 Copilot</div>
+        <h3>Agent Mode Content Creation</h3>
+        <p>Marketing uses Agent Mode in Word and PowerPoint to create and refine campaign materials from web data and referenced files &mdash; no switching between tools.</p>
+      </div>
+
+      <div class="scenario-card studio-b reveal">
+        <div class="sc-label">Copilot Studio</div>
+        <h3>Autonomous IT Helpdesk Agent</h3>
+        <p>An IT team deploys an autonomous agent that monitors ServiceNow tickets, resolves common issues, and escalates complex cases with human-in-the-loop approval.</p>
+      </div>
+
+      <div class="scenario-card studio-b reveal">
+        <div class="sc-label">Copilot Studio</div>
+        <h3>Voice-Enabled Customer Support</h3>
+        <p>A bank deploys voice agents on their phone lines with auto language detection. Agents handle queries, trigger workflows, and hand off to humans when needed.</p>
+      </div>
+
+      <div class="scenario-card openai-b reveal">
+        <div class="sc-label">Azure OpenAI</div>
+        <h3>Real-Time Voice AI Concierge</h3>
+        <p>A hotel chain uses Realtime-1.5 and Voice Live API to deploy phone-based AI concierges that handle reservations, recommendations, and FAQs in natural two-way conversation.</p>
+      </div>
+
+      <div class="scenario-card openai-b reveal">
+        <div class="sc-label">Azure OpenAI</div>
+        <h3>Legal Contract Analysis with GPT-5.2</h3>
+        <p>A law firm uses GPT-5.2's enterprise reasoning to review contracts, flag risk clauses, and generate clause-by-clause summaries &mdash; with higher accuracy than prior models.</p>
+      </div>
+
+      <div class="scenario-card foundry-b reveal">
+        <div class="sc-label">Microsoft Foundry</div>
+        <h3>Multi-Model Healthcare AI</h3>
+        <p>A hospital evaluates GPT-5.2, Mistral Large 3, and Llama models in the Foundry catalog, fine-tunes the best performer on clinical notes, and deploys with full observability.</p>
+      </div>
+
+      <div class="scenario-card foundry-b reveal">
+        <div class="sc-label">Microsoft Foundry</div>
+        <h3>Autonomous Coding Pipeline</h3>
+        <p>A software company uses Codex Max (77.9% SWE-Bench) within Foundry to build multi-agent coding pipelines that generate PRs, run tests, and integrate with CI/CD.</p>
+      </div>
+
+      <div class="scenario-card aiservices-b reveal">
+        <div class="sc-label">Foundry Tools</div>
+        <h3>Multimodal Content Understanding</h3>
+        <p>An insurance company uses Content Understanding to process claims across scanned forms, photos, audio recordings, and video &mdash; extracting structured data from any content type.</p>
+      </div>
+
+      <div class="scenario-card aiservices-b reveal">
+        <div class="sc-label">Foundry Tools</div>
+        <h3>AI-Powered Voice Contact Center</h3>
+        <p>A global retailer uses Voice Live API for real-time two-way voice agents, with Azure Speech for translation across 100+ languages and Content Safety for compliance monitoring.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ PRICING ═══════════ -->
+<section id="pricing" style="background:#fff;">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label">Cost Considerations</span>
+      <h2 class="section-title">Pricing Model Overview</h2>
+      <p class="section-sub">How each platform is priced &mdash; from per-user licensing to pay-as-you-go consumption.</p>
+    </div>
+    <div class="cost-grid reveal">
+
+      <div class="cost-card copilot-c">
+        <h3><a href="https://www.microsoft.com/en-us/microsoft-365-copilot/" target="_blank" style="color:inherit;">M365 Copilot</a></h3>
+        <ul class="cost-items">
+          <li>Per-user/month subscription</li>
+          <li>Requires M365 E3/E5 or Business Premium</li>
+          <li>Predictable, fixed cost per seat</li>
+          <li>No additional compute charges</li>
+        </ul>
+      </div>
+
+      <div class="cost-card studio-c">
+        <h3><a href="https://www.microsoft.com/en-us/microsoft-copilot/microsoft-copilot-studio" target="_blank" style="color:inherit;">Copilot Studio</a></h3>
+        <ul class="cost-items">
+          <li>Per-tenant monthly license</li>
+          <li>Includes message capacity allotment</li>
+          <li>Pay-as-you-go for overages</li>
+          <li>Can be included in M365 license</li>
+        </ul>
+      </div>
+
+      <div class="cost-card openai-c">
+        <h3><a href="https://azure.microsoft.com/en-us/products/ai-services/openai-service/" target="_blank" style="color:inherit;">Azure OpenAI</a></h3>
+        <ul class="cost-items">
+          <li>Pay-per-token (input + output)</li>
+          <li>Provisioned throughput option</li>
+          <li>Pricing varies by model tier</li>
+          <li>No upfront commitment required</li>
+        </ul>
+      </div>
+
+      <div class="cost-card foundry-c">
+        <h3><a href="https://azure.microsoft.com/en-us/products/ai-foundry/" target="_blank" style="color:inherit;">Microsoft Foundry</a></h3>
+        <ul class="cost-items">
+          <li>No platform fee (pay for services used)</li>
+          <li>Compute costs for training/inference</li>
+          <li>1,800+ model marketplace pricing</li>
+          <li>Azure Savings Plans available</li>
+        </ul>
+      </div>
+
+      <div class="cost-card aiservices-c">
+        <h3><a href="https://azure.microsoft.com/en-us/products/ai-services/" target="_blank" style="color:inherit;">Foundry Tools</a></h3>
+        <ul class="cost-items">
+          <li>Pay-per-API-call or per-unit</li>
+          <li>Free tiers for development</li>
+          <li>Volume discounts at scale</li>
+          <li>Commitment tier pricing available</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ GETTING STARTED ═══════════ -->
+<section id="start">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label">Next Steps</span>
+      <h2 class="section-title">Getting Started</h2>
+      <p class="section-sub">Resources to begin your AI journey with Microsoft.</p>
+    </div>
+    <div class="gs-grid reveal">
+      <div class="gs-card">
+        <div class="gs-ico">&#x1F680;</div>
+        <h4>Start a Pilot</h4>
+        <p>Begin with M365 Copilot for a group of power users to demonstrate quick ROI and build momentum.</p>
+      </div>
+      <div class="gs-card">
+        <div class="gs-ico">&#x1F9EA;</div>
+        <h4>Build a Proof of Concept</h4>
+        <p>Use Azure OpenAI or Copilot Studio to prototype a custom AI solution for a specific business problem.</p>
+      </div>
+      <div class="gs-card">
+        <div class="gs-ico">&#x1F4CA;</div>
+        <h4>Assess Your Data</h4>
+        <p>Evaluate your data readiness, security posture, and compliance requirements before scaling AI adoption.</p>
+      </div>
+      <div class="gs-card">
+        <div class="gs-ico">&#x1F91D;</div>
+        <h4>Engage Your Microsoft Team</h4>
+        <p>Work with your Microsoft account team to design an AI adoption roadmap tailored to your organization.</p>
+      </div>
+    </div>
+
+    <div class="reveal" style="margin-top:2.5rem;">
+      <div class="cta-banner">
+        <h3>Ready to Transform Your Business with AI?</h3>
+        <p>Microsoft offers the broadest AI ecosystem in the industry. Whether you need turnkey productivity tools or a full custom AI platform, there's a solution for your organization.</p>
+        <a href="https://azure.microsoft.com/en-us/products/ai-foundry/" class="btn btn-primary" target="_blank">Explore Microsoft Foundry</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<div class="footer">
+  <p>Microsoft AI Platform Decision Guide &bull; Updated April 2026 &bull; Always validate against the latest <a href="https://learn.microsoft.com/en-us/azure/foundry/" target="_blank">Microsoft Foundry documentation</a></p>
+  <p style="margin-top:.5rem;">Pricing and features subject to change. Visit <a href="https://azure.microsoft.com/pricing/" target="_blank">azure.microsoft.com/pricing</a> for current details.</p>
+</div>
+
+<!-- ═══════════ JAVASCRIPT ═══════════ -->
+<script>
+(function() {
+  // ── Scroll Progress Bar ──
+  const progressBar = document.getElementById('progressBar');
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    progressBar.style.width = (scrollTop / docHeight * 100) + '%';
+    nav.classList.toggle('scrolled', scrollTop > 20);
+  });
+
+  // ── Active Nav Links ──
+  const sections = document.querySelectorAll('section[id], header[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(l => l.classList.remove('active'));
+        const active = document.querySelector(`.nav-links a[href="#${entry.target.id}"]`);
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-40% 0px -60% 0px' });
+  sections.forEach(s => observer.observe(s));
+
+  // ── Reveal on Scroll ──
+  const reveals = document.querySelectorAll('.reveal');
+  const revealObs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        revealObs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  reveals.forEach(r => revealObs.observe(r));
+
+  // ── Meter Bars Animation ──
+  const meters = document.querySelectorAll('.meter-fill[data-width]');
+  const meterObs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.width = entry.target.dataset.width + '%';
+        meterObs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.5 });
+  meters.forEach(m => meterObs.observe(m));
+
+  // ── Filter Buttons ──
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  const cards = document.querySelectorAll('.plat-card');
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const filter = btn.dataset.filter;
+      cards.forEach(card => {
+        if (filter === 'all' || (card.dataset.tags && card.dataset.tags.includes(filter))) {
+          card.style.display = '';
+          card.style.opacity = '1';
+          card.style.transform = '';
+        } else {
+          card.style.opacity = '0.3';
+          card.style.transform = 'scale(0.97)';
+        }
+      });
+    });
+  });
+})();
+
+// ── Decision Tree ──
+const dtState = {};
+function dtAnswer(qId, answer) {
+  dtState[qId] = answer;
+  // Hide current question
+  document.getElementById(qId).classList.remove('active');
+  document.getElementById(qId).style.opacity = '0.5';
+  document.getElementById(qId).style.pointerEvents = 'none';
+
+  // Route
+  if (qId === 'q1') {
+    if (answer === 'productivity') showResult('r-copilot');
+    else if (answer === 'chatbot') showNode('q2-chatbot');
+    else if (answer === 'app') showNode('q2-app');
+    else if (answer === 'specific') showResult('r-aiservices');
+  }
+  else if (qId === 'q2-chatbot') {
+    if (answer === 'low') showResult('r-studio');
+    else showResult('r-foundry');
+  }
+  else if (qId === 'q2-app') {
+    if (answer === 'llm') showNode('q3-llm');
+    else showResult('r-foundry');
+  }
+  else if (qId === 'q3-llm') {
+    if (answer === 'openai-only') showResult('r-openai');
+    else showResult('r-foundry');
+  }
+}
+
+function showNode(id) {
+  const el = document.getElementById(id);
+  el.classList.remove('dt-hidden');
+  el.classList.add('active');
+  el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+function showResult(id) {
+  const el = document.getElementById(id);
+  el.classList.remove('dt-hidden');
+  el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+function dtReset() {
+  // Hide all questions and results except q1
+  document.querySelectorAll('.dt-node, .dt-result').forEach(el => {
+    if (el.id === 'q1') {
+      el.classList.add('active');
+      el.classList.remove('dt-hidden');
+      el.style.opacity = '1';
+      el.style.pointerEvents = '';
+    } else {
+      el.classList.add('dt-hidden');
+      el.classList.remove('active');
+      el.style.opacity = '1';
+      el.style.pointerEvents = '';
+    }
+  });
+  document.getElementById('q1').scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+</script>
+
+</body>
+</html>

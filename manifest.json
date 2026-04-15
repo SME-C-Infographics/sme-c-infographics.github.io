@@ -23,7 +23,12 @@
   },
   "foundry": {
     "displayName": "Foundry",
-    "items": []
+    "items": [
+      {
+        "file": "microsoft-ai-decision-guide.html",
+        "title": "Microsoft AI Platform Decision Guide"
+      }
+    ]
   },
   "github-copilot": {
     "displayName": "GitHub Copilot",
