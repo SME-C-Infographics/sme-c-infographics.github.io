@@ -1,0 +1,1726 @@
+<!--
+  Title: App Platform Services Decision Guide
+  Author: Toni Montez, Digital Solution Engineer, SME&C
+  Created: 2026-04-16
+  Version: 1.1
+  Description: Internal decision guide for APIM, Logic Apps, and Azure Functions — updated for post-Ignite 2025 agentic era
+  Repo: SME-C-Infographics/sme-c-infographics.github.io
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>App Platform Services Decision Guide — APIM, Logic Apps, Functions | SME&amp;C</title>
+  <style>
+    /* === RESET & BASE === */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: "Segoe UI", "Segoe UI Web (West European)", -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", sans-serif;
+      font-size: 14px;
+      line-height: 1.6;
+      color: #323130;
+      background: #ffffff;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* === TOKENS === */
+    :root {
+      --blue:        #0078D4;
+      --blue-dark:   #005A9E;
+      --blue-light:  #EBF3FB;
+      --teal:        #00B7C3;
+      --teal-light:  #E5F8FA;
+      --text:        #323130;
+      --text-sec:    #605E5C;
+      --divider:     #EDEBE9;
+      --card-bg:     #F3F2F1;
+      --white:       #ffffff;
+      --ga:          #107C10;
+      --ga-bg:       #DFF6DD;
+      --preview:     #C19C00;
+      --preview-bg:  #FFF4CE;
+      --error:       #D83B01;
+      --error-bg:    #FDE7E0;
+      --warn:        #FFB900;
+      --warn-bg:     #FFF4CE;
+    }
+
+    /* === LAYOUT === */
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+    .section { padding: 48px 0; }
+    .section + .section { border-top: 1px solid var(--divider); }
+    .section-label {
+      font-size: 11px; font-weight: 600; letter-spacing: .08em;
+      text-transform: uppercase; color: var(--blue); margin-bottom: 8px;
+    }
+    .section-title {
+      font-size: 22px; font-weight: 700; color: var(--text); margin-bottom: 8px;
+    }
+    .section-subtitle {
+      font-size: 14px; color: var(--text-sec); margin-bottom: 32px; max-width: 760px;
+    }
+
+    /* === HERO === */
+    .hero {
+      background: linear-gradient(135deg, #005A9E 0%, #0078D4 55%, #00B7C3 100%);
+      color: var(--white);
+      padding: 56px 24px 48px;
+    }
+    .hero-inner { max-width: 1200px; margin: 0 auto; }
+    .hero-tags { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+    .hero-tag {
+      font-size: 11px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase;
+      padding: 3px 10px; border-radius: 12px; background: rgba(255,255,255,.18);
+      color: var(--white); border: 1px solid rgba(255,255,255,.35);
+    }
+    .hero-title { font-size: 36px; font-weight: 700; line-height: 1.18; margin-bottom: 12px; }
+    .hero-subtitle { font-size: 17px; font-weight: 400; opacity: .92; margin-bottom: 16px; }
+    .hero-summary {
+      font-size: 14px; opacity: .85; max-width: 780px; line-height: 1.65;
+      border-left: 3px solid rgba(255,255,255,.5); padding-left: 16px;
+    }
+    .hero-meta {
+      margin-top: 24px; display: flex; gap: 16px; flex-wrap: wrap;
+      font-size: 12px; opacity: .7;
+    }
+
+    /* === STATUS BADGES === */
+    .badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: 11px; font-weight: 600; padding: 2px 8px;
+      border-radius: 10px; white-space: nowrap; letter-spacing: .03em;
+    }
+    .badge-ga   { background: var(--ga-bg);      color: var(--ga);      }
+    .badge-prev { background: var(--preview-bg);  color: var(--preview); }
+    .badge::before { content: ""; display: inline-block; width: 6px; height: 6px; border-radius: 50%; }
+    .badge-ga::before   { background: var(--ga); }
+    .badge-prev::before { background: var(--preview); }
+
+    /* === SERVICE CARDS === */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .service-card {
+      background: var(--white);
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,.08);
+      border: 1px solid var(--divider);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .card-header {
+      padding: 20px 20px 16px;
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      border-bottom: 1px solid var(--divider);
+    }
+    .card-icon {
+      width: 40px; height: 40px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 8px;
+    }
+    .card-icon-apim  { background: #D1E8FF; }
+    .card-icon-logic { background: #E3F2FF; }
+    .card-icon-func  { background: #E8F4F1; }
+    .card-name { font-size: 16px; font-weight: 700; color: var(--text); line-height: 1.2; }
+    .card-job  { font-size: 12px; color: var(--text-sec); margin-top: 2px; }
+    .card-body { padding: 16px 20px; flex: 1; }
+    .card-section-title {
+      font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .07em;
+      color: var(--blue); margin: 12px 0 6px;
+    }
+    .card-section-title:first-child { margin-top: 0; }
+    .bullet-list { list-style: none; }
+    .bullet-list li {
+      padding: 3px 0 3px 16px;
+      position: relative;
+      font-size: 13px;
+      color: var(--text);
+      line-height: 1.55;
+    }
+    .bullet-list li::before {
+      content: ""; position: absolute; left: 0; top: 10px;
+      width: 5px; height: 5px; border-radius: 50%; background: var(--blue);
+    }
+    .bullet-list.warn li::before { background: var(--error); }
+    .sku-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 4px; }
+    .sku-table th {
+      background: var(--card-bg); font-weight: 600; text-align: left;
+      padding: 5px 8px; border-bottom: 1px solid var(--divider);
+    }
+    .sku-table td { padding: 5px 8px; border-bottom: 1px solid var(--divider); vertical-align: top; }
+    .sku-table tr:last-child td { border-bottom: none; }
+    .sku-name { font-weight: 600; color: var(--text); }
+    .auth-pill {
+      display: inline-flex; align-items: center; gap: 5px;
+      background: var(--blue-light); color: var(--blue-dark);
+      font-size: 12px; font-weight: 600; padding: 4px 10px;
+      border-radius: 12px; margin-top: 4px;
+    }
+    .trigger-box {
+      background: var(--card-bg); border-radius: 4px;
+      padding: 8px 12px; font-size: 12px; font-style: italic;
+      color: var(--text-sec); border-left: 3px solid var(--blue);
+      margin-top: 4px;
+    }
+
+    /* === AI/AGENT LAYER === */
+    .agent-layer {
+      background: linear-gradient(135deg, #EBF3FB 0%, #E5F8FA 100%);
+      border-top: 2px solid var(--teal);
+      padding: 16px 20px;
+    }
+    .agent-layer-title {
+      font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .07em;
+      color: var(--teal); margin-bottom: 10px;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .agent-feature { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 7px; }
+    .agent-feature:last-child { margin-bottom: 0; }
+    .agent-feature-text { font-size: 12px; color: var(--text); line-height: 1.5; flex: 1; }
+    .agent-feature-name { font-weight: 600; }
+
+    /* === CARD FOOTER === */
+    .card-footer {
+      padding: 10px 20px;
+      background: var(--card-bg);
+      border-top: 1px solid var(--divider);
+      font-size: 11px;
+      color: var(--text-sec);
+    }
+    .card-footer a { color: var(--blue); text-decoration: none; }
+    .card-footer a:hover { text-decoration: underline; }
+
+    /* === DECISION TREE === */
+    .decision-tree-wrap {
+      background: var(--card-bg);
+      border-radius: 8px;
+      padding: 32px 24px;
+      border: 1px solid var(--divider);
+    }
+    .dt-root {
+      text-align: center;
+      background: var(--blue);
+      color: var(--white);
+      border-radius: 8px;
+      padding: 14px 24px;
+      font-size: 15px;
+      font-weight: 700;
+      max-width: 480px;
+      margin: 0 auto 24px;
+      box-shadow: 0 2px 6px rgba(0,120,212,.3);
+    }
+    .dt-branches {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      position: relative;
+      margin-bottom: 28px;
+    }
+    .dt-branch {
+      display: flex; flex-direction: column; align-items: center; gap: 10px;
+    }
+    .dt-connector {
+      width: 1px; height: 32px; background: var(--divider); margin: 0 auto -2px;
+    }
+    .dt-condition {
+      background: var(--white);
+      border: 1px solid var(--divider);
+      border-radius: 6px;
+      padding: 10px 14px;
+      font-size: 12px;
+      color: var(--text-sec);
+      text-align: center;
+      width: 100%;
+    }
+    .dt-arrow {
+      font-size: 18px; color: var(--text-sec);
+    }
+    .dt-service {
+      padding: 12px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      text-align: center;
+      width: 100%;
+    }
+    .dt-apim  { background: var(--blue);  color: var(--white); }
+    .dt-logic { background: #0F6CBD; color: var(--white); }
+    .dt-func  { background: var(--teal);  color: var(--white); }
+
+    .dt-compositions {
+      border-top: 1px solid var(--divider);
+      padding-top: 24px;
+    }
+    .dt-comp-title {
+      font-size: 12px; font-weight: 700; color: var(--text-sec);
+      text-transform: uppercase; letter-spacing: .07em;
+      text-align: center; margin-bottom: 16px;
+    }
+    .dt-comp-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;
+    }
+    @media (min-width: 900px) {
+      .dt-comp-grid { grid-template-columns: repeat(4, 1fr); }
+    }
+    .dt-comp-card {
+      background: var(--white);
+      border: 1px solid var(--divider);
+      border-radius: 6px;
+      padding: 12px;
+      font-size: 12px;
+      text-align: center;
+    }
+    .dt-comp-services {
+      font-weight: 700; color: var(--blue); font-size: 13px; margin-bottom: 5px;
+    }
+    .dt-comp-use { color: var(--text-sec); font-size: 11px; }
+
+    /* === COMPARISON MATRIX === */
+    .matrix-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    .matrix-table thead th {
+      background: var(--blue);
+      color: var(--white);
+      text-align: left;
+      padding: 12px 14px;
+      font-weight: 700;
+      position: sticky;
+      top: 0;
+    }
+    .matrix-table thead th:first-child { border-radius: 6px 0 0 0; }
+    .matrix-table thead th:last-child { border-radius: 0 6px 0 0; }
+    .matrix-table thead th:not(:first-child) {
+      text-align: center; min-width: 180px;
+    }
+    .matrix-table tbody tr:nth-child(even) { background: var(--card-bg); }
+    .matrix-table tbody tr:hover { background: var(--blue-light); }
+    .matrix-table td {
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--divider);
+      vertical-align: top;
+      line-height: 1.5;
+    }
+    .matrix-table td:not(:first-child) { text-align: center; }
+    .dim-label { font-weight: 700; color: var(--text); font-size: 12px; }
+    .matrix-chip {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+    .chip-high   { background: #FFE8E3; color: #D83B01; }
+    .chip-med    { background: #FFF4CE; color: #A80000; color: #7A5000; }
+    .chip-low    { background: var(--ga-bg); color: var(--ga); }
+    .chip-neutral { background: var(--card-bg); color: var(--text-sec); }
+    .matrix-scroll-wrap { overflow-x: auto; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,.08); }
+
+    /* === ARCHITECTURE PATTERNS === */
+    .arch-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+    @media (min-width: 900px) {
+      .arch-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+    .arch-card {
+      background: var(--white);
+      border: 1px solid var(--divider);
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,.08);
+      overflow: hidden;
+    }
+    .arch-card-header {
+      background: var(--blue);
+      color: var(--white);
+      padding: 14px 16px;
+    }
+    .arch-card-title { font-size: 14px; font-weight: 700; margin-bottom: 2px; }
+    .arch-card-use { font-size: 11px; opacity: .85; }
+    .arch-card-body { padding: 16px; }
+    .arch-diagram {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      margin-bottom: 14px;
+    }
+    .arch-node {
+      width: 100%;
+      max-width: 240px;
+      text-align: center;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      border: 1.5px solid;
+    }
+    .arch-node-blue  { background: #EBF3FB; border-color: var(--blue);  color: var(--blue-dark); }
+    .arch-node-teal  { background: #E5F8FA; border-color: var(--teal);  color: #006670; }
+    .arch-node-green { background: var(--ga-bg); border-color: var(--ga); color: #0A5C0A; }
+    .arch-node-gray  { background: var(--card-bg); border-color: var(--divider); color: var(--text-sec); }
+    .arch-node-sub   { font-size: 10px; font-weight: 400; opacity: .8; display: block; margin-top: 2px; }
+    .arch-arrow {
+      font-size: 18px; color: var(--text-sec); line-height: 1;
+    }
+    .arch-key { font-size: 11px; color: var(--text-sec); }
+    .arch-key strong { color: var(--text); font-weight: 600; }
+    .arch-sku-note {
+      margin-top: 10px;
+      padding: 8px 10px;
+      background: var(--blue-light);
+      border-radius: 4px;
+      font-size: 11px;
+      color: var(--blue-dark);
+    }
+    .arch-sku-note strong { font-weight: 700; }
+
+    .composition-callout {
+      margin-top: 32px;
+      background: var(--card-bg);
+      border-radius: 8px;
+      padding: 24px;
+      border: 1px solid var(--divider);
+    }
+    .comp-callout-title {
+      font-size: 14px; font-weight: 700; color: var(--text);
+      margin-bottom: 14px; display: flex; align-items: center; gap: 8px;
+    }
+    .comp-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 12px;
+    }
+    .comp-item {
+      padding: 10px 14px;
+      background: var(--white);
+      border-radius: 6px;
+      border-left: 3px solid var(--blue);
+      font-size: 12px;
+      line-height: 1.55;
+    }
+    .comp-item strong { color: var(--blue-dark); font-weight: 700; display: block; margin-bottom: 2px; }
+
+    /* === SKU PANEL === */
+    .sku-service-block { margin-bottom: 32px; }
+    .sku-service-block:last-child { margin-bottom: 0; }
+    .sku-service-name {
+      font-size: 16px; font-weight: 700; color: var(--text);
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--blue);
+      display: flex; align-items: center; gap: 10px;
+    }
+    .sku-cards-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 12px;
+    }
+    .sku-card {
+      background: var(--white);
+      border: 1px solid var(--divider);
+      border-radius: 8px;
+      padding: 14px;
+      box-shadow: 0 1px 3px rgba(0,0,0,.06);
+    }
+    .sku-card.recommended { border-color: var(--blue); border-width: 2px; }
+    .sku-card.retired { opacity: .6; border-style: dashed; }
+    .sku-card-name { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 2px; }
+    .sku-card-price { font-size: 11px; color: var(--text-sec); margin-bottom: 8px; }
+    .sku-feature-list { list-style: none; }
+    .sku-feature-list li {
+      font-size: 11px; color: var(--text-sec); padding: 2px 0 2px 14px;
+      position: relative; line-height: 1.5;
+    }
+    .sku-feature-list li::before {
+      content: ""; position: absolute; left: 0; top: 8px;
+      width: 5px; height: 5px; border-radius: 50%; background: var(--divider);
+    }
+    .sku-feature-list li.yes::before { background: var(--ga); }
+    .sku-feature-list li.no::before  { background: #C4C4C4; }
+    .sku-pill {
+      font-size: 10px; font-weight: 700; padding: 2px 7px;
+      border-radius: 8px; display: inline-block; margin-top: 6px;
+    }
+    .sku-pill-rec  { background: var(--blue); color: white; }
+    .sku-pill-ret  { background: var(--error-bg); color: var(--error); }
+    .sku-pill-new  { background: var(--ga-bg); color: var(--ga); }
+
+    /* === ANTI-PATTERNS === */
+    .anti-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 12px;
+    }
+    .anti-item {
+      background: var(--white);
+      border: 1px solid var(--error-bg);
+      border-left: 4px solid var(--error);
+      border-radius: 6px;
+      padding: 12px 16px;
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+    }
+    .anti-icon {
+      flex-shrink: 0; color: var(--error); font-size: 16px; line-height: 1.4;
+    }
+    .anti-text { font-size: 13px; color: var(--text); line-height: 1.55; }
+    .anti-text strong { color: var(--error); }
+
+    /* === TALK TRACK TABLE === */
+    .talk-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .talk-table thead th {
+      background: var(--blue); color: var(--white);
+      padding: 10px 14px; text-align: left; font-weight: 700;
+    }
+    .talk-table thead th:first-child { border-radius: 6px 0 0 0; }
+    .talk-table thead th:last-child  { border-radius: 0 6px 0 0; }
+    .talk-table tbody tr:nth-child(even) { background: var(--card-bg); }
+    .talk-table td { padding: 10px 14px; border-bottom: 1px solid var(--divider); vertical-align: top; line-height: 1.55; }
+    .customer-says { font-style: italic; color: var(--text-sec); }
+    .lead-with { font-weight: 700; color: var(--blue); }
+    .sku-note-small { font-size: 11px; color: var(--text-sec); line-height: 1.5; }
+    .talk-table-wrap { overflow-x: auto; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,.08); }
+
+    /* === TIMELINE === */
+    .timeline { position: relative; padding-left: 32px; }
+    .timeline::before {
+      content: ""; position: absolute; left: 10px; top: 8px; bottom: 8px;
+      width: 2px; background: var(--divider);
+    }
+    .tl-item { position: relative; margin-bottom: 20px; }
+    .tl-item:last-child { margin-bottom: 0; }
+    .tl-dot {
+      position: absolute; left: -28px; top: 5px;
+      width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--white);
+      box-shadow: 0 0 0 2px currentColor;
+    }
+    .tl-dot-red    { background: var(--error); color: var(--error); }
+    .tl-dot-blue   { background: var(--blue);  color: var(--blue); }
+    .tl-dot-gray   { background: var(--text-sec); color: var(--text-sec); }
+    .tl-dot-yellow { background: var(--warn); color: var(--warn); }
+    .tl-date  { font-size: 12px; font-weight: 700; color: var(--error); margin-bottom: 2px; }
+    .tl-date.ongoing { color: var(--blue); }
+    .tl-date.preview { color: var(--preview); }
+    .tl-title { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 2px; }
+    .tl-desc  { font-size: 12px; color: var(--text-sec); line-height: 1.5; }
+
+    /* === SUMMARY === */
+    .summary-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+    .summary-card {
+      background: var(--white);
+      border: 1px solid var(--divider);
+      border-radius: 8px;
+      padding: 16px;
+      box-shadow: 0 2px 4px rgba(0,0,0,.06);
+    }
+    .summary-service {
+      font-size: 13px; font-weight: 700; color: var(--blue);
+      margin-bottom: 6px; display: flex; align-items: center; gap: 6px;
+    }
+    .summary-line { font-size: 12px; color: var(--text); line-height: 1.55; }
+    .summary-then {
+      font-size: 12px; font-weight: 600; color: var(--teal); margin-top: 5px;
+    }
+    .summary-hero-note {
+      background: linear-gradient(135deg, #005A9E 0%, #0078D4 100%);
+      color: var(--white);
+      border-radius: 8px;
+      padding: 20px 24px;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+    .summary-hero-note strong { font-weight: 700; }
+
+    /* === FOOTER === */
+    footer {
+      background: var(--card-bg);
+      border-top: 1px solid var(--divider);
+      padding: 24px;
+      font-size: 12px;
+      color: var(--text-sec);
+      text-align: center;
+    }
+    footer a { color: var(--blue); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+    .footer-inner { max-width: 1200px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+
+    /* === UTILITY === */
+    .tag {
+      display: inline-block; font-size: 11px; font-weight: 600; padding: 2px 8px;
+      border-radius: 10px; background: var(--card-bg); color: var(--text-sec);
+    }
+    a:focus, button:focus { outline: 3px solid var(--blue); outline-offset: 2px; }
+    .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
+    .divider-line { border: none; border-top: 1px solid var(--divider); margin: 0; }
+    nav.toc {
+      background: var(--card-bg); border-radius: 8px; padding: 16px 20px;
+      font-size: 13px; margin-bottom: 32px;
+      border: 1px solid var(--divider);
+    }
+    nav.toc ol { margin-left: 18px; }
+    nav.toc li { margin: 4px 0; }
+    nav.toc a { color: var(--blue); text-decoration: none; }
+    nav.toc a:hover { text-decoration: underline; }
+
+    /* === RESPONSIVE === */
+    @media (max-width: 768px) {
+      .hero-title { font-size: 24px; }
+      .cards-grid { grid-template-columns: 1fr; }
+      .dt-branches { grid-template-columns: 1fr; }
+      .dt-comp-grid { grid-template-columns: 1fr; }
+      .arch-grid { grid-template-columns: 1fr; }
+      .sku-cards-row { grid-template-columns: 1fr 1fr; }
+      .anti-grid { grid-template-columns: 1fr; }
+      .summary-cards { grid-template-columns: 1fr 1fr; }
+      .section-title { font-size: 18px; }
+    }
+    @media (max-width: 480px) {
+      .sku-cards-row { grid-template-columns: 1fr; }
+      .summary-cards { grid-template-columns: 1fr; }
+    }
+
+    /* === PRINT === */
+    @media print {
+      .hero { background: #0078D4 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .section { break-inside: avoid; }
+      .service-card { break-inside: avoid; box-shadow: none; }
+      body { font-size: 11px; }
+      nav.toc { display: none; }
+      a { color: inherit; text-decoration: none; }
+      .matrix-scroll-wrap, .talk-table-wrap { overflow: visible; }
+      @page { margin: 16mm; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════
+     SECTION 1 — HERO
+════════════════════════════════════════════════════ -->
+<header class="hero" role="banner">
+  <div class="hero-inner">
+    <div class="hero-tags" aria-label="Document tags">
+      <span class="hero-tag">Internal Use — SME&amp;C</span>
+      <span class="hero-tag">L200–L400</span>
+      <span class="hero-tag">Integration &amp; App Platform</span>
+      <span class="hero-tag">v1.1 — 2026-04-16</span>
+    </div>
+    <h1 class="hero-title">App Platform Services Decision Guide</h1>
+    <p class="hero-subtitle">When to use API Management, Logic Apps, and Azure Functions — Post-Ignite 2025 Edition</p>
+    <p class="hero-summary">
+      Azure API Management, Logic Apps, and Azure Functions are strongest when composed together,
+      but each has a distinct primary job — and in the agentic era, each has expanded into AI and agent territory
+      with capabilities that change meaningfully across SKUs and hosting plans.
+    </p>
+    <div class="hero-meta">
+      <span>For: Sellers · Digital Solution Engineers · Technical Specialists · Architects</span>
+      <span>|</span>
+      <span>Grounded against Microsoft Learn, April 2026</span>
+    </div>
+  </div>
+</header>
+
+<main id="main-content">
+<div class="container">
+
+  <!-- Table of Contents -->
+  <section class="section" aria-labelledby="toc-heading" style="padding-bottom:0">
+    <nav class="toc" aria-labelledby="toc-heading">
+      <strong id="toc-heading" style="display:block;margin-bottom:8px;font-size:12px;text-transform:uppercase;letter-spacing:.07em;color:var(--text-sec)">Contents</strong>
+      <ol>
+        <li><a href="#service-cards">Service Snapshot Cards</a></li>
+        <li><a href="#decision-tree">Fast Decision Tree</a></li>
+        <li><a href="#comparison-matrix">Comparison Matrix</a></li>
+        <li><a href="#reference-architectures">Reference Architecture Patterns</a></li>
+        <li><a href="#sku-panel">SKU / Plan Decision Panel</a></li>
+        <li><a href="#anti-patterns">Avoid These Traps (Anti-patterns)</a></li>
+        <li><a href="#talk-track">Field Talk Track</a></li>
+        <li><a href="#timeline">Timeline: What's Changing</a></li>
+        <li><a href="#summary">Final Summary</a></li>
+      </ol>
+    </nav>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════
+       SECTION 2 — SERVICE SNAPSHOT CARDS
+  ════════════════════════════════════════════════════ -->
+  <section class="section" id="service-cards" aria-labelledby="cards-heading">
+    <p class="section-label">Service Reference</p>
+    <h2 class="section-title" id="cards-heading">Service Snapshot Cards</h2>
+    <p class="section-subtitle">Core identity, AI/agent capabilities, and networking requirements — each service at a glance.</p>
+
+    <div class="cards-grid">
+
+      <!-- ─── APIM CARD ─── -->
+      <article class="service-card" aria-labelledby="card-apim-name">
+        <div class="card-header">
+          <div class="card-icon card-icon-apim" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0078D4" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="2" y="4" width="20" height="5" rx="1"/>
+              <rect x="2" y="10" width="20" height="5" rx="1"/>
+              <rect x="2" y="16" width="20" height="5" rx="1"/>
+              <circle cx="6" cy="6.5" r="1" fill="#0078D4" stroke="none"/>
+              <circle cx="6" cy="12.5" r="1" fill="#0078D4" stroke="none"/>
+              <circle cx="6" cy="18.5" r="1" fill="#0078D4" stroke="none"/>
+            </svg>
+          </div>
+          <div>
+            <div class="card-name" id="card-apim-name">Azure API Management</div>
+            <div class="card-job">API governance, gateway &amp; AI model traffic control</div>
+          </div>
+        </div>
+
+        <div class="card-body">
+          <div class="card-section-title">Strengths</div>
+          <ul class="bullet-list" aria-label="APIM strengths">
+            <li>Policy-based traffic control — rate limits, auth, transformation, routing</li>
+            <li>Developer portal, products, subscriptions, and workspace-level governance</li>
+            <li>AI Gateway: token governance, semantic caching &amp; content safety for LLM APIs</li>
+            <li>API lifecycle management — versioning, revisions, mock backends</li>
+          </ul>
+
+          <div class="card-section-title">Watch-outs</div>
+          <ul class="bullet-list warn" aria-label="APIM watch-outs">
+            <li><strong>Premium v2 does not support multi-region deployment</strong> — only classic Premium does (12 units/region). Do not position v2 for geo-redundant gateway scenarios.</li>
+            <li>No automated migration path from classic tiers to v2; must redeploy.</li>
+            <li>Basic v2 has no private endpoint support; Standard v2 is outbound VNet integration only (gateway public-facing). Full injection requires Premium v2.</li>
+            <li><strong>Trusted service connectivity retires March 15, 2026</strong> — replace with Private Link or VNet line-of-sight now.</li>
+          </ul>
+
+          <div class="card-section-title">SKU / Networking Summary</div>
+          <table class="sku-table" aria-label="APIM SKU comparison">
+            <thead><tr><th>SKU</th><th>VNet</th><th>Multi-region</th><th>Key unlock</th></tr></thead>
+            <tbody>
+              <tr><td><span class="sku-name">Consumption</span></td><td>None</td><td>No</td><td>Pay-per-call; no v2 path</td></tr>
+              <tr><td><span class="sku-name">Basic v2</span></td><td>None</td><td>No</td><td>Dev/test with SLA</td></tr>
+              <tr><td><span class="sku-name">Standard v2</span></td><td>Outbound VNet + inbound PE</td><td>No</td><td>Prod; separate capabilities</td></tr>
+              <tr><td><span class="sku-name">Premium v2</span></td><td>Full injection</td><td>No</td><td>AZs + Workspaces</td></tr>
+              <tr><td><span class="sku-name">Classic Premium</span></td><td>Full injection</td><td>Yes</td><td>Multi-region; self-hosted GW</td></tr>
+            </tbody>
+          </table>
+
+          <div class="card-section-title">Auth Default</div>
+          <div class="auth-pill">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            Managed Identity (system or user-assigned)
+          </div>
+
+          <div class="card-section-title">Conversation Trigger</div>
+          <div class="trigger-box">"We need to expose APIs to partners / govern AI model access / control who calls our LLMs."</div>
+        </div>
+
+        <div class="agent-layer" aria-labelledby="apim-agent-label">
+          <div class="agent-layer-title" id="apim-agent-label">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+            AI &amp; Agent Era Capabilities
+          </div>
+          <div class="agent-feature">
+            <span class="badge badge-ga">GA</span>
+            <span class="agent-feature-text"><span class="agent-feature-name">AI Gateway — LLM Policies:</span> Token rate limits &amp; quotas, semantic caching, content safety filtering. Available across all APIM tiers.</span>
+          </div>
+          <div class="agent-feature">
+            <span class="badge badge-ga">GA</span>
+            <span class="agent-feature-text"><span class="agent-feature-name">API Center as MCP Registry:</span> Centralized discovery and governance for MCP servers across the enterprise. Works with Logic Apps Standard MCP servers.</span>
+          </div>
+          <div class="agent-feature">
+            <span class="badge badge-ga">GA</span>
+            <span class="agent-feature-text"><span class="agent-feature-name">Workspaces:</span> Federated API governance — teams own their API namespace within a shared APIM instance. Classic Premium and Premium v2 only.</span>
+          </div>
+          <div class="agent-feature">
+            <span class="badge badge-ga">GA</span>
+            <span class="agent-feature-text"><span class="agent-feature-name">APIM as AI Gateway for Agent Loop:</span> Route Logic Apps Agent Loop model calls through APIM AI Gateway for token governance, monitoring, and model portability (BYOM).</span>
+          </div>
+        </div>
+
+        <div class="card-footer">
+          Learn more: <a href="https://learn.microsoft.com/en-us/azure/api-management/api-management-key-concepts" target="_blank" rel="noopener">APIM overview</a> &nbsp;|&nbsp;
+          <a href="https://learn.microsoft.com/en-us/azure/api-management/v2-service-tiers-overview" target="_blank" rel="noopener">v2 tiers</a> &nbsp;|&nbsp;
+          <a href="https://learn.microsoft.com/en-us/azure/api-management/breaking-changes/overview" target="_blank" rel="noopener">breaking changes</a>
+        </div>
+      </article>
+
+      <!-- ─── LOGIC APPS CARD ─── -->
+      <article class="service-card" aria-labelledby="card-logic-name">
+        <div class="card-header">
+          <div class="card-icon card-icon-logic" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0F6CBD" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="3" y="3" width="5" height="5" rx="1"/>
+              <rect x="16" y="3" width="5" height="5" rx="1"/>
+              <rect x="3" y="16" width="5" height="5" rx="1"/>
+              <rect x="16" y="16" width="5" height="5" rx="1"/>
+              <line x1="8" y1="5.5" x2="16" y2="5.5"/>
+              <line x1="5.5" y1="8" x2="5.5" y2="16"/>
+              <line x1="18.5" y1="8" x2="18.5" y2="16"/>
+              <line x1="8" y1="18.5" x2="16" y2="18.5"/>
+            </svg>
+          </div>
+          <div>
+            <div class="card-name" id="card-logic-name">Azure Logic Apps</div>
+            <div class="card-job">Workflow orchestration &amp; connector-driven integration</div>
+          </div>
+        </div>
+
+        <div class="card-body">
+          <div class="card-section-title">Strengths</div>
+          <ul class="bullet-list" aria-label="Logic Apps strengths">
+            <li>1,400+ managed connectors — SaaS, enterprise systems, databases, and messaging</li>
+            <li>Visual designer + code view; local development and CI/CD in Standard</li>
+            <li>B2B integration: EDI, AS2, X12, EDIFACT, XML transformation</li>
+            <li>Stateful workflows with run history, retry policies, and compensating logic</li>
+          </ul>
+
+          <div class="card-section-title">Watch-outs</div>
+          <ul class="bullet-list warn" aria-label="Logic Apps watch-outs">
+            <li><strong>ISE (Integration Services Environment) is retired</strong> (August 2024). Migrate to Standard on App Service Environment v3 or Standard with VNet integration.</li>
+            <li>Consumption = no VNet, Agent Loop is Preview, pay-per-action billing. Do not treat it as equivalent to Standard.</li>
+            <li>Stateless workflows in Standard are not supported for agentic (Agent Loop) scenarios.</li>
+          </ul>
+
+          <div class="card-section-title">SKU / Hosting Summary</div>
+          <table class="sku-table" aria-label="Logic Apps hosting plan comparison">
+            <thead><tr><th>Plan</th><th>VNet</th><th>Agent Loop</th><th>Key unlock</th></tr></thead>
+            <tbody>
+              <tr><td><span class="sku-name">Consumption</span></td><td>None</td><td><span class="badge badge-prev">Preview</span></td><td>Low-volume, low-cost entry</td></tr>
+              <tr><td><span class="sku-name">Standard WS1–WS3</span></td><td>Yes</td><td><span class="badge badge-ga">GA</span></td><td>Prod, CI/CD, local dev</td></tr>
+              <tr><td><span class="sku-name">Standard on ASE v3</span></td><td>Isolated</td><td><span class="badge badge-ga">GA</span></td><td>ISE replacement, fully isolated</td></tr>
+              <tr><td><span class="sku-name">Standard Hybrid</span></td><td>On-prem/edge</td><td>—</td><td>Arc-enabled, on-premises</td></tr>
+              <tr><td><span class="sku-name">ISE</span></td><td>Retired</td><td>Retired</td><td>Migrate to Standard on ASE v3</td></tr>
+            </tbody>
+          </table>
+
+          <div class="card-section-title">Auth Default</div>
+          <div class="auth-pill">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            Managed Identity (system or user-assigned)
+          </div>
+
+          <div class="card-section-title">Conversation Trigger</div>
+          <div class="trigger-box">"We need to connect SaaS apps / automate a business process / build an agentic workflow over our enterprise systems."</div>
+        </div>
+
+        <div class="agent-layer" aria-labelledby="logic-agent-label">
+          <div class="agent-layer-title" id="logic-agent-label">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+            AI &amp; Agent Era Capabilities
+          </div>
+          <div class="agent-feature">
+            <span class="badge badge-ga">GA</span>
+            <span class="agent-feature-text"><span class="agent-feature-name">Agent Loop — Standard:</span> Autonomous and conversational agentic workflows using LLMs. Supports multi-agent handoff patterns. Stateful workflows only.</span>
+          </div>
+          <div class="agent-feature">
+            <span class="badge badge-prev">Preview</span>
+            <span class="agent-feature-text"><span class="agent-feature-name">Agent Loop — Consumption:</span> Same autonomous and conversational types, but preview-only; portal-only authoring (no VS Code local), fixed model selection from Foundry.</span>
+          </div>
+          <div class="agent-feature">
+            <span class="badge badge-prev">Preview</span>
+            <span class="agent-feature-text"><span class="agent-feature-name">Remote MCP Servers (Standard):</span> Expose Standard logic app workflows as MCP tool endpoints. OAuth 2.0 via Easy Auth. Registered in API Center. 1,400+ connectors as MCP tools.</span>
+          </div>
+          <div class="agent-feature">
+            <span class="badge badge-prev">Preview</span>
+            <span class="agent-feature-text"><span class="agent-feature-name">Multi-agent handoff (Standard):</span> Delegate tasks to specialized agent loops while preserving chat context — the handoff pattern for complex orchestration.</span>
+          </div>
+        </div>
+
+        <div class="card-footer">
+          Learn more: <a href="https://learn.microsoft.com/en-us/azure/logic-apps/" target="_blank" rel="noopener">Logic Apps overview</a> &nbsp;|&nbsp;
+          <a href="https://learn.microsoft.com/en-us/azure/logic-apps/agent-workflows-concepts" target="_blank" rel="noopener">Agentic workflows</a> &nbsp;|&nbsp;
+          <a href="https://learn.microsoft.com/en-us/azure/logic-apps/create-model-context-protocol-server-standard" target="_blank" rel="noopener">MCP server (preview)</a>
+        </div>
+      </article>
+
+      <!-- ─── AZURE FUNCTIONS CARD ─── -->
+      <article class="service-card" aria-labelledby="card-func-name">
+        <div class="card-header">
+          <div class="card-icon card-icon-func" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#107C10" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polygon points="13,2 3,14 12,14 11,22 21,10 12,10"/>
+            </svg>
+          </div>
+          <div>
+            <div class="card-name" id="card-func-name">Azure Functions</div>
+            <div class="card-job">Custom code execution &amp; event-driven serverless compute</div>
+          </div>
+        </div>
+
+        <div class="card-body">
+          <div class="card-section-title">Strengths</div>
+          <ul class="bullet-list" aria-label="Functions strengths">
+            <li>Full language support: C#, JavaScript, TypeScript, Python, Java, PowerShell, Go</li>
+            <li>Rich trigger &amp; binding ecosystem: HTTP, Timer, Blob, Queue, Event Hubs, Cosmos DB, and more</li>
+            <li>Flex Consumption: VNet-integrated serverless at consumption pricing — per-function scaling</li>
+            <li>Durable Functions: stateful orchestration, fan-out/fan-in, external events, long-running workflows</li>
+          </ul>
+
+          <div class="card-section-title">Watch-outs</div>
+          <ul class="bullet-list warn" aria-label="Functions watch-outs">
+            <li><strong>.NET in-process model support ends November 10, 2026.</strong> .NET 10 is isolated-worker only. Flex Consumption requires isolated-worker. Migrate now.</li>
+            <li>Consumption plan has no VNet integration and classic cold-start behavior. Flex Consumption is the recommended replacement for new serverless builds.</li>
+            <li>Plan selection materially changes cost, cold-start, VNet, and AZ behavior — "Functions" alone is not a sufficient architecture spec.</li>
+          </ul>
+
+          <div class="card-section-title">Hosting Plan Summary</div>
+          <table class="sku-table" aria-label="Functions hosting plan comparison">
+            <thead><tr><th>Plan</th><th>VNet</th><th>Cold start</th><th>Key unlock</th></tr></thead>
+            <tbody>
+              <tr><td><span class="sku-name">Consumption</span></td><td>None</td><td>Yes</td><td>Simplest entry; event-driven</td></tr>
+              <tr><td><span class="sku-name">Flex Consumption</span></td><td>Yes (included)</td><td>Optional (always-ready, add'l cost)</td><td><strong>Recommended new serverless</strong></td></tr>
+              <tr><td><span class="sku-name">Premium (EP)</span></td><td>Yes</td><td>None (warm)</td><td>Latency-sensitive, high-throughput</td></tr>
+              <tr><td><span class="sku-name">Dedicated (ASP)</span></td><td>Yes</td><td>None</td><td>Predictable cost, App Service features</td></tr>
+              <tr><td><span class="sku-name">Container Apps (ACA)</span></td><td>Yes</td><td>Configurable</td><td>KEDA, Dapr, GPU, microservices</td></tr>
+            </tbody>
+          </table>
+
+          <div class="card-section-title">Auth Default</div>
+          <div class="auth-pill">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            Managed Identity (system or user-assigned)
+          </div>
+
+          <div class="card-section-title">Conversation Trigger</div>
+          <div class="trigger-box">"We need to run custom code on events / host MCP tools for AI agents / build durable long-running orchestrations."</div>
+        </div>
+
+        <div class="agent-layer" aria-labelledby="func-agent-label">
+          <div class="agent-layer-title" id="func-agent-label">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+            AI &amp; Agent Era Capabilities
+          </div>
+          <div class="agent-feature">
+            <span class="badge badge-ga">GA</span>
+            <span class="agent-feature-text"><span class="agent-feature-name">MCP Tool Trigger (McpToolTrigger):</span> Expose individual functions as MCP tool endpoints for LLMs and agents. Supports C#, Java, JavaScript, Python, TypeScript. Entra ID / OAuth built-in via Easy Auth. Scales to zero on Flex Consumption.</span>
+          </div>
+          <div class="agent-feature">
+            <span class="badge badge-prev">Preview</span>
+            <span class="agent-feature-text"><span class="agent-feature-name">Self-hosted MCP Server (SDK):</span> Host a full MCP server using the Functions MCP SDK — custom tool discovery, resource endpoints, and MCP protocol handling. Public Preview. Isolated-worker model only.</span>
+          </div>
+          <div class="agent-feature">
+            <span class="badge badge-prev">Preview</span>
+            <span class="agent-feature-text"><span class="agent-feature-name">Durable Task for Microsoft Agent Framework:</span> Multi-agent orchestration patterns with OpenAI SDK integration using Durable Functions as the compute substrate.</span>
+          </div>
+          <div class="agent-feature">
+            <span class="badge badge-ga">GA</span>
+            <span class="agent-feature-text"><span class="agent-feature-name">Durable Task Scheduler (Dedicated SKU):</span> Managed backend for Durable Functions orchestrations — improved throughput and distributed tracing. Consumption SKU scheduler is in preview.</span>
+          </div>
+          <div class="agent-feature">
+            <span class="badge badge-ga">GA</span>
+            <span class="agent-feature-text"><span class="agent-feature-name">OpenTelemetry:</span> First-class distributed tracing and metrics export across all hosting plans.</span>
+          </div>
+        </div>
+
+        <div class="card-footer">
+          Learn more: <a href="https://learn.microsoft.com/en-us/azure/azure-functions/functions-overview" target="_blank" rel="noopener">Functions overview</a> &nbsp;|&nbsp;
+          <a href="https://learn.microsoft.com/en-us/azure/azure-functions/functions-bindings-mcp-tool-trigger" target="_blank" rel="noopener">MCP tool trigger</a> &nbsp;|&nbsp;
+          <a href="https://learn.microsoft.com/en-us/azure/azure-functions/migrate-dotnet-to-isolated-model" target="_blank" rel="noopener">.NET migration guide</a>
+        </div>
+      </article>
+
+    </div><!-- /cards-grid -->
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════
+       SECTION 3 — DECISION TREE
+  ════════════════════════════════════════════════════ -->
+  <section class="section" id="decision-tree" aria-labelledby="dt-heading">
+    <p class="section-label">Service Selection</p>
+    <h2 class="section-title" id="dt-heading">Fast Decision Tree</h2>
+    <p class="section-subtitle">Start with the customer's primary need, then look at the composition nodes for the complete architecture.</p>
+
+    <div class="decision-tree-wrap" role="region" aria-label="Decision tree for service selection">
+      <div class="dt-root" role="heading" aria-level="3">What is the customer's primary need?</div>
+
+      <div class="dt-branches">
+        <div class="dt-branch">
+          <div class="dt-condition">API exposure, governance, security, developer onboarding, policy enforcement, AI model traffic control</div>
+          <div class="dt-arrow" aria-hidden="true">↓</div>
+          <div class="dt-service dt-apim">API Management</div>
+        </div>
+        <div class="dt-branch">
+          <div class="dt-condition">Workflow orchestration, SaaS connectors, process automation, B2B integration, agentic business process automation</div>
+          <div class="dt-arrow" aria-hidden="true">↓</div>
+          <div class="dt-service dt-logic">Logic Apps</div>
+        </div>
+        <div class="dt-branch">
+          <div class="dt-condition">Custom code execution, event-driven logic, MCP tool hosting, durable orchestration, short-lived compute</div>
+          <div class="dt-arrow" aria-hidden="true">↓</div>
+          <div class="dt-service dt-func">Azure Functions</div>
+        </div>
+      </div>
+
+      <div class="dt-compositions" aria-labelledby="dt-comp-label">
+        <div class="dt-comp-title" id="dt-comp-label">Composition Decision Points — these are connecting nodes, not dead ends</div>
+        <div class="dt-comp-grid">
+          <div class="dt-comp-card">
+            <div class="dt-comp-services">APIM + Functions</div>
+            <div class="dt-comp-use">API governance in front of custom compute and MCP tool endpoints</div>
+          </div>
+          <div class="dt-comp-card">
+            <div class="dt-comp-services">APIM + Logic Apps</div>
+            <div class="dt-comp-use">Governed API facade for orchestrated workflows; AI Gateway for Agent Loop model access</div>
+          </div>
+          <div class="dt-comp-card">
+            <div class="dt-comp-services">Logic Apps + Functions</div>
+            <div class="dt-comp-use">Workflow calls function for custom logic; Agent Loop uses Functions-hosted MCP tools</div>
+          </div>
+          <div class="dt-comp-card" style="border:2px solid var(--blue)">
+            <div class="dt-comp-services">All Three — Canonical Pattern</div>
+            <div class="dt-comp-use">APIM AI Gateway → Logic Apps Agent Loop → Functions MCP Tools. See Pattern C.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════
+       SECTION 4 — COMPARISON MATRIX
+  ════════════════════════════════════════════════════ -->
+  <section class="section" id="comparison-matrix" aria-labelledby="matrix-heading">
+    <p class="section-label">Side-by-Side Comparison</p>
+    <h2 class="section-title" id="matrix-heading">Comparison Matrix</h2>
+    <p class="section-subtitle">Key dimensions across all three services — use this to structure architecture conversations.</p>
+
+    <div class="matrix-scroll-wrap" role="region" aria-label="Service comparison matrix" tabindex="0">
+      <table class="matrix-table">
+        <thead>
+          <tr>
+            <th scope="col" style="min-width:140px">Dimension</th>
+            <th scope="col">API Management</th>
+            <th scope="col">Logic Apps</th>
+            <th scope="col">Azure Functions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="dim-label">Primary job</span></td>
+            <td>API governance &amp; gateway</td>
+            <td>Workflow orchestration &amp; integration</td>
+            <td>Custom code execution &amp; event-driven compute</td>
+          </tr>
+          <tr>
+            <td><span class="dim-label">Best for</span></td>
+            <td>External/partner API exposure, policy enforcement, AI model governance</td>
+            <td>Multi-system integration, connector-heavy automation, agentic business processes</td>
+            <td>Lightweight compute, event processing, MCP tool hosting, durable orchestration</td>
+          </tr>
+          <tr>
+            <td><span class="dim-label">Integration style</span></td>
+            <td>Policy-based (declarative XML)</td>
+            <td>Designer-based (visual + code)</td>
+            <td>Code-first (imperative)</td>
+          </tr>
+          <tr>
+            <td><span class="dim-label">Code intensity</span></td>
+            <td><span class="matrix-chip chip-low">Low — policies</span></td>
+            <td><span class="matrix-chip chip-low">Low–Medium</span> <span style="font-size:11px;color:var(--text-sec)">(designer + inline C# in Standard)</span></td>
+            <td><span class="matrix-chip chip-high">High — full code</span></td>
+          </tr>
+          <tr>
+            <td><span class="dim-label">Governance depth</span></td>
+            <td><span class="matrix-chip chip-high">Deep</span> — policies, products, subscriptions, workspaces, developer portal</td>
+            <td><span class="matrix-chip chip-med">Medium</span> — workflow runs, run history, connector-level auth</td>
+            <td><span class="matrix-chip chip-low">App-level</span> — RBAC, app settings, Application Insights</td>
+          </tr>
+          <tr>
+            <td><span class="dim-label">Connector richness</span></td>
+            <td>N/A — backends, not connectors</td>
+            <td>1,400+ managed connectors</td>
+            <td>Triggers &amp; bindings (focused, not a connector hub)</td>
+          </tr>
+          <tr>
+            <td><span class="dim-label">Event-driven fit</span></td>
+            <td>Event Grid integration for lifecycle events</td>
+            <td>Trigger-based workflows; connectors as event sources</td>
+            <td>Native: queues, blobs, Event Hubs, Cosmos DB, timers, HTTP, MCP</td>
+          </tr>
+          <tr>
+            <td><span class="dim-label">AI / Agent role</span></td>
+            <td>AI Gateway, MCP registry (API Center), model governance layer</td>
+            <td>Agent Loop host, agentic process orchestrator, MCP server (preview)</td>
+            <td>MCP tool server, durable agent compute, Durable Task Framework</td>
+          </tr>
+          <tr>
+            <td><span class="dim-label">SKU/plan sensitivity</span></td>
+            <td><span class="matrix-chip chip-high">High</span> — networking, multi-region, AI features vary dramatically by tier</td>
+            <td><span class="matrix-chip chip-med">Medium</span> — Consumption vs. Standard is the key split</td>
+            <td><span class="matrix-chip chip-high">High</span> — Flex vs. Premium vs. ACA changes networking, cold-start, cost</td>
+          </tr>
+          <tr>
+            <td><span class="dim-label">Managed identity</span></td>
+            <td>Yes — system &amp; user-assigned</td>
+            <td>Yes — system &amp; user-assigned (Standard); system-assigned (Consumption)</td>
+            <td>Yes — system &amp; user-assigned</td>
+          </tr>
+          <tr>
+            <td><span class="dim-label">VNet integration</span></td>
+            <td>Standard v2: outbound; Premium v2: full injection; Classic Premium: full injection + multi-region</td>
+            <td>Standard only (WS1+, ASE v3, Hybrid); Consumption: none</td>
+            <td>Flex Consumption, Premium, Dedicated, ACA: yes; Consumption plan: none</td>
+          </tr>
+          <tr>
+            <td><span class="dim-label">Customer demo fit</span></td>
+            <td>API lifecycle, developer portal, policy walkthrough, AI Gateway demo</td>
+            <td>Connector-driven workflow, Agent Loop demo</td>
+            <td>Event processing, MCP tool demo, Durable Functions demo</td>
+          </tr>
+          <tr>
+            <td><span class="dim-label">Common event sources</span></td>
+            <td colspan="3" style="text-align:left;font-style:italic;color:var(--text-sec);font-size:12px">Adjacent services used as event sources across all three: Azure Service Bus, Azure Event Grid, Azure Event Hubs — not subjects of this guide.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════
+       SECTION 5 — REFERENCE ARCHITECTURES
+  ════════════════════════════════════════════════════ -->
+  <section class="section" id="reference-architectures" aria-labelledby="arch-heading">
+    <p class="section-label">Architecture Patterns</p>
+    <h2 class="section-title" id="arch-heading">Reference Architecture Patterns</h2>
+    <p class="section-subtitle">Three field-validated patterns updated for the agentic era. Each updated for the post-Ignite 2025 capability landscape.</p>
+
+    <div class="arch-grid">
+
+      <!-- Pattern A -->
+      <div class="arch-card">
+        <div class="arch-card-header">
+          <div class="arch-card-title">Pattern A — API Governance + Compute</div>
+          <div class="arch-card-use">Customer-facing APIs with AI model access governed by token limits and semantic caching</div>
+        </div>
+        <div class="arch-card-body">
+          <div class="arch-diagram" role="img" aria-label="Architecture diagram: APIM AI Gateway to Functions Flex Consumption to data services">
+            <div class="arch-node arch-node-blue">
+              APIM (AI Gateway Policies)
+              <span class="arch-node-sub">Token limits · Semantic cache · Content safety</span>
+            </div>
+            <div class="arch-arrow" aria-hidden="true">↓</div>
+            <div class="arch-node arch-node-teal">
+              Functions — Flex Consumption
+              <span class="arch-node-sub">Backend APIs + MCP tool endpoints</span>
+            </div>
+            <div class="arch-arrow" aria-hidden="true">↓</div>
+            <div class="arch-node arch-node-green">
+              Data Services
+              <span class="arch-node-sub">Azure SQL · Cosmos DB · Blob · Key Vault</span>
+            </div>
+          </div>
+          <div class="arch-key">
+            <strong>Auth chain:</strong> APIM managed identity → Functions Entra / Easy Auth → data services managed identity
+          </div>
+          <div class="arch-sku-note">
+            <strong>Key SKUs:</strong> APIM Standard v2 (outbound VNet integration to reach backends + inbound private endpoints for client access — two separate capabilities) + Functions Flex Consumption (VNet, per-function scaling, AZs)
+          </div>
+        </div>
+      </div>
+
+      <!-- Pattern B -->
+      <div class="arch-card">
+        <div class="arch-card-header">
+          <div class="arch-card-title">Pattern B — Integration Backbone + Agentic Process</div>
+          <div class="arch-card-use">Autonomous loan processing, order fulfillment, incident response automation</div>
+        </div>
+        <div class="arch-card-body">
+          <div class="arch-diagram" role="img" aria-label="Architecture diagram: APIM AI Gateway to Logic Apps Standard Agent Loop to connectors and enterprise systems">
+            <div class="arch-node arch-node-blue">
+              APIM — AI Gateway
+              <span class="arch-node-sub">Model access governance + BYOM routing</span>
+            </div>
+            <div class="arch-arrow" aria-hidden="true">↓</div>
+            <div class="arch-node arch-node-teal" style="border-color:#0F6CBD;background:#E3F2FF;color:#093964">
+              Logic Apps Standard — Agent Loop
+              <span class="arch-node-sub">Autonomous orchestrator (GA in Standard)</span>
+            </div>
+            <div class="arch-arrow" aria-hidden="true">↓</div>
+            <div class="arch-node arch-node-green">
+              1,400+ Connectors
+              <span class="arch-node-sub">CRM · ERP · Databases · M365 · SAP</span>
+            </div>
+          </div>
+          <div class="arch-key">
+            <strong>Key capability:</strong> Agent Loop uses tools built from connector actions. APIM fronts model calls for token governance and model portability (swap models without changing workflow code).
+          </div>
+          <div class="arch-sku-note">
+            <strong>Key SKUs:</strong> Logic Apps Standard WS1+ (VNet, Agent Loop GA) + APIM Standard v2 for AI Gateway
+          </div>
+        </div>
+      </div>
+
+      <!-- Pattern C -->
+      <div class="arch-card">
+        <div class="arch-card-header" style="background:linear-gradient(135deg,#005A9E,#0078D4)">
+          <div class="arch-card-title">Pattern C — Composed Agentic Architecture</div>
+          <div class="arch-card-use">Multi-agent enterprise AI with governed model access, connector-rich tooling, custom code tools</div>
+        </div>
+        <div class="arch-card-body">
+          <div class="arch-diagram" role="img" aria-label="Architecture diagram: APIM AI Gateway to Logic Apps Agent Loop to Functions Flex MCP Tools with Service Bus and Event Grid async">
+            <div class="arch-node arch-node-blue">
+              APIM — AI Gateway
+              <span class="arch-node-sub">Governs all LLM traffic into the composition</span>
+            </div>
+            <div class="arch-arrow" aria-hidden="true">↓</div>
+            <div class="arch-node arch-node-teal" style="border-color:#0F6CBD;background:#E3F2FF;color:#093964">
+              Logic Apps Standard — Agent Loop
+              <span class="arch-node-sub">Orchestrator — calls connector tools + MCP tools</span>
+            </div>
+            <div class="arch-arrow" aria-hidden="true">↓</div>
+            <div class="arch-node arch-node-teal">
+              Functions Flex — MCP Tools + Durable
+              <span class="arch-node-sub">Custom compute tools + multi-agent patterns (preview)</span>
+            </div>
+            <div class="arch-arrow" aria-hidden="true">↓</div>
+            <div class="arch-node arch-node-gray">
+              Service Bus / Event Grid (async)
+              <span class="arch-node-sub">Decoupling between agents and downstream systems</span>
+            </div>
+          </div>
+          <div class="arch-key">
+            <strong>The new canonical pattern.</strong> APIM governs model access. Logic Apps orchestrates the agentic business process using connectors + MCP tools. Functions hosts the MCP tools that require custom code.
+          </div>
+          <div class="arch-sku-note">
+            <strong>Key SKUs:</strong> APIM Standard v2 or Premium v2 + Logic Apps Standard WS1+ + Functions Flex Consumption
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /arch-grid -->
+
+    <!-- Composition Considerations -->
+    <div class="composition-callout" aria-labelledby="comp-callout-label">
+      <div class="comp-callout-title" id="comp-callout-label">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        Composition Considerations
+      </div>
+      <div class="comp-grid">
+        <div class="comp-item"><strong>Auth: APIM → Functions</strong>Managed identity preferred. Function keys acceptable for dev/test only. Entra ID (Easy Auth) for production MCP tool endpoints.</div>
+        <div class="comp-item"><strong>Networking Tier Matching</strong>APIM Standard v2 (outbound VNet) + Functions Flex (VNet included) gives private connectivity at sub-Premium cost. No Premium plan required for most scenarios.</div>
+        <div class="comp-item"><strong>Cold Start Mitigation</strong>Flex Consumption Always Ready instances mitigate cold starts for critical paths. Use Premium plan only when sub-50ms p99 latency is required.</div>
+        <div class="comp-item"><strong>Agent Loop Model Access</strong>Always route Logic Apps Agent Loop model calls through APIM AI Gateway — required for token governance, monitoring, model portability, and BYOM. Direct wiring to endpoints loses visibility.</div>
+        <div class="comp-item"><strong>Managed Identity Throughout</strong>Every service-to-service hop in a composition should use managed identity. Keys and secrets in connection strings are an architecture review failure point.</div>
+        <div class="comp-item"><strong>Trusted Service Connectivity Deadline</strong>March 15, 2026: Any APIM instance using trusted connectivity to Storage, Key Vault, Service Bus, or Event Hubs must migrate to Private Link or VNet line-of-sight before that date.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════
+       SECTION 6 — SKU / PLAN DECISION PANEL
+  ════════════════════════════════════════════════════ -->
+  <section class="section" id="sku-panel" aria-labelledby="sku-heading">
+    <p class="section-label">SKU Navigator</p>
+    <h2 class="section-title" id="sku-heading">SKU / Plan Decision Panel</h2>
+    <p class="section-subtitle">Choosing the wrong SKU is the #1 architecture review failure. Use this to qualify networking, scaling, and feature requirements early.</p>
+
+    <!-- APIM SKUs -->
+    <div class="sku-service-block">
+      <div class="sku-service-name">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" aria-hidden="true"><rect x="2" y="4" width="20" height="5" rx="1"/><rect x="2" y="10" width="20" height="5" rx="1"/><rect x="2" y="16" width="20" height="5" rx="1"/></svg>
+        Azure API Management
+      </div>
+      <div class="sku-cards-row">
+        <div class="sku-card">
+          <div class="sku-card-name">Consumption</div>
+          <div class="sku-card-price">Pay-per-call; no SLA</div>
+          <ul class="sku-feature-list">
+            <li class="no">No VNet / No private endpoint</li>
+            <li class="no">No developer portal</li>
+            <li class="yes">Managed identity</li>
+            <li class="yes">LLM / AI Gateway policies</li>
+            <li class="no">No migration path to v2</li>
+          </ul>
+          <span class="sku-pill" style="background:var(--error-bg);color:var(--error)">Avoid for new designs</span>
+        </div>
+        <div class="sku-card">
+          <div class="sku-card-name">Basic v2</div>
+          <div class="sku-card-price">Entry-level; SLA included</div>
+          <ul class="sku-feature-list">
+            <li class="no">No VNet (inbound or outbound)</li>
+            <li class="no">No private endpoint</li>
+            <li class="yes">Developer portal</li>
+            <li class="yes">Managed identity</li>
+            <li class="yes">Fast deployment</li>
+          </ul>
+          <span class="sku-pill" style="background:var(--card-bg);color:var(--text-sec)">Dev/test with SLA</span>
+        </div>
+        <div class="sku-card recommended">
+          <div class="sku-card-name">Standard v2</div>
+          <div class="sku-card-price">Mid-tier; production</div>
+          <ul class="sku-feature-list">
+            <li class="yes">Outbound VNet integration</li>
+            <li class="yes">Inbound private endpoints</li>
+            <li class="yes">Up to 10 scale units</li>
+            <li class="yes">Developer portal</li>
+            <li class="no">No multi-region</li>
+          </ul>
+          <span class="sku-pill sku-pill-rec">Recommended: new prod</span>
+        </div>
+        <div class="sku-card">
+          <div class="sku-card-name">Premium v2</div>
+          <div class="sku-card-price">Enterprise; AZs</div>
+          <ul class="sku-feature-list">
+            <li class="yes">Full VNet injection (gateway)</li>
+            <li class="yes">Availability Zones</li>
+            <li class="yes">Workspaces</li>
+            <li class="yes">Up to 30 scale units</li>
+            <li class="no">No multi-region</li>
+          </ul>
+          <span class="sku-pill sku-pill-new">New — recommended v2 enterprise</span>
+        </div>
+        <div class="sku-card">
+          <div class="sku-card-name">Classic Premium</div>
+          <div class="sku-card-price">Legacy platform</div>
+          <ul class="sku-feature-list">
+            <li class="yes">Multi-region (up to 12 units/region)</li>
+            <li class="yes">Full VNet injection (all components)</li>
+            <li class="yes">Self-hosted gateway</li>
+            <li class="no">No automated migration to v2</li>
+            <li class="no">Legacy platform</li>
+          </ul>
+          <span class="sku-pill" style="background:var(--warn-bg);color:var(--preview)">Use only for multi-region requirements</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Logic Apps plans -->
+    <div class="sku-service-block">
+      <div class="sku-service-name">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0F6CBD" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="5" height="5" rx="1"/><rect x="16" y="3" width="5" height="5" rx="1"/><rect x="3" y="16" width="5" height="5" rx="1"/><rect x="16" y="16" width="5" height="5" rx="1"/><line x1="8" y1="5.5" x2="16" y2="5.5"/><line x1="5.5" y1="8" x2="5.5" y2="16"/><line x1="18.5" y1="8" x2="18.5" y2="16"/><line x1="8" y1="18.5" x2="16" y2="18.5"/></svg>
+        Azure Logic Apps
+      </div>
+      <div class="sku-cards-row">
+        <div class="sku-card">
+          <div class="sku-card-name">Consumption</div>
+          <div class="sku-card-price">Pay-per-action; multi-tenant</div>
+          <ul class="sku-feature-list">
+            <li class="no">No VNet integration</li>
+            <li class="yes">Managed identity</li>
+            <li class="yes">1,400+ connectors</li>
+            <li class="no">Agent Loop: Preview only</li>
+            <li class="no">No local dev / VS Code</li>
+          </ul>
+          <span class="sku-pill" style="background:var(--card-bg);color:var(--text-sec)">Low-cost entry; not for prod agentic</span>
+        </div>
+        <div class="sku-card recommended">
+          <div class="sku-card-name">Standard WS1 / WS2 / WS3</div>
+          <div class="sku-card-price">Single-tenant; vCPU-based</div>
+          <ul class="sku-feature-list">
+            <li class="yes">VNet integration</li>
+            <li class="yes">Agent Loop: GA (stateful)</li>
+            <li class="yes">Local dev + VS Code</li>
+            <li class="yes">CI/CD + DevOps support</li>
+            <li class="yes">Managed identity</li>
+          </ul>
+          <span class="sku-pill sku-pill-rec">Recommended: production workloads</span>
+        </div>
+        <div class="sku-card">
+          <div class="sku-card-name">Standard on ASE v3</div>
+          <div class="sku-card-price">Isolated; pay per ASE plan</div>
+          <ul class="sku-feature-list">
+            <li class="yes">Fully isolated VNet</li>
+            <li class="yes">Agent Loop: GA</li>
+            <li class="yes">ISE replacement</li>
+            <li class="yes">Run unlimited workflows</li>
+            <li class="yes">Managed identity</li>
+          </ul>
+          <span class="sku-pill" style="background:var(--ga-bg);color:var(--ga)">ISE migration target</span>
+        </div>
+        <div class="sku-card">
+          <div class="sku-card-name">Standard Hybrid</div>
+          <div class="sku-card-price">Arc-enabled; on-prem/edge</div>
+          <ul class="sku-feature-list">
+            <li class="yes">On-premises deployment</li>
+            <li class="yes">Arc-connected</li>
+            <li class="yes">Managed identity</li>
+            <li class="no">No cloud-native auto-scale</li>
+          </ul>
+          <span class="sku-pill" style="background:var(--card-bg);color:var(--text-sec)">On-prem / regulated edge</span>
+        </div>
+        <div class="sku-card retired">
+          <div class="sku-card-name">ISE</div>
+          <div class="sku-card-price">Retired August 2024</div>
+          <ul class="sku-feature-list">
+            <li class="no">No new instances</li>
+            <li class="no">No support</li>
+          </ul>
+          <span class="sku-pill sku-pill-ret">Retired — migrate now</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Functions plans -->
+    <div class="sku-service-block">
+      <div class="sku-service-name">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--ga)" stroke-width="2" aria-hidden="true"><polygon points="13,2 3,14 12,14 11,22 21,10 12,10"/></svg>
+        Azure Functions
+      </div>
+      <div class="sku-cards-row">
+        <div class="sku-card">
+          <div class="sku-card-name">Consumption</div>
+          <div class="sku-card-price">Pay-per-execution</div>
+          <ul class="sku-feature-list">
+            <li class="no">No VNet integration</li>
+            <li class="yes">Managed identity</li>
+            <li class="no">Classic cold starts</li>
+            <li class="no">In-process model: retires Nov 2026</li>
+            <li class="yes">Simple event processing</li>
+          </ul>
+          <span class="sku-pill" style="background:var(--card-bg);color:var(--text-sec)">Basic entry; plan migration ahead</span>
+        </div>
+        <div class="sku-card recommended">
+          <div class="sku-card-name">Flex Consumption</div>
+          <div class="sku-card-price">Pay-per-use; VNet included</div>
+          <ul class="sku-feature-list">
+            <li class="yes">VNet at consumption pricing</li>
+            <li class="yes">Per-function scaling</li>
+            <li class="yes">Availability Zones (GA)</li>
+            <li class="yes">512 MB / 2 GB / 4 GB instances</li>
+            <li class="yes">Isolated worker only (.NET 10 ready)</li>
+          </ul>
+          <span class="sku-pill sku-pill-rec">Recommended: new serverless</span>
+        </div>
+        <div class="sku-card">
+          <div class="sku-card-name">Premium (Elastic)</div>
+          <div class="sku-card-price">Per vCPU/month; always-warm</div>
+          <ul class="sku-feature-list">
+            <li class="yes">VNet integration</li>
+            <li class="yes">Always-warm instances</li>
+            <li class="yes">Larger instance sizes</li>
+            <li class="yes">Managed identity</li>
+            <li class="yes">Latency-sensitive workloads</li>
+          </ul>
+          <span class="sku-pill" style="background:var(--card-bg);color:var(--text-sec)">Latency-sensitive / high-throughput</span>
+        </div>
+        <div class="sku-card">
+          <div class="sku-card-name">Dedicated (App Service)</div>
+          <div class="sku-card-price">Fixed monthly</div>
+          <ul class="sku-feature-list">
+            <li class="yes">VNet integration</li>
+            <li class="yes">Predictable cost</li>
+            <li class="yes">Full App Service features</li>
+            <li class="yes">Managed identity</li>
+            <li class="yes">Durable Task Scheduler GA</li>
+          </ul>
+          <span class="sku-pill" style="background:var(--card-bg);color:var(--text-sec)">Predictable pricing required</span>
+        </div>
+        <div class="sku-card">
+          <div class="sku-card-name">Container Apps (ACA)</div>
+          <div class="sku-card-price">Consumption or Dedicated</div>
+          <ul class="sku-feature-list">
+            <li class="yes">KEDA, Dapr, GPU workloads</li>
+            <li class="yes">VNet integration</li>
+            <li class="yes">Microservices fabric</li>
+            <li class="yes">Managed identity</li>
+            <li class="yes">Native GA (Build 2025)</li>
+          </ul>
+          <span class="sku-pill sku-pill-new">ACA native — GA</span>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════
+       SECTION 7 — ANTI-PATTERNS
+  ════════════════════════════════════════════════════ -->
+  <section class="section" id="anti-patterns" aria-labelledby="anti-heading">
+    <p class="section-label" style="color:var(--error)">Common Mistakes</p>
+    <h2 class="section-title" id="anti-heading">Avoid These Traps</h2>
+    <p class="section-subtitle">Anti-patterns that surface frequently in architecture reviews and customer conversations.</p>
+
+    <div class="anti-grid" role="list" aria-label="Architecture anti-patterns to avoid">
+      <div class="anti-item" role="listitem">
+        <div class="anti-icon" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--error)" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+        </div>
+        <div class="anti-text"><strong>Using one service for every integration problem.</strong> Each service has a workload shape it's optimized for. Match service to problem, not team familiarity.</div>
+      </div>
+      <div class="anti-item" role="listitem">
+        <div class="anti-icon" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--error)" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+        </div>
+        <div class="anti-text"><strong>Treating Logic Apps Consumption like Standard.</strong> No VNet, Agent Loop is preview-only, pay-per-action billing, and no VS Code local development. Choosing Consumption for production agentic workloads is an architecture risk.</div>
+      </div>
+      <div class="anti-item" role="listitem">
+        <div class="anti-icon" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--error)" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+        </div>
+        <div class="anti-text"><strong>Using Functions as a full API governance layer.</strong> If you need policies, a developer portal, subscription management, and rate limits, that's APIM — Functions HTTP triggers are not a substitute.</div>
+      </div>
+      <div class="anti-item" role="listitem">
+        <div class="anti-icon" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--error)" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+        </div>
+        <div class="anti-text"><strong>Skipping APIM in front of customer-facing APIs.</strong> Even when Functions can serve HTTP directly, partner-facing and customer-facing APIs need policy enforcement, auth delegation, and observability at the gateway.</div>
+      </div>
+      <div class="anti-item" role="listitem">
+        <div class="anti-icon" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--error)" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+        </div>
+        <div class="anti-text"><strong>Picking a SKU without validating networking requirements first.</strong> The #1 architecture review failure. APIM Standard v2 + Functions Flex delivers private connectivity for well under half the cost of classic Premium + Premium plan Functions.</div>
+      </div>
+      <div class="anti-item" role="listitem">
+        <div class="anti-icon" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--error)" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+        </div>
+        <div class="anti-text"><strong>Wiring Agent Loop directly to model endpoints.</strong> Bypassing APIM AI Gateway loses token governance, usage monitoring, semantic caching, and model portability. Route model traffic through APIM AI Gateway.</div>
+      </div>
+      <div class="anti-item" role="listitem">
+        <div class="anti-icon" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--error)" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+        </div>
+        <div class="anti-text"><strong>Ignoring the .NET in-process retirement (Nov 10, 2026).</strong> Migration to the isolated-worker model is required for continued support and to access Flex Consumption and .NET 10. This is a code migration, not just a config change.</div>
+      </div>
+      <div class="anti-item" role="listitem">
+        <div class="anti-icon" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--error)" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+        </div>
+        <div class="anti-text"><strong>Ignoring Trusted service connectivity retirement (Mar 15, 2026).</strong> APIM instances created before Dec 1, 2025, that use trusted connectivity to Storage, Key Vault, Service Bus, or Event Hubs will fail after March 15, 2026, unless migrated.</div>
+      </div>
+      <div class="anti-item" role="listitem">
+        <div class="anti-icon" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--error)" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+        </div>
+        <div class="anti-text"><strong>Building custom orchestration code when Durable Functions or Logic Apps workflows already cover the pattern.</strong> If the workflow has fan-out/fan-in, approval gates, or retry compensation, use existing orchestration primitives.</div>
+      </div>
+      <div class="anti-item" role="listitem">
+        <div class="anti-icon" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--error)" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+        </div>
+        <div class="anti-text"><strong>Positioning Premium v2 APIM as a multi-region solution.</strong> Premium v2 does not support multi-region deployment. Only classic Premium supports geographic gateway distribution. Confirm this requirement before tier selection.</div>
+      </div>
+      <div class="anti-item" role="listitem">
+        <div class="anti-icon" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--error)" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+        </div>
+        <div class="anti-text"><strong>Over-indexing on cost without factoring operational overhead.</strong> The cheapest SKU that works today may double support burden. Factor in governance, monitoring, VNet complexity, and migration risk over 3 years.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════
+       SECTION 8 — FIELD TALK TRACK
+  ════════════════════════════════════════════════════ -->
+  <section class="section" id="talk-track" aria-labelledby="track-heading">
+    <p class="section-label">Discovery &amp; Architecture Conversations</p>
+    <h2 class="section-title" id="track-heading">Field Talk Track</h2>
+    <p class="section-subtitle">"If the customer says X, lead with Y" — SKU-aware for architecture reviews and qualification calls.</p>
+
+    <div class="talk-table-wrap" role="region" aria-label="Field talk track table" tabindex="0">
+      <table class="talk-table">
+        <thead>
+          <tr>
+            <th scope="col">Customer says…</th>
+            <th scope="col">Lead with…</th>
+            <th scope="col">SKU-aware note</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="customer-says">"We need to expose APIs to partners."</span></td>
+            <td><span class="lead-with">APIM</span></td>
+            <td><span class="sku-note-small">Standard v2 for private endpoints and VNet; Premium v2 for AZs and workspaces; Classic Premium only if multi-region is required.</span></td>
+          </tr>
+          <tr>
+            <td><span class="customer-says">"We need to connect SaaS apps and automate a business process."</span></td>
+            <td><span class="lead-with">Logic Apps</span></td>
+            <td><span class="sku-note-small">Standard (WS1+) for VNet, CI/CD, and Agent Loop (GA); Consumption for low-volume, non-VNet, low-cost entry only.</span></td>
+          </tr>
+          <tr>
+            <td><span class="customer-says">"We need to run custom logic on events."</span></td>
+            <td><span class="lead-with">Azure Functions</span></td>
+            <td><span class="sku-note-small">Default to Flex Consumption for new serverless builds. Premium only if sub-50ms p99 latency required or always-warm non-negotiable.</span></td>
+          </tr>
+          <tr>
+            <td><span class="customer-says">"We're building AI agents."</span></td>
+            <td><span class="lead-with">Depends on agent shape — connector-heavy, compute-heavy, or full stack</span></td>
+            <td><span class="sku-note-small"><strong>Connector-heavy</strong> (SaaS, CRM, ERP, M365): Logic Apps Standard Agent Loop (GA, WS1+) + APIM AI Gateway. <strong>Compute/code-heavy</strong> (custom logic, tight latency): Functions Flex MCP tools + APIM AI Gateway. <strong>Full governed architecture</strong> (both): Pattern C — APIM Standard v2 + Logic Apps Standard + Functions Flex. In all cases: always route model calls through APIM AI Gateway; never wire directly to model endpoints.</span></td>
+          </tr>
+          <tr>
+            <td><span class="customer-says">"We need private networking everywhere."</span></td>
+            <td><span class="lead-with">The v2 stack: APIM Standard v2 + Logic Apps Standard + Functions Flex</span></td>
+            <td><span class="sku-note-small">All support VNet at sub-Premium cost. Premium tiers required only for multi-region (APIM Classic Premium) or latency-critical paths (Functions Premium plan).</span></td>
+          </tr>
+          <tr>
+            <td><span class="customer-says">"We have BizTalk and need to modernize."</span></td>
+            <td><span class="lead-with">Logic Apps Standard + APIM</span></td>
+            <td><span class="sku-note-small">ISE is retired (Aug 2024). Migration path: Logic Apps Standard on App Service Environment v3 for full isolation. APIM for API exposure.</span></td>
+          </tr>
+          <tr>
+            <td><span class="customer-says">"Our APIs are sprawling across teams."</span></td>
+            <td><span class="lead-with">APIM Workspaces + API Center</span></td>
+            <td><span class="sku-note-small">Workspaces available in Classic Premium and Premium v2. API Center provides centralized discovery and MCP server registry.</span></td>
+          </tr>
+          <tr>
+            <td><span class="customer-says">"We need to host MCP tools for agents."</span></td>
+            <td><span class="lead-with">Azure Functions (Flex Consumption) with MCP tool trigger</span></td>
+            <td><span class="sku-note-small">GA. Entra / OAuth built-in via Easy Auth. Scales to zero. C#, Java, JavaScript, Python, TypeScript. Also: Logic Apps Standard as MCP server (preview).</span></td>
+          </tr>
+          <tr>
+            <td><span class="customer-says">"We need a chatbot backend."</span></td>
+            <td><span class="lead-with">Composed: APIM AI Gateway + Logic Apps Agent Loop (conversational) or Functions</span></td>
+            <td><span class="sku-note-small">Logic Apps Agent Loop if connector-heavy (Teams, M365, CRM). Functions if compute-heavy or tight latency SLA. APIM governs the model access in both cases.</span></td>
+          </tr>
+          <tr>
+            <td><span class="customer-says">"We have a Logic Apps ISE in production."</span></td>
+            <td><span class="lead-with">Migration to Standard on ASE v3</span></td>
+            <td><span class="sku-note-small">ISE retired August 2024. Standard on ASE v3 provides equivalent isolation. Agent Loop and all Standard capabilities are available on ASE v3.</span></td>
+          </tr>
+          <tr>
+            <td><span class="customer-says">"We need all three."</span></td>
+            <td><span class="lead-with">Show Pattern C — the canonical composed architecture</span></td>
+            <td><span class="sku-note-small">APIM Standard v2 (or Premium v2 for AZs) + Logic Apps Standard WS1+ + Functions Flex Consumption. See reference architecture section.</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════
+       SECTION 9 — TIMELINE
+  ════════════════════════════════════════════════════ -->
+  <section class="section" id="timeline" aria-labelledby="tl-heading">
+    <p class="section-label">Breaking Changes &amp; Milestones</p>
+    <h2 class="section-title" id="tl-heading">Timeline: What's Changing</h2>
+    <p class="section-subtitle">Near-term forcing functions that sellers and architects should know cold. Bring these into every renewal and greenfield architecture review.</p>
+
+    <div class="timeline" role="list" aria-label="Timeline of breaking changes and milestones">
+
+      <div class="tl-item" role="listitem">
+        <div class="tl-dot tl-dot-red" aria-hidden="true"></div>
+        <div class="tl-date">March 15, 2026</div>
+        <div class="tl-title">APIM — Trusted Service Connectivity Retirement</div>
+        <div class="tl-desc">Trusted connectivity from the APIM gateway to Azure Storage, Key Vault, Key Vault Managed HSM, Service Bus, Event Hubs, and Container Registry is retired. Instances created on or after Dec 1, 2025 already don't support it. Replace with Private Link, VNet line-of-sight, or subnet allowlisting before this date. Check Azure Advisor for impact assessment. <strong>Note:</strong> APIs in APIM Workspaces are not affected by this retirement, as workspace APIs do not support managed identity for backend connectivity.</div>
+      </div>
+
+      <div class="tl-item" role="listitem">
+        <div class="tl-dot tl-dot-red" aria-hidden="true"></div>
+        <div class="tl-date">March 15, 2026</div>
+        <div class="tl-title">APIM — New Resource Limits Enforced</div>
+        <div class="tl-desc">Updated resource limits for API Management take effect. Verify current resource consumption against the new limits before this date. Refer to the APIM limits documentation for specific thresholds.</div>
+      </div>
+
+      <div class="tl-item" role="listitem">
+        <div class="tl-dot tl-dot-red" aria-hidden="true"></div>
+        <div class="tl-date">November 10, 2026</div>
+        <div class="tl-title">Azure Functions — .NET In-Process Model Retirement</div>
+        <div class="tl-desc">.NET in-process model support ends. After this date: no security updates, no bug fixes, new features isolated-worker only. Apps may continue running but are unsupported. .NET 10 and Flex Consumption require isolated-worker today. Migrate using the Azure Functions migration guide. Check for in-process apps via Azure PowerShell: apps with runtime "dotnet" (not "dotnet-isolated").</div>
+      </div>
+
+      <div class="tl-item" role="listitem">
+        <div class="tl-dot tl-dot-blue" aria-hidden="true"></div>
+        <div class="tl-date">March 15, 2027</div>
+        <div class="tl-title">APIM — Built-in Analytics Dashboard Retirement</div>
+        <div class="tl-desc">The built-in analytics dashboard in API Management is retired. Migrate analytics to Azure Monitor workbooks for equivalent and enhanced observability. Plan migration before renewal discussions that include observability requirements.</div>
+      </div>
+
+      <div class="tl-item" role="listitem">
+        <div class="tl-dot tl-dot-red" aria-hidden="true"></div>
+        <div class="tl-date">September 30, 2028</div>
+        <div class="tl-title">Azure Functions — Classic Linux Consumption Retirement</div>
+        <div class="tl-desc">Classic Linux Consumption plan functions are retired on September 30, 2028. New portal creation of classic Linux Consumption functions was already removed and new feature work stopped in 2025. Migrate to Flex Consumption before this date — Flex offers VNet integration, per-function scaling, and Availability Zones at consumption pricing.</div>
+      </div>
+
+      <div class="tl-item" role="listitem">
+        <div class="tl-dot tl-dot-yellow" aria-hidden="true"></div>
+        <div class="tl-date preview">Preview Watch List</div>
+        <div class="tl-title">Features in Active Preview — Monitor for GA</div>
+        <div class="tl-desc">
+          <ul style="margin:6px 0 0 16px;font-size:12px;color:var(--text-sec);line-height:1.7">
+            <li><strong>Logic Apps Agent Loop — Consumption:</strong> Preview with portal-only authoring and fixed model selection. Expect GA promotion with Standard parity over time.</li>
+            <li><strong>Logic Apps Remote MCP Servers (Standard):</strong> Preview. Exposes workflows as MCP tool endpoints via API Center. High customer demand; likely to move to GA.</li>
+            <li><strong>Logic Apps multi-agent handoff (Standard):</strong> Preview. Watch for GA alongside broader Agent Loop feature graduation.</li>
+            <li><strong>Durable Task for Microsoft Agent Framework:</strong> Preview. Multi-agent orchestration with OpenAI SDK. Watch for GA alongside Agent Framework GA.</li>
+            <li><strong>Durable Task Scheduler — Consumption SKU:</strong> Preview. Dedicated SKU is GA. Consumption SKU follows.</li>
+            <li><strong>APIM v2 feature parity gaps:</strong> Multi-region, backup/restore, self-hosted gateway, and multiple custom domain names remain unavailable in v2 tiers. Monitor Azure updates for roadmap items.</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════
+       SECTION 10 — FINAL SUMMARY
+  ════════════════════════════════════════════════════ -->
+  <section class="section" id="summary" aria-labelledby="summary-heading">
+    <p class="section-label">Key Takeaways</p>
+    <h2 class="section-title" id="summary-heading">Final Summary</h2>
+    <p class="section-subtitle">One-line role for each service, the composition principle, and the v2 SKU generation value proposition.</p>
+
+    <div class="summary-cards">
+      <div class="summary-card">
+        <div class="summary-service">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" aria-hidden="true"><rect x="2" y="4" width="20" height="5" rx="1"/><rect x="2" y="10" width="20" height="5" rx="1"/><rect x="2" y="16" width="20" height="5" rx="1"/></svg>
+          API Management
+        </div>
+        <div class="summary-line">The governance layer for APIs.</div>
+        <div class="summary-then">Now also: AI Gateway and enterprise MCP registry.</div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-service" style="color:#0F6CBD">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0F6CBD" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="5" height="5" rx="1"/><rect x="16" y="3" width="5" height="5" rx="1"/><rect x="3" y="16" width="5" height="5" rx="1"/><rect x="16" y="16" width="5" height="5" rx="1"/></svg>
+          Logic Apps
+        </div>
+        <div class="summary-line">The orchestration layer for workflows.</div>
+        <div class="summary-then">Now also: Agent Loop host for agentic business processes.</div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-service" style="color:var(--ga)">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--ga)" stroke-width="2" aria-hidden="true"><polygon points="13,2 3,14 12,14 11,22 21,10 12,10"/></svg>
+          Azure Functions
+        </div>
+        <div class="summary-line">The compute layer for custom code.</div>
+        <div class="summary-then">Now also: MCP tool server and durable agent runtime.</div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-service" style="color:var(--teal)">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          The Composition Principle
+        </div>
+        <div class="summary-line">Most production architectures compose two or three of these services.</div>
+        <div class="summary-then">The best answer is rarely a single service.</div>
+      </div>
+    </div>
+
+    <div class="summary-hero-note" role="note" aria-label="Key takeaway: the v2 SKU generation">
+      <strong>The v2 SKU generation changes the cost equation.</strong> APIM Standard v2 + Logic Apps Standard + Functions Flex Consumption delivers the composed architecture with full private networking at significantly lower cost and complexity than the classic Premium stack. For most new production designs, the v2/Flex generation is the right starting point — escalating to classic Premium or Functions Premium only when multi-region (APIM), full management plane isolation (classic Premium), or sub-50ms cold-start guarantees (Functions Premium) are genuine requirements.
+    </div>
+  </section>
+
+</div><!-- /container -->
+</main>
+
+<!-- ═══════════════════════════════════════════════════
+     FOOTER
+════════════════════════════════════════════════════ -->
+<footer role="contentinfo">
+  <div class="footer-inner">
+    <div>Contributed by <strong>Toni Montez</strong>, Digital Solution Engineer — SME&amp;C Corporate (US SME&amp;C East-Azure)</div>
+    <div>
+      Repo: <a href="https://github.com/SME-C-Infographics/sme-c-infographics.github.io" target="_blank" rel="noopener">SME-C-Infographics/sme-c-infographics.github.io</a>
+      &nbsp;·&nbsp; Version 1.1 &nbsp;·&nbsp; Last updated: 2026-04-16
+    </div>
+    <div>This asset has a <strong>3-month refresh cadence</strong>. Next review: <strong>2026-07-16</strong></div>
+    <div style="color:var(--divider);font-size:10px;margin-top:4px">
+      All claims grounded against Microsoft Learn documentation, April 2026. Internal use only — SME&amp;C field enablement.
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
