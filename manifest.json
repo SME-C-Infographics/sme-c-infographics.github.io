@@ -20,6 +20,10 @@
         "title": "Fabric Data Agent — Modeling Best Practices"
       },
       {
+        "file": "medallion-architecture-infographic.html",
+        "title": "Medallion Lakehouse Architecture in Microsoft Fabric"
+      },
+      {
         "file": "microsoft-fabric-interactive.html",
         "title": "Microsoft Fabric — Unified Analytics Platform"
       }
