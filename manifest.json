@@ -20,6 +20,10 @@
         "title": "Fabric Data Agent — Modeling Best Practices"
       },
       {
+        "file": "fabric-governance-infographic.html",
+        "title": "Microsoft Fabric Governance Framework"
+      },
+      {
         "file": "medallion-architecture-infographic.html",
         "title": "Medallion Lakehouse Architecture in Microsoft Fabric"
       },
