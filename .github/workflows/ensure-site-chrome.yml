@@ -1,0 +1,57 @@
+name: Ensure Site Chrome
+
+# Single post-merge safety net for the tracking snippet, back button, and
+# manifest. Runs all three sequentially so they share one commit/push and
+# can't race each other into "fetch first" rejections.
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "**/*.html"
+      - "scripts/ensure-tracking.py"
+      - "scripts/ensure-back-button.py"
+      - "scripts/generate-manifest.py"
+      - ".github/workflows/ensure-site-chrome.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ensure-site-chrome-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  ensure-site-chrome:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Ensure tracking snippet in HTML pages
+        run: python3 scripts/ensure-tracking.py
+
+      - name: Ensure back button on HTML pages
+        run: python3 scripts/ensure-back-button.py
+
+      - name: Regenerate infographic manifest
+        run: python3 scripts/generate-manifest.py
+
+      - name: Commit any additions
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A -- '*.html' manifest.json
+          if git diff --staged --quiet; then
+            echo "Site chrome already up to date."
+          else
+            git commit -m "chore: ensure site chrome (tracking, back button, manifest) [skip ci]"
+            git push
+          fi

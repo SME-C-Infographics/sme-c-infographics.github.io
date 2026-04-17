@@ -1,17 +1,27 @@
-name: Fix Back Button on PR
+name: Fix Site Chrome on PR
+
+# Single PR auto-fix workflow for the tracking snippet, back button, and
+# manifest. Runs all three sequentially and produces one commit so the
+# fixers can't race each other on push.
 
 on:
   pull_request:
     paths:
       - "**/*.html"
+      - "scripts/ensure-tracking.py"
       - "scripts/ensure-back-button.py"
-      - ".github/workflows/fix-back-button-pr.yml"
+      - "scripts/generate-manifest.py"
+      - ".github/workflows/fix-site-chrome-pr.yml"
 
 permissions:
   contents: write
 
+concurrency:
+  group: fix-site-chrome-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
 jobs:
-  fix-back-button:
+  fix-site-chrome:
     # Skip PRs from forks: the default GITHUB_TOKEN cannot push back to them.
     if: github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
@@ -27,17 +37,23 @@ jobs:
         with:
           python-version: "3.x"
 
+      - name: Ensure tracking snippet in HTML pages
+        run: python3 scripts/ensure-tracking.py
+
       - name: Ensure back button on HTML pages
         run: python3 scripts/ensure-back-button.py
+
+      - name: Regenerate infographic manifest
+        run: python3 scripts/generate-manifest.py
 
       - name: Commit any additions back to the PR branch
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add -A -- '*.html'
+          git add -A -- '*.html' manifest.json
           if git diff --staged --quiet; then
-            echo "Back button already present on all HTML pages."
+            echo "Site chrome already up to date on this PR."
           else
-            git commit -m "chore: ensure SME&C back button on all pages"
+            git commit -m "chore: ensure site chrome (tracking, back button, manifest)"
             git push origin HEAD:${{ github.head_ref }}
           fi
