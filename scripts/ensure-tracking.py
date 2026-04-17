@@ -52,7 +52,7 @@ def ensure_snippet(filepath: str, check_only: bool = False) -> str:
     In check_only mode, files needing the snippet return 'missing' and
     are not modified. Otherwise they are modified and return 'added'.
     """
-    with open(filepath, encoding="utf-8") as fh:
+    with open(filepath, encoding="utf-8", newline="") as fh:
         content = fh.read()
 
     if META_REFRESH_RE.search(content):
@@ -68,8 +68,10 @@ def ensure_snippet(filepath: str, check_only: bool = False) -> str:
     if check_only:
         return "missing"
 
+    # Preserve the file's existing line-ending style.
+    nl = "\r\n" if "\r\n" in content else "\n"
     indent = match.group("indent")
-    insertion = f"{indent}{SNIPPET}\n"
+    insertion = f"{indent}{SNIPPET}{nl}"
     new_content = content[: match.start()] + insertion + content[match.start() :]
 
     with open(filepath, "w", encoding="utf-8", newline="") as fh:

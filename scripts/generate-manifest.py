@@ -5,6 +5,7 @@ Scans each infographic category folder for HTML files, extracts their
 at the repository root so the front page can link to them dynamically.
 """
 
+import html
 import json
 import os
 import re
@@ -32,7 +33,11 @@ def extract_title(filepath: str, fallback: str) -> str:
             content = fh.read(4096)  # only read beginning of file
         match = TITLE_RE.search(content)
         if match:
-            title = match.group(1).strip()
+            # Decode HTML entities (e.g. &amp; → &, &mdash; → —) and
+            # collapse any internal whitespace that came from line breaks
+            # inside the <title> tag.
+            title = html.unescape(match.group(1))
+            title = re.sub(r"\s+", " ", title).strip()
             if title:
                 return title
     except OSError:
