@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Become a Frontier Firm — Microsoft's Playbook for the Agentic Enterprise</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; font-size: 16px; }
+  body {
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: #1a1a1a; background: #f5f5f7; line-height: 1.65; overflow-x: hidden;
+  }
+  a { color: #0078d4; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  /* ── NAV ── */
+  .nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+    background: rgba(10,10,25,.92); backdrop-filter: blur(14px);
+    border-bottom: 1px solid rgba(255,255,255,.08);
+    display: flex; align-items: center; height: 56px; padding: 0 2rem;
+    transition: box-shadow .3s;
+  }
+  .nav.scrolled { box-shadow: 0 2px 20px rgba(0,0,0,.3); }
+  .nav-logo {
+    font-weight: 700; font-size: .95rem; color: #fff;
+    white-space: nowrap; margin-right: 2rem;
+    display: flex; align-items: center; gap: .6rem;
+  }
+  .nav-logo-dot {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: linear-gradient(135deg, #50e6ff, #b48cde);
+    box-shadow: 0 0 12px #50e6ff;
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 12px #50e6ff; }
+    50% { box-shadow: 0 0 20px #b48cde; }
+  }
+  .nav-links { display: flex; gap: .2rem; overflow-x: auto; scrollbar-width: none; }
+  .nav-links::-webkit-scrollbar { display: none; }
+  .nav-links a {
+    padding: .4rem .7rem; border-radius: 6px; font-size: .78rem;
+    white-space: nowrap; color: #aaa; transition: all .2s;
+  }
+  .nav-links a:hover, .nav-links a.active { background: rgba(180,140,222,.12); color: #b48cde; text-decoration: none; }
+  .progress-bar {
+    position: fixed; top: 56px; left: 0; height: 3px;
+    background: linear-gradient(90deg, #50e6ff, #b48cde, #ff5580);
+    z-index: 999; width: 0; transition: width .1s;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; text-align: center;
+    padding: 6rem 2rem 4rem;
+    background: #05050f;
+    color: #fff; position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content:''; position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse at 15% 85%, rgba(80,230,255,.12) 0%, transparent 45%),
+      radial-gradient(ellipse at 85% 15%, rgba(180,140,222,.15) 0%, transparent 50%),
+      radial-gradient(ellipse at 50% 50%, rgba(255,85,128,.06) 0%, transparent 70%);
+  }
+  .hero::after {
+    content:''; position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,.015) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.015) 1px, transparent 1px);
+    background-size: 50px 50px;
+    mask-image: radial-gradient(ellipse at center, rgba(0,0,0,.8) 0%, transparent 70%);
+  }
+  .hero-content { position: relative; z-index: 1; }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: .5rem;
+    padding: .45rem 1.2rem; border-radius: 20px;
+    background: rgba(255,255,255,.06); font-size: .82rem;
+    margin-bottom: 1.75rem; backdrop-filter: blur(6px);
+    border: 1px solid rgba(180,140,222,.3);
+    animation: fadeDown .7s ease-out;
+    color: #b48cde; font-weight: 600; letter-spacing: .03em;
+  }
+  .hero-badge::before {
+    content: '⬤'; font-size: .55rem; color: #50e6ff;
+    animation: blink 1.5s infinite;
+  }
+  @keyframes blink { 50% { opacity: .3; } }
+
+  .hero h1 {
+    font-size: clamp(2.4rem, 6vw, 4.5rem); font-weight: 800;
+    max-width: 1020px; animation: fadeDown .7s ease-out .1s both; line-height: 1.05;
+    letter-spacing: -.02em;
+  }
+  .hero h1 .accent {
+    background: linear-gradient(135deg, #50e6ff 0%, #b48cde 50%, #ff5580 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero-tag {
+    font-size: clamp(1rem, 2vw, 1.25rem); max-width: 720px;
+    margin-top: 1.5rem; opacity: .78; animation: fadeDown .7s ease-out .2s both;
+    font-weight: 400;
+  }
+  .hero-quote {
+    margin-top: 2.25rem; padding: 1rem 1.75rem;
+    border-left: 3px solid #b48cde;
+    font-size: 1.05rem; font-style: italic; opacity: .9;
+    max-width: 640px; text-align: left;
+    animation: fadeDown .7s ease-out .3s both;
+  }
+  .hero-quote strong { color: #50e6ff; font-style: normal; font-weight: 700; }
+  .hero-cta {
+    margin-top: 2.5rem; display: flex; gap: 1rem; flex-wrap: wrap;
+    justify-content: center; animation: fadeDown .7s ease-out .4s both;
+  }
+  .btn {
+    display: inline-flex; align-items: center; gap: .5rem;
+    padding: .85rem 2rem; border-radius: 8px; font-size: .95rem;
+    font-weight: 700; transition: transform .2s, box-shadow .2s;
+    cursor: pointer; border: none; letter-spacing: .02em;
+  }
+  .btn:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(180,140,222,.3); text-decoration: none; }
+  .btn-primary {
+    background: linear-gradient(135deg, #50e6ff, #b48cde);
+    color: #05050f;
+  }
+  .btn-outline { background: transparent; color: #fff; border: 2px solid rgba(255,255,255,.25); }
+
+  .hero-stats {
+    display: flex; gap: 3rem; margin-top: 3rem;
+    animation: fadeDown .7s ease-out .5s both;
+    flex-wrap: wrap; justify-content: center;
+  }
+  .hero-stat { text-align: center; }
+  .hero-stat .stat-num {
+    font-size: 2.2rem; font-weight: 800;
+    background: linear-gradient(135deg, #50e6ff, #b48cde);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero-stat .stat-label { font-size: .78rem; opacity: .6; margin-top: .2rem; letter-spacing: .04em; }
+
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── SECTIONS ── */
+  section { padding: 6rem 2rem; position: relative; }
+  .container { max-width: 1200px; margin: 0 auto; }
+  .section-label {
+    display: inline-block; font-size: .72rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: .12em; color: #b48cde;
+    margin-bottom: .6rem;
+  }
+  .section-title {
+    font-size: clamp(1.6rem, 3.5vw, 2.6rem); font-weight: 800; margin-bottom: .75rem;
+    letter-spacing: -.01em; line-height: 1.15;
+  }
+  .section-sub { font-size: 1.1rem; color: #555; max-width: 760px; margin-bottom: 3rem; }
+
+  /* Dark sections */
+  .dark-section { background: #0a0a1a; color: #fff; }
+  .dark-section .section-label { color: #50e6ff; }
+  .dark-section .section-sub { color: rgba(255,255,255,.65); }
+
+  /* ── REVEAL ── */
+  .reveal { opacity: 0; transform: translateY(28px); transition: opacity .7s ease-out, transform .7s ease-out; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* ── PROVOCATION BANNER ── */
+  .provoc {
+    background: linear-gradient(135deg, #0a0a1a 0%, #1a0a2a 50%, #2a0a30 100%);
+    padding: 5rem 2rem; text-align: center; color: #fff;
+    position: relative; overflow: hidden;
+  }
+  .provoc::before {
+    content:''; position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse at 30% 50%, rgba(255,85,128,.15) 0%, transparent 50%),
+      radial-gradient(ellipse at 70% 50%, rgba(80,230,255,.1) 0%, transparent 50%);
+  }
+  .provoc-content { position: relative; z-index: 1; max-width: 900px; margin: 0 auto; }
+  .provoc h2 {
+    font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 800; line-height: 1.2;
+    margin-bottom: 1.25rem; letter-spacing: -.01em;
+  }
+  .provoc h2 .hl {
+    background: linear-gradient(135deg, #ff5580, #b48cde);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .provoc p { font-size: 1.15rem; opacity: .85; }
+
+  /* ── THREE STAGES ── */
+  .stages-wrap {
+    display: grid; grid-template-columns: 1fr 1fr 1fr;
+    gap: 1rem; position: relative; margin-top: 2rem;
+  }
+  .stage-card {
+    background: #fff; border-radius: 18px; padding: 2rem 1.75rem;
+    box-shadow: 0 4px 20px rgba(0,0,0,.06); border-top: 5px solid;
+    position: relative; transition: transform .3s, box-shadow .3s;
+  }
+  .stage-card:hover { transform: translateY(-5px); box-shadow: 0 12px 40px rgba(0,0,0,.12); }
+  .stage-card.s1 { border-color: #64748b; }
+  .stage-card.s2 { border-color: #0078d4; }
+  .stage-card.s3 {
+    border-color: #b48cde;
+    background: linear-gradient(180deg, #fff 0%, #faf7ff 100%);
+    box-shadow: 0 6px 30px rgba(180,140,222,.18);
+  }
+  .stage-card.s3::before {
+    content: 'FRONTIER';
+    position: absolute; top: -13px; right: 20px;
+    background: linear-gradient(135deg, #b48cde, #ff5580);
+    color: #fff; font-size: .62rem; font-weight: 800;
+    padding: .3rem .7rem; border-radius: 10px;
+    letter-spacing: .08em;
+    box-shadow: 0 4px 12px rgba(180,140,222,.35);
+  }
+  .stage-num {
+    display: inline-block; width: 36px; height: 36px; border-radius: 50%;
+    font-size: .85rem; font-weight: 800; color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 1rem;
+  }
+  .s1 .stage-num { background: #64748b; }
+  .s2 .stage-num { background: #0078d4; }
+  .s3 .stage-num { background: linear-gradient(135deg, #b48cde, #ff5580); }
+  .stage-card h3 { font-size: 1.2rem; font-weight: 700; color: #002050; margin-bottom: .5rem; }
+  .stage-card .stage-tag { font-size: .78rem; font-weight: 600; color: #888; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 1rem; }
+  .stage-card p { font-size: .92rem; color: #444; line-height: 1.6; margin-bottom: .75rem; }
+  .stage-feature { font-size: .82rem; color: #5C2D91; font-weight: 600; padding: .35rem 0; border-top: 1px dashed #eee; margin-top: .75rem; }
+
+  /* ── FOUR PILLARS ── */
+  .pillar-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.25rem; margin-top: 1rem;
+  }
+  .pillar-card {
+    background: rgba(255,255,255,.04); backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,.08); border-radius: 16px;
+    padding: 1.75rem; transition: all .3s; position: relative;
+  }
+  .pillar-card:hover {
+    transform: translateY(-4px); border-color: rgba(180,140,222,.4);
+    background: rgba(180,140,222,.08);
+  }
+  .pillar-icon {
+    width: 48px; height: 48px; border-radius: 12px;
+    background: linear-gradient(135deg, rgba(80,230,255,.15), rgba(180,140,222,.15));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem; margin-bottom: 1rem;
+  }
+  .pillar-num {
+    position: absolute; top: 1rem; right: 1.25rem;
+    font-size: 2rem; font-weight: 800; opacity: .1; color: #50e6ff;
+  }
+  .pillar-card h4 { font-size: 1rem; margin-bottom: .5rem; color: #fff; }
+  .pillar-card p { font-size: .87rem; color: rgba(255,255,255,.65); line-height: 1.55; }
+
+  /* ── SIX-PILLAR 360 WHEEL ── */
+  .wheel-wrap {
+    background: #fff; border-radius: 20px; padding: 2.5rem;
+    box-shadow: 0 3px 16px rgba(0,0,0,.06);
+  }
+  .wheel-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;
+  }
+  .wheel-item {
+    background: #faf7ff; border-radius: 14px; padding: 1.5rem 1.25rem;
+    border-left: 4px solid;
+    transition: all .3s;
+  }
+  .wheel-item:hover { transform: translateX(4px); box-shadow: 0 4px 16px rgba(0,0,0,.08); }
+  .wheel-item.w1 { border-color: #0078d4; }
+  .wheel-item.w2 { border-color: #5C2D91; }
+  .wheel-item.w3 { border-color: #008575; }
+  .wheel-item.w4 { border-color: #c19a00; }
+  .wheel-item.w5 { border-color: #e63946; }
+  .wheel-item.w6 { border-color: #ff6b9d; }
+  .wheel-tag {
+    font-size: .68rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .06em; margin-bottom: .4rem;
+  }
+  .w1 .wheel-tag { color: #0078d4; }
+  .w2 .wheel-tag { color: #5C2D91; }
+  .w3 .wheel-tag { color: #008575; }
+  .w4 .wheel-tag { color: #c19a00; }
+  .w5 .wheel-tag { color: #e63946; }
+  .w6 .wheel-tag { color: #ff6b9d; }
+  .wheel-item h4 { font-size: 1rem; color: #002050; margin-bottom: .4rem; }
+  .wheel-item p { font-size: .85rem; color: #555; line-height: 1.5; }
+
+  /* ── GOVERNANCE MATRIX ── */
+  .matrix-wrap {
+    background: #fff; border-radius: 20px; padding: 2.5rem;
+    box-shadow: 0 3px 16px rgba(0,0,0,.06); overflow-x: auto;
+  }
+  .matrix-title {
+    text-align: center; font-size: .9rem; color: #666;
+    margin-bottom: 1.5rem; font-weight: 600;
+  }
+  .matrix-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;
+    min-width: 780px;
+  }
+  .matrix-tier {
+    border-radius: 14px; padding: 1.75rem 1.5rem; color: #fff;
+    position: relative; overflow: hidden;
+  }
+  .matrix-tier::before {
+    content: ''; position: absolute; inset: 0;
+    background: inherit; opacity: .92;
+  }
+  .matrix-tier.t1 { background: linear-gradient(135deg, #008575, #00b294); }
+  .matrix-tier.t2 { background: linear-gradient(135deg, #5C2D91, #8661c5); }
+  .matrix-tier.t3 { background: linear-gradient(135deg, #c42d38, #e63946); }
+  .matrix-content { position: relative; z-index: 1; }
+  .matrix-level {
+    font-size: .68rem; font-weight: 800; letter-spacing: .08em;
+    text-transform: uppercase; opacity: .8; margin-bottom: .4rem;
+  }
+  .matrix-tier h4 { font-size: 1.15rem; font-weight: 700; margin-bottom: .35rem; }
+  .matrix-tier .matrix-tool { font-size: .82rem; opacity: .88; margin-bottom: 1rem; font-weight: 600; }
+  .matrix-tier ul { list-style: none; margin-bottom: 1rem; }
+  .matrix-tier li {
+    font-size: .82rem; line-height: 1.5; padding: .2rem 0 .2rem 1rem;
+    position: relative; opacity: .92;
+  }
+  .matrix-tier li::before {
+    content: '●'; position: absolute; left: 0; font-size: .5rem; top: .55rem;
+  }
+  .matrix-review {
+    margin-top: 1rem; padding: .6rem .85rem; border-radius: 8px;
+    background: rgba(0,0,0,.18); font-size: .78rem; font-weight: 600;
+  }
+
+  /* ── PRINCIPLES LIST ── */
+  .principles-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 1rem; margin-top: 1rem;
+  }
+  .principle {
+    display: flex; gap: 1rem; padding: 1.25rem 1.25rem;
+    background: #fff; border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,.04);
+    transition: transform .2s;
+  }
+  .principle:hover { transform: translateY(-2px); }
+  .principle-num {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: linear-gradient(135deg, #5C2D91, #b48cde);
+    color: #fff; font-weight: 800; font-size: .85rem;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .principle h4 { font-size: .95rem; color: #002050; margin-bottom: .25rem; line-height: 1.3; }
+  .principle p { font-size: .83rem; color: #555; line-height: 1.5; }
+
+  /* ── TAKEAWAYS ── */
+  .tk-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.25rem;
+  }
+  .tk-card {
+    background: rgba(255,255,255,.04); backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,.08); border-radius: 14px;
+    padding: 1.5rem; transition: all .3s;
+  }
+  .tk-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(80,230,255,.35);
+    background: rgba(80,230,255,.05);
+  }
+  .tk-card h4 {
+    color: #50e6ff; font-size: .95rem; margin-bottom: .5rem;
+    display: flex; align-items: center; gap: .5rem;
+  }
+  .tk-card h4::before {
+    content: '✓'; font-size: .85rem;
+    width: 22px; height: 22px; border-radius: 50%;
+    background: rgba(80,230,255,.15); color: #50e6ff;
+    display: inline-flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .tk-card p { font-size: .85rem; color: rgba(255,255,255,.68); line-height: 1.55; }
+
+  /* ── EXPERT QUOTES ── */
+  .quote-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 1.5rem; margin-top: 1rem;
+  }
+  .quote-card {
+    background: #fff; border-radius: 16px; padding: 2rem;
+    box-shadow: 0 3px 16px rgba(0,0,0,.05);
+    position: relative; border-left: 4px solid #b48cde;
+  }
+  .quote-card::before {
+    content: '"'; position: absolute;
+    top: .25rem; left: 1.25rem;
+    font-size: 4rem; color: rgba(180,140,222,.18);
+    font-family: Georgia, serif; line-height: 1;
+  }
+  .quote-card p {
+    font-size: .95rem; color: #333; line-height: 1.65;
+    font-style: italic; margin-bottom: 1rem; padding-left: 2rem;
+  }
+  .quote-author { padding-left: 2rem; }
+  .quote-author strong { display: block; color: #002050; font-size: .9rem; }
+  .quote-author span { font-size: .78rem; color: #888; }
+
+  /* ── CALL TO ACTION ── */
+  .final-cta {
+    background:
+      linear-gradient(135deg, rgba(10,10,26,.95), rgba(42,10,48,.95)),
+      radial-gradient(ellipse at 20% 80%, rgba(80,230,255,.2), transparent 60%),
+      radial-gradient(ellipse at 80% 20%, rgba(180,140,222,.2), transparent 60%);
+    border-radius: 24px; padding: 4rem 3rem; text-align: center; color: #fff;
+    position: relative; overflow: hidden; margin-top: 2.5rem;
+  }
+  .final-cta::before {
+    content:''; position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.02) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+  .final-cta-inner { position: relative; z-index: 1; }
+  .final-cta h3 {
+    font-size: clamp(1.5rem, 3vw, 2.2rem); margin-bottom: 1rem;
+    font-weight: 800; line-height: 1.2;
+  }
+  .final-cta h3 .hl {
+    background: linear-gradient(135deg, #50e6ff, #b48cde);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .final-cta p { font-size: 1.05rem; opacity: .85; margin-bottom: 2rem; max-width: 700px; margin-left: auto; margin-right: auto; }
+
+  /* ── FOOTER ── */
+  .footer {
+    text-align: center; padding: 2rem; color: #888; font-size: .82rem;
+    border-top: 1px solid #e0e0e0; margin-top: 2rem;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    .stages-wrap { grid-template-columns: 1fr; }
+    .wheel-grid { grid-template-columns: 1fr; }
+    .matrix-grid { grid-template-columns: 1fr; min-width: auto; }
+  }
+  @media (max-width: 768px) {
+    .nav { padding: 0 1rem; }
+    section { padding: 3.5rem 1rem; }
+    .hero-stats { gap: 1.5rem; }
+    .hero-stat .stat-num { font-size: 1.5rem; }
+    .final-cta { padding: 2.5rem 1.5rem; }
+  }
+  @media print {
+    .nav, .progress-bar { display: none; }
+    body { background: #fff; }
+    .hero, .dark-section, .provoc { background: #fff !important; color: #000 !important; }
+    .hero h1 .accent, .provoc h2 .hl, .final-cta h3 .hl { -webkit-text-fill-color: #5C2D91; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <div class="nav-logo">
+    <span class="nav-logo-dot"></span>
+    Frontier Firm Playbook
+  </div>
+  <div class="nav-links">
+    <a href="#top">The Shift</a>
+    <a href="#stages">3 Stages</a>
+    <a href="#pillars">4 Pillars</a>
+    <a href="#approach">360° Approach</a>
+    <a href="#governance">Governance</a>
+    <a href="#principles">Principles</a>
+    <a href="#learnings">Learnings</a>
+    <a href="#act">Act Now</a>
+  </div>
+</nav>
+<div class="progress-bar" id="progressBar"></div>
+
+<!-- HERO -->
+<header class="hero" id="top">
+  <div class="hero-content">
+    <div class="hero-badge">Microsoft Digital Customer Zero Playbook</div>
+    <h1>The Frontier Firm Isn't Coming.<br><span class="accent">It's Already Here.</span></h1>
+    <p class="hero-tag">A new kind of company is emerging &mdash; AI-operated, human-led, and scaling through teams of autonomous agents. Microsoft spent three years becoming one. This is what we learned so you can move faster than we did.</p>
+    <div class="hero-quote">
+      &ldquo;A new organizational blueprint is emerging. It blends machine intelligence with human judgment to create systems that are <strong>AI-operated but human-led</strong>. We have a name for an organization that enacts this model: The Frontier Firm.&rdquo;
+    </div>
+    <div class="hero-cta">
+      <a href="#stages" class="btn btn-primary">See the 3 Stages &rarr;</a>
+      <a href="#act" class="btn btn-outline">What Should I Do Monday?</a>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="stat-num">3 yrs</div><div class="stat-label">Microsoft's journey so far</div></div>
+      <div class="hero-stat"><div class="stat-num">4</div><div class="stat-label">Pillars of practice</div></div>
+      <div class="hero-stat"><div class="stat-num">6</div><div class="stat-label">Governance principles</div></div>
+      <div class="hero-stat"><div class="stat-num">1</div><div class="stat-label">Decision you're avoiding</div></div>
+    </div>
+  </div>
+</header>
+
+<!-- ═══════════ PROVOCATION ═══════════ -->
+<div class="provoc">
+  <div class="provoc-content">
+    <h2>Your org chart already has ghosts in it.<br><span class="hl">They're just not on the payroll yet.</span></h2>
+    <p>Every process you haven't automated, every insight locked in a 200-page PDF, every hour your team spends on repetitive work &mdash; that's where agents will live. The question isn't <em>whether</em>. The question is <em>who builds them first: you, or your competitor?</em></p>
+  </div>
+</div>
+
+<!-- ═══════════ THE 3 STAGES ═══════════ -->
+<section id="stages">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label">The Evolution</span>
+      <h2 class="section-title">From AI Assistance to AI Autonomy</h2>
+      <p class="section-sub">Frontier Firms move through three distinct stages. Most organizations are stuck at Stage 1. The Frontier Firm is already operating at Stage 3 &mdash; and it's a step-change, not a step.</p>
+    </div>
+
+    <div class="stages-wrap">
+
+      <div class="stage-card s1 reveal">
+        <div class="stage-num">1</div>
+        <div class="stage-tag">Where most companies live today</div>
+        <h3>Humans + AI Assistant</h3>
+        <p>People do the work. AI helps. A person writes an email in Outlook, Copilot suggests edits. A person builds a deck, Copilot drafts slides. Value is real &mdash; but every task still starts and ends with a human.</p>
+        <div class="stage-feature">Stage-1 signal &rarr; "Copilot saves me 30 min a day."</div>
+      </div>
+
+      <div class="stage-card s2 reveal">
+        <div class="stage-num">2</div>
+        <div class="stage-tag">The transition most companies are entering</div>
+        <h3>Human-Agent Teams</h3>
+        <p>Agents join the team. They run specific workflows autonomously but report back. A procurement agent drafts POs for approval. A finance agent closes routine expense claims. Humans orchestrate multiple agents like a squad lead.</p>
+        <div class="stage-feature">Stage-2 signal &rarr; "My agent handled 80 tickets overnight."</div>
+      </div>
+
+      <div class="stage-card s3 reveal">
+        <div class="stage-num">3</div>
+        <div class="stage-tag">The Frontier Firm operates here</div>
+        <h3>Humans Lead Agent Teams</h3>
+        <p>Agents are the core labor. They perform work with <strong>relative autonomy</strong>; humans set strategy, make judgment calls, and govern. Whole processes run agent-first. The org chart rebalances: fewer layers doing tasks, more humans leading outcomes.</p>
+        <div class="stage-feature">Stage-3 signal &rarr; "My job is designing what my agents work on next."</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ FOUR PILLARS ═══════════ -->
+<section id="pillars" class="dark-section">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label">The Operating Model</span>
+      <h2 class="section-title">The 4 Pillars of Practice at Microsoft Digital</h2>
+      <p class="section-sub">Microsoft's internal IT organization rebuilt itself around four commitments. Every Frontier Firm will need its own version of these.</p>
+    </div>
+    <div class="pillar-grid">
+
+      <div class="pillar-card reveal">
+        <div class="pillar-num">01</div>
+        <div class="pillar-icon">&#x1F52E;</div>
+        <h4>Envision &amp; Implement</h4>
+        <p>We envision and build the AI-first workplace of the future &mdash; then ship it to our own employees before anyone else.</p>
+      </div>
+
+      <div class="pillar-card reveal">
+        <div class="pillar-num">02</div>
+        <div class="pillar-icon">&#x1F680;</div>
+        <h4>Empower the Builders</h4>
+        <p>Employees build their own agents. We give them the training, templates, and inspiration to supercharge their productivity.</p>
+      </div>
+
+      <div class="pillar-card reveal">
+        <div class="pillar-num">03</div>
+        <div class="pillar-icon">&#x1F6E1;</div>
+        <h4>Guardrails &amp; Safety</h4>
+        <p>We define the rules of the road so employees can unleash AI's power while keeping the enterprise safe, secure, and compliant.</p>
+      </div>
+
+      <div class="pillar-card reveal">
+        <div class="pillar-num">04</div>
+        <div class="pillar-icon">&#x1F4E2;</div>
+        <h4>Voice of Transformation</h4>
+        <p>We're Customer Zero. We publish our playbook so our customers can shortcut the hardest parts of their own AI journey.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ 360° APPROACH ═══════════ -->
+<section id="approach">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label">Agents at Microsoft Initiative</span>
+      <h2 class="section-title">The 360° Approach to Agentic Maturity</h2>
+      <p class="section-sub">A cross-disciplinary initiative with six workstreams &mdash; each with an accountable team. This is the org shape of a Frontier Firm.</p>
+    </div>
+    <div class="wheel-wrap reveal">
+      <div class="wheel-grid">
+        <div class="wheel-item w1">
+          <div class="wheel-tag">Workstream 01</div>
+          <h4>Build</h4>
+          <p>Platforms and tools that let every employee create agents &mdash; from no-code to pro-code.</p>
+        </div>
+        <div class="wheel-item w2">
+          <div class="wheel-tag">Workstream 02</div>
+          <h4>Publish</h4>
+          <p>Catalogs, sharing models, and release paths that move agents from prototype to production.</p>
+        </div>
+        <div class="wheel-item w3">
+          <div class="wheel-tag">Workstream 03</div>
+          <h4>Govern</h4>
+          <p>Policies, reviews, and risk tiering that keep agents aligned with Responsible AI principles.</p>
+        </div>
+        <div class="wheel-item w4">
+          <div class="wheel-tag">Workstream 04</div>
+          <h4>Manage</h4>
+          <p>Lifecycle, attestation, and sprawl control &mdash; agents that disappear when their owner leaves.</p>
+        </div>
+        <div class="wheel-item w5">
+          <div class="wheel-tag">Workstream 05</div>
+          <h4>Get Value</h4>
+          <p>Adoption programs, support, and the Center of Excellence that makes agents land with humans.</p>
+        </div>
+        <div class="wheel-item w6">
+          <div class="wheel-tag">Workstream 06</div>
+          <h4>Measure</h4>
+          <p>Telemetry, observability, and impact metrics so the business can see what's working.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ GOVERNANCE MATRIX ═══════════ -->
+<section id="governance" style="background:#fff;">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label">Right-Sized Oversight</span>
+      <h2 class="section-title">The Matrixed Governance Model</h2>
+      <p class="section-sub">One size fits nothing. Microsoft tiers agent governance by risk and complexity &mdash; letting employees move fast on low-risk agents while applying full SDLC rigor where it matters.</p>
+    </div>
+
+    <div class="matrix-wrap reveal">
+      <div class="matrix-title">← Increasing risk, complexity, and oversight →</div>
+      <div class="matrix-grid">
+
+        <div class="matrix-tier t1">
+          <div class="matrix-content">
+            <div class="matrix-level">Tier 1 &mdash; Self-Service</div>
+            <h4>Personal Agents</h4>
+            <div class="matrix-tool">Agent Builder in Microsoft 365 Copilot</div>
+            <ul>
+              <li>Knowledge-only, read-only</li>
+              <li>SharePoint/OneDrive the user already sees</li>
+              <li>No actions, no plug-ins</li>
+              <li>Shared personally or via link</li>
+            </ul>
+            <div class="matrix-review">No proactive review &mdash; reactive takedown only</div>
+          </div>
+        </div>
+
+        <div class="matrix-tier t2">
+          <div class="matrix-content">
+            <div class="matrix-level">Tier 2 &mdash; Team / Line of Business</div>
+            <h4>Team Agents</h4>
+            <div class="matrix-tool">Power Platform + Copilot Studio</div>
+            <ul>
+              <li>Known lower-risk patterns</li>
+              <li>Data connectors from approved catalog</li>
+              <li>Sharing limits until risk approval</li>
+              <li>Managed environment strategy</li>
+            </ul>
+            <div class="matrix-review">Lightweight review against risk approval gates</div>
+          </div>
+        </div>
+
+        <div class="matrix-tier t3">
+          <div class="matrix-content">
+            <div class="matrix-level">Tier 3 &mdash; Enterprise</div>
+            <h4>Enterprise-Grade Agents</h4>
+            <div class="matrix-tool">Pro-code + custom Azure OpenAI / Foundry</div>
+            <ul>
+              <li>Custom connectors &amp; orchestration</li>
+              <li>Writes &amp; transforms data</li>
+              <li>Ships as Teams apps or catalog listings</li>
+              <li>Can affect many users</li>
+            </ul>
+            <div class="matrix-review">Full SDLC: security, privacy, accessibility, RAI, maker stack</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ SIX PRINCIPLES ═══════════ -->
+<section id="principles" style="background:#faf7ff;">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label">The Governance Creed</span>
+      <h2 class="section-title">6 Principles for Governing Agents</h2>
+      <p class="section-sub">Microsoft Digital's guiding principles &mdash; write these down, post them somewhere visible, argue about them with your team.</p>
+    </div>
+    <div class="principles-grid">
+
+      <div class="principle reveal">
+        <div class="principle-num">1</div>
+        <div>
+          <h4>Trust your data first</h4>
+          <p>A strong data hygiene foundation is non-negotiable. Labels, permissions, lifecycle &mdash; before agents can be trusted, the data estate must be.</p>
+        </div>
+      </div>
+
+      <div class="principle reveal">
+        <div class="principle-num">2</div>
+        <div>
+          <h4>Empower the individual</h4>
+          <p>Every employee can build personal agents over data <em>they already have access to</em>. That's not a risk &mdash; that's leverage.</p>
+        </div>
+      </div>
+
+      <div class="principle reveal">
+        <div class="principle-num">3</div>
+        <div>
+          <h4>Empower the team</h4>
+          <p>Lines of business build agents using known lower-risk patterns. Accelerate impact without waiting for central IT for every ask.</p>
+        </div>
+      </div>
+
+      <div class="principle reveal">
+        <div class="principle-num">4</div>
+        <div>
+          <h4>Clear the runway for engineering</h4>
+          <p>Pro-code teams get a smooth path to build enterprise agents with full access to the services and sources they need.</p>
+        </div>
+      </div>
+
+      <div class="principle reveal">
+        <div class="principle-num">5</div>
+        <div>
+          <h4>Accelerate with a CoE</h4>
+          <p>Agent and automation templates + an AI Center of Excellence help every team ideate, prioritize, and ship the right agents faster.</p>
+        </div>
+      </div>
+
+      <div class="principle reveal">
+        <div class="principle-num">6</div>
+        <div>
+          <h4>Reimagine the work itself</h4>
+          <p>Don't just bolt agents onto old processes. Redesign employee experiences and task execution from first principles.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ KEY LEARNINGS ═══════════ -->
+<section id="learnings" class="dark-section">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label">Hard-Won Wisdom</span>
+      <h2 class="section-title">6 Things Microsoft Learned<br>(So You Don't Have To)</h2>
+      <p class="section-sub">The scar tissue of being Customer Zero &mdash; condensed.</p>
+    </div>
+    <div class="tk-grid">
+
+      <div class="tk-card reveal">
+        <h4>A strong data foundation is crucial</h4>
+        <p>Labels, hygiene, and governance policies must be baked in before agents go live. No shortcut here.</p>
+      </div>
+
+      <div class="tk-card reveal">
+        <h4>Decide your risk comfort first</h4>
+        <p>Convene cross-disciplinary experts to define what "acceptable risk" means &mdash; for different agent types and use cases.</p>
+      </div>
+
+      <div class="tk-card reveal">
+        <h4>Agents aren't applications</h4>
+        <p>Your SDLC doesn't scale to agents. Build a risk-based assessment model &mdash; not another approvals queue.</p>
+      </div>
+
+      <div class="tk-card reveal">
+        <h4>Change is the operating system</h4>
+        <p>Plan to reassess governance regularly. The tech changes monthly. Your policies need the same cadence.</p>
+      </div>
+
+      <div class="tk-card reveal">
+        <h4>Governance is employee value</h4>
+        <p>Good governance isn't a drag on adoption &mdash; it's what makes agents usable at scale. Measure value, not just compliance.</p>
+      </div>
+
+      <div class="tk-card reveal">
+        <h4>Don't abandon the rest of IT</h4>
+        <p>Enterprise tech is additive. Keep investing in the non-agentic workstreams that keep the lights on.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ EXPERT VOICES ═══════════ -->
+<section id="voices" style="background:#fff;">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label">Voices from Customer Zero</span>
+      <h2 class="section-title">What the People Building This Say</h2>
+      <p class="section-sub">Direct from the teams running Microsoft's own agentic transformation.</p>
+    </div>
+    <div class="quote-grid">
+
+      <div class="quote-card reveal">
+        <p>It's a truly transformative time. What we've learned from embracing the agentic future at Microsoft is only making us more eager to see organizations empower their employees to take the lead in a world where human judgment and machine intelligence work in harmony.</p>
+        <div class="quote-author">
+          <strong>Brian Fielder</strong>
+          <span>Vice President, Microsoft Digital</span>
+        </div>
+      </div>
+
+      <div class="quote-card reveal">
+        <p>As we harness the transformative power of AI agents, it's our responsibility in IT to ensure that technology not only enhances decision-making but also fosters a culture of innovation and collaboration across the organization.</p>
+        <div class="quote-author">
+          <strong>Stephan Kerametlian</strong>
+          <span>Sr. Director, Business Program Management, Microsoft Digital</span>
+        </div>
+      </div>
+
+      <div class="quote-card reveal">
+        <p>Our principles haven't changed, but they've evolved. With AI, the need for proactive governance is far greater than ever before &mdash; so we're putting structures in place that take some of the labor around managing agents off of IT.</p>
+        <div class="quote-author">
+          <strong>David Johnson</strong>
+          <span>Tenant &amp; Compliance Architect, Microsoft Digital</span>
+        </div>
+      </div>
+
+      <div class="quote-card reveal">
+        <p>The next step in our governance journey will be using AI to help us govern AI. We believe Agent 365 will be the foundation for our deterministic approach to governance.</p>
+        <div class="quote-author">
+          <strong>Aisha Hasan</strong>
+          <span>Power Platform &amp; Copilot Studio PM, Microsoft Digital</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ CALL TO ACTION ═══════════ -->
+<section id="act">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label">Your Move</span>
+      <h2 class="section-title">3 Things to Do Monday Morning</h2>
+      <p class="section-sub">Frontier Firms aren't built by roadmaps. They're built by starting. Here's where.</p>
+    </div>
+
+    <div class="principles-grid">
+      <div class="principle reveal">
+        <div class="principle-num">1</div>
+        <div>
+          <h4>Stand up a cross-disciplinary AI Center of Excellence</h4>
+          <p>Pull IT, security, legal, HR, and line-of-business leaders into one room. Set priorities, goals, and shared practices for agents &mdash; this week, not next quarter.</p>
+        </div>
+      </div>
+
+      <div class="principle reveal">
+        <div class="principle-num">2</div>
+        <div>
+          <h4>Audit your data estate</h4>
+          <p>Labels, sensitivity, oversharing. If agents went live today, what would leak? That list is your 30-day priority queue.</p>
+        </div>
+      </div>
+
+      <div class="principle reveal">
+        <div class="principle-num">3</div>
+        <div>
+          <h4>Right-size oversight by risk</h4>
+          <p>Define your tiers &mdash; personal, team, enterprise. Match review intensity to risk. Don't make every agent go through full SDLC, and don't let zero agents go through any.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="final-cta reveal">
+      <div class="final-cta-inner">
+        <h3>The agentic future isn't a forecast.<br><span class="hl">It's a deadline.</span></h3>
+        <p>Microsoft spent three years getting here. You don't have to. Take our playbook, skip our mistakes, and start leading the Frontier Firm of your industry.</p>
+        <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
+          <a href="https://www.microsoft.com/insidetrack/blog/becoming-a-frontier-firm-a-guide-for-deploying-ai-agents-based-on-our-experience-at-microsoft/" class="btn btn-primary" target="_blank">Read the Full Playbook &rarr;</a>
+          <a href="https://www.microsoft.com/en-us/microsoft-copilot/microsoft-copilot-studio" class="btn btn-outline" target="_blank">Start Building in Copilot Studio</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <p>Frontier Firm Playbook &bull; Adapted from <a href="https://www.microsoft.com/insidetrack/blog/becoming-a-frontier-firm-a-guide-for-deploying-ai-agents-based-on-our-experience-at-microsoft/" target="_blank">Microsoft Inside Track (April 2026)</a> &bull; A guide for deploying AI agents based on Microsoft's own experience as Customer Zero.</p>
+</footer>
+
+<script>
+(function(){
+  // ── Scroll Progress ──
+  const bar = document.getElementById('progressBar');
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.width = (window.scrollY / max * 100) + '%';
+    nav.classList.toggle('scrolled', window.scrollY > 20);
+  });
+
+  // ── Active Nav Link ──
+  const sections = document.querySelectorAll('section, header');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(l => l.classList.remove('active'));
+        const active = document.querySelector('.nav-links a[href="#' + entry.target.id + '"]');
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-40% 0px -60% 0px' });
+  sections.forEach(s => observer.observe(s));
+
+  // ── Reveal on Scroll ──
+  const reveals = document.querySelectorAll('.reveal');
+  const revealObs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        revealObs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  reveals.forEach(r => revealObs.observe(r));
+})();
+</script>
+
+</body>
+</html>
