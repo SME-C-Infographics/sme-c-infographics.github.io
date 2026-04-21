@@ -69,4 +69,77 @@ Findings from each phase are appended below as the spike progresses.
 
 ## Findings
 
-_(filled in as phases land)_
+### Baseline (before the spike)
+
+- 11 published infographics across 9 category folders.
+- Every page already had the Umami tracking snippet and the floating
+  back button (existing chrome scripts).
+- No page had: `<meta name="description">`, Open Graph tags, Twitter
+  card tags, or a favicon link.
+- No `<img>` tags in the corpus — imagery is inline SVG — so the image
+  `alt` checker is dormant but wired in for future contributions.
+- 53 distinct external links across the 11 pages. 1 was returning 404
+  at the time of the first scan (`https://azure.microsoft.com/pricing/`
+  referenced by `foundry/microsoft-ai-decision-guide.html`).
+- 6 occurrences of the legacy phrase "Azure OpenAI Service" in one
+  page; the terminology map treats this as `severity: low` and does not
+  auto-rewrite by default (review recommended).
+
+### What's automated now
+
+| Script | Behavior | Idempotent marker |
+|---|---|---|
+| `scripts/audit-pages.py` | Read-only inventory of every page → `reports/audit.json` | n/a |
+| `scripts/check-links.py` | HEAD/GET every external http(s) link → `reports/link-health.json` | n/a |
+| `scripts/check-deprecated-terms.py` | Scan / optionally rewrite terms from `terminology.json` | n/a |
+| `scripts/ensure-tracking.py` (existing) | Inject Umami analytics snippet | `data-website-id=...` |
+| `scripts/ensure-back-button.py` (existing) | Inject floating back button | `data-smec-back-button="v1"` |
+| `scripts/ensure-meta.py` | Inject description / OG / Twitter tags | `<!-- smec-meta v1 -->` |
+| `scripts/ensure-favicon.py` | Inject favicon `<link>` pointing at `/favicon.svg` | `<!-- smec-favicon v1 -->` |
+| `scripts/ensure-a11y.py` | Read-only a11y report → `reports/a11y.json` | n/a |
+| `scripts/generate-manifest.py` (existing) | Regenerate `manifest.json` | n/a |
+| `scripts/apply-template-change.py` | Idempotent bulk HTML edits from a JSON spec | `<!-- smec-tmpl:<id> -->` |
+| `scripts/suggest-content-updates.py` | LLM-assisted freshness review (report-only) | cached by content hash |
+
+### What's human-only (by design)
+
+- Writing meaningful alt text for any future images.
+- Editing page copy in response to LLM freshness suggestions.
+- Deciding whether a deprecated-terms rule is safe to auto-apply (most
+  rules ship at `severity: low` or `medium` and require review; the
+  high-severity ones — Azure AD → Entra ID, Cognitive Services → Azure
+  AI Services, Form Recognizer → Document Intelligence — are safe to
+  `--apply` when they appear).
+- Composing the content of any bulk-templating spec before applying it.
+
+### Workflows
+
+- `ensure-site-chrome.yml` (post-merge, main) — now runs tracking,
+  back button, meta, favicon, and manifest in one sequential commit.
+- `fix-site-chrome-pr.yml` (PR auto-fix, same-repo PRs only) — same
+  sequence, commits into the PR branch.
+- `audit-site.yml` (PR, warn-only) — runs the three checkers
+  (`check-deprecated-terms`, `ensure-a11y`, `check-links`) with
+  `continue-on-error: true` and uploads `reports/*.json` as an
+  artifact. Not in the required-checks list; revisit once the
+  false-positive rate is understood.
+- `content-freshness-report.yml` (monthly schedule + manual) — runs
+  the LLM reviewer if `AZURE_OPENAI_*` secrets are configured, uploads
+  suggestions as an artifact, opens a `content-freshness` / `automated`
+  tracking issue listing the pages touched. No-op when secrets are
+  absent.
+
+### Outstanding decisions / follow-ups
+
+1. Add an Open Graph image asset (`/og-default.png` or similar) and a
+   matching injection rule in `ensure-meta.py` once a design exists.
+2. Re-evaluate `audit-site.yml` after ~1 month: should any checker be
+   promoted from `continue-on-error` to required?
+3. Decide whether to auto-apply the high-severity terminology rules on
+   post-merge (would need `check-deprecated-terms.py --apply` in
+   `ensure-site-chrome.yml`; currently PR-only reporting).
+4. Revisit the LLM prompt in `suggest-content-updates.py` after the
+   first real run — the system prompt is a conservative first draft.
+5. Provision `AZURE_OPENAI_*` repo secrets before the first scheduled
+   run of `content-freshness-report.yml`; until then the job is a
+   no-op.
