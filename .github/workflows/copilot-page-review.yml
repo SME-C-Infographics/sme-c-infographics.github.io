@@ -1,0 +1,282 @@
+name: Copilot Page Review
+
+# Monthly repo scan that turns warn-only audit findings into per-page
+# GitHub issues assigned to the Copilot coding agent. Copilot opens a
+# draft PR against each issue; humans review and merge. This replaces
+# the earlier Azure OpenAI suggestion pass — no third-party LLM secrets
+# are required.
+#
+# The workflow is a no-op for a page if:
+#   - the audit reports contain no findings for it, or
+#   - an open issue with the same title already exists.
+#
+# Copilot assignment is best-effort: if the repo does not have the
+# Copilot coding agent enabled, the issue is still created (unassigned)
+# so a human can pick it up.
+
+on:
+  schedule:
+    # 07:00 UTC on the 1st of every month.
+    - cron: "0 7 1 * *"
+  workflow_dispatch:
+    inputs:
+      only:
+        description: "Optional path prefix to restrict the scan (e.g. fabric/)."
+        required: false
+        default: ""
+      min_severity:
+        description: "Minimum deprecated-terms severity to include."
+        required: false
+        default: "low"
+        type: choice
+        options:
+          - low
+          - medium
+          - high
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: copilot-page-review
+  cancel-in-progress: false
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Inventory audit
+        run: python3 scripts/audit-pages.py
+
+      - name: Deprecated-terminology check
+        continue-on-error: true
+        run: python3 scripts/check-deprecated-terms.py --check
+
+      - name: Accessibility check
+        continue-on-error: true
+        run: python3 scripts/ensure-a11y.py --check
+
+      - name: External link check
+        continue-on-error: true
+        run: python3 scripts/check-links.py --check --timeout 12 --workers 16
+
+      - name: Build review issue bodies
+        env:
+          # Pass workflow_dispatch inputs through env rather than ${{ }}
+          # interpolation to avoid shell-command injection.
+          ONLY_PREFIX: ${{ inputs.only }}
+          MIN_SEVERITY: ${{ inputs.min_severity || 'low' }}
+        run: |
+          args=(--min-severity "$MIN_SEVERITY" --max-issues 25)
+          if [ -n "$ONLY_PREFIX" ]; then
+            args+=(--only "$ONLY_PREFIX")
+          fi
+          python3 scripts/open-copilot-review-issues.py "${args[@]}"
+
+      - name: Upload review bodies as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: copilot-review-issues
+          path: |
+            reports/copilot-review-issues/*.md
+            reports/copilot-review-issues/index.json
+          if-no-files-found: ignore
+
+      - name: Open issues and assign Copilot
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require("fs");
+            const path = require("path");
+
+            // Hard ceiling on how many issues this step will ever
+            // create in a single run, independent of what the Python
+            // script emitted. Prevents runaway auditor output from
+            // spamming the repo and burning Copilot premium requests.
+            const MAX_ISSUES_PER_RUN = 25;
+
+            // Must match ISSUE_MARKER in open-copilot-review-issues.py.
+            const ISSUE_MARKER = "<!-- copilot-page-review v1 -->";
+            const DEDUP_LABEL = "copilot-review";
+
+            const dir = "reports/copilot-review-issues";
+            const indexPath = path.join(dir, "index.json");
+            if (!fs.existsSync(indexPath)) {
+              core.info("No index.json; nothing to do.");
+              return;
+            }
+            const index = JSON.parse(fs.readFileSync(indexPath, "utf8"));
+            const entries = Array.isArray(index.issues) ? index.issues : [];
+            if (!entries.length) {
+              core.info("No pages with findings; nothing to do.");
+              return;
+            }
+
+            // Resolve preferred labels that actually exist on the repo.
+            const preferredLabels = ["content-freshness", "automated", DEDUP_LABEL];
+            let labelsToUse = [];
+            let hasDedupLabel = false;
+            try {
+              const existing = await github.paginate(
+                github.rest.issues.listLabelsForRepo,
+                { owner: context.repo.owner, repo: context.repo.repo, per_page: 100 }
+              );
+              const existingNames = new Set(existing.map(l => l.name));
+              labelsToUse = preferredLabels.filter(n => existingNames.has(n));
+              hasDedupLabel = existingNames.has(DEDUP_LABEL);
+            } catch (err) {
+              core.info(`Could not list labels (${err.message}); creating issues without labels.`);
+            }
+
+            // Collect existing open issues for dedup. Prefer filtering by
+            // the copilot-review label (fast + precise); fall back to a
+            // full listing if the label doesn't exist yet.
+            const openIssues = await github.paginate(
+              github.rest.issues.listForRepo,
+              {
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                state: "open",
+                per_page: 100,
+                ...(hasDedupLabel ? { labels: DEDUP_LABEL } : {}),
+              }
+            );
+            const openByPath = new Map();
+            for (const issue of openIssues) {
+              if (issue.pull_request) continue; // skip PRs
+              const body = issue.body || "";
+              if (!body.includes(ISSUE_MARKER)) continue;
+              const m = body.match(/<!-- page: ([^>]+?) -->/);
+              if (m) {
+                openByPath.set(m[1].trim(), issue.number);
+              }
+            }
+
+            // Look up Copilot's assignable actor id once. If the repo
+            // does not have the Copilot coding agent enabled, this
+            // returns no match and we fall back to creating issues
+            // unassigned.
+            let copilotActorId = null;
+            try {
+              const q = `
+                query($owner:String!, $repo:String!) {
+                  repository(owner:$owner, name:$repo) {
+                    suggestedActors(capabilities:[CAN_BE_ASSIGNED], first:100) {
+                      nodes {
+                        login
+                        __typename
+                        ... on Bot { id }
+                        ... on User { id }
+                      }
+                    }
+                  }
+                }
+              `;
+              const result = await github.graphql(q, {
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+              });
+              const nodes = result?.repository?.suggestedActors?.nodes || [];
+              const copilot = nodes.find(n =>
+                n && n.__typename === "Bot" &&
+                (n.login === "copilot-swe-agent" || n.login === "Copilot")
+              );
+              if (copilot?.id) {
+                copilotActorId = copilot.id;
+                core.info(`Found Copilot assignable actor (${copilot.login}).`);
+              } else {
+                core.info("Copilot coding agent not available as an assignee on this repo.");
+              }
+            } catch (err) {
+              core.info(`Could not query suggestedActors (${err.message}); continuing without Copilot assignment.`);
+            }
+
+            let created = 0;
+            let skipped = 0;
+
+            for (const entry of entries) {
+              if (created >= MAX_ISSUES_PER_RUN) {
+                core.warning(`Reached MAX_ISSUES_PER_RUN (${MAX_ISSUES_PER_RUN}); stopping.`);
+                break;
+              }
+              if (!entry || typeof entry.path !== "string" || typeof entry.body_file !== "string") {
+                core.info("Skipping malformed index entry.");
+                continue;
+              }
+              const title = `Review \`${entry.path}\``;
+              // Defense-in-depth: even though the Python side emits a
+              // basename, strip any directory component before reading.
+              const safeBodyName = path.basename(entry.body_file);
+              const bodyPath = path.join(dir, safeBodyName);
+              if (!fs.existsSync(bodyPath)) {
+                core.info(`Missing body file for ${entry.path}; skipping.`);
+                continue;
+              }
+              const body = fs.readFileSync(bodyPath, "utf8");
+              if (!body.includes(ISSUE_MARKER)) {
+                core.info(`Body for ${entry.path} missing expected marker; skipping.`);
+                continue;
+              }
+
+              // Dedup via label + body marker (reliable); fall back
+              // silently if the label isn't on the repo yet.
+              const existingNumber = openByPath.get(entry.path);
+              if (existingNumber) {
+                core.info(`Open issue already exists for ${entry.path}: #${existingNumber}`);
+                skipped++;
+                continue;
+              }
+
+              const issueParams = {
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title,
+                body,
+              };
+              if (labelsToUse.length) {
+                issueParams.labels = labelsToUse;
+              }
+              const createResp = await github.rest.issues.create(issueParams);
+              const issueNumber = createResp.data.number;
+              const issueNodeId = createResp.data.node_id;
+              core.info(`Created issue #${issueNumber} for ${entry.path}.`);
+              created++;
+
+              if (copilotActorId) {
+                try {
+                  await github.graphql(
+                    `mutation($assignableId:ID!, $actorIds:[ID!]!) {
+                       replaceActorsForAssignable(input:{assignableId:$assignableId, actorIds:$actorIds}) {
+                         assignable { ... on Issue { number } }
+                       }
+                     }`,
+                    { assignableId: issueNodeId, actorIds: [copilotActorId] }
+                  );
+                  core.info(`Assigned Copilot to #${issueNumber}.`);
+                } catch (err) {
+                  core.warning(`Could not assign Copilot to #${issueNumber} (${err.message}); leaving unassigned.`);
+                }
+              }
+            }
+
+            core.info(`Done. created=${created} skipped_existing=${skipped}`);
+
+            // Write a step summary so the Actions run page shows what
+            // happened without having to read the raw log.
+            const summary = core.summary
+              .addHeading("Copilot Page Review", 2)
+              .addRaw(`**Pages with findings:** ${entries.length}`).addBreak()
+              .addRaw(`**Issues created:** ${created}`).addBreak()
+              .addRaw(`**Skipped (already open):** ${skipped}`).addBreak()
+              .addRaw(`**Copilot assignment available:** ${copilotActorId ? "yes" : "no"}`).addBreak();
+            await summary.write();

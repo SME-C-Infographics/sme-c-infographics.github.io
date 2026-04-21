@@ -19,8 +19,10 @@ In scope:
 - **Chrome expansion** — `<meta>` description, Open Graph tags, favicon, a11y
   checks. Same idempotent, marker-based, `--check`-capable pattern as the
   existing scripts.
-- **LLM-assisted content refresh** — report-only suggestions; humans still
-  write.
+- **Agent-driven content refresh** — the audit JSON reports are turned
+  into one GitHub issue per stale page, assigned to the Copilot coding
+  agent, which opens a draft PR for human review. No third-party LLM
+  secrets.
 - **Bulk templating** — a generic idempotent "find block / replace block"
   helper for site-wide edits.
 
@@ -56,13 +58,14 @@ Every read-only auditing/reporting script should emit machine-readable output
   `scripts/check-deprecated-terms.py`, `scripts/terminology.json`.
 - **Phase 3 — Chrome expansion:** `scripts/ensure-meta.py`,
   `scripts/ensure-favicon.py`, `scripts/ensure-a11y.py`.
-- **Phase 4 — LLM content refresh (report-only):**
-  `scripts/suggest-content-updates.py` + monthly scheduled workflow that opens
-  a tracking issue.
+- **Phase 4 — Agent-driven content refresh:**
+  `scripts/open-copilot-review-issues.py` + monthly scheduled workflow
+  (`copilot-page-review.yml`) that turns audit findings into one
+  GitHub issue per page and assigns the Copilot coding agent.
 - **Phase 5 — Bulk templating:** `scripts/apply-template-change.py`.
 - **Phase 6 — CI wiring:** extend `ensure-site-chrome.yml` and
   `fix-site-chrome-pr.yml`; add `audit-site.yml` (warn-only on PRs) and
-  `content-freshness-report.yml` (monthly).
+  `copilot-page-review.yml` (monthly Copilot agent review).
 - **Phase 7 — Docs:** finalize this document, update `README.md` pointers.
 
 Findings from each phase are appended below as the spike progresses.
@@ -99,12 +102,14 @@ Findings from each phase are appended below as the spike progresses.
 | `scripts/ensure-a11y.py` | Read-only a11y report → `reports/a11y.json` | n/a |
 | `scripts/generate-manifest.py` (existing) | Regenerate `manifest.json` | n/a |
 | `scripts/apply-template-change.py` | Idempotent bulk HTML edits from a JSON spec | `<!-- smec-tmpl:<id> -->` |
-| `scripts/suggest-content-updates.py` | LLM-assisted freshness review (report-only) | cached by content hash |
+| `scripts/open-copilot-review-issues.py` | Turn audit JSON reports into per-page issue bodies for the Copilot coding agent | n/a |
 
 ### What's human-only (by design)
 
 - Writing meaningful alt text for any future images.
-- Editing page copy in response to LLM freshness suggestions.
+- Reviewing, editing, and merging Copilot-authored freshness PRs.
+  The agent opens the draft; a human is always the last step before
+  anything lands on `main`.
 - Deciding whether a deprecated-terms rule is safe to auto-apply (most
   rules ship at `severity: low` or `medium` and require review; the
   high-severity ones — Azure AD → Entra ID, Cognitive Services → Azure
@@ -123,11 +128,16 @@ Findings from each phase are appended below as the spike progresses.
   `continue-on-error: true` and uploads `reports/*.json` as an
   artifact. Not in the required-checks list; revisit once the
   false-positive rate is understood.
-- `content-freshness-report.yml` (monthly schedule + manual) — runs
-  the LLM reviewer if `AZURE_OPENAI_*` secrets are configured, uploads
-  suggestions as an artifact, opens a `content-freshness` / `automated`
-  tracking issue listing the pages touched. No-op when secrets are
-  absent.
+- `copilot-page-review.yml` (monthly schedule + manual) — runs the
+  three auditors, then `open-copilot-review-issues.py` to build one
+  markdown body per page with findings. For each page it opens an
+  issue titled `Review <path>` (deduped against existing open issues)
+  and assigns the Copilot coding agent via the GraphQL
+  `replaceActorsForAssignable` mutation. Copilot then opens a draft
+  PR per issue; humans review and merge. No repo secrets needed — the
+  workflow runs under `${{ github.token }}`. If the Copilot coding
+  agent isn't enabled on the repo the issues are still created,
+  unassigned, so a human can pick them up.
 
 ### Outstanding decisions / follow-ups
 
@@ -138,8 +148,12 @@ Findings from each phase are appended below as the spike progresses.
 3. Decide whether to auto-apply the high-severity terminology rules on
    post-merge (would need `check-deprecated-terms.py --apply` in
    `ensure-site-chrome.yml`; currently PR-only reporting).
-4. Revisit the LLM prompt in `suggest-content-updates.py` after the
-   first real run — the system prompt is a conservative first draft.
-5. Provision `AZURE_OPENAI_*` repo secrets before the first scheduled
-   run of `content-freshness-report.yml`; until then the job is a
-   no-op.
+4. Confirm the Copilot coding agent is enabled on the repo before the
+   first scheduled run of `copilot-page-review.yml`. If it isn't, the
+   workflow still opens issues, just unassigned.
+5. Tune the per-page issue body in `open-copilot-review-issues.py`
+   after the first real Copilot PR — especially the guardrails block,
+   which is the agent's primary steering signal.
+6. Consider adding a `copilot-review` label to the repo so the
+   workflow can tag created issues (it falls back silently if the
+   label is absent).

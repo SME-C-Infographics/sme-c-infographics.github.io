@@ -34,7 +34,7 @@
     ]
   },
   "foundry": {
-    "displayName": "Foundry",
+    "displayName": "AI & Foundry",
     "items": [
       {
         "file": "frontier-firm-playbook.html",
@@ -67,10 +67,6 @@
         "title": "App Platform Services Decision Guide — APIM, Logic Apps, Functions | SME&C"
       }
     ]
-  },
-  "azure-openai": {
-    "displayName": "Azure OpenAI",
-    "items": []
   },
   "defender-for-cloud": {
     "displayName": "Defender for Cloud",
