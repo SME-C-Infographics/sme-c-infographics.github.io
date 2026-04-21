@@ -14,11 +14,10 @@ import re
 CATEGORIES = {
     "azure-databases": "Azure Databases",
     "fabric": "Fabric",
-    "foundry": "Foundry",
+    "foundry": "AI & Foundry",
     "github-copilot": "GitHub Copilot",
     "avd": "AVD",
     "app-platform-services": "App Platform Services",
-    "azure-openai": "Azure OpenAI",
     "defender-for-cloud": "Defender for Cloud",
     "infrastructure": "Infrastructure"
 }
