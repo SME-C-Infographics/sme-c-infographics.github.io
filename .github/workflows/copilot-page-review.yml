@@ -121,9 +121,11 @@ jobs:
           # Prefer a user-scoped PAT (stored as COPILOT_ASSIGN_TOKEN)
           # so the issue assignment actually triggers the Copilot
           # coding agent. Falls back to the default workflow token,
-          # which will create/assign issues but will NOT start Copilot
-          # work because assignments from `github-actions[bot]` are
-          # ignored by the agent.
+          # under which the script creates issues but intentionally
+          # leaves them unassigned — assignments from
+          # `github-actions[bot]` are ignored by Copilot, so assigning
+          # under GITHUB_TOKEN would silently reproduce the bug this
+          # workflow was rewritten to avoid.
           github-token: ${{ secrets.COPILOT_ASSIGN_TOKEN || secrets.GITHUB_TOKEN }}
           script: |
             const fs = require("fs");
