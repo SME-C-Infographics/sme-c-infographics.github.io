@@ -61,6 +61,12 @@ concurrency:
   group: copilot-page-review
   cancel-in-progress: false
 
+env:
+  # Single source of truth for the per-run issue cap. Used by both the
+  # Python generator (--max-issues) and the JS assignment step
+  # (MAX_ISSUES_PER_RUN) so the two can't drift out of sync.
+  MAX_ISSUES_PER_RUN: "25"
+
 jobs:
   review:
     runs-on: ubuntu-latest
@@ -73,6 +79,41 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.x"
+
+      - name: Ensure copilot-review label exists
+        # Idempotent: creates the dedup label on first run, no-ops
+        # afterwards. Lets the assignment step filter open issues by
+        # label instead of paging the full repo issue list. Safe to
+        # run on every invocation.
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const name = "copilot-review";
+            try {
+              await github.rest.issues.getLabel({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                name,
+              });
+              core.info(`Label '${name}' already exists.`);
+            } catch (err) {
+              if (err.status !== 404) {
+                core.warning(`getLabel failed (${err.message}); continuing.`);
+                return;
+              }
+              try {
+                await github.rest.issues.createLabel({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  name,
+                  color: "8a63d2",
+                  description: "Issues opened by the monthly Copilot page review workflow.",
+                });
+                core.info(`Created label '${name}'.`);
+              } catch (createErr) {
+                core.warning(`Could not create label '${name}' (${createErr.message}); dedup will fall back to scanning all open issues.`);
+              }
+            }
 
       - name: Inventory audit
         run: python3 scripts/audit-pages.py
@@ -96,7 +137,7 @@ jobs:
           ONLY_PREFIX: ${{ inputs.only }}
           MIN_SEVERITY: ${{ inputs.min_severity || 'low' }}
         run: |
-          args=(--min-severity "$MIN_SEVERITY" --max-issues 25)
+          args=(--min-severity "$MIN_SEVERITY" --max-issues "$MAX_ISSUES_PER_RUN")
           if [ -n "$ONLY_PREFIX" ]; then
             args+=(--only "$ONLY_PREFIX")
           fi
@@ -151,7 +192,10 @@ jobs:
             // create in a single run, independent of what the Python
             // script emitted. Prevents runaway auditor output from
             // spamming the repo and burning Copilot premium requests.
-            const MAX_ISSUES_PER_RUN = 25;
+            // Sourced from workflow-level env so the Python generator
+            // and this step share one value.
+            const MAX_ISSUES_PER_RUN =
+              Number.parseInt(process.env.MAX_ISSUES_PER_RUN || "25", 10) || 25;
 
             // Must match ISSUE_MARKER in open-copilot-review-issues.py.
             const ISSUE_MARKER = "<!-- copilot-page-review v1 -->";
