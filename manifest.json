@@ -7,6 +7,10 @@
         "title": "Azure SQL Decision Guide"
       },
       {
+        "file": "azure-sql-db-bcdr.html",
+        "title": "Azure SQL Database: Business Continuity & Disaster Recovery"
+      },
+      {
         "file": "sql-2016-eol-customer-guide.html",
         "title": "SQL Server 2016 End of Support — Your Complete Guide"
       }
