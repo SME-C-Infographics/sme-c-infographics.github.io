@@ -43,6 +43,29 @@
     margin-bottom: 10px; color: var(--gh-ink); }
   .section-sub { color: var(--gh-muted); max-width: 720px; margin-bottom: 32px; }
 
+  /* Big-stat landing card (overlaps hero bottom) */
+  .big-stat { background: var(--gh-card); border: 1px solid var(--gh-border);
+    border-radius: var(--radius); box-shadow: var(--shadow);
+    padding: 32px 28px; margin-top: -32px; position: relative; z-index: 2; text-align: center; }
+  .big-stat .num { font-size: clamp(2.4rem, 5.5vw, 3.6rem); font-weight: 800;
+    color: var(--gh-accent); line-height: 1; letter-spacing: -.02em; }
+  .big-stat .num-sub { font-size: 1rem; color: var(--gh-ink); margin-top: 8px; font-weight: 600; }
+  .big-stat .num-caption { font-size: .9rem; color: var(--gh-muted); margin-top: 4px; max-width: 620px; margin-left: auto; margin-right: auto; }
+
+  /* Signature SVG: the correction loop */
+  .loop-diagram { background: var(--gh-card); border: 1px solid var(--gh-border);
+    border-radius: var(--radius); box-shadow: var(--shadow); padding: 28px 24px 20px; }
+  .loop-diagram svg { display: block; width: 100%; height: auto; max-width: 760px; margin: 0 auto; }
+  .loop-diagram figcaption { font-size: .82rem; color: var(--gh-muted); text-align: center; margin-top: 12px; }
+  .loop-diagram .legend-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 16px; margin-top: 12px;
+    font-size: .78rem; color: var(--gh-muted); }
+  .loop-diagram .legend-row .sw { display: inline-block; width: 22px; height: 3px; border-radius: 2px;
+    vertical-align: middle; margin-right: 6px; }
+  .loop-diagram .legend-row .sw-green { background: var(--gh-accent); }
+  .loop-diagram .legend-row .sw-amber { background: var(--gh-warn); }
+  .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+
   .loop-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
   @media (max-width: 720px) { .loop-grid { grid-template-columns: 1fr; } }
   .loop-card { background: var(--gh-card); border: 1px solid var(--gh-border);
@@ -98,7 +121,7 @@
 
 <header class="hero">
   <div class="hero-badge">
-    <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0a8 8 0 100 16A8 8 0 008 0zm3.78 5.97L7.5 10.25l-2.28-2.28a.75.75 0 10-1.06 1.06l2.81 2.81a.75.75 0 001.06 0l4.81-4.81a.75.75 0 10-1.06-1.06z"/></svg>
+    <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M1.705 8.005a.75.75 0 01.834.656 5.5 5.5 0 009.592 2.97l-1.204-1.204a.25.25 0 01.177-.427h3.646a.25.25 0 01.25.25v3.646a.25.25 0 01-.427.177l-1.38-1.38A7.002 7.002 0 011.05 8.84a.75.75 0 01.656-.834zM8 2.5a5.487 5.487 0 00-4.131 1.869l1.204 1.204A.25.25 0 014.896 6H1.25A.25.25 0 011 5.75V2.104a.25.25 0 01.427-.177l1.38 1.38A7.002 7.002 0 0114.95 7.16a.75.75 0 11-1.49.178A5.5 5.5 0 008 2.5z"/></svg>
     Review ergonomics · Iteration surface
   </div>
   <h1>When the agent's PR is wrong</h1>
@@ -106,7 +129,92 @@
   <div class="hero-meta">Accurate as of April 2026 · Focus: comment-driven iteration, not one-shot quality</div>
 </header>
 
+<div class="container">
+  <div class="big-stat">
+    <div class="num">2–3</div>
+    <div class="num-sub">rounds before you should take it over manually</div>
+    <div class="num-caption">Past that, iteration cost exceeds the cost of writing the fix yourself. Applies to all four agents — their loop shape just changes how much each round costs.</div>
+  </div>
+</div>
+
 <section>
+  <div class="container">
+    <span class="section-label">Shape of the loop</span>
+    <h2 class="section-title">Four phases, same order</h2>
+    <p class="section-sub">Every async agent cycles through the same four phases. What differs is <strong>where state lives</strong> at each phase — inside the PR, or out in a vendor dashboard.</p>
+
+    <figure class="loop-diagram" role="group" aria-labelledby="loop-dia-title" aria-describedby="loop-dia-desc">
+      <p id="loop-dia-title" class="sr-only">The four-phase correction loop</p>
+      <p id="loop-dia-desc" class="sr-only">A circular flow with four phases in order: Comment, Run, Commit, Review, then back to Comment. Arrows between phases are color-coded. Green arrows indicate the phase state lives inside the GitHub PR (cheap, native). Amber arrows indicate state lives in a vendor dashboard (state leak). Copilot and Claude Code Action keep all four arrows green. OpenAI Codex and Cursor Cloud Agents keep Comment-to-Run green but the Run and Review phases split to a vendor surface.</p>
+      <svg viewBox="0 0 760 360" role="img" aria-hidden="true" focusable="false">
+        <defs>
+          <marker id="arrow-green" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0 0 L10 5 L0 10 z" fill="#2DA44E"/>
+          </marker>
+          <marker id="arrow-amber" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0 0 L10 5 L0 10 z" fill="#9A6700"/>
+          </marker>
+        </defs>
+        <!-- Nodes: 4 rounded rects at corners of a rectangle -->
+        <g font-family="'Segoe UI', system-ui, sans-serif">
+          <!-- Node 1: Comment (top-left) -->
+          <rect x="30" y="40" width="180" height="72" rx="10" fill="#F6F8FA" stroke="#D0D7DE"/>
+          <text x="120" y="68" text-anchor="middle" font-size="13" font-weight="700" fill="#24292E">1 · Comment</text>
+          <text x="120" y="90" text-anchor="middle" font-size="11" fill="#57606A">@copilot / @claude / @codex / @cursor</text>
+
+          <!-- Node 2: Run (top-right) -->
+          <rect x="550" y="40" width="180" height="72" rx="10" fill="#F6F8FA" stroke="#D0D7DE"/>
+          <text x="640" y="68" text-anchor="middle" font-size="13" font-weight="700" fill="#24292E">2 · Run</text>
+          <text x="640" y="90" text-anchor="middle" font-size="11" fill="#57606A">ephemeral env, tools, LLM</text>
+
+          <!-- Node 3: Commit (bottom-right) -->
+          <rect x="550" y="248" width="180" height="72" rx="10" fill="#F6F8FA" stroke="#D0D7DE"/>
+          <text x="640" y="276" text-anchor="middle" font-size="13" font-weight="700" fill="#24292E">3 · Commit</text>
+          <text x="640" y="298" text-anchor="middle" font-size="11" fill="#57606A">push to the PR branch</text>
+
+          <!-- Node 4: Review (bottom-left) -->
+          <rect x="30" y="248" width="180" height="72" rx="10" fill="#F6F8FA" stroke="#D0D7DE"/>
+          <text x="120" y="276" text-anchor="middle" font-size="13" font-weight="700" fill="#24292E">4 · Review</text>
+          <text x="120" y="298" text-anchor="middle" font-size="11" fill="#57606A">decide next round or stop</text>
+
+          <!-- Arrow 1→2 (top, green: all four tools trigger cheaply) -->
+          <line x1="215" y1="76" x2="540" y2="76" stroke="#2DA44E" stroke-width="2.5" marker-end="url(#arrow-green)"/>
+          <text x="377" y="66" text-anchor="middle" font-size="11" font-weight="600" fill="#1A7F37">native trigger</text>
+          <text x="377" y="96" text-anchor="middle" font-size="10" fill="#57606A">PR comment fires all four</text>
+
+          <!-- Arrow 2→3 (right side, amber: run state varies) -->
+          <line x1="640" y1="117" x2="640" y2="243" stroke="#9A6700" stroke-width="2.5" marker-end="url(#arrow-amber)"/>
+          <text x="730" y="176" text-anchor="end" font-size="11" font-weight="600" fill="#9A6700">run cost</text>
+          <text x="730" y="192" text-anchor="end" font-size="10" fill="#57606A">Actions min. or API tokens</text>
+
+          <!-- Arrow 3→4 (bottom, green: commit goes to PR for all) -->
+          <line x1="540" y1="284" x2="215" y2="284" stroke="#2DA44E" stroke-width="2.5" marker-end="url(#arrow-green)"/>
+          <text x="377" y="274" text-anchor="middle" font-size="11" font-weight="600" fill="#1A7F37">PR branch</text>
+          <text x="377" y="304" text-anchor="middle" font-size="10" fill="#57606A">commit pushed, same PR</text>
+
+          <!-- Arrow 4→1 (left side, mixed color gradient) -->
+          <line x1="120" y1="243" x2="120" y2="117" stroke="#9A6700" stroke-width="2.5" stroke-dasharray="5 4" marker-end="url(#arrow-amber)"/>
+          <text x="30" y="176" text-anchor="start" font-size="11" font-weight="600" fill="#9A6700">state leak risk</text>
+          <text x="30" y="192" text-anchor="start" font-size="10" fill="#57606A">Codex / Cursor: deliberation</text>
+          <text x="30" y="206" text-anchor="start" font-size="10" fill="#57606A">in vendor dashboard</text>
+
+          <!-- Tool footprint strip below -->
+          <g transform="translate(0, 340)">
+            <text x="380" y="0" text-anchor="middle" font-size="10" fill="#57606A" font-style="italic">Solid green arrows = state in PR · dashed amber = state in vendor UI</text>
+          </g>
+        </g>
+      </svg>
+      <div class="legend-row">
+        <span><span class="sw sw-green"></span>PR-native phase</span>
+        <span><span class="sw sw-amber"></span>Has a cost or state-leak risk</span>
+      </div>
+      <figcaption>Copilot &amp; Claude Code Action keep deliberation inside the PR across all four phases. Codex &amp; Cursor split phases 2 and 4 to their own dashboards.</figcaption>
+    </figure>
+
+  </div>
+</section>
+
+<section class="section-flush-top">
   <div class="container">
     <span class="section-label">The loop</span>
     <h2 class="section-title">Four tools, four correction shapes</h2>
