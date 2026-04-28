@@ -1,0 +1,1350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AI Gateway in Azure API Management — One Front Door for Every Model</title>
+<style>
+  :root {
+    --ink: #0a1840;
+    --ink-2: #1a2a60;
+    --ink-soft: #3b4570;
+    --paper: #f7f9fc;
+    --paper-2: #eef2f9;
+    --paper-3: #e3e9f5;
+    --muted: #5a6582;
+    --line: rgba(10, 24, 64, 0.12);
+    --line-strong: rgba(10, 24, 64, 0.28);
+
+    --azure: #0078d4;
+    --azure-dark: #004578;
+    --azure-light: #e8f4fd;
+    --teal: #008575;
+    --teal-light: #e0f5f2;
+    --amber: #c19a00;
+    --amber-light: #fff8e1;
+    --plum: #5C2D91;
+    --plum-light: #f3effa;
+    --crimson: #b8002e;
+    --crimson-light: #fde8ec;
+    --mint: #2a9d6f;
+    --mint-light: #e3f5ec;
+    --slate: #4a5c8a;
+    --slate-light: #eef0f8;
+
+    --shadow: 0 24px 48px -22px rgba(10, 24, 64, 0.30);
+    --shadow-sm: 0 6px 18px -8px rgba(10, 24, 64, 0.22);
+    --serif: "Georgia", "Times New Roman", serif;
+    --sans: "Segoe UI", "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+    --mono: "Cascadia Code", "Consolas", "Monaco", monospace;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; font-size: 16px; }
+  body {
+    font-family: var(--sans);
+    background: var(--paper);
+    color: var(--ink);
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  a { color: var(--azure); text-decoration: none; transition: color 0.2s; }
+  a:hover { color: var(--azure-dark); text-decoration: underline; }
+  h1, h2, h3, h4 { font-family: var(--serif); font-weight: 700; letter-spacing: -0.015em; color: var(--ink); }
+  code { font-family: var(--mono); font-size: 0.86em; background: var(--paper-3); padding: 0.08em 0.4em; border-radius: 4px; color: var(--ink); }
+
+  /* PROGRESS / NAV */
+  .progress { position: fixed; top: 0; left: 0; height: 3px; background: linear-gradient(90deg, var(--azure), var(--teal), var(--plum), var(--amber)); width: 0%; z-index: 9999; transition: width 0.1s; }
+  nav.top {
+    position: sticky; top: 0; background: rgba(247, 249, 252, 0.96); backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--line); z-index: 100; padding: 0.85rem 2rem;
+    display: flex; gap: 1.4rem; align-items: center; overflow-x: auto; white-space: nowrap;
+  }
+  nav.top::-webkit-scrollbar { display: none; }
+  nav.top .brand {
+    font-family: var(--serif); font-weight: 700; font-size: 1.05rem;
+    color: var(--ink); margin-right: auto; display: flex; align-items: center; gap: 0.55rem;
+  }
+  nav.top .brand-mark {
+    width: 22px; height: 22px; border-radius: 5px;
+    background: linear-gradient(135deg, var(--azure), var(--plum));
+    display: inline-flex; align-items: center; justify-content: center;
+    color: #fff; font-weight: 700; font-size: 0.7rem; font-family: var(--sans);
+  }
+  nav.top a {
+    color: var(--muted); font-size: 0.82rem; font-weight: 600;
+    padding: 0.35rem 0.75rem; border-radius: 6px; transition: all 0.2s;
+  }
+  nav.top a:hover, nav.top a.active { background: var(--ink); color: #fff; text-decoration: none; }
+
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+  section { padding: 5rem 0; position: relative; }
+  .section-tag {
+    display: inline-block; font-size: 0.72rem; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--azure); font-weight: 700;
+    border: 1px solid var(--azure); padding: 0.3rem 0.85rem;
+    border-radius: 999px; margin-bottom: 1rem;
+  }
+  h2 { font-size: clamp(1.7rem, 3.2vw, 2.5rem); line-height: 1.15; margin-bottom: 1rem; }
+  h3 { font-size: 1.4rem; line-height: 1.25; margin-bottom: 0.5rem; }
+  p { color: var(--ink-soft); }
+  .lede { font-size: 1.05rem; max-width: 820px; color: var(--ink-soft); }
+
+  /* HERO */
+  .hero {
+    padding: 5rem 0 4rem; position: relative; overflow: hidden;
+    background: linear-gradient(180deg, #0a1840 0%, #1a2a60 55%, #2d1554 100%);
+    color: #fff;
+  }
+  .hero::before {
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background-image:
+      radial-gradient(circle at 12% 18%, rgba(0, 120, 212, 0.32), transparent 45%),
+      radial-gradient(circle at 88% 75%, rgba(193, 154, 0, 0.18), transparent 50%),
+      radial-gradient(circle at 50% 50%, rgba(123, 44, 191, 0.18), transparent 60%);
+  }
+  .hero::after {
+    content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0.4;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+    background-size: 48px 48px;
+    mask-image: linear-gradient(180deg, rgba(0,0,0,0.6), transparent 80%);
+    -webkit-mask-image: linear-gradient(180deg, rgba(0,0,0,0.6), transparent 80%);
+  }
+  .hero .container { position: relative; z-index: 2; }
+  .hero-grid { display: grid; grid-template-columns: 1.05fr 1fr; gap: 3rem; align-items: center; }
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    font-size: 0.78rem; letter-spacing: 0.15em; text-transform: uppercase;
+    background: rgba(255,255,255,0.1); padding: 0.4rem 0.9rem;
+    border-radius: 999px; backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.18);
+    margin-bottom: 1.4rem; color: #fff; font-weight: 600;
+  }
+  .hero-eyebrow .dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: #50e6ff; box-shadow: 0 0 8px #50e6ff;
+  }
+  .hero h1 {
+    color: #fff; font-size: clamp(2.4rem, 5vw, 4rem);
+    line-height: 1.05; margin-bottom: 1.2rem; letter-spacing: -0.02em;
+  }
+  .hero h1 .accent-cyan { color: #50e6ff; }
+  .hero h1 .accent-amber { color: #fbbf24; }
+  .hero-sub { font-size: 1.15rem; color: rgba(255,255,255,0.85); max-width: 580px; margin-bottom: 1.8rem; }
+  .hero-meta { display: flex; gap: 0.8rem; flex-wrap: wrap; margin-top: 1.5rem; }
+  .hero-meta .chip {
+    padding: 0.45rem 0.95rem; background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2); border-radius: 999px;
+    font-size: 0.85rem; color: rgba(255,255,255,0.95); font-weight: 500;
+    backdrop-filter: blur(6px);
+  }
+  .hero-meta .chip strong { color: #50e6ff; font-weight: 700; }
+
+  /* HERO SVG — gateway diagram */
+  .gw-fig { position: relative; }
+  .gw-fig svg { width: 100%; height: auto; filter: drop-shadow(0 25px 45px rgba(0,0,0,0.35)); }
+  .gw-caption {
+    text-align: center; font-family: var(--serif); font-style: italic;
+    color: rgba(255,255,255,0.6); font-size: 0.85rem; margin-top: 1rem;
+  }
+
+  /* HERO callouts */
+  .hero-callouts {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 0; margin-top: 3rem;
+    border-top: 1px solid rgba(255,255,255,0.18);
+    border-bottom: 1px solid rgba(255,255,255,0.18);
+  }
+  .hero-callouts .cell {
+    padding: 1.4rem 1.1rem; text-align: center;
+    border-right: 1px solid rgba(255,255,255,0.08);
+  }
+  .hero-callouts .cell:last-child { border-right: none; }
+  .hero-callouts .num {
+    font-family: var(--serif); font-size: 2rem; font-weight: 700;
+    color: #50e6ff; line-height: 1;
+  }
+  .hero-callouts .lbl {
+    font-size: 0.78rem; color: rgba(255,255,255,0.7);
+    text-transform: uppercase; letter-spacing: 0.1em; margin-top: 0.4rem;
+  }
+  .hero-callouts .src {
+    font-size: 0.66rem; color: rgba(255,255,255,0.4);
+    font-style: italic; margin-top: 0.3rem;
+  }
+
+  /* PROVOCATION QUOTE */
+  .provocation {
+    padding: 4rem 0; background: var(--ink); color: #fff; position: relative;
+    border-top: 1px solid rgba(255,255,255,0.05);
+  }
+  .provocation .quote-mark {
+    font-family: var(--serif); font-size: 5.5rem; color: var(--amber);
+    line-height: 0.3; display: block; margin-bottom: 1rem;
+  }
+  .provocation h2 { color: #fff; font-size: clamp(1.5rem, 2.5vw, 2rem); max-width: 920px; line-height: 1.3; }
+  .provocation .cite {
+    color: rgba(255,255,255,0.55); font-size: 0.9rem;
+    margin-top: 1.3rem; font-style: italic; font-family: var(--serif);
+  }
+  .provocation .cite a { color: #50e6ff; }
+
+  /* WHY GRID */
+  .why-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 1.2rem; margin-top: 3rem;
+  }
+  .why-card {
+    background: #fff; border: 1px solid var(--line);
+    border-radius: 12px; padding: 1.7rem 1.4rem;
+    border-top: 4px solid var(--accent);
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  .why-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+  .why-card.w1 { --accent: var(--azure); }
+  .why-card.w2 { --accent: var(--crimson); }
+  .why-card.w3 { --accent: var(--amber); }
+  .why-card.w4 { --accent: var(--teal); }
+  .why-glyph {
+    width: 46px; height: 46px; border-radius: 10px;
+    background: var(--accent); color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-family: var(--serif); font-size: 1.2rem;
+    margin-bottom: 1rem;
+  }
+  .why-card h3 { font-size: 1.05rem; margin-bottom: 0.5rem; color: var(--ink); }
+  .why-card p { font-size: 0.9rem; line-height: 1.55; color: var(--ink-soft); }
+
+  /* PILLARS GRID */
+  .pillars-section { background: var(--paper-2); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .pillars-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 1.4rem; margin-top: 3rem;
+  }
+  .pillar {
+    background: #fff; border: 1px solid var(--line);
+    border-radius: 12px; padding: 1.8rem;
+    position: relative; overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s;
+    display: flex; flex-direction: column; gap: 0.7rem;
+  }
+  .pillar::before {
+    content: ""; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+    background: var(--p-color);
+  }
+  .pillar:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+  .pillar .head { display: flex; align-items: flex-start; gap: 1rem; }
+  .pillar .glyph {
+    width: 52px; height: 52px; border-radius: 12px;
+    background: var(--p-soft); color: var(--p-color);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .pillar .glyph svg { width: 28px; height: 28px; }
+  .pillar h3 { font-size: 1.2rem; color: var(--ink); margin: 0; }
+  .pillar .metaphor {
+    font-family: var(--serif); font-style: italic; color: var(--muted);
+    font-size: 0.82rem; margin-top: 0.15rem;
+  }
+  .pillar ul {
+    list-style: none; display: flex; flex-direction: column;
+    gap: 0.5rem; margin-top: 0.4rem;
+  }
+  .pillar ul li {
+    font-size: 0.86rem; color: var(--ink-soft);
+    padding-left: 1.3rem; position: relative; line-height: 1.5;
+  }
+  .pillar ul li::before {
+    content: ""; position: absolute; left: 0; top: 0.55rem;
+    width: 8px; height: 8px; border-radius: 2px;
+    background: var(--p-color); transform: rotate(45deg);
+  }
+  .pillar ul li code { font-size: 0.78rem; background: var(--p-soft); color: var(--p-color); }
+  .pillar ul li .pv {
+    display: inline-block; font-size: 0.62rem; font-weight: 800;
+    background: var(--amber-light); color: var(--amber);
+    padding: 0.1rem 0.45rem; border-radius: 4px; margin-left: 0.35rem;
+    text-transform: uppercase; letter-spacing: 0.06em; vertical-align: middle;
+  }
+
+  .p-security { --p-color: var(--crimson); --p-soft: var(--crimson-light); }
+  .p-reliability { --p-color: var(--azure); --p-soft: var(--azure-light); }
+  .p-performance { --p-color: var(--teal); --p-soft: var(--teal-light); }
+  .p-operations { --p-color: var(--amber); --p-soft: var(--amber-light); }
+  .p-cost { --p-color: var(--plum); --p-soft: var(--plum-light); }
+  .p-ecosystem { --p-color: var(--slate); --p-soft: var(--slate-light); }
+
+  /* DEEP-DIVE SECTION (robust + observable) */
+  .deep-section { background: #fff; }
+  .deep-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 2.2rem; margin-top: 3rem;
+  }
+  .deep-card {
+    background: #fff; border: 1px solid var(--line); border-radius: 14px;
+    padding: 2rem; box-shadow: var(--shadow-sm);
+    border-top: 5px solid var(--d-color);
+  }
+  .deep-card.r { --d-color: var(--azure); }
+  .deep-card.o { --d-color: var(--amber); }
+  .deep-card .deep-head {
+    display: flex; align-items: center; gap: 0.9rem; margin-bottom: 1rem;
+  }
+  .deep-card .deep-head .icon {
+    width: 44px; height: 44px; border-radius: 10px;
+    background: var(--d-color); color: #fff;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .deep-card .deep-head .icon svg { width: 24px; height: 24px; fill: #fff; }
+  .deep-card h3 { font-size: 1.3rem; color: var(--ink); margin: 0; }
+  .deep-card .sub {
+    font-family: var(--serif); font-style: italic; color: var(--muted);
+    font-size: 0.88rem; margin: 0;
+  }
+  .deep-list { list-style: none; display: flex; flex-direction: column; gap: 0.85rem; margin-top: 1.2rem; }
+  .deep-list li {
+    padding: 0.85rem 0.95rem; background: var(--paper-2);
+    border-radius: 8px; border-left: 3px solid var(--d-color);
+    font-size: 0.9rem; color: var(--ink-soft); line-height: 1.5;
+  }
+  .deep-list li strong { color: var(--ink); display: block; margin-bottom: 0.15rem; font-size: 0.95rem; }
+  .deep-list li code { background: #fff; border: 1px solid var(--line); }
+
+  .deep-net {
+    text-align: center; font-family: var(--serif); font-style: italic;
+    color: var(--ink); font-size: 1rem; margin-top: 1.5rem;
+    padding: 1rem 1.2rem; background: linear-gradient(135deg, var(--paper-2), #fff);
+    border-radius: 10px; border: 1px solid var(--line);
+  }
+
+  /* MCP CATALOG SECTION */
+  .mcp-section { background: var(--ink); color: #fff; }
+  .mcp-section h2 { color: #fff; }
+  .mcp-section .lede { color: rgba(255,255,255,0.78); }
+  .mcp-section .section-tag { color: #50e6ff; border-color: #50e6ff; }
+
+  .mcp-pair {
+    display: grid; grid-template-columns: 1fr auto 1fr;
+    gap: 1.5rem; align-items: stretch;
+    margin-top: 2.8rem;
+  }
+  .mcp-pane {
+    background: linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 14px; padding: 1.8rem;
+    backdrop-filter: blur(10px);
+  }
+  .mcp-pane.apim { border-top: 4px solid #50e6ff; }
+  .mcp-pane.apic { border-top: 4px solid #fbbf24; }
+  .mcp-pane h4 {
+    color: #fff; font-size: 1.15rem; margin-bottom: 0.3rem;
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .mcp-pane .role-lbl {
+    font-family: var(--mono); font-size: 0.74rem; color: var(--lbl);
+    text-transform: uppercase; letter-spacing: 0.1em; font-weight: 700;
+    margin-bottom: 0.2rem;
+  }
+  .mcp-pane.apim .role-lbl { --lbl: #50e6ff; }
+  .mcp-pane.apic .role-lbl { --lbl: #fbbf24; }
+  .mcp-pane p {
+    color: rgba(255,255,255,0.78); font-size: 0.9rem; line-height: 1.55;
+    margin-top: 0.6rem; margin-bottom: 1rem;
+  }
+  .mcp-pane ul { list-style: none; display: flex; flex-direction: column; gap: 0.4rem; }
+  .mcp-pane ul li {
+    font-size: 0.85rem; color: rgba(255,255,255,0.85); line-height: 1.5;
+    padding-left: 1.1rem; position: relative;
+  }
+  .mcp-pane.apim ul li::before { content: "▸"; position: absolute; left: 0; color: #50e6ff; font-weight: 700; }
+  .mcp-pane.apic ul li::before { content: "▸"; position: absolute; left: 0; color: #fbbf24; font-weight: 700; }
+
+  .mcp-arrow {
+    display: flex; align-items: center; justify-content: center;
+    flex-direction: column; gap: 0.5rem;
+  }
+  .mcp-arrow .arrow-bar {
+    width: 60px; height: 2px;
+    background: linear-gradient(90deg, #50e6ff, #fbbf24);
+  }
+  .mcp-arrow .arrow-bar:nth-child(2) {
+    background: linear-gradient(270deg, #50e6ff, #fbbf24);
+  }
+  .mcp-arrow .arrow-lbl {
+    font-family: var(--mono); font-size: 0.68rem;
+    color: rgba(255,255,255,0.65); text-align: center;
+    text-transform: uppercase; letter-spacing: 0.08em;
+  }
+
+  /* MCP flow steps */
+  .mcp-flow {
+    display: grid; grid-template-columns: repeat(5, 1fr);
+    gap: 0.8rem; margin-top: 3rem;
+  }
+  .flow-step {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 10px; padding: 1.2rem 1rem;
+    position: relative;
+  }
+  .flow-step .num {
+    font-family: var(--serif); font-size: 1.6rem; font-weight: 700;
+    color: #50e6ff; line-height: 1;
+  }
+  .flow-step h5 {
+    color: #fff; font-size: 0.95rem; font-family: var(--serif);
+    margin: 0.4rem 0 0.4rem;
+  }
+  .flow-step p {
+    color: rgba(255,255,255,0.7); font-size: 0.78rem; line-height: 1.5;
+    margin: 0;
+  }
+
+  /* CAVEATS PANEL */
+  .caveats {
+    background: rgba(193, 154, 0, 0.12);
+    border: 1px solid rgba(251, 191, 36, 0.35);
+    border-left: 4px solid #fbbf24;
+    border-radius: 10px; padding: 1.3rem 1.4rem; margin-top: 2.5rem;
+  }
+  .caveats h4 {
+    color: #fbbf24; font-size: 0.78rem;
+    text-transform: uppercase; letter-spacing: 0.12em;
+    font-family: var(--sans); font-weight: 800; margin-bottom: 0.8rem;
+  }
+  .caveats ul { list-style: none; display: flex; flex-direction: column; gap: 0.4rem; }
+  .caveats ul li {
+    font-size: 0.85rem; color: rgba(255,255,255,0.85);
+    padding-left: 1.3rem; position: relative; line-height: 1.5;
+  }
+  .caveats ul li::before {
+    content: "!"; position: absolute; left: 0;
+    color: #fbbf24; font-weight: 800; font-family: var(--serif);
+  }
+  .caveats ul li code { background: rgba(255,255,255,0.1); color: #fff; }
+
+  /* TIMELINE */
+  .timeline-section { background: var(--paper-2); }
+  .timeline {
+    margin-top: 3rem; position: relative; padding-left: 2.5rem;
+  }
+  .timeline::before {
+    content: ""; position: absolute; left: 0.7rem; top: 0.5rem; bottom: 0.5rem;
+    width: 2px; background: linear-gradient(180deg, var(--azure), var(--plum), var(--amber), var(--mint));
+  }
+  .tl-item {
+    position: relative; padding-bottom: 1.7rem;
+  }
+  .tl-item::before {
+    content: ""; position: absolute; left: -2.05rem; top: 0.35rem;
+    width: 14px; height: 14px; border-radius: 50%;
+    background: var(--tl-color, var(--azure));
+    box-shadow: 0 0 0 4px var(--paper-2), 0 0 12px var(--tl-color, var(--azure));
+  }
+  .tl-item.ga::before { --tl-color: var(--mint); }
+  .tl-item.preview::before { --tl-color: var(--amber); }
+  .tl-item.event::before { --tl-color: var(--plum); }
+  .tl-date {
+    font-family: var(--mono); font-size: 0.78rem;
+    color: var(--azure); font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.08em;
+  }
+  .tl-item.ga .tl-date { color: var(--mint); }
+  .tl-item.preview .tl-date { color: var(--amber); }
+  .tl-item.event .tl-date { color: var(--plum); }
+  .tl-item h4 { color: var(--ink); font-size: 1.05rem; margin: 0.25rem 0; font-family: var(--serif); }
+  .tl-item p { color: var(--ink-soft); font-size: 0.9rem; line-height: 1.55; }
+
+  /* CTA */
+  .cta-section {
+    background: linear-gradient(135deg, #0a1840 0%, #1a2a60 50%, #4B1A84 100%);
+    color: #fff; padding: 5rem 0;
+    position: relative; overflow: hidden;
+  }
+  .cta-section::before {
+    content: ""; position: absolute; right: -60px; top: -60px;
+    width: 280px; height: 280px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(80,230,255,0.15), transparent 70%);
+  }
+  .cta-section::after {
+    content: ""; position: absolute; left: -60px; bottom: -60px;
+    width: 260px; height: 260px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(251,191,36,0.12), transparent 70%);
+  }
+  .cta-section .container { position: relative; z-index: 2; }
+  .cta-section h2 { color: #fff; }
+  .cta-section .lede { color: rgba(255,255,255,0.8); }
+  .cta-section .section-tag { color: #50e6ff; border-color: #50e6ff; }
+  .cta-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 1.4rem; margin-top: 2.8rem;
+  }
+  .cta-card {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 12px; padding: 1.8rem;
+    transition: transform 0.3s, background 0.3s, border-color 0.3s;
+    text-decoration: none; color: inherit; display: block;
+    backdrop-filter: blur(8px);
+  }
+  .cta-card:hover {
+    transform: translateY(-4px);
+    background: rgba(255,255,255,0.1);
+    border-color: rgba(80,230,255,0.4);
+    text-decoration: none;
+  }
+  .cta-card .eyebrow {
+    font-size: 0.72rem; font-weight: 700;
+    color: #50e6ff; text-transform: uppercase; letter-spacing: 0.12em;
+  }
+  .cta-card h3 { color: #fff; font-size: 1.15rem; margin: 0.5rem 0 0.7rem; }
+  .cta-card p { color: rgba(255,255,255,0.75); font-size: 0.86rem; line-height: 1.55; }
+  .cta-card .arrow { color: #50e6ff; margin-top: 1rem; font-weight: 700; font-size: 0.85rem; }
+
+  /* FOOTER */
+  footer {
+    background: #050d24; color: rgba(255,255,255,0.7); padding: 3rem 0 2rem;
+    text-align: center; border-top: 1px solid rgba(255,255,255,0.05);
+  }
+  footer .brand-mark {
+    font-family: var(--serif); font-size: 1.2rem; color: #fff;
+    margin-bottom: 0.6rem;
+  }
+  footer p {
+    color: rgba(255,255,255,0.6); font-size: 0.84rem;
+    max-width: 720px; margin: 0.4rem auto;
+  }
+  footer .small {
+    color: rgba(255,255,255,0.4); font-size: 0.76rem; margin-top: 1.2rem;
+  }
+  footer a { color: #50e6ff; }
+  footer .sources-line {
+    margin-top: 1.5rem; font-size: 0.78rem;
+    color: rgba(255,255,255,0.55); line-height: 1.7;
+  }
+  footer .sources-line a { margin: 0 0.4rem; }
+
+  /* REVEAL */
+  .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.in { opacity: 1; transform: translateY(0); }
+
+  /* RESPONSIVE */
+  @media (max-width: 1000px) {
+    .hero-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .why-grid { grid-template-columns: repeat(2, 1fr); }
+    .pillars-grid { grid-template-columns: 1fr; }
+    .deep-grid { grid-template-columns: 1fr; }
+    .mcp-pair { grid-template-columns: 1fr; }
+    .mcp-arrow { transform: rotate(90deg); margin: 0.6rem 0; }
+    .mcp-flow { grid-template-columns: repeat(2, 1fr); }
+    .cta-grid { grid-template-columns: 1fr; }
+    .hero-callouts { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 600px) {
+    section { padding: 3rem 0; }
+    .container { padding: 0 1.2rem; }
+    nav.top { padding: 0.7rem 1rem; gap: 0.6rem; }
+    .why-grid, .mcp-flow { grid-template-columns: 1fr; }
+    .hero-callouts { grid-template-columns: 1fr; }
+    .hero-callouts .cell { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.08); }
+    .hero h1 { font-size: 2.2rem; }
+  }
+</style>
+<style>/* smec-back-btn v1 */
+.smec-back-btn { position: fixed; bottom: 16px; left: 16px; z-index: 9999;
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: 0; min-width: 44px; height: 44px; padding: 0; border-radius: 22px;
+  background: rgba(0, 120, 212, 0.92); color: #fff; text-decoration: none;
+  font: 600 13px/1 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18); backdrop-filter: blur(6px);
+  opacity: 0;
+  animation: smec-back-btn-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.4s forwards;
+  /* Collapsing: wait for the label to fade out, then shrink the pill. */
+  transition:
+    padding 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.2s,
+    gap 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.2s,
+    background 0.35s ease 0s,
+    box-shadow 0.35s ease 0s;
+  overflow: hidden; white-space: nowrap; }
+.smec-back-btn__icon { flex: 0 0 auto;
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1) 0.2s; }
+.smec-back-btn__label { max-width: 0; opacity: 0;
+  /* Collapsing: label fades out first, then its width collapses with the pill. */
+  transition:
+    opacity 0.18s ease 0s,
+    max-width 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.2s; }
+
+/* Expanding: pill and label grow together in one motion; text appears near the end. */
+.smec-back-btn:hover, .smec-back-btn:focus-visible {
+  gap: 10px; padding: 0 18px 0 12px;
+  background: rgba(0, 90, 158, 0.96); color: #fff; text-decoration: none;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.22);
+  transition:
+    padding 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0s,
+    gap 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0s,
+    background 0.35s ease 0s,
+    box-shadow 0.35s ease 0s; }
+.smec-back-btn:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+.smec-back-btn:hover .smec-back-btn__icon,
+.smec-back-btn:focus-visible .smec-back-btn__icon {
+  transform: translateX(-2px);
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1) 0s; }
+.smec-back-btn:hover .smec-back-btn__label,
+.smec-back-btn:focus-visible .smec-back-btn__label {
+  max-width: 260px; opacity: 1;
+  transition:
+    max-width 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0s,
+    opacity 0.3s ease 0.3s; }
+
+@keyframes smec-back-btn-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@media (hover: none) {
+  .smec-back-btn { gap: 10px; padding: 0 18px 0 12px; }
+  .smec-back-btn__label { max-width: 260px; opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .smec-back-btn, .smec-back-btn__icon, .smec-back-btn__label,
+  .smec-back-btn:hover, .smec-back-btn:focus-visible,
+  .smec-back-btn:hover .smec-back-btn__icon,
+  .smec-back-btn:focus-visible .smec-back-btn__icon,
+  .smec-back-btn:hover .smec-back-btn__label,
+  .smec-back-btn:focus-visible .smec-back-btn__label {
+    transition: background 0.2s ease, color 0.2s ease;
+    animation: none; opacity: 1; }
+}
+@media (max-width: 600px) { .smec-back-btn { bottom: 12px; left: 12px; } }
+</style>
+</head>
+<body>
+<a href="/" class="smec-back-btn" data-smec-back-button="v1" aria-label="Back to SME&amp;C Infographics"><svg class="smec-back-btn__icon" aria-hidden="true" viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg><span class="smec-back-btn__label">Back to SME&amp;C Infographics</span></a>
+
+
+<div class="progress" id="progress"></div>
+
+<nav class="top">
+  <span class="brand">
+    <span class="brand-mark">AI</span>
+    AI Gateway · APIM
+  </span>
+  <a href="#hero">Overview</a>
+  <a href="#why">Why It Matters</a>
+  <a href="#pillars">Capabilities</a>
+  <a href="#deep">Robust &amp; Observable</a>
+  <a href="#mcp">MCP Catalog</a>
+  <a href="#timeline">Timeline</a>
+  <a href="#start">Start</a>
+</nav>
+
+<!-- ═══════════ HERO ═══════════ -->
+<section class="hero" id="hero">
+  <div class="container">
+    <div class="hero-grid">
+      <div>
+        <span class="hero-eyebrow"><span class="dot"></span> Generally Available · Ignite 2025</span>
+        <h1>One front door for <span class="accent-cyan">every model</span>.<br>One control plane for the <span class="accent-amber">agent era</span>.</h1>
+        <p class="hero-sub">Azure API Management's <strong>AI Gateway</strong> is not a separate product — it's the same gateway you already use for APIs, taught new tricks for LLMs, agents, and tools. Token-aware throttling, semantic caching, multi-backend load balancing, content safety, native MCP, and rich telemetry — all governed with the platform you already operate.</p>
+        <div class="hero-meta">
+          <span class="chip"><strong>14</strong> capabilities</span>
+          <span class="chip"><strong>5</strong> WAF pillars</span>
+          <span class="chip"><strong>1,200+</strong> enterprise customers</span>
+          <span class="chip">No new infrastructure</span>
+        </div>
+      </div>
+      <div class="gw-fig">
+        <svg viewBox="0 0 600 540" xmlns="http://www.w3.org/2000/svg" aria-label="AI Gateway — clients to backends through APIM">
+          <defs>
+            <linearGradient id="gwBox" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#50e6ff"/>
+              <stop offset="100%" stop-color="#0078d4"/>
+            </linearGradient>
+            <linearGradient id="gwBoxGlow" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#7befff" stop-opacity="0.55"/>
+              <stop offset="100%" stop-color="#0078d4" stop-opacity="0"/>
+            </linearGradient>
+            <linearGradient id="agentBox" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#fbbf24"/>
+              <stop offset="100%" stop-color="#c19a00"/>
+            </linearGradient>
+            <linearGradient id="modelBox" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#a96fd6"/>
+              <stop offset="100%" stop-color="#5C2D91"/>
+            </linearGradient>
+            <linearGradient id="mcpBox" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#26ad97"/>
+              <stop offset="100%" stop-color="#008575"/>
+            </linearGradient>
+            <radialGradient id="haloGw" cx="50%" cy="55%" r="55%">
+              <stop offset="0%" stop-color="#50e6ff" stop-opacity="0.32"/>
+              <stop offset="100%" stop-color="#50e6ff" stop-opacity="0"/>
+            </radialGradient>
+            <linearGradient id="flowLine" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#50e6ff" stop-opacity="0"/>
+              <stop offset="50%" stop-color="#50e6ff" stop-opacity="0.85"/>
+              <stop offset="100%" stop-color="#50e6ff" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+
+          <!-- Background halo -->
+          <ellipse cx="300" cy="270" rx="320" ry="270" fill="url(#haloGw)"/>
+
+          <!-- ─── Clients (left) ─── -->
+          <g>
+            <text x="90" y="50" text-anchor="middle" fill="rgba(255,255,255,0.55)" font-family="Segoe UI" font-size="10" letter-spacing="0.14em">CLIENTS &amp; AGENTS</text>
+
+            <!-- AI App -->
+            <rect x="30" y="80" width="120" height="62" rx="10" fill="url(#agentBox)" opacity="0.95"/>
+            <rect x="30" y="80" width="120" height="62" rx="10" fill="none" stroke="#fbbf24" stroke-width="1" opacity="0.7"/>
+            <text x="90" y="108" text-anchor="middle" fill="#fff" font-family="Segoe UI" font-size="13" font-weight="700">AI App</text>
+            <text x="90" y="125" text-anchor="middle" fill="rgba(255,255,255,0.85)" font-family="Segoe UI" font-size="9.5" letter-spacing="0.08em">CHAT · COPILOT · UI</text>
+
+            <!-- Agent -->
+            <rect x="30" y="160" width="120" height="62" rx="10" fill="url(#agentBox)" opacity="0.95"/>
+            <rect x="30" y="160" width="120" height="62" rx="10" fill="none" stroke="#fbbf24" stroke-width="1" opacity="0.7"/>
+            <text x="90" y="188" text-anchor="middle" fill="#fff" font-family="Segoe UI" font-size="13" font-weight="700">Agent</text>
+            <text x="90" y="205" text-anchor="middle" fill="rgba(255,255,255,0.85)" font-family="Segoe UI" font-size="9.5" letter-spacing="0.08em">A2A · TOOL CALLS</text>
+
+            <!-- MCP Client -->
+            <rect x="30" y="240" width="120" height="62" rx="10" fill="url(#agentBox)" opacity="0.95"/>
+            <rect x="30" y="240" width="120" height="62" rx="10" fill="none" stroke="#fbbf24" stroke-width="1" opacity="0.7"/>
+            <text x="90" y="268" text-anchor="middle" fill="#fff" font-family="Segoe UI" font-size="13" font-weight="700">MCP Client</text>
+            <text x="90" y="285" text-anchor="middle" fill="rgba(255,255,255,0.85)" font-family="Segoe UI" font-size="9.5" letter-spacing="0.08em">VS CODE · CLAUDE · IDE</text>
+          </g>
+
+          <!-- ─── Flow lines: clients → gateway ─── -->
+          <line x1="150" y1="111" x2="225" y2="180" stroke="url(#flowLine)" stroke-width="2"/>
+          <line x1="150" y1="191" x2="225" y2="240" stroke="url(#flowLine)" stroke-width="2"/>
+          <line x1="150" y1="271" x2="225" y2="300" stroke="url(#flowLine)" stroke-width="2"/>
+
+          <!-- ─── AI GATEWAY (center) ─── -->
+          <g>
+            <!-- Gateway big box -->
+            <rect x="225" y="120" width="150" height="280" rx="14" fill="url(#gwBox)" opacity="0.95"/>
+            <rect x="225" y="120" width="150" height="280" rx="14" fill="url(#gwBoxGlow)"/>
+            <rect x="225" y="120" width="150" height="280" rx="14" fill="none" stroke="#7befff" stroke-width="1.5"/>
+
+            <text x="300" y="148" text-anchor="middle" fill="#fff" font-family="Segoe UI" font-size="11" letter-spacing="0.18em" font-weight="700">AZURE API MANAGEMENT</text>
+            <text x="300" y="172" text-anchor="middle" fill="#fff" font-family="Georgia" font-size="20" font-weight="700">AI Gateway</text>
+
+            <!-- Capability chips inside gateway -->
+            <g font-family="Segoe UI" font-size="9.5" font-weight="600" text-anchor="middle">
+              <rect x="240" y="190" width="120" height="22" rx="4" fill="rgba(255,255,255,0.16)"/>
+              <text x="300" y="205" fill="#fff">Token Limit · Quota</text>
+
+              <rect x="240" y="218" width="120" height="22" rx="4" fill="rgba(255,255,255,0.16)"/>
+              <text x="300" y="233" fill="#fff">Semantic Cache</text>
+
+              <rect x="240" y="246" width="120" height="22" rx="4" fill="rgba(255,255,255,0.16)"/>
+              <text x="300" y="261" fill="#fff">Load Balance · CB</text>
+
+              <rect x="240" y="274" width="120" height="22" rx="4" fill="rgba(255,255,255,0.16)"/>
+              <text x="300" y="289" fill="#fff">Content Safety</text>
+
+              <rect x="240" y="302" width="120" height="22" rx="4" fill="rgba(255,255,255,0.16)"/>
+              <text x="300" y="317" fill="#fff">OAuth 2.1 · Entra ID</text>
+
+              <rect x="240" y="330" width="120" height="22" rx="4" fill="rgba(255,255,255,0.16)"/>
+              <text x="300" y="345" fill="#fff">Token Metrics · OTel</text>
+
+              <rect x="240" y="358" width="120" height="22" rx="4" fill="rgba(255,255,255,0.16)"/>
+              <text x="300" y="373" fill="#fff">MCP Servers · A2A</text>
+            </g>
+
+            <!-- Pulse beam -->
+            <rect x="297" y="408" width="6" height="0" fill="#fff">
+              <animate attributeName="height" values="0;28;0" dur="2.4s" repeatCount="indefinite"/>
+            </rect>
+          </g>
+
+          <!-- ─── Flow lines: gateway → backends ─── -->
+          <line x1="375" y1="180" x2="450" y2="111" stroke="url(#flowLine)" stroke-width="2"/>
+          <line x1="375" y1="240" x2="450" y2="191" stroke="url(#flowLine)" stroke-width="2"/>
+          <line x1="375" y1="300" x2="450" y2="271" stroke="url(#flowLine)" stroke-width="2"/>
+          <line x1="375" y1="360" x2="450" y2="351" stroke="url(#flowLine)" stroke-width="2"/>
+
+          <!-- ─── Backends (right) ─── -->
+          <g>
+            <text x="510" y="50" text-anchor="middle" fill="rgba(255,255,255,0.55)" font-family="Segoe UI" font-size="10" letter-spacing="0.14em">BACKENDS</text>
+
+            <!-- Foundry -->
+            <rect x="450" y="80" width="120" height="62" rx="10" fill="url(#modelBox)" opacity="0.95"/>
+            <rect x="450" y="80" width="120" height="62" rx="10" fill="none" stroke="#a96fd6" stroke-width="1" opacity="0.7"/>
+            <text x="510" y="108" text-anchor="middle" fill="#fff" font-family="Segoe UI" font-size="13" font-weight="700">Foundry</text>
+            <text x="510" y="125" text-anchor="middle" fill="rgba(255,255,255,0.85)" font-family="Segoe UI" font-size="9.5" letter-spacing="0.08em">AOAI · MODEL INFERENCE</text>
+
+            <!-- 3rd-party -->
+            <rect x="450" y="160" width="120" height="62" rx="10" fill="url(#modelBox)" opacity="0.95"/>
+            <rect x="450" y="160" width="120" height="62" rx="10" fill="none" stroke="#a96fd6" stroke-width="1" opacity="0.7"/>
+            <text x="510" y="188" text-anchor="middle" fill="#fff" font-family="Segoe UI" font-size="13" font-weight="700">3rd-party LLMs</text>
+            <text x="510" y="205" text-anchor="middle" fill="rgba(255,255,255,0.85)" font-family="Segoe UI" font-size="9.5" letter-spacing="0.08em">OPENAI-COMPATIBLE</text>
+
+            <!-- MCP server -->
+            <rect x="450" y="240" width="120" height="62" rx="10" fill="url(#mcpBox)" opacity="0.95"/>
+            <rect x="450" y="240" width="120" height="62" rx="10" fill="none" stroke="#26ad97" stroke-width="1" opacity="0.7"/>
+            <text x="510" y="268" text-anchor="middle" fill="#fff" font-family="Segoe UI" font-size="13" font-weight="700">MCP Servers</text>
+            <text x="510" y="285" text-anchor="middle" fill="rgba(255,255,255,0.85)" font-family="Segoe UI" font-size="9.5" letter-spacing="0.08em">REMOTE · LOGIC APPS</text>
+
+            <!-- Self-hosted -->
+            <rect x="450" y="320" width="120" height="62" rx="10" fill="url(#mcpBox)" opacity="0.95"/>
+            <rect x="450" y="320" width="120" height="62" rx="10" fill="none" stroke="#26ad97" stroke-width="1" opacity="0.7"/>
+            <text x="510" y="348" text-anchor="middle" fill="#fff" font-family="Segoe UI" font-size="13" font-weight="700">Self-hosted</text>
+            <text x="510" y="365" text-anchor="middle" fill="rgba(255,255,255,0.85)" font-family="Segoe UI" font-size="9.5" letter-spacing="0.08em">CUSTOM MODELS</text>
+          </g>
+
+          <!-- ─── Bottom rail: governance pillars ─── -->
+          <g>
+            <rect x="55" y="430" width="490" height="80" rx="12" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.18)" stroke-width="1"/>
+            <text x="300" y="453" text-anchor="middle" fill="rgba(255,255,255,0.7)" font-family="Segoe UI" font-size="10" letter-spacing="0.14em" font-weight="700">GOVERNANCE PILLARS</text>
+            <g font-family="Segoe UI" font-size="11" font-weight="600" fill="#fff" text-anchor="middle">
+              <text x="115" y="486">Security</text>
+              <text x="207" y="486">Reliability</text>
+              <text x="300" y="486">Performance</text>
+              <text x="394" y="486">Operations</text>
+              <text x="486" y="486">Cost</text>
+            </g>
+            <g fill="#50e6ff">
+              <circle cx="115" cy="498" r="3"/>
+              <circle cx="207" cy="498" r="3"/>
+              <circle cx="300" cy="498" r="3"/>
+              <circle cx="394" cy="498" r="3"/>
+              <circle cx="486" cy="498" r="3"/>
+            </g>
+          </g>
+        </svg>
+        <p class="gw-caption">AI Gateway sits between every AI client and every AI backend — applying the same governance to LLMs, agents, and MCP tools.</p>
+      </div>
+    </div>
+
+    <div class="hero-callouts">
+      <div class="cell">
+        <div class="num">14</div>
+        <div class="lbl">Named Capabilities</div>
+        <div class="src">Across the AI Gateway surface</div>
+      </div>
+      <div class="cell">
+        <div class="num">5</div>
+        <div class="lbl">WAF Pillars</div>
+        <div class="src">Security · Reliability · Perf · Ops · Cost</div>
+      </div>
+      <div class="cell">
+        <div class="num">1,200+</div>
+        <div class="lbl">Enterprise Customers</div>
+        <div class="src">Microsoft, Nov 18, 2025</div>
+      </div>
+      <div class="cell">
+        <div class="num">/mcp</div>
+        <div class="lbl">REST → MCP in Clicks</div>
+        <div class="src">Streamable HTTP endpoint</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ PROVOCATION ═══════════ -->
+<section class="provocation">
+  <div class="container">
+    <span class="quote-mark">"</span>
+    <h2>Your APIs are becoming tools.<br>Your users are becoming agents.<br>Your platform needs to adapt.</h2>
+    <p class="cite">— <a href="https://techcommunity.microsoft.com/blog/integrationsonazureblog/-new-in-azure-api-management-mcp-in-v2-skus--external-mcp-compliant-server-suppo/4434863" target="_blank">Microsoft, "MCP in v2 SKUs + external MCP-compliant server support" (Aug 5, 2025)</a></p>
+  </div>
+</section>
+
+<!-- ═══════════ WHY IT MATTERS ═══════════ -->
+<section id="why">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-tag">Why AI Gateway</span>
+      <h2>Generic API platforms can't see tokens, prompts, or PTU buckets.</h2>
+      <p class="lede">AI traffic looks like API traffic but behaves nothing like it. Tokens replace request counts as the unit of cost. Prompts and completions need moderation. PTU instances need preference. Agents and MCP clients negotiate on the wire. AI Gateway extends APIM with the AI-aware policies the new workload demands — without forcing a second control plane.</p>
+    </div>
+
+    <div class="why-grid">
+      <div class="why-card w1 reveal">
+        <div class="why-glyph">¢</div>
+        <h3>Tokens are the new bill</h3>
+        <p>Per-minute and per-quota caps on tokens — not requests. <code>llm-token-limit</code> pre-estimates prompt tokens so a runaway agent is blocked at the gateway, not at the model bill.</p>
+      </div>
+      <div class="why-card w2 reveal">
+        <div class="why-glyph">!</div>
+        <h3>Prompts are user input</h3>
+        <p>Every prompt deserves the same scrutiny as any other inbound payload. Native Azure AI Content Safety integration moderates LLM input — and supports patterns for output — before it reaches the model.</p>
+      </div>
+      <div class="why-card w3 reveal">
+        <div class="why-glyph">∞</div>
+        <h3>PTU first, PAYGO when needed</h3>
+        <p>Priority-based load balancing keeps PTU saturated and overflows to PAYGO. Circuit breakers honor each backend's <code>Retry-After</code>, so traffic resumes the second capacity is ready.</p>
+      </div>
+      <div class="why-card w4 reveal">
+        <div class="why-glyph">◇</div>
+        <h3>Agents need a registry</h3>
+        <p>MCP turns every API into a tool. Without a registry, agents can't discover them; without a gateway, you can't govern them. AI Gateway + API Center give you both.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ PILLARS / CAPABILITIES ═══════════ -->
+<section class="pillars-section" id="pillars">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-tag">The Capabilities</span>
+      <h2>14 capabilities, organized as 5 pillars.</h2>
+      <p class="lede">The Azure-Samples AI Gateway repo groups capabilities under the same Well-Architected pillars you already use elsewhere on Azure. Each policy below is named exactly as it appears in Microsoft Learn — the orange <em>Preview</em> tags mark features still in public preview at the time of writing.</p>
+    </div>
+
+    <div class="pillars-grid">
+      <!-- Security -->
+      <div class="pillar p-security reveal">
+        <div class="head">
+          <div class="glyph">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2 L4 6 V12 C4 17 7.5 21 12 22 C16.5 21 20 17 20 12 V6 Z"/></svg>
+          </div>
+          <div>
+            <h3>Security</h3>
+            <p class="metaphor">Govern, don't gatekeep.</p>
+          </div>
+        </div>
+        <ul>
+          <li><strong>Content safety</strong> — Azure AI Content Safety policy moderates LLM prompts</li>
+          <li><strong>Managed identity</strong> to Foundry / Azure OpenAI — eliminates API keys</li>
+          <li><strong>OAuth 2.0 / Entra ID</strong> via Credential Manager (inbound + outbound)</li>
+          <li><strong>OAuth 2.1 native MCP auth</strong> aligned with MCP spec 2025-06-18 <span class="pv">New</span></li>
+          <li><strong>Private connectivity</strong> via APIM private endpoints &amp; VNets</li>
+        </ul>
+      </div>
+
+      <!-- Reliability -->
+      <div class="pillar p-reliability reveal">
+        <div class="head">
+          <div class="glyph">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="9"/><path d="M12 7 V12 L15 14"/></svg>
+          </div>
+          <div>
+            <h3>Reliability</h3>
+            <p class="metaphor">One slow backend doesn't melt the system.</p>
+          </div>
+        </div>
+        <ul>
+          <li><strong>Backend load balancing</strong> — round-robin, weighted, priority, session-aware</li>
+          <li><strong>Circuit breaker</strong> — dynamic trip honoring backend <code>Retry-After</code></li>
+          <li><strong>Token rate limit &amp; quota</strong> — <code>llm-token-limit</code>, returns 429/403</li>
+          <li><strong>Multi-region gateway</strong> — automatic capacity scaling, regional fan-out</li>
+          <li><strong>Deployment-level token limits</strong> per model deployment <span class="pv">2026</span></li>
+        </ul>
+      </div>
+
+      <!-- Performance -->
+      <div class="pillar p-performance reveal">
+        <div class="head">
+          <div class="glyph">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 12 H8 L11 5 L13 19 L16 12 H21"/></svg>
+          </div>
+          <div>
+            <h3>Performance</h3>
+            <p class="metaphor">Cache the answer, not just the request.</p>
+          </div>
+        </div>
+        <ul>
+          <li><strong>Semantic caching</strong> — <code>llm-semantic-cache-store</code> + <code>-lookup</code></li>
+          <li>Backed by <strong>Azure Managed Redis</strong> or RediSearch-compatible cache</li>
+          <li><strong>Vector proximity</strong> via Embeddings API — reuses prior completions</li>
+          <li><strong>Model routing</strong> — direct latency-sensitive traffic to closer regions</li>
+          <li><strong>PTU prioritization</strong> — keep premium capacity saturated first</li>
+        </ul>
+      </div>
+
+      <!-- Operations -->
+      <div class="pillar p-operations reveal">
+        <div class="head">
+          <div class="glyph">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 13 H7 L9 7 L13 17 L15 11 L17 13 H21"/><circle cx="12" cy="12" r="9.5"/></svg>
+          </div>
+          <div>
+            <h3>Operations</h3>
+            <p class="metaphor">Tokens you can see. Spend you can shape.</p>
+          </div>
+        </div>
+        <ul>
+          <li><strong>Token metrics</strong> — <code>llm-emit-token-metric</code> with custom dimensions</li>
+          <li><strong>Prompt + completion logging</strong> to Application Insights</li>
+          <li><strong>Built-in token-consumption dashboard</strong> in APIM</li>
+          <li><strong>OpenTelemetry GenAI semantic conventions</strong> for agent APIs <span class="pv">2026</span></li>
+          <li><strong>MCP runtime telemetry</strong> — latency, outcome, error details <span class="pv">2026</span></li>
+        </ul>
+      </div>
+
+      <!-- Cost -->
+      <div class="pillar p-cost reveal">
+        <div class="head">
+          <div class="glyph">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="9"/><path d="M9 9 H15 M9 12 H15 M11 7 V17"/></svg>
+          </div>
+          <div>
+            <h3>Cost</h3>
+            <p class="metaphor">PTU first, PAYGO when you need it.</p>
+          </div>
+        </div>
+        <ul>
+          <li><strong>FinOps framework</strong> samples in the AI Gateway repo</li>
+          <li><strong>Per-consumer token quotas</strong> — chargeback by subscription, IP, user</li>
+          <li><strong>Semantic cache</strong> cuts tokens billed for repeated questions</li>
+          <li><strong>Priority-based load balancing</strong> keeps paid PTU saturated</li>
+          <li><strong>Backend pool</strong> across Foundry / AOAI / OpenAI-compatible</li>
+        </ul>
+      </div>
+
+      <!-- Agents & Tools -->
+      <div class="pillar p-ecosystem reveal">
+        <div class="head">
+          <div class="glyph">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 8 V18 L12 21 L19 18 V8 L12 5 Z"/><path d="M5 8 L12 11 L19 8 M12 11 V21"/></svg>
+          </div>
+          <div>
+            <h3>Agents &amp; Tools</h3>
+            <p class="metaphor">From REST to MCP in a few clicks.</p>
+          </div>
+        </div>
+        <ul>
+          <li><strong>MCP server hosting</strong> — REST API → MCP tools at <code>/mcp</code></li>
+          <li><strong>External MCP pass-through</strong> for Logic Apps, Functions, custom <span class="pv">Preview</span></li>
+          <li><strong>A2A (Agent2Agent)</strong> communication for multi-agent workflows <span class="pv">Preview</span></li>
+          <li>Rate-limit-by-key on <code>Mcp-Session-Id</code></li>
+          <li><strong>AI Gateway in Microsoft Foundry</strong> control plane <span class="pv">Preview</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ ROBUSTNESS + OBSERVABILITY DEEP DIVE ═══════════ -->
+<section class="deep-section" id="deep">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-tag">Robust &amp; Observable</span>
+      <h2>The two reasons platform teams adopt it.</h2>
+      <p class="lede">Robustness is what keeps one app from starving another and one slow backend from melting the system. Observability is what lets you bill, audit, and debug what just happened. AI Gateway delivers both with the same policies and dashboards your APIM operators already know.</p>
+    </div>
+
+    <div class="deep-grid">
+      <!-- ROBUST -->
+      <div class="deep-card r reveal">
+        <div class="deep-head">
+          <div class="icon">
+            <svg viewBox="0 0 24 24"><path d="M12 2 L3 6 V13 C3 18 7 22 12 22 C17 22 21 18 21 13 V6 Z M9 12 L11 14 L15 10" fill="none" stroke="#fff" stroke-width="2"/></svg>
+          </div>
+          <div>
+            <h3>Why architectures are more robust</h3>
+            <p class="sub">No more noisy-neighbor outages.</p>
+          </div>
+        </div>
+        <ul class="deep-list">
+          <li>
+            <strong>Multi-backend load balancing</strong>
+            Round-robin, weighted, priority-based, session-aware distribution across Foundry, Azure OpenAI, and OpenAI-compatible endpoints.
+          </li>
+          <li>
+            <strong>PTU + PAYGO mixing</strong>
+            Microsoft explicitly calls out priority modes that prefer PTU instances and overflow to PAYGO — your reserved capacity stays saturated, spillover lands on demand-priced.
+          </li>
+          <li>
+            <strong>Circuit breakers with dynamic trip duration</strong>
+            APIM applies the value from the backend's <code>Retry-After</code> header — traffic resumes the moment the backend says it's ready, no fixed cooldowns wasting PTU.
+          </li>
+          <li>
+            <strong>Token-aware throttling</strong>
+            <code>llm-token-limit</code> pre-computes prompt tokens and blocks at the gateway when the limit is already exceeded — no wasted backend calls, no noisy-neighbor outages.
+          </li>
+          <li>
+            <strong>Multi-region gateway deployment</strong>
+            APIM scales gateway capacity automatically and supports regional gateway addition; pair with backends in matching regions for geo-resilience.
+          </li>
+          <li>
+            <strong>Deployment-level token limits</strong>
+            March 2026 release — caps applied per model deployment, not just per consumer. Prevents one rogue model deployment from taking down the bucket.
+          </li>
+        </ul>
+        <div class="deep-net">One app cannot starve another. One backend going slow does not melt the system. PTU spend stays inside the bucket you paid for.</div>
+      </div>
+
+      <!-- OBSERVABLE -->
+      <div class="deep-card o reveal">
+        <div class="deep-head">
+          <div class="icon">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="#fff" stroke-width="2"/><circle cx="12" cy="12" r="3" fill="#fff"/></svg>
+          </div>
+          <div>
+            <h3>Why architectures are more observable</h3>
+            <p class="sub">Every prompt, completion, and token has an owner.</p>
+          </div>
+        </div>
+        <ul class="deep-list">
+          <li>
+            <strong><code>llm-emit-token-metric</code></strong>
+            Emits token consumption to Azure Monitor with <em>custom dimensions</em> — Microsoft's docs show Client IP, API ID, and User-ID-from-header. Slice token spend by consumer, model, operation, or any policy expression.
+          </li>
+          <li>
+            <strong>Prompt + completion logging</strong>
+            Diagnostic settings stream prompts and completions to Application Insights for billing, auditing, and troubleshooting.
+          </li>
+          <li>
+            <strong>Built-in token-consumption dashboard</strong>
+            APIM ships a default monitoring dashboard so you don't have to wire one up to start tracking spend.
+          </li>
+          <li>
+            <strong>OpenTelemetry GenAI semantic conventions</strong>
+            Agent APIs flow agent name, agent ID, and provider name into App Insights as standards-aligned OTel attributes. <span class="pv" style="background: var(--amber-light); color: var(--amber); padding: 0.1rem 0.45rem; border-radius: 4px; font-size: 0.65rem; font-weight: 800; text-transform: uppercase;">March 2026</span>
+          </li>
+          <li>
+            <strong>MCP runtime telemetry</strong>
+            Tool-invocation latency, request outcomes, and error details for every MCP call — observe agent-tool traffic the same way you observe REST APIs.
+          </li>
+          <li>
+            <strong>Managed identity to backends</strong>
+            Removes secret-rotation noise from the audit trail — every backend call traces to a workload identity, not a vault entry.
+          </li>
+        </ul>
+        <div class="deep-net">Every prompt, completion, and token has an owner, a metric, and a dashboard.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ MCP CATALOG (APIM + API Center) ═══════════ -->
+<section class="mcp-section" id="mcp">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-tag">AI Gateway + API Center</span>
+      <h2>A registry for the agent era.</h2>
+      <p class="lede">AI Gateway is the runtime control plane. <strong>Azure API Center</strong> is the organizational catalog. Together they give every developer a self-service way to find, govern, and call MCP tools — and every platform team one place to apply policy, identity, and rate limits to AI traffic.</p>
+    </div>
+
+    <div class="mcp-pair">
+      <div class="mcp-pane apim reveal">
+        <div class="role-lbl">Runtime</div>
+        <h4>Azure API Management — AI Gateway</h4>
+        <p>Hosts and fronts MCP servers. Applies policy, identity, rate-limit, content safety, and logging to every tool call.</p>
+        <ul>
+          <li>Expose any APIM-managed REST API as an MCP server at <code>/mcp</code></li>
+          <li>Front existing MCP servers (Logic Apps, Functions, LangChain, custom) via pass-through</li>
+          <li>OAuth 2.1 / Entra ID / API keys / IP filtering at the edge</li>
+          <li>Rate-limit-by-key on <code>Mcp-Session-Id</code></li>
+          <li>Credential Manager outbound token injection (now with Key Vault references)</li>
+        </ul>
+      </div>
+
+      <div class="mcp-arrow">
+        <div class="arrow-bar"></div>
+        <div class="arrow-lbl">Auto-sync</div>
+        <div class="arrow-bar"></div>
+      </div>
+
+      <div class="mcp-pane apic reveal">
+        <div class="role-lbl">Catalog</div>
+        <h4>Azure API Center — MCP Registry</h4>
+        <p>Inventory, discovery, and developer experience. Automatic synchronization keeps the catalog up to date with everything APIM hosts.</p>
+        <ul>
+          <li><strong>Remote MCP servers</strong> — auto-generates SSE &amp; Streamable definitions</li>
+          <li><strong>Local MCP servers</strong> — npm / pypi packages, runtime hint, runtime args</li>
+          <li><strong>Partner MCP servers</strong> — curated list incl. Azure Logic Apps and GitHub <span class="pv" style="background: var(--amber-light); color: var(--amber); padding: 0.08rem 0.4rem; border-radius: 4px; font-size: 0.6rem; font-weight: 800;">Preview</span></li>
+          <li>Built-in <strong>MCP Inspector</strong> for testing tool definitions</li>
+          <li><strong>One-click install into VS Code</strong> from the discovery portal</li>
+          <li>Optional surfacing into <strong>Microsoft Foundry tool catalogs</strong></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 5-step flow -->
+    <div class="mcp-flow">
+      <div class="flow-step reveal">
+        <div class="num">1</div>
+        <h5>Build or front</h5>
+        <p>Expose REST as MCP via the "MCP Servers" blade, or register an existing MCP server for pass-through governance.</p>
+      </div>
+      <div class="flow-step reveal">
+        <div class="num">2</div>
+        <h5>Govern</h5>
+        <p>Apply OAuth 2.1, Entra ID, rate-limit-by-key, and Credential Manager to every tool call. Same APIM policies you already use for REST.</p>
+      </div>
+      <div class="flow-step reveal">
+        <div class="num">3</div>
+        <h5>Auto-sync</h5>
+        <p>Enable automatic synchronization to keep API Center up to date with MCP servers and APIs from your APIM instance.</p>
+      </div>
+      <div class="flow-step reveal">
+        <div class="num">4</div>
+        <h5>Discover</h5>
+        <p>Developers browse and filter the API Center portal, view auto-generated definitions, test in MCP Inspector, install into VS Code with one click.</p>
+      </div>
+      <div class="flow-step reveal">
+        <div class="num">5</div>
+        <h5>Surface in Foundry</h5>
+        <p>MCP servers registered in API Center can integrate with Microsoft Foundry's tool catalogs — make tools available to AI agents under governance.</p>
+      </div>
+    </div>
+
+    <!-- Caveats -->
+    <div class="caveats reveal">
+      <h4>⚠ Important caveats — don't overclaim</h4>
+      <ul>
+        <li>For <strong>REST-derived MCP servers</strong> in APIM, only <strong>MCP tools</strong> are supported — <strong>resources and prompts are not supported today</strong>, and MCP capabilities are <strong>not supported in workspaces</strong>.</li>
+        <li>MCP support in <strong>v2 SKUs</strong> (Basic v2 / Standard v2 / Premium v2) is in <strong>public preview</strong> as of Aug 5, 2025.</li>
+        <li>The <strong>MCP tool limit per server</strong> was previously hardcoded at 20 — removed in the March 2026 release. Now bounded by the APIM SKU operation limit.</li>
+        <li><strong>A2A</strong> support and <strong>AI Gateway in Microsoft Foundry</strong> are <strong>preview</strong>. Show a "Preview" badge wherever your design depends on them.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ TIMELINE ═══════════ -->
+<section class="timeline-section" id="timeline">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-tag">2025 → 2026</span>
+      <h2>The arc — how the story landed.</h2>
+      <p class="lede">From the first public REST-as-MCP reveal at Build 2025 through Ignite 2025's "AI Gateway in Foundry" preview and the March 2026 release that brought OAuth 2.1, A2A, and OpenTelemetry conventions to GA-quality maturity.</p>
+    </div>
+
+    <div class="timeline">
+      <div class="tl-item event reveal">
+        <div class="tl-date">May 2025 · Build</div>
+        <h4>REST-as-MCP first reveal</h4>
+        <p>Initial public announcement that APIM can expose REST APIs as MCP servers, recapped publicly through industry channels.</p>
+      </div>
+      <div class="tl-item preview reveal">
+        <div class="tl-date">Aug 5, 2025 · Preview</div>
+        <h4>MCP in v2 SKUs · External MCP pass-through</h4>
+        <p>MCP support in Basic v2 / Standard v2 / Premium v2 enters public preview. New "Expose existing MCP-compliant server" wizard for fronting external MCP servers.</p>
+      </div>
+      <div class="tl-item ga reveal">
+        <div class="tl-date">Oct 29, 2025 · GA</div>
+        <h4>Azure MCP Server 1.0</h4>
+        <p>Stable release of the Azure MCP Server — 47+ services, 170+ tools. Separate from APIM but ecosystem-relevant for the agent-tool story.</p>
+      </div>
+      <div class="tl-item event reveal">
+        <div class="tl-date">Nov 17–21, 2025 · Ignite</div>
+        <h4>BRK119 — Don't let your AI agents go rogue</h4>
+        <p>Mike Budzynski &amp; Anish Tallapureddy position AI Gateway + MCP as the unified control plane for AI workloads. Companion lab LAB519 covers AI Gateway + API Center as MCP Registry + Foundry.</p>
+      </div>
+      <div class="tl-item preview reveal">
+        <div class="tl-date">Nov 18, 2025 · Preview</div>
+        <h4>AI Gateway in Microsoft Foundry</h4>
+        <p>AI Gateway can now be created and associated directly inside Foundry to govern models, agents, and tools — without leaving Foundry. <em>"More than 1,200 enterprise customers use AI Gateway."</em></p>
+      </div>
+      <div class="tl-item ga reveal">
+        <div class="tl-date">March 2026 · Release</div>
+        <h4>OAuth 2.1 · A2A · OTel · Premium v2 GA</h4>
+        <p>Native OAuth 2.1 for APIM-hosted MCP servers (aligned with MCP spec 2025-06-18). A2A (Agent2Agent) support. Deployment-level token limits. <code>notifications/tools/list_changed</code>. MCP runtime telemetry. Premium v2 SKU GA. OTel GenAI semantic conventions.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ CTA ═══════════ -->
+<section class="cta-section" id="start">
+  <div class="container">
+    <div class="reveal" style="text-align: center; max-width: 820px; margin: 0 auto 2rem;">
+      <span class="section-tag">Start Here</span>
+      <h2>You bring the tools. API Management brings the governance.</h2>
+      <p class="lede" style="margin: 0 auto;">Start with the canonical Microsoft Learn capability page, walk through the LAB519 Ignite lab end-to-end, and clone the Azure-Samples AI Gateway repo for working policy patterns across all five WAF pillars.</p>
+    </div>
+
+    <div class="cta-grid">
+      <a class="cta-card reveal" href="https://learn.microsoft.com/en-us/azure/api-management/genai-gateway-capabilities" target="_blank">
+        <div class="eyebrow">Microsoft Learn</div>
+        <h3>AI gateway capabilities</h3>
+        <p>The canonical reference. Every policy named, every backend listed, GA / preview status called out explicitly.</p>
+        <div class="arrow">Read the docs →</div>
+      </a>
+      <a class="cta-card reveal" href="https://github.com/Azure-Samples/AI-Gateway" target="_blank">
+        <div class="eyebrow">GitHub · Azure-Samples</div>
+        <h3>AI-Gateway repo</h3>
+        <p>Working policy samples organized by WAF pillar — Security, Reliability, Performance, Operations, Cost. Bicep + Terraform examples.</p>
+        <div class="arrow">Clone &amp; explore →</div>
+      </a>
+      <a class="cta-card reveal" href="https://learn.microsoft.com/en-us/azure/api-center/register-discover-mcp-server" target="_blank">
+        <div class="eyebrow">Microsoft Learn</div>
+        <h3>API Center MCP registry</h3>
+        <p>Register, discover, and govern MCP servers — remote, local, and partner. Auto-sync from APIM, MCP Inspector, VS Code one-click install.</p>
+        <div class="arrow">Build the catalog →</div>
+      </a>
+      <a class="cta-card reveal" href="https://techcommunity.microsoft.com/blog/integrationsonazureblog/ai-gateway-in-azure-api-management-is-now-available-in-microsoft-foundry-preview/4470676" target="_blank">
+        <div class="eyebrow">Tech Community · Nov 18, 2025</div>
+        <h3>AI Gateway in Foundry</h3>
+        <p>Ignite-week launch post for the Foundry-native AI Gateway preview. Source for the "1,200+ enterprise customers" stat.</p>
+        <div class="arrow">Read the announcement →</div>
+      </a>
+      <a class="cta-card reveal" href="https://github.com/microsoft/ignite25-LAB519-governing-ai-apps-agents-with-ai-gateway-in-azure-api-management" target="_blank">
+        <div class="eyebrow">Ignite 2025 · LAB519</div>
+        <h3>End-to-end hands-on lab</h3>
+        <p>Govern AI apps and agents with AI Gateway — full lab repo covering APIM, API Center as MCP registry, and Foundry integration.</p>
+        <div class="arrow">Run the lab →</div>
+      </a>
+      <a class="cta-card reveal" href="https://learn.microsoft.com/en-us/azure/api-management/export-rest-mcp-server" target="_blank">
+        <div class="eyebrow">Microsoft Learn</div>
+        <h3>Expose REST as MCP</h3>
+        <p>Step-by-step: turn an APIM-managed REST API into a remote MCP server in a few clicks — endpoint at <code>/mcp</code>, Streamable HTTP.</p>
+        <div class="arrow">Try it →</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="brand-mark">AI Gateway · Azure API Management</div>
+    <p>One front door for every model. One control plane for the agent era.</p>
+    <p>Status snapshot is accurate at time of writing — confirm GA / Preview state on Microsoft Learn before designing dependencies on preview features.</p>
+    <div class="sources-line">
+      <strong style="color: rgba(255,255,255,0.75);">Primary sources:</strong><br>
+      <a href="https://learn.microsoft.com/en-us/azure/api-management/genai-gateway-capabilities" target="_blank">AI gateway capabilities</a> ·
+      <a href="https://learn.microsoft.com/en-us/azure/api-center/register-discover-mcp-server" target="_blank">API Center MCP registry</a> ·
+      <a href="https://learn.microsoft.com/en-us/azure/api-management/export-rest-mcp-server" target="_blank">Expose REST as MCP</a> ·
+      <a href="https://learn.microsoft.com/en-us/azure/api-management/llm-token-limit-policy" target="_blank">llm-token-limit policy</a> ·
+      <a href="https://learn.microsoft.com/en-us/azure/api-management/mcp-server-overview" target="_blank">MCP server overview</a> ·
+      <a href="https://github.com/Azure-Samples/AI-Gateway" target="_blank">Azure-Samples/AI-Gateway</a> ·
+      <a href="https://techcommunity.microsoft.com/blog/integrationsonazureblog/ai-gateway-in-azure-api-management-is-now-available-in-microsoft-foundry-preview/4470676" target="_blank">AI Gateway in Foundry (Nov 18, 2025)</a> ·
+      <a href="https://techcommunity.microsoft.com/blog/integrationsonazureblog/-new-in-azure-api-management-mcp-in-v2-skus--external-mcp-compliant-server-suppo/4434863" target="_blank">MCP in v2 SKUs (Aug 5, 2025)</a> ·
+      <a href="https://github.com/Azure/API-Management/releases" target="_blank">APIM releases (March 2026)</a>
+    </div>
+    <p class="small">Designed brief — for customer-facing infographic use. All claims trace to the primary Microsoft sources above.</p>
+  </div>
+</footer>
+
+<script>
+  // Progress bar
+  const progress = document.getElementById('progress');
+  window.addEventListener('scroll', () => {
+    const h = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    progress.style.width = (window.scrollY / h * 100) + '%';
+  });
+
+  // Reveal on scroll
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // Active nav link
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('nav.top a');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => {
+      if (window.scrollY >= s.offsetTop - 120) current = s.id;
+    });
+    navLinks.forEach(a => {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+    });
+  });
+</script>
+</body>
+</html>

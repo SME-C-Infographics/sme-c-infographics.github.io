@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>The Anatomy of an AI Agent — A Field Guide</title>
+<style>
+  :root {
+    --paper: #fdfbf7;
+    --paper-2: #f5efe3;
+    --ink: #1e1b3a;
+    --ink-soft: #3b3754;
+    --muted: #6b6684;
+    --line: rgba(30, 27, 58, 0.12);
+    --line-strong: rgba(30, 27, 58, 0.35);
+    --red: #e63946;
+    --blue: #3a6ea5;
+    --teal: #2a9d8f;
+    --amber: #e2922b;
+    --purple: #7b2cbf;
+    --plum: #a53860;
+    --mint: #5ba87e;
+    --shadow: 0 20px 40px -20px rgba(30, 27, 58, 0.25);
+    --serif: "Georgia", "Times New Roman", serif;
+    --sans: "Segoe UI", "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--sans);
+    background: var(--paper);
+    color: var(--ink);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    background-image:
+      radial-gradient(circle at 20% 10%, rgba(123, 44, 191, 0.05), transparent 40%),
+      radial-gradient(circle at 85% 30%, rgba(230, 57, 70, 0.05), transparent 40%),
+      radial-gradient(circle at 50% 90%, rgba(42, 157, 143, 0.05), transparent 40%);
+  }
+
+  /* Scroll progress */
+  .progress { position: fixed; top: 0; left: 0; height: 3px; background: linear-gradient(90deg, var(--red), var(--amber), var(--teal), var(--purple)); width: 0%; z-index: 9999; transition: width 0.1s ease; }
+
+  /* Sticky nav */
+  nav.top {
+    position: sticky; top: 0; background: rgba(253, 251, 247, 0.95); backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line); z-index: 100; padding: 0.8rem 2rem;
+    display: flex; gap: 1.5rem; align-items: center; overflow-x: auto; white-space: nowrap;
+  }
+  nav.top .brand { font-family: var(--serif); font-weight: 700; font-size: 1.05rem; color: var(--ink); margin-right: auto; }
+  nav.top a { color: var(--muted); text-decoration: none; font-size: 0.85rem; font-weight: 500; padding: 0.3rem 0.7rem; border-radius: 6px; transition: all 0.2s; }
+  nav.top a:hover, nav.top a.active { background: var(--ink); color: var(--paper); }
+
+  /* Layout */
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+  section { padding: 5rem 0; position: relative; }
+  .section-tag { display: inline-block; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); font-weight: 700; border: 1px solid var(--line-strong); padding: 0.35rem 0.8rem; border-radius: 999px; margin-bottom: 1rem; }
+  h1, h2, h3, h4 { font-family: var(--serif); color: var(--ink); font-weight: 700; letter-spacing: -0.02em; }
+  h2 { font-size: 2.5rem; line-height: 1.1; margin-bottom: 1rem; }
+  h3 { font-size: 1.4rem; line-height: 1.2; margin-bottom: 0.5rem; }
+  p { color: var(--ink-soft); }
+
+  /* HERO */
+  .hero { padding: 6rem 0 4rem; position: relative; overflow: hidden; }
+  .hero::before { content: ""; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-image:
+      linear-gradient(rgba(30, 27, 58, 0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(30, 27, 58, 0.04) 1px, transparent 1px);
+    background-size: 40px 40px; z-index: 0; opacity: 0.6; }
+  .hero-inner { position: relative; z-index: 1; display: grid; grid-template-columns: 1fr 1.15fr; gap: 2rem; align-items: center; }
+  .hero-eyebrow { font-family: var(--serif); font-style: italic; color: var(--plum); font-size: 1rem; margin-bottom: 1rem; }
+  .hero h1 { font-size: 4.2rem; line-height: 1; margin-bottom: 1.5rem; }
+  .hero h1 .accent-red { color: var(--red); }
+  .hero h1 .accent-blue { color: var(--blue); }
+  .hero h1 .accent-purple { color: var(--purple); }
+  .hero-subtitle { font-size: 1.2rem; color: var(--ink-soft); margin-bottom: 2rem; max-width: 560px; }
+  .hero-meta { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 2rem; }
+  .hero-meta .chip { padding: 0.4rem 0.9rem; background: var(--paper-2); border: 1px solid var(--line); border-radius: 999px; font-size: 0.85rem; color: var(--ink-soft); font-weight: 500; }
+  .hero-meta .chip strong { color: var(--ink); }
+
+  /* Anatomy figure SVG container */
+  .figure-wrap { position: relative; padding: 1.5rem; }
+  .figure-wrap svg { width: 100%; height: auto; filter: drop-shadow(0 15px 35px rgba(30,27,58,0.12)); }
+  .figure-caption { font-family: var(--serif); font-style: italic; color: var(--muted); font-size: 0.85rem; text-align: center; margin-top: 0.8rem; }
+
+  /* Cross-section callouts under the hero */
+  .callout-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0; border-top: 1px solid var(--line-strong); border-bottom: 1px solid var(--line-strong); margin-top: 3rem; }
+  .callout-row .cell { padding: 1.5rem 1.2rem; border-right: 1px solid var(--line); text-align: center; }
+  .callout-row .cell:last-child { border-right: none; }
+  .callout-row .num { font-family: var(--serif); font-size: 2rem; color: var(--red); font-weight: 700; line-height: 1; }
+  .callout-row .lbl { font-size: 0.8rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 0.4rem; }
+
+  /* Provocation */
+  .provocation { padding: 4rem 0; background: var(--ink); color: var(--paper); position: relative; }
+  .provocation h2 { color: var(--paper); font-size: 2.2rem; max-width: 900px; }
+  .provocation .quote-mark { font-family: var(--serif); font-size: 5rem; color: var(--amber); line-height: 0.3; margin-bottom: 1rem; display: block; }
+  .provocation .cite { color: rgba(253,251,247,0.6); font-size: 0.9rem; margin-top: 1.2rem; font-style: italic; font-family: var(--serif); }
+
+  /* Component grid */
+  .components-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; margin-top: 3rem; }
+  .component-card {
+    background: var(--paper); border: 1px solid var(--line-strong); border-radius: 8px;
+    padding: 2rem; position: relative; transition: all 0.3s; overflow: hidden;
+    display: flex; flex-direction: column; gap: 0.9rem;
+  }
+  .component-card::before {
+    content: ""; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+    background: var(--accent, var(--red));
+  }
+  .component-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+  .component-card .card-head { display: flex; align-items: flex-start; gap: 1rem; }
+  .component-card .glyph {
+    width: 56px; height: 56px; border-radius: 12px; display: flex; align-items: center; justify-content: center;
+    background: var(--accent-soft, rgba(230,57,70,0.1)); color: var(--accent, var(--red));
+    flex-shrink: 0;
+  }
+  .component-card .glyph svg { width: 30px; height: 30px; }
+  .component-card .card-head .heading { flex: 1; }
+  .component-card .metaphor { font-family: var(--serif); font-style: italic; color: var(--muted); font-size: 0.85rem; margin-top: 0.2rem; }
+  .component-card h3 { color: var(--ink); font-size: 1.35rem; margin: 0; }
+  .component-card .tagline { color: var(--ink-soft); font-size: 1rem; line-height: 1.5; }
+  .component-card .bits { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.3rem; }
+  .component-card .bits li { font-size: 0.9rem; color: var(--ink-soft); padding-left: 1.2rem; position: relative; }
+  .component-card .bits li::before { content: "→"; position: absolute; left: 0; color: var(--accent, var(--red)); font-weight: 700; }
+  .component-card .without {
+    margin-top: 0.5rem; padding: 0.8rem 1rem; background: var(--paper-2); border-left: 3px solid var(--accent, var(--red));
+    border-radius: 4px; font-size: 0.85rem; color: var(--ink-soft);
+  }
+  .component-card .without strong { color: var(--ink); display: block; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.3rem; }
+
+  /* Accent mapping per component */
+  .c-instructions { --accent: var(--red); --accent-soft: rgba(230,57,70,0.1); }
+  .c-model { --accent: var(--purple); --accent-soft: rgba(123,44,191,0.1); }
+  .c-knowledge { --accent: var(--blue); --accent-soft: rgba(58,110,165,0.1); }
+  .c-tools { --accent: var(--amber); --accent-soft: rgba(226,146,43,0.1); }
+  .c-skills { --accent: var(--teal); --accent-soft: rgba(42,157,143,0.1); }
+  .c-memory { --accent: var(--plum); --accent-soft: rgba(165,56,96,0.1); }
+  .c-guardrails { --accent: var(--mint); --accent-soft: rgba(91,168,126,0.1); }
+  .c-orchestration { --accent: #4a5c8a; --accent-soft: rgba(74,92,138,0.12); }
+  .c-identity { --accent: #b8860b; --accent-soft: rgba(184,134,11,0.1); }
+  .c-observability { --accent: #8a6d3b; --accent-soft: rgba(138,109,59,0.1); }
+
+  /* Agent loop */
+  .loop-section { background: var(--paper-2); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .loop-wrap { display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-top: 3rem; }
+  .loop-step { text-align: center; max-width: 160px; }
+  .loop-circle {
+    width: 110px; height: 110px; border-radius: 50%; margin: 0 auto 0.8rem;
+    background: var(--paper); border: 3px solid var(--step-color, var(--red));
+    display: flex; align-items: center; justify-content: center; font-family: var(--serif);
+    font-size: 2rem; font-weight: 700; color: var(--step-color, var(--red));
+    position: relative;
+  }
+  .loop-step h4 { font-size: 1rem; margin-bottom: 0.3rem; color: var(--ink); }
+  .loop-step p { font-size: 0.8rem; color: var(--ink-soft); line-height: 1.4; }
+  .loop-arrow { color: var(--line-strong); font-size: 2rem; align-self: flex-start; margin-top: 40px; }
+
+  /* Checklist */
+  .checklist-wrap { background: var(--ink); color: var(--paper); padding: 3rem; border-radius: 12px; margin-top: 3rem; }
+  .checklist-wrap h3 { color: var(--paper); font-size: 1.8rem; margin-bottom: 0.3rem; }
+  .checklist-wrap .sub { color: rgba(253,251,247,0.6); margin-bottom: 2rem; font-family: var(--serif); font-style: italic; }
+  .checklist-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.8rem 2rem; }
+  .check-item { display: flex; gap: 0.9rem; align-items: flex-start; padding: 0.6rem 0; border-bottom: 1px solid rgba(253,251,247,0.1); }
+  .check-box {
+    width: 22px; height: 22px; border: 1.5px solid var(--amber); border-radius: 4px;
+    flex-shrink: 0; margin-top: 2px; display: flex; align-items: center; justify-content: center;
+    color: var(--amber); font-weight: 700; font-size: 0.8rem;
+  }
+  .check-item .txt { font-size: 0.92rem; color: rgba(253,251,247,0.9); }
+  .check-item .txt strong { color: var(--amber); }
+
+  /* Anti-patterns */
+  .antipatterns { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 2.5rem; }
+  .antipattern {
+    background: var(--paper); border: 1px dashed var(--red); border-radius: 8px; padding: 1.3rem;
+    position: relative;
+  }
+  .antipattern .tag { display: inline-block; background: var(--red); color: var(--paper); padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.8rem; }
+  .antipattern h4 { font-size: 1rem; margin-bottom: 0.4rem; }
+  .antipattern p { font-size: 0.88rem; color: var(--ink-soft); line-height: 1.5; }
+  .antipattern .fix { margin-top: 0.7rem; padding-top: 0.7rem; border-top: 1px solid var(--line); font-size: 0.8rem; color: var(--teal); font-style: italic; font-family: var(--serif); }
+
+  /* Maturity ladder */
+  .ladder { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-top: 3rem; }
+  .rung {
+    background: var(--paper); border: 1px solid var(--line-strong); border-radius: 8px;
+    padding: 1.5rem; position: relative; border-top: 4px solid var(--rung-color);
+  }
+  .rung .level { font-family: var(--serif); font-size: 0.8rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.15em; font-weight: 700; }
+  .rung h4 { font-size: 1.2rem; margin: 0.3rem 0 0.8rem; }
+  .rung ul { list-style: none; padding: 0; margin: 0; }
+  .rung ul li { font-size: 0.85rem; color: var(--ink-soft); padding: 0.3rem 0; padding-left: 1.2rem; position: relative; line-height: 1.4; }
+  .rung ul li::before { content: "●"; position: absolute; left: 0; color: var(--rung-color); font-size: 0.7rem; top: 0.5rem; }
+  .rung-1 { --rung-color: #c44a4a; }
+  .rung-2 { --rung-color: var(--amber); }
+  .rung-3 { --rung-color: var(--teal); }
+  .rung-4 { --rung-color: var(--purple); }
+
+  /* Build with MS */
+  .build-ms { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; margin-top: 2.5rem; }
+  .ms-card { background: linear-gradient(135deg, var(--paper) 0%, var(--paper-2) 100%); border: 1px solid var(--line-strong); padding: 1.8rem; border-radius: 10px; transition: all 0.2s; text-decoration: none; color: inherit; display: block; }
+  .ms-card:hover { border-color: var(--ink); transform: translateY(-3px); box-shadow: var(--shadow); }
+  .ms-card .eyebrow { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--muted); font-weight: 700; }
+  .ms-card h4 { font-size: 1.2rem; margin: 0.4rem 0 0.7rem; color: var(--ink); }
+  .ms-card p { font-size: 0.88rem; color: var(--ink-soft); }
+  .ms-card .arrow { margin-top: 1rem; color: var(--red); font-size: 0.85rem; font-weight: 700; }
+
+  /* Footer */
+  footer { background: var(--ink); color: var(--paper); padding: 3rem 0 2rem; text-align: center; }
+  footer .brand-mark { font-family: var(--serif); font-size: 1.3rem; margin-bottom: 0.5rem; }
+  footer p { color: rgba(253,251,247,0.6); font-size: 0.85rem; max-width: 700px; margin: 0.4rem auto; }
+
+  /* Reveal */
+  .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.in { opacity: 1; transform: translateY(0); }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    .hero-inner { grid-template-columns: 1fr; }
+    .hero h1 { font-size: 2.8rem; }
+    .components-grid, .checklist-grid { grid-template-columns: 1fr; }
+    .callout-row { grid-template-columns: repeat(2, 1fr); }
+    .callout-row .cell { border-bottom: 1px solid var(--line); }
+    .loop-arrow { display: none; }
+    .antipatterns, .ladder, .build-ms { grid-template-columns: 1fr; }
+    nav.top { padding: 0.6rem 1rem; gap: 0.8rem; }
+    section { padding: 3rem 0; }
+  }
+</style>
+<style>/* smec-back-btn v1 */
+.smec-back-btn { position: fixed; bottom: 16px; left: 16px; z-index: 9999;
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: 0; min-width: 44px; height: 44px; padding: 0; border-radius: 22px;
+  background: rgba(0, 120, 212, 0.92); color: #fff; text-decoration: none;
+  font: 600 13px/1 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18); backdrop-filter: blur(6px);
+  opacity: 0;
+  animation: smec-back-btn-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.4s forwards;
+  /* Collapsing: wait for the label to fade out, then shrink the pill. */
+  transition:
+    padding 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.2s,
+    gap 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.2s,
+    background 0.35s ease 0s,
+    box-shadow 0.35s ease 0s;
+  overflow: hidden; white-space: nowrap; }
+.smec-back-btn__icon { flex: 0 0 auto;
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1) 0.2s; }
+.smec-back-btn__label { max-width: 0; opacity: 0;
+  /* Collapsing: label fades out first, then its width collapses with the pill. */
+  transition:
+    opacity 0.18s ease 0s,
+    max-width 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.2s; }
+
+/* Expanding: pill and label grow together in one motion; text appears near the end. */
+.smec-back-btn:hover, .smec-back-btn:focus-visible {
+  gap: 10px; padding: 0 18px 0 12px;
+  background: rgba(0, 90, 158, 0.96); color: #fff; text-decoration: none;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.22);
+  transition:
+    padding 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0s,
+    gap 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0s,
+    background 0.35s ease 0s,
+    box-shadow 0.35s ease 0s; }
+.smec-back-btn:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+.smec-back-btn:hover .smec-back-btn__icon,
+.smec-back-btn:focus-visible .smec-back-btn__icon {
+  transform: translateX(-2px);
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1) 0s; }
+.smec-back-btn:hover .smec-back-btn__label,
+.smec-back-btn:focus-visible .smec-back-btn__label {
+  max-width: 260px; opacity: 1;
+  transition:
+    max-width 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0s,
+    opacity 0.3s ease 0.3s; }
+
+@keyframes smec-back-btn-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@media (hover: none) {
+  .smec-back-btn { gap: 10px; padding: 0 18px 0 12px; }
+  .smec-back-btn__label { max-width: 260px; opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .smec-back-btn, .smec-back-btn__icon, .smec-back-btn__label,
+  .smec-back-btn:hover, .smec-back-btn:focus-visible,
+  .smec-back-btn:hover .smec-back-btn__icon,
+  .smec-back-btn:focus-visible .smec-back-btn__icon,
+  .smec-back-btn:hover .smec-back-btn__label,
+  .smec-back-btn:focus-visible .smec-back-btn__label {
+    transition: background 0.2s ease, color 0.2s ease;
+    animation: none; opacity: 1; }
+}
+@media (max-width: 600px) { .smec-back-btn { bottom: 12px; left: 12px; } }
+</style>
+</head>
+<body>
+<a href="/" class="smec-back-btn" data-smec-back-button="v1" aria-label="Back to SME&amp;C Infographics"><svg class="smec-back-btn__icon" aria-hidden="true" viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg><span class="smec-back-btn__label">Back to SME&amp;C Infographics</span></a>
+
+
+<div class="progress" id="progress"></div>
+
+<nav class="top">
+  <span class="brand">The Anatomy of an AI Agent</span>
+  <a href="#anatomy">Anatomy</a>
+  <a href="#components">Components</a>
+  <a href="#loop">The Loop</a>
+  <a href="#checklist">Checklist</a>
+  <a href="#antipatterns">Pitfalls</a>
+  <a href="#maturity">Maturity</a>
+  <a href="#build">Build</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container hero-inner">
+    <div>
+      <p class="hero-eyebrow">A field guide for builders, architects, and the Copilot-curious</p>
+      <h1>An agent is <span class="accent-red">not</span> a prompt.<br>It's an <span class="accent-blue">anatomy</span>.</h1>
+      <p class="hero-subtitle">A prompt is a sentence. An agent is a system — brain, senses, hands, reflexes, memory, identity — ten organs working in concert. Miss one and the organism fails. Understand the anatomy, and you can build agents that survive Monday morning, not just Friday's demo.</p>
+      <div class="hero-meta">
+        <span class="chip"><strong>10</strong> core components</span>
+        <span class="chip"><strong>1</strong> agent loop</span>
+        <span class="chip"><strong>4</strong> maturity rungs</span>
+        <span class="chip">Microsoft Foundry · Copilot Studio · Agent Framework</span>
+      </div>
+    </div>
+    <div class="figure-wrap">
+      <svg viewBox="0 0 720 640" xmlns="http://www.w3.org/2000/svg" aria-label="Anatomical cross-section of an AI agent">
+        <defs>
+          <radialGradient id="bodyGrad" cx="50%" cy="40%" r="60%">
+            <stop offset="0%" stop-color="#fdfbf7"/>
+            <stop offset="100%" stop-color="#f5efe3"/>
+          </radialGradient>
+          <linearGradient id="brainGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#7b2cbf"/>
+            <stop offset="100%" stop-color="#a53860"/>
+          </linearGradient>
+        </defs>
+
+        <!-- ================= BODY (centered at x=360) ================= -->
+        <!-- Body silhouette -->
+        <path d="M360 90 C 310 90 280 125 280 170 C 280 200 295 220 295 250 L 270 270 C 250 285 235 315 235 350 L 235 430 C 235 460 250 480 275 485 L 275 520 C 275 530 282 535 290 535 L 430 535 C 438 535 445 530 445 520 L 445 485 C 470 480 485 460 485 430 L 485 350 C 485 315 470 285 450 270 L 425 250 C 425 220 440 200 440 170 C 440 125 410 90 360 90 Z"
+              fill="url(#bodyGrad)" stroke="#1e1b3a" stroke-width="1.5" opacity="0.95"/>
+        <!-- Head outline -->
+        <circle cx="360" cy="150" r="55" fill="none" stroke="#1e1b3a" stroke-width="1" stroke-dasharray="2 3" opacity="0.4"/>
+        <!-- Brain (Model) -->
+        <ellipse cx="360" cy="145" rx="32" ry="28" fill="url(#brainGrad)" opacity="0.9"/>
+        <path d="M340 138 Q 350 130 360 138 Q 370 146 380 138 M 340 150 Q 350 142 360 150 Q 370 158 380 150" fill="none" stroke="#fdfbf7" stroke-width="1.2" opacity="0.7"/>
+        <!-- Eyes (Knowledge) -->
+        <circle cx="345" cy="145" r="4" fill="#3a6ea5"/>
+        <circle cx="375" cy="145" r="4" fill="#3a6ea5"/>
+        <!-- Memory (hippocampus) -->
+        <ellipse cx="385" cy="165" rx="7" ry="5" fill="#a53860" opacity="0.9"/>
+        <!-- Ribs (Guardrails) -->
+        <path d="M305 280 Q 360 270 415 280 M 300 300 Q 360 288 420 300 M 298 320 Q 360 308 422 320" fill="none" stroke="#5ba87e" stroke-width="1.8" opacity="0.7"/>
+        <!-- Heart (Instructions) -->
+        <path d="M345 275 C 340 265 325 265 325 280 C 325 292 345 308 355 313 C 365 308 385 292 385 280 C 385 265 370 265 365 275 C 360 280 350 280 345 275 Z" fill="#e63946" opacity="0.95"/>
+        <!-- ID Badge (Identity) -->
+        <rect x="335" y="340" width="50" height="20" rx="3" fill="#b8860b" opacity="0.9" stroke="#1e1b3a" stroke-width="0.5"/>
+        <text x="360" y="354" text-anchor="middle" font-size="11" fill="#fdfbf7" font-family="Segoe UI" font-weight="600">ID</text>
+        <!-- Muscles (Skills) -->
+        <path d="M315 380 Q 330 395 315 410 M 405 380 Q 390 395 405 410" fill="none" stroke="#2a9d8f" stroke-width="3.5" opacity="0.85"/>
+        <!-- Spine (Orchestration) -->
+        <line x1="360" y1="210" x2="360" y2="470" stroke="#4a5c8a" stroke-width="3" opacity="0.75" stroke-dasharray="5 3"/>
+        <!-- Hands (Tools) -->
+        <circle cx="250" cy="370" r="18" fill="#e2922b" opacity="0.9" stroke="#1e1b3a" stroke-width="1"/>
+        <circle cx="470" cy="370" r="18" fill="#e2922b" opacity="0.9" stroke="#1e1b3a" stroke-width="1"/>
+        <!-- Stethoscope / Observability -->
+        <circle cx="450" cy="425" r="11" fill="none" stroke="#8a6d3b" stroke-width="2.5"/>
+        <path d="M450 436 Q 445 456 435 461" fill="none" stroke="#8a6d3b" stroke-width="2.5"/>
+
+        <!-- ================= LABELS ================= -->
+        <!-- Leader lines first (under labels) -->
+        <!-- LEFT side leaders -->
+        <line x1="330" y1="145" x2="150" y2="135" stroke="#7b2cbf" stroke-width="1.2"/>
+        <line x1="345" y1="145" x2="150" y2="215" stroke="#3a6ea5" stroke-width="1.2"/>
+        <line x1="300" y1="300" x2="150" y2="295" stroke="#3d8560" stroke-width="1.2"/>
+        <line x1="315" y1="395" x2="150" y2="375" stroke="#2a9d8f" stroke-width="1.2"/>
+        <line x1="250" y1="370" x2="150" y2="455" stroke="#c47a1e" stroke-width="1.2"/>
+
+        <!-- RIGHT side leaders -->
+        <line x1="391" y1="165" x2="570" y2="135" stroke="#a53860" stroke-width="1.2"/>
+        <line x1="360" y1="290" x2="570" y2="215" stroke="#e63946" stroke-width="1.2"/>
+        <line x1="385" y1="350" x2="570" y2="295" stroke="#b8860b" stroke-width="1.2"/>
+        <line x1="360" y1="440" x2="570" y2="375" stroke="#4a5c8a" stroke-width="1.2"/>
+        <line x1="450" y1="425" x2="570" y2="455" stroke="#8a6d3b" stroke-width="1.2"/>
+
+        <!-- LEFT labels (right-aligned so they read toward the body) -->
+        <!-- Model -->
+        <circle cx="150" cy="135" r="4" fill="#7b2cbf"/>
+        <text x="140" y="130" text-anchor="end" font-size="17" fill="#7b2cbf" font-weight="700" font-family="Georgia">Model</text>
+        <text x="140" y="147" text-anchor="end" font-size="12" fill="#6b6684" font-family="Segoe UI" font-style="italic">the brain</text>
+
+        <!-- Knowledge -->
+        <circle cx="150" cy="215" r="4" fill="#3a6ea5"/>
+        <text x="140" y="210" text-anchor="end" font-size="17" fill="#3a6ea5" font-weight="700" font-family="Georgia">Knowledge</text>
+        <text x="140" y="227" text-anchor="end" font-size="12" fill="#6b6684" font-family="Segoe UI" font-style="italic">the senses</text>
+
+        <!-- Guardrails -->
+        <circle cx="150" cy="295" r="4" fill="#3d8560"/>
+        <text x="140" y="290" text-anchor="end" font-size="17" fill="#3d8560" font-weight="700" font-family="Georgia">Guardrails</text>
+        <text x="140" y="307" text-anchor="end" font-size="12" fill="#6b6684" font-family="Segoe UI" font-style="italic">the ribcage</text>
+
+        <!-- Skills -->
+        <circle cx="150" cy="375" r="4" fill="#2a9d8f"/>
+        <text x="140" y="370" text-anchor="end" font-size="17" fill="#2a9d8f" font-weight="700" font-family="Georgia">Skills</text>
+        <text x="140" y="387" text-anchor="end" font-size="12" fill="#6b6684" font-family="Segoe UI" font-style="italic">muscle memory</text>
+
+        <!-- Tools -->
+        <circle cx="150" cy="455" r="4" fill="#c47a1e"/>
+        <text x="140" y="450" text-anchor="end" font-size="17" fill="#c47a1e" font-weight="700" font-family="Georgia">Tools</text>
+        <text x="140" y="467" text-anchor="end" font-size="12" fill="#6b6684" font-family="Segoe UI" font-style="italic">the hands</text>
+
+        <!-- RIGHT labels (left-aligned) -->
+        <!-- Memory -->
+        <circle cx="570" cy="135" r="4" fill="#a53860"/>
+        <text x="580" y="130" font-size="17" fill="#a53860" font-weight="700" font-family="Georgia">Memory</text>
+        <text x="580" y="147" font-size="12" fill="#6b6684" font-family="Segoe UI" font-style="italic">the hippocampus</text>
+
+        <!-- Instructions -->
+        <circle cx="570" cy="215" r="4" fill="#e63946"/>
+        <text x="580" y="210" font-size="17" fill="#e63946" font-weight="700" font-family="Georgia">Instructions</text>
+        <text x="580" y="227" font-size="12" fill="#6b6684" font-family="Segoe UI" font-style="italic">the heart</text>
+
+        <!-- Identity -->
+        <circle cx="570" cy="295" r="4" fill="#b8860b"/>
+        <text x="580" y="290" font-size="17" fill="#8b6508" font-weight="700" font-family="Georgia">Identity</text>
+        <text x="580" y="307" font-size="12" fill="#6b6684" font-family="Segoe UI" font-style="italic">the badge</text>
+
+        <!-- Orchestration -->
+        <circle cx="570" cy="375" r="4" fill="#4a5c8a"/>
+        <text x="580" y="370" font-size="17" fill="#4a5c8a" font-weight="700" font-family="Georgia">Orchestration</text>
+        <text x="580" y="387" font-size="12" fill="#6b6684" font-family="Segoe UI" font-style="italic">the nervous system</text>
+
+        <!-- Observability -->
+        <circle cx="570" cy="455" r="4" fill="#8a6d3b"/>
+        <text x="580" y="450" font-size="17" fill="#8a6d3b" font-weight="700" font-family="Georgia">Observability</text>
+        <text x="580" y="467" font-size="12" fill="#6b6684" font-family="Segoe UI" font-style="italic">the stethoscope</text>
+      </svg>
+      <p class="figure-caption">Fig. 1 — A production-grade agent, cross-section view</p>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="callout-row reveal">
+      <div class="cell"><div class="num">Most</div><div class="lbl">"agents" today are chatbots in disguise</div></div>
+      <div class="cell"><div class="num">10</div><div class="lbl">organs every production agent needs</div></div>
+      <div class="cell"><div class="num">1:1</div><div class="lbl">each missing organ = one failure mode</div></div>
+      <div class="cell"><div class="num">0</div><div class="lbl">parts you can skip and still ship</div></div>
+      <div class="cell"><div class="num">∞</div><div class="lbl">agents you can build once you see the pattern</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- PROVOCATION -->
+<section class="provocation" id="anatomy">
+  <div class="container reveal">
+    <span class="quote-mark">"</span>
+    <h2>A model with a system prompt is a party trick. An agent is an organism — ten organs, one loop, every part load-bearing. Remove one and the patient doesn't limp. It collapses.</h2>
+    <p class="cite">— The working definition used across Microsoft Foundry, Copilot Studio, and the Microsoft Agent Framework</p>
+  </div>
+</section>
+
+<!-- COMPONENTS -->
+<section id="components">
+  <div class="container">
+    <span class="section-tag">The Ten Organs</span>
+    <h2>Every agent is built from these parts.</h2>
+    <p style="max-width: 780px; font-size: 1.05rem;">Ship with all ten and the organism holds. Skip one and it breaks — always in the exact way the missing organ would have prevented.</p>
+
+    <div class="components-grid">
+
+      <!-- 1. Instructions -->
+      <div class="component-card c-instructions reveal">
+        <div class="card-head">
+          <div class="glyph">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21s-7-5.5-7-11a7 7 0 0114 0c0 5.5-7 11-7 11z"/></svg>
+          </div>
+          <div class="heading">
+            <h3>1. Instructions</h3>
+            <p class="metaphor">the heart — purpose, persona, constraints</p>
+          </div>
+        </div>
+        <p class="tagline">The agent's constitution — who it is, what it exists to do, and what it must never do. Every other organ serves this one.</p>
+        <ul class="bits">
+          <li><strong>Role & persona</strong> — "You are a Tier-1 support triage agent for Contoso."</li>
+          <li><strong>Goals & success criteria</strong> — a precise definition of "done"</li>
+          <li><strong>Hard constraints</strong> — policy guardrails, compliance boundaries, refusal rules</li>
+          <li><strong>Tone & output shape</strong> — format, voice, length, audience</li>
+        </ul>
+        <div class="without"><strong>Without it</strong>The agent drifts. Same prompt, wildly different outputs, no way to audit why — and no way to fix it.</div>
+      </div>
+
+      <!-- 2. Model -->
+      <div class="component-card c-model reveal">
+        <div class="card-head">
+          <div class="glyph">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3a9 9 0 00-9 9c0 4.5 3 8 7 8.8V22h4v-1.2c4-.8 7-4.3 7-8.8a9 9 0 00-9-9zm0 4a5 5 0 015 5h-2a3 3 0 00-6 0H7a5 5 0 015-5z"/></svg>
+          </div>
+          <div class="heading">
+            <h3>2. Model</h3>
+            <p class="metaphor">the brain — reasoning engine</p>
+          </div>
+        </div>
+        <p class="tagline">The LLM that reads, reasons, and writes. Not one size fits all — pick for the job: reasoning depth vs. latency vs. cost vs. context window.</p>
+        <ul class="bits">
+          <li><strong>Frontier</strong> — GPT-5.4 / GPT-5.5, Claude Opus, Gemini Ultra for deep reasoning and complex multi-step tasks</li>
+          <li><strong>Workhorse</strong> — GPT-5.4-mini / GPT-4.1 for mainstream tasks at a fraction of frontier cost</li>
+          <li><strong>Small & local</strong> — Phi-4 and nano-class models for edge, low-latency, on-device scenarios</li>
+          <li><strong>Fine-tuned</strong> — when your domain's language matters more than raw capability</li>
+        </ul>
+        <div class="without"><strong>Without the right one</strong>You're either overpaying 10× for trivial tasks, or watching your agent collapse on the ones that actually matter.</div>
+      </div>
+
+      <!-- 3. Knowledge -->
+      <div class="component-card c-knowledge reveal">
+        <div class="card-head">
+          <div class="glyph">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 4.5C7 4.5 2.7 7.6 1 12c1.7 4.4 6 7.5 11 7.5s9.3-3.1 11-7.5c-1.7-4.4-6-7.5-11-7.5zm0 12.5a5 5 0 110-10 5 5 0 010 10zm0-8a3 3 0 100 6 3 3 0 000-6z"/></svg>
+          </div>
+          <div class="heading">
+            <h3>3. Knowledge & Context</h3>
+            <p class="metaphor">the senses — what it sees and hears</p>
+          </div>
+        </div>
+        <p class="tagline">Everything the agent perceives before it reasons — retrieval results, grounding sources, real-time signals, and the user's current situation. Context is the cure for hallucination.</p>
+        <ul class="bits">
+          <li><strong>Retrieval</strong> — vector + keyword search over your enterprise corpus (Foundry IQ, Azure AI Search)</li>
+          <li><strong>Grounding sources</strong> — SharePoint, OneDrive, Fabric IQ, Work IQ, web</li>
+          <li><strong>Federated knowledge</strong> — live queries to systems of record across boundaries</li>
+          <li><strong>Session context</strong> — user intent, recent turns, attachments, activity signals</li>
+        </ul>
+        <div class="without"><strong>Without it</strong>Confident hallucination. The agent invents policies, invents customers, invents facts — and delivers them with perfect grammar.</div>
+      </div>
+
+      <!-- 4. Tools -->
+      <div class="component-card c-tools reveal">
+        <div class="card-head">
+          <div class="glyph">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M14.7 6.3a5 5 0 01-6.4 6.4L3 18l3 3 5.3-5.3a5 5 0 016.4-6.4l-2.5 2.5-2.8-.7-.7-2.8 2.5-2.5z"/></svg>
+          </div>
+          <div class="heading">
+            <h3>4. Tools</h3>
+            <p class="metaphor">the hands — how it acts on the world</p>
+          </div>
+        </div>
+        <p class="tagline">Functions, APIs, MCP servers, and A2A endpoints the agent can invoke. This is the line between "talks about work" and "does work."</p>
+        <ul class="bits">
+          <li><strong>Function calls</strong> — typed, schema-validated capabilities with structured I/O</li>
+          <li><strong>MCP servers</strong> — portable, reusable tool catalogs via the Model Context Protocol</li>
+          <li><strong>Connectors</strong> — Logic Apps, Microsoft Graph, Power Platform (~1,400+ connectors)</li>
+          <li><strong>Code interpreter</strong> — sandboxed compute for ad-hoc analysis and transformation</li>
+        </ul>
+        <div class="without"><strong>Without them</strong>A chatbot. Can eloquently describe the fix. Can't apply it.</div>
+      </div>
+
+      <!-- 5. Skills -->
+      <div class="component-card c-skills reveal">
+        <div class="card-head">
+          <div class="glyph">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"/></svg>
+          </div>
+          <div class="heading">
+            <h3>5. Skills</h3>
+            <p class="metaphor">muscle memory — trained procedures</p>
+          </div>
+        </div>
+        <p class="tagline">Named, reusable playbooks that bundle instructions, tool sequences, and examples for a recurring job. Not code — packaged expertise.</p>
+        <ul class="bits">
+          <li><strong>Composable</strong> — one agent, many skills; one skill, shared across many agents</li>
+          <li><strong>Conditionally loaded</strong> — invoked only when the trigger fires, keeping context lean</li>
+          <li><strong>Expert-encoded</strong> — your best operators' patterns, distilled and versioned</li>
+          <li><strong>Evolvable</strong> — improve the skill without rewriting the agent</li>
+        </ul>
+        <div class="without"><strong>Without them</strong>Every task is re-derived from first principles. Brittle, inconsistent, and impossible to scale across a fleet of agents.</div>
+      </div>
+
+      <!-- 6. Memory -->
+      <div class="component-card c-memory reveal">
+        <div class="card-head">
+          <div class="glyph">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a7 7 0 00-7 7v1a3 3 0 000 6v2a3 3 0 003 3h8a3 3 0 003-3v-2a3 3 0 000-6V9a7 7 0 00-7-7z"/></svg>
+          </div>
+          <div class="heading">
+            <h3>6. Memory</h3>
+            <p class="metaphor">the hippocampus — what it remembers</p>
+          </div>
+        </div>
+        <p class="tagline">State that outlives a single turn — short-term scratch, long-term facts about the user, episodic traces of past sessions. Memory is what makes an agent feel like a colleague, not a stranger.</p>
+        <ul class="bits">
+          <li><strong>Short-term</strong> — the working conversation window and scratchpad</li>
+          <li><strong>Long-term</strong> — user preferences, prior decisions, domain vocabulary</li>
+          <li><strong>Episodic</strong> — "last time we discussed X, we decided Y"</li>
+          <li><strong>Shared</strong> — team-level memory that spans agents and sessions</li>
+        </ul>
+        <div class="without"><strong>Without it</strong>Permanent amnesia. Users repeat themselves every session. Personalization is a fantasy.</div>
+      </div>
+
+      <!-- 7. Guardrails -->
+      <div class="component-card c-guardrails reveal">
+        <div class="card-head">
+          <div class="glyph">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L3 6v6c0 5 3.8 9.3 9 10 5.2-.7 9-5 9-10V6l-9-4z"/></svg>
+          </div>
+          <div class="heading">
+            <h3>7. Guardrails</h3>
+            <p class="metaphor">the ribcage — protecting what matters</p>
+          </div>
+        </div>
+        <p class="tagline">Input, output, and runtime safety — not bolted on after launch, but woven into every call. The ribcage doesn't slow the heart; it protects it.</p>
+        <ul class="bits">
+          <li><strong>Input shields</strong> — prompt injection detection, jailbreak prevention</li>
+          <li><strong>Output filters</strong> — PII redaction, toxicity detection, groundedness checks</li>
+          <li><strong>Policy checks</strong> — tool-use allowlists, data-boundary enforcement, Purview labels</li>
+          <li><strong>Human-in-the-loop</strong> — approval gates for high-stakes, irreversible actions</li>
+        </ul>
+        <div class="without"><strong>Without them</strong>One jailbreak or prompt injection exfiltrates data, books travel, or sends the wrong email — and you find out from a customer.</div>
+      </div>
+
+      <!-- 8. Orchestration -->
+      <div class="component-card c-orchestration reveal">
+        <div class="card-head">
+          <div class="glyph">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 3h7v7H3zm11 0h7v7h-7zM3 14h7v7H3zm11 3.5a3.5 3.5 0 117 0 3.5 3.5 0 01-7 0z"/></svg>
+          </div>
+          <div class="heading">
+            <h3>8. Orchestration & Planning</h3>
+            <p class="metaphor">the nervous system — how it decides</p>
+          </div>
+        </div>
+        <p class="tagline">The control loop that turns "answer this" into "plan, act, observe, re-plan." Single-agent, multi-agent, hand-offs, parallel branches — the nervous system that makes everything else move.</p>
+        <ul class="bits">
+          <li><strong>ReAct loop</strong> — reason → act → observe → repeat until done</li>
+          <li><strong>Plan-and-execute</strong> — decompose the problem first, then run the plan</li>
+          <li><strong>Multi-agent</strong> — specialist agents coordinated by a router or supervisor via A2A</li>
+          <li><strong>Hand-offs</strong> — escalate to a peer agent or a human when the task demands it</li>
+        </ul>
+        <div class="without"><strong>Without it</strong>One-shot answers only. The agent can't recover from its own mistakes, can't chain actions, and can't learn mid-task.</div>
+      </div>
+
+      <!-- 9. Identity -->
+      <div class="component-card c-identity reveal">
+        <div class="card-head">
+          <div class="glyph">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V6a2 2 0 00-2-2zM9 8a2 2 0 110 4 2 2 0 010-4zm5 10H4v-1c0-2 3.3-3 5-3s5 1 5 3v1zm6-3h-5v-1h5v1zm0-3h-5v-1h5v1zm0-3h-5V8h5v1z"/></svg>
+          </div>
+          <div class="heading">
+            <h3>9. Identity & Permissions</h3>
+            <p class="metaphor">the badge — who the agent acts as</p>
+          </div>
+        </div>
+        <p class="tagline">Agents are first-class workforce identities — they authenticate, inherit permissions, and leave audit trails, just like employees. No badge, no access.</p>
+        <ul class="bits">
+          <li><strong>Entra Agent ID</strong> — a dedicated agent identity in Microsoft Entra, not a shared service key</li>
+          <li><strong>Delegated access</strong> — act on behalf of the signed-in user, scoped to their permissions</li>
+          <li><strong>Least-privilege tools</strong> — only the APIs and data the agent's role requires</li>
+          <li><strong>Audit trail</strong> — every action attributable to this specific agent identity</li>
+        </ul>
+        <div class="without"><strong>Without it</strong>Over-privileged service principals with God-mode access. Compliance can't prove what the agent did — or didn't do.</div>
+      </div>
+
+      <!-- 10. Observability -->
+      <div class="component-card c-observability reveal">
+        <div class="card-head">
+          <div class="glyph">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 12h4l3-9 4 18 3-9h4"/></svg>
+          </div>
+          <div class="heading">
+            <h3>10. Observability & Evals</h3>
+            <p class="metaphor">the stethoscope — how you know it's healthy</p>
+          </div>
+        </div>
+        <p class="tagline">Tracing, logging, evals, and telemetry — the difference between "it works on my demo" and "it works at scale, under adversarial conditions, on day 90."</p>
+        <ul class="bits">
+          <li><strong>Traces</strong> — every step, tool call, token count, and latency, end-to-end</li>
+          <li><strong>Evals</strong> — accuracy, groundedness, safety, and task-completion metrics</li>
+          <li><strong>Red-teaming</strong> — adversarial testing before every production release</li>
+          <li><strong>Production monitoring</strong> — drift detection, cost tracking, user satisfaction signals</li>
+        </ul>
+        <div class="without"><strong>Without it</strong>Flying blind. Regressions go unnoticed until a customer escalates on Teams — and by then, trust is gone.</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- AGENT LOOP -->
+<section class="loop-section" id="loop">
+  <div class="container reveal">
+    <span class="section-tag">How it all moves</span>
+    <h2>The agent loop.</h2>
+    <p style="max-width: 780px;">Every organ plays a role in the same repeating cycle. When an agent feels intelligent, it's because this loop runs cleanly — not because the model is magical. The magic is in the mechanics.</p>
+
+    <div class="loop-wrap">
+      <div class="loop-step" style="--step-color: #3a6ea5;">
+        <div class="loop-circle">1</div>
+        <h4>Perceive</h4>
+        <p>User input + retrieved knowledge + memory + session state</p>
+      </div>
+      <span class="loop-arrow">→</span>
+      <div class="loop-step" style="--step-color: #7b2cbf;">
+        <div class="loop-circle">2</div>
+        <h4>Reason</h4>
+        <p>Model plans against instructions, picks next step or tool</p>
+      </div>
+      <span class="loop-arrow">→</span>
+      <div class="loop-step" style="--step-color: #e2922b;">
+        <div class="loop-circle">3</div>
+        <h4>Act</h4>
+        <p>Call a tool or skill — checked by guardrails and identity scope</p>
+      </div>
+      <span class="loop-arrow">→</span>
+      <div class="loop-step" style="--step-color: #2a9d8f;">
+        <div class="loop-circle">4</div>
+        <h4>Observe</h4>
+        <p>Read the tool result, update working state, decide: continue or finish</p>
+      </div>
+      <span class="loop-arrow">→</span>
+      <div class="loop-step" style="--step-color: #a53860;">
+        <div class="loop-circle">5</div>
+        <h4>Remember</h4>
+        <p>Persist facts, traces, and evals. The next loop starts smarter.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CHECKLIST -->
+<section id="checklist">
+  <div class="container reveal">
+    <span class="section-tag">Diagnostic</span>
+    <h2>Is your agent fully formed?</h2>
+    <p style="max-width: 780px;">Score yourself honestly. If you can't confidently check all ten, what you have is an agent-shaped prototype — not a production system.</p>
+
+    <div class="checklist-wrap">
+      <h3>The Ten-Point Exam</h3>
+      <p class="sub">One checkmark per organ. No partial credit.</p>
+      <div class="checklist-grid">
+        <div class="check-item"><div class="check-box">✓</div><div class="txt"><strong>Instructions</strong> — a versioned system prompt with persona, goals, hard constraints, and explicit refusal rules.</div></div>
+        <div class="check-item"><div class="check-box">✓</div><div class="txt"><strong>Model</strong> — a deliberate choice with cost / latency / capability tradeoffs documented — not "whatever was default."</div></div>
+        <div class="check-item"><div class="check-box">✓</div><div class="txt"><strong>Knowledge</strong> — grounded retrieval over a curated, governed corpus — not the model's pre-training data.</div></div>
+        <div class="check-item"><div class="check-box">✓</div><div class="txt"><strong>Tools</strong> — typed, schema-validated functions via MCP or OpenAPI — not free-form shell or raw HTTP.</div></div>
+        <div class="check-item"><div class="check-box">✓</div><div class="txt"><strong>Skills</strong> — named, reusable playbooks for recurring tasks, conditionally loaded on demand.</div></div>
+        <div class="check-item"><div class="check-box">✓</div><div class="txt"><strong>Memory</strong> — short-term working state plus at least one durable memory surface (user, team, or shared).</div></div>
+        <div class="check-item"><div class="check-box">✓</div><div class="txt"><strong>Guardrails</strong> — input shields + output filters + tool policy checks, with human-in-the-loop for high-stakes writes.</div></div>
+        <div class="check-item"><div class="check-box">✓</div><div class="txt"><strong>Orchestration</strong> — a real control loop (ReAct / plan-execute / multi-agent), not one-shot prompt-then-respond.</div></div>
+        <div class="check-item"><div class="check-box">✓</div><div class="txt"><strong>Identity</strong> — its own Entra Agent ID with least-privilege tool permissions and a full audit trail.</div></div>
+        <div class="check-item"><div class="check-box">✓</div><div class="txt"><strong>Observability</strong> — end-to-end traces + an eval suite that runs on every change, not just before launch.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ANTI-PATTERNS -->
+<section id="antipatterns">
+  <div class="container reveal">
+    <span class="section-tag">Pathology</span>
+    <h2>The six ways agents fail.</h2>
+    <p style="max-width: 780px;">Every failure mode maps to a missing or malformed organ. Use this list in post-mortems — the root cause is almost always one of these, hiding behind a more dramatic symptom.</p>
+
+    <div class="antipatterns">
+      <div class="antipattern">
+        <span class="tag">Anti-pattern 1</span>
+        <h4>The Clever Prompt</h4>
+        <p>All instructions, no tools, no retrieval. "Prompt engineering" treated as the entire architecture.</p>
+        <p class="fix">→ Add knowledge and tools. Clever prompts scale to demos. Systems scale to production.</p>
+      </div>
+      <div class="antipattern">
+        <span class="tag">Anti-pattern 2</span>
+        <h4>The Tool Hoarder</h4>
+        <p>Forty tools attached, no skills, no orchestration. The model drowns trying to pick the right one — and often picks wrong.</p>
+        <p class="fix">→ Bundle tools into named skills. Load skills conditionally. Less choice = better decisions.</p>
+      </div>
+      <div class="antipattern">
+        <span class="tag">Anti-pattern 3</span>
+        <h4>The Ungrounded Oracle</h4>
+        <p>Frontier model, slick persona, zero retrieval. Confidently wrong about your own business, your own customers, your own policies.</p>
+        <p class="fix">→ Ground every factual claim in retrieved knowledge. Teach the agent to say "I don't know."</p>
+      </div>
+      <div class="antipattern">
+        <span class="tag">Anti-pattern 4</span>
+        <h4>The Amnesiac</h4>
+        <p>No memory surface. Users explain themselves and their context from scratch — every single session.</p>
+        <p class="fix">→ Add short-term summarization and at least one durable memory surface for user preferences.</p>
+      </div>
+      <div class="antipattern">
+        <span class="tag">Anti-pattern 5</span>
+        <h4>The Unleashed Intern</h4>
+        <p>Broad tool access, no guardrails, no identity scoping. One prompt injection away from catastrophe.</p>
+        <p class="fix">→ Entra Agent ID + least-privilege tools + input/output shields + human approval gates.</p>
+      </div>
+      <div class="antipattern">
+        <span class="tag">Anti-pattern 6</span>
+        <h4>The Black Box</h4>
+        <p>No traces, no evals, no telemetry. Every regression is a surprise; every incident is a forensic archaeology dig.</p>
+        <p class="fix">→ Emit traces by default. Run evals on every change — not just before launch day.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MATURITY -->
+<section id="maturity" style="background: var(--paper-2); border-top: 1px solid var(--line);">
+  <div class="container reveal">
+    <span class="section-tag">The Ladder</span>
+    <h2>From skeleton to athlete.</h2>
+    <p style="max-width: 780px;">No agent ships fully formed. They grow — organ by organ, rung by rung. Use these levels to locate your agent today, and see what it takes to reach the next stage.</p>
+
+    <div class="ladder">
+      <div class="rung rung-1">
+        <span class="level">Rung 1</span>
+        <h4>Skeleton</h4>
+        <ul>
+          <li>Instructions only — a system prompt</li>
+          <li>Single model call, no loop</li>
+          <li>No tools, no retrieval, no memory</li>
+          <li>Impressive in demos. Dangerous in production.</li>
+        </ul>
+      </div>
+      <div class="rung rung-2">
+        <span class="level">Rung 2</span>
+        <h4>Functional</h4>
+        <ul>
+          <li>+ Knowledge grounding (RAG / Foundry IQ)</li>
+          <li>+ A curated set of tools via MCP</li>
+          <li>+ Basic input/output guardrails</li>
+          <li>Does real work. Breaks under adversarial pressure.</li>
+        </ul>
+      </div>
+      <div class="rung rung-3">
+        <span class="level">Rung 3</span>
+        <h4>Production-ready</h4>
+        <ul>
+          <li>+ Skills catalog with conditional loading</li>
+          <li>+ Memory surfaces (short-term + long-term)</li>
+          <li>+ Entra Agent ID with least-privilege scoping</li>
+          <li>+ End-to-end traces and evals on every change</li>
+        </ul>
+      </div>
+      <div class="rung rung-4">
+        <span class="level">Rung 4</span>
+        <h4>Athletic</h4>
+        <ul>
+          <li>+ Multi-agent orchestration via A2A protocol</li>
+          <li>+ Shared team memory across agent fleets</li>
+          <li>+ Adversarial red-team suite before every release</li>
+          <li>+ Continuous eval and drift detection in production</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BUILD -->
+<section id="build">
+  <div class="container reveal">
+    <span class="section-tag">Build it with Microsoft</span>
+    <h2>All ten organs, already on the shelf.</h2>
+    <p style="max-width: 780px;">You don't have to build this from scratch. Microsoft's agent stack gives you each organ as a first-class, production-grade capability — and the same loop underneath.</p>
+
+    <div class="build-ms">
+      <a class="ms-card" href="https://learn.microsoft.com/en-us/azure/foundry/" target="_blank" rel="noopener">
+        <div class="eyebrow">For developers</div>
+        <h4>Microsoft Foundry</h4>
+        <p>The full pro-code platform: models, tools (MCP + Logic Apps), Foundry IQ knowledge bases, hosted agents, traces, evals, and Entra Agent ID — GA since Build 2025, expanded at Ignite 2025 with multi-agent orchestration and A2A support.</p>
+        <div class="arrow">Explore the platform →</div>
+      </a>
+      <a class="ms-card" href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/" target="_blank" rel="noopener">
+        <div class="eyebrow">For makers</div>
+        <h4>Copilot Studio</h4>
+        <p>Low-code agent builder with knowledge, topics, actions, MCP server support, and publishing into Microsoft 365 surfaces. Work IQ brings organizational context, memory, and personalization — with Purview governance built in.</p>
+        <div class="arrow">Start building →</div>
+      </a>
+      <a class="ms-card" href="https://learn.microsoft.com/en-us/agent-framework/" target="_blank" rel="noopener">
+        <div class="eyebrow">For code-first teams</div>
+        <h4>Microsoft Agent Framework</h4>
+        <p>GA 1.0 open-source SDK (Python + .NET) unifying Semantic Kernel and AutoGen. Multi-agent orchestration, MCP + A2A + OpenAPI tool support, hand-offs, and OpenTelemetry observability — deploy anywhere, integrate with Foundry.</p>
+        <div class="arrow">Read the docs →</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="brand-mark">The Anatomy of an AI Agent</div>
+    <p>A field guide for builders who want agents that survive Monday morning — not just Friday's demo.</p>
+    <p style="margin-top: 1.2rem; font-size: 0.75rem; color: rgba(253,251,247,0.4);">Built on the working definition of an agent shared across Microsoft Foundry, Copilot Studio, and the Microsoft Agent Framework (GA 1.0). Updated April 2026.</p>
+  </div>
+</footer>
+
+<script>
+  // Scroll progress
+  const prog = document.getElementById('progress');
+  window.addEventListener('scroll', () => {
+    const h = document.documentElement;
+    const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+    prog.style.width = pct + '%';
+  });
+
+  // Reveal on scroll
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+  // Active nav
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('nav.top a');
+  const navObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + e.target.id));
+      }
+    });
+  }, { rootMargin: '-45% 0px -50% 0px' });
+  sections.forEach(s => navObs.observe(s));
+</script>
+
+</body>
+</html>

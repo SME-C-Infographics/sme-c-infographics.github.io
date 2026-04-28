@@ -1,0 +1,1290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Microsoft IQ Platforms — Foundry IQ, Fabric IQ, Work IQ: The Knowledge Layer for Smarter Agents</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; font-size: 16px; }
+  body {
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: #1a1a1a; background: #f5f5f5; line-height: 1.65; overflow-x: hidden;
+  }
+  a { color: #0078d4; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  /* ── NAV ── */
+  .nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+    background: rgba(255,255,255,.94); backdrop-filter: blur(14px);
+    border-bottom: 1px solid #e0e0e0;
+    display: flex; align-items: center; height: 56px; padding: 0 2rem;
+    transition: box-shadow .3s;
+  }
+  .nav.scrolled { box-shadow: 0 2px 16px rgba(0,0,0,.08); }
+  .nav-logo {
+    font-weight: 700; font-size: .95rem; color: #002050;
+    white-space: nowrap; margin-right: 2rem;
+    display: flex; align-items: center; gap: .5rem;
+  }
+  .nav-logo svg { width: 20px; height: 20px; }
+  .nav-links { display: flex; gap: .2rem; overflow-x: auto; scrollbar-width: none; }
+  .nav-links::-webkit-scrollbar { display: none; }
+  .nav-links a {
+    padding: .4rem .7rem; border-radius: 6px; font-size: .78rem;
+    white-space: nowrap; color: #555; transition: all .2s;
+  }
+  .nav-links a:hover, .nav-links a.active { background: #f0f0f5; color: #002050; text-decoration: none; }
+  .progress-bar {
+    position: fixed; top: 56px; left: 0; height: 3px;
+    background: linear-gradient(90deg,#0078d4,#c19a00,#5C2D91);
+    z-index: 999; width: 0; transition: width .1s;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; text-align: center;
+    padding: 6rem 2rem 4rem;
+    background: linear-gradient(135deg, #0a1840 0%, #1a2a60 35%, #2d1554 70%, #4B1A84 100%);
+    color: #fff; position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content:''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 20% 80%, rgba(0,120,212,.12) 0%, transparent 55%),
+                radial-gradient(ellipse at 80% 30%, rgba(193,154,0,.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(180,140,222,.06) 0%, transparent 60%);
+  }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: .5rem;
+    padding: .4rem 1.2rem; border-radius: 20px;
+    background: rgba(255,255,255,.1); font-size: .85rem;
+    margin-bottom: 1.5rem; backdrop-filter: blur(4px);
+    animation: fadeDown .7s ease-out;
+  }
+  .hero-badge svg { width: 18px; height: 18px; fill: #50e6ff; }
+  .hero h1 {
+    font-size: clamp(2rem, 5vw, 3.4rem); font-weight: 700;
+    max-width: 960px; animation: fadeDown .7s ease-out .1s both; line-height: 1.2;
+  }
+  .hero p {
+    font-size: clamp(1rem, 2vw, 1.15rem); max-width: 760px;
+    margin-top: 1rem; opacity: .88; animation: fadeDown .7s ease-out .2s both;
+  }
+  .preview-pill {
+    display: inline-flex; align-items: center; gap: .4rem;
+    margin-top: 1.5rem; padding: .35rem .9rem; border-radius: 16px;
+    background: linear-gradient(135deg, #fbbf24, #f59e0b); color: #3d2a00;
+    font-size: .78rem; font-weight: 700; text-transform: uppercase; letter-spacing: .05em;
+    animation: fadeDown .7s ease-out .3s both;
+    box-shadow: 0 4px 14px rgba(251,191,36,.3);
+  }
+  .preview-pill::before { content: '⬤'; font-size: .5rem; color: #d97706; }
+  .hero-cta {
+    margin-top: 2rem; display: flex; gap: 1rem; flex-wrap: wrap;
+    justify-content: center; animation: fadeDown .7s ease-out .4s both;
+  }
+  .hero-stat {
+    display: flex; gap: 3rem; margin-top: 2.5rem; flex-wrap: wrap; justify-content: center;
+    animation: fadeDown .7s ease-out .5s both;
+  }
+  .hero-stat div { text-align: center; }
+  .hero-stat .stat-num { font-size: 2rem; font-weight: 800; color: #50e6ff; }
+  .hero-stat .stat-label { font-size: .78rem; opacity: .75; margin-top: .15rem; }
+  .btn {
+    display: inline-flex; align-items: center; gap: .5rem;
+    padding: .75rem 1.75rem; border-radius: 8px; font-size: .95rem;
+    font-weight: 600; transition: transform .2s, box-shadow .2s;
+    cursor: pointer; border: none;
+  }
+  .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,.2); text-decoration: none; }
+  .btn-primary { background: #fff; color: #2d1554; }
+  .btn-outline { background: transparent; color: #fff; border: 2px solid rgba(255,255,255,.4); }
+
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── SECTIONS ── */
+  section { padding: 5rem 2rem; }
+  .container { max-width: 1200px; margin: 0 auto; }
+  .section-label {
+    display: inline-block; font-size: .72rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: .12em; color: #5C2D91;
+    margin-bottom: .5rem;
+  }
+  .section-title {
+    font-size: clamp(1.5rem, 3vw, 2.2rem); font-weight: 700; margin-bottom: .75rem;
+  }
+  .section-sub { font-size: 1.05rem; color: #555; max-width: 720px; margin-bottom: 2.5rem; }
+
+  /* ── REVEAL ── */
+  .reveal { opacity: 0; transform: translateY(28px); transition: opacity .65s ease-out, transform .65s ease-out; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* ── PLATFORM COLORS ── */
+  :root {
+    --work: #0078d4;     --work-light: #e8f4fd;     --work-mid: #b4d6f4;     --work-dark: #004578;
+    --fabric: #c19a00;   --fabric-light: #fff8e1;   --fabric-mid: #ffe082;   --fabric-dark: #7a6000;
+    --foundry: #5C2D91;  --foundry-light: #f3effa;  --foundry-mid: #d8cce8;  --foundry-dark: #3b1a63;
+  }
+
+  /* ── WHY IQ SECTION ── */
+  .why-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.25rem; margin-top: 1.5rem;
+  }
+  .why-card {
+    background: #fff; border-radius: 14px; padding: 1.75rem 1.5rem;
+    box-shadow: 0 2px 10px rgba(0,0,0,.04);
+    border-top: 4px solid #5C2D91; transition: transform .3s;
+    text-align: center;
+  }
+  .why-card:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(0,0,0,.08); }
+  .why-ico {
+    width: 52px; height: 52px; border-radius: 14px;
+    margin: 0 auto 1rem; display: flex; align-items: center;
+    justify-content: center; font-size: 1.5rem;
+    background: #f3effa;
+  }
+  .why-card h4 { font-size: 1rem; margin-bottom: .4rem; color: #002050; }
+  .why-card p { font-size: .88rem; color: #555; line-height: 1.55; }
+
+  /* ── ARCHITECTURE DIAGRAM ── */
+  .arch-wrap {
+    background: linear-gradient(135deg, #fafbff 0%, #f5f0fa 100%);
+    border-radius: 20px; padding: 2.5rem 2rem;
+    box-shadow: 0 4px 20px rgba(0,0,0,.06);
+    border: 1px solid #ece4f5;
+  }
+  .arch-title {
+    text-align: center; font-size: 1rem; font-weight: 700; color: #002050;
+    margin-bottom: 2rem; letter-spacing: .02em;
+  }
+  .arch-layer {
+    display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
+    margin-bottom: 1.25rem;
+  }
+  .arch-agent {
+    background: linear-gradient(135deg, #1a2a60, #2d1554);
+    color: #fff; padding: 1rem 2rem; border-radius: 14px;
+    font-weight: 700; font-size: .95rem; text-align: center;
+    min-width: 260px; box-shadow: 0 4px 16px rgba(45,21,84,.3);
+  }
+  .arch-agent .arch-sub { font-size: .75rem; opacity: .8; font-weight: 500; margin-top: .2rem; }
+  .arch-connector {
+    height: 30px; display: flex; justify-content: center; align-items: center;
+    position: relative;
+  }
+  .arch-connector::before {
+    content: ''; width: 2px; height: 100%;
+    background: linear-gradient(to bottom, #2d1554, #5C2D91);
+  }
+  .arch-connector.multi::before { background: linear-gradient(to bottom, #5C2D91, #c19a00, #0078d4); }
+  .arch-connector .arch-ctag {
+    position: absolute; background: #fff; padding: .15rem .65rem;
+    border-radius: 10px; font-size: .68rem; font-weight: 700; color: #555;
+    box-shadow: 0 1px 6px rgba(0,0,0,.08); letter-spacing: .03em;
+  }
+  .arch-foundry-box {
+    background: linear-gradient(135deg, var(--foundry-dark), var(--foundry));
+    color: #fff; padding: 1.5rem 2rem; border-radius: 14px;
+    margin: 0 auto; max-width: 540px; text-align: center;
+    box-shadow: 0 6px 22px rgba(92,45,145,.35);
+    position: relative;
+  }
+  .arch-foundry-box h4 { font-size: 1.1rem; font-weight: 700; }
+  .arch-foundry-box .arch-sub { font-size: .8rem; opacity: .88; margin-top: .25rem; }
+  .arch-foundry-box .arch-prev {
+    position: absolute; top: -9px; right: 12px;
+    background: #fbbf24; color: #3d2a00; font-size: .6rem;
+    font-weight: 800; padding: .12rem .5rem; border-radius: 10px;
+    letter-spacing: .05em; text-transform: uppercase;
+    box-shadow: 0 2px 6px rgba(0,0,0,.15);
+  }
+  .arch-sources {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem; margin-top: .5rem;
+  }
+  .arch-source {
+    padding: 1.25rem 1rem; border-radius: 12px; text-align: center;
+    color: #fff; position: relative;
+    box-shadow: 0 3px 12px rgba(0,0,0,.15);
+  }
+  .arch-source.work-bg { background: linear-gradient(135deg, var(--work-dark), var(--work)); }
+  .arch-source.fabric-bg { background: linear-gradient(135deg, var(--fabric-dark), var(--fabric)); }
+  .arch-source.other-bg { background: linear-gradient(135deg, #4b5563, #6b7280); }
+  .arch-source h5 { font-size: .95rem; font-weight: 700; margin-bottom: .2rem; }
+  .arch-source p { font-size: .76rem; opacity: .88; line-height: 1.45; }
+  .arch-source .arch-prev {
+    position: absolute; top: -9px; right: 10px;
+    background: #fbbf24; color: #3d2a00; font-size: .58rem;
+    font-weight: 800; padding: .1rem .45rem; border-radius: 10px;
+    letter-spacing: .05em; text-transform: uppercase;
+    box-shadow: 0 2px 6px rgba(0,0,0,.15);
+  }
+
+  /* ── IQ PLATFORM CARDS ── */
+  .iq-card {
+    background: #fff; border-radius: 20px; overflow: hidden;
+    box-shadow: 0 3px 16px rgba(0,0,0,.06);
+    margin-bottom: 2rem;
+    transition: transform .3s, box-shadow .3s;
+  }
+  .iq-card:hover { transform: translateY(-3px); box-shadow: 0 10px 36px rgba(0,0,0,.1); }
+
+  .iq-hdr {
+    padding: 2rem; color: #fff; position: relative;
+    display: flex; align-items: center; gap: 1.5rem;
+  }
+  .iq-hdr.work-bg { background: linear-gradient(135deg, #003d6f, #0062AD, #0078d4); }
+  .iq-hdr.fabric-bg { background: linear-gradient(135deg, #6b5400, #9a7600, #c19a00); }
+  .iq-hdr.foundry-bg { background: linear-gradient(135deg, #2d1554, #4B1A84, #5C2D91); }
+
+  .iq-icon-box {
+    width: 64px; height: 64px; border-radius: 16px;
+    background: rgba(255,255,255,.18); display: flex;
+    align-items: center; justify-content: center;
+    font-size: 1.8rem; flex-shrink: 0;
+    backdrop-filter: blur(4px);
+  }
+  .iq-hdr h3 { font-size: 1.4rem; font-weight: 700; margin-bottom: .2rem; }
+  .iq-hdr .iq-tag { font-size: .85rem; opacity: .88; }
+  .iq-preview {
+    position: absolute; top: 1rem; right: 1.25rem;
+    background: linear-gradient(135deg, #fbbf24, #f59e0b); color: #3d2a00;
+    font-size: .65rem; font-weight: 800; padding: .2rem .6rem; border-radius: 12px;
+    letter-spacing: .06em; text-transform: uppercase;
+    box-shadow: 0 2px 10px rgba(0,0,0,.2);
+  }
+
+  .iq-body {
+    padding: 2rem;
+    display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2rem;
+  }
+
+  .iq-col h4 {
+    font-size: .72rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .08em; margin-bottom: .6rem; padding-bottom: .4rem;
+    border-bottom: 2px solid #eee;
+  }
+  .iq-col ul { list-style: none; }
+  .iq-col li {
+    position: relative; padding: .3rem 0 .3rem 1.2rem;
+    font-size: .87rem; line-height: 1.55;
+  }
+  .iq-col li::before {
+    content: ''; position: absolute; left: 0; top: .65rem;
+    width: 7px; height: 7px; border-radius: 50%;
+  }
+  .work-card h4 { color: var(--work); border-color: var(--work-mid); }
+  .work-card li::before { background: var(--work); }
+  .fabric-card h4 { color: var(--fabric); border-color: var(--fabric-mid); }
+  .fabric-card li::before { background: var(--fabric); }
+  .foundry-card h4 { color: var(--foundry); border-color: var(--foundry-mid); }
+  .foundry-card li::before { background: var(--foundry); }
+
+  .preview-inline {
+    display: inline-block; font-size: .58rem; font-weight: 800;
+    text-transform: uppercase; letter-spacing: .05em;
+    padding: .1rem .4rem; border-radius: 4px;
+    background: #fbbf24; color: #3d2a00; margin-left: .25rem; vertical-align: middle;
+  }
+
+  .tag-row { display: flex; flex-wrap: wrap; gap: .4rem; margin-bottom: .8rem; }
+  .tag {
+    font-size: .68rem; font-weight: 600; padding: .15rem .5rem; border-radius: 6px;
+  }
+  .tag.work-t { background: var(--work-light); color: var(--work); }
+  .tag.fabric-t { background: var(--fabric-light); color: var(--fabric-dark); }
+  .tag.foundry-t { background: var(--foundry-light); color: var(--foundry); }
+
+  /* ── LEARN LINKS IN CARD ── */
+  .iq-links {
+    padding: 1.25rem 2rem; border-top: 1px solid #eee;
+    display: flex; gap: .75rem; flex-wrap: wrap; align-items: center;
+    font-size: .82rem;
+  }
+  .iq-links .iq-links-label {
+    font-weight: 700; color: #555; font-size: .72rem;
+    text-transform: uppercase; letter-spacing: .08em;
+    margin-right: .25rem;
+  }
+  .iq-link-btn {
+    display: inline-flex; align-items: center; gap: .3rem;
+    padding: .35rem .8rem; border-radius: 8px;
+    font-size: .78rem; font-weight: 600;
+    transition: all .2s; border: 1.5px solid;
+  }
+  .iq-link-btn:hover { transform: translateY(-1px); text-decoration: none; box-shadow: 0 3px 10px rgba(0,0,0,.1); }
+  .work-card .iq-link-btn { color: var(--work); border-color: var(--work-mid); background: var(--work-light); }
+  .work-card .iq-link-btn:hover { background: var(--work); color: #fff; border-color: var(--work); }
+  .fabric-card .iq-link-btn { color: var(--fabric-dark); border-color: var(--fabric-mid); background: var(--fabric-light); }
+  .fabric-card .iq-link-btn:hover { background: var(--fabric); color: #fff; border-color: var(--fabric); }
+  .foundry-card .iq-link-btn { color: var(--foundry); border-color: var(--foundry-mid); background: var(--foundry-light); }
+  .foundry-card .iq-link-btn:hover { background: var(--foundry); color: #fff; border-color: var(--foundry); }
+
+  /* ── COMPARISON TABLE ── */
+  .cmp-wrap {
+    background: #fff; border-radius: 16px; padding: 2rem;
+    box-shadow: 0 2px 12px rgba(0,0,0,.05); overflow-x: auto;
+  }
+  .cmp-tbl { width: 100%; border-collapse: collapse; min-width: 820px; }
+  .cmp-tbl th {
+    padding: 1rem .9rem; text-align: left; font-size: .78rem;
+    background: #f5f5f7; border-bottom: 2px solid #ddd;
+    text-transform: uppercase; letter-spacing: .04em;
+  }
+  .cmp-tbl th:nth-child(2) { color: var(--work); }
+  .cmp-tbl th:nth-child(3) { color: var(--fabric-dark); }
+  .cmp-tbl th:nth-child(4) { color: var(--foundry); }
+  .cmp-tbl td {
+    padding: .85rem .9rem; border-bottom: 1px solid #eee; font-size: .86rem;
+    vertical-align: top;
+  }
+  .cmp-tbl tr:hover td { background: #faf8fd; }
+  .cmp-tbl td:first-child { font-weight: 700; color: #002050; white-space: nowrap; }
+  .cmp-tbl td:nth-child(2) { background: rgba(232,244,253,.3); }
+  .cmp-tbl td:nth-child(3) { background: rgba(255,248,225,.4); }
+  .cmp-tbl td:nth-child(4) { background: rgba(243,239,250,.4); }
+
+  /* ── DECISION TREE ── */
+  .dt-wrap { max-width: 760px; margin: 0 auto; }
+  .dt-node {
+    background: #fff; border-radius: 14px; padding: 1.5rem;
+    text-align: center; box-shadow: 0 2px 12px rgba(0,0,0,.06);
+    margin-bottom: .75rem; border: 2px solid #e0e0e0;
+    transition: all .3s;
+  }
+  .dt-node.question { border-color: #5C2D91; background: #faf7ff; }
+  .dt-node.active { border-color: #5C2D91; background: #f3effa; }
+  .dt-node h4 { font-size: 1rem; margin-bottom: .5rem; color: #002050; }
+  .dt-node p { font-size: .88rem; color: #555; }
+  .dt-choices {
+    display: flex; gap: .75rem; justify-content: center;
+    margin-top: 1rem; flex-wrap: wrap;
+  }
+  .dt-choice {
+    padding: .55rem 1.2rem; border-radius: 8px; font-weight: 600;
+    font-size: .85rem; cursor: pointer; border: 2px solid #5C2D91;
+    color: #5C2D91; background: #faf7ff; transition: all .2s;
+  }
+  .dt-choice:hover { background: #5C2D91; color: #fff; }
+  .dt-result {
+    padding: 1.5rem; border-radius: 14px; text-align: center;
+    margin-top: .75rem; animation: fadeDown .4s ease-out;
+  }
+  .dt-result h4 { font-size: 1.1rem; margin-bottom: .5rem; }
+  .dt-result p { font-size: .88rem; line-height: 1.6; }
+  .dt-result.work-r { background: var(--work-light); border: 2px solid var(--work-mid); color: #003a6a; }
+  .dt-result.fabric-r { background: var(--fabric-light); border: 2px solid var(--fabric-mid); color: #4a3800; }
+  .dt-result.foundry-r { background: var(--foundry-light); border: 2px solid var(--foundry-mid); color: #3b1662; }
+  .dt-result.all-r { background: #eef2ff; border: 2px solid #c7d2fe; color: #312e81; }
+  .dt-hidden { display: none; }
+  .dt-restart {
+    display: inline-flex; align-items: center; gap: .4rem;
+    margin-top: 1rem; padding: .5rem 1.2rem; border-radius: 8px;
+    background: #f0f0f0; color: #333; font-size: .85rem; font-weight: 600;
+    cursor: pointer; border: none; transition: background .2s;
+  }
+  .dt-restart:hover { background: #e0e0e0; }
+
+  /* ── PATTERN DIAGRAM (SMART AGENT) ── */
+  .pattern-wrap {
+    background: #fff; border-radius: 16px; padding: 2.25rem;
+    box-shadow: 0 2px 12px rgba(0,0,0,.05);
+  }
+  .pattern-steps {
+    display: grid; grid-template-columns: repeat(5, 1fr); gap: .75rem;
+    align-items: stretch; margin-top: 1rem;
+  }
+  .pattern-step {
+    background: #fafbff; border-radius: 12px; padding: 1.25rem .9rem;
+    text-align: center; border: 2px solid #ece4f5;
+    position: relative;
+  }
+  .pattern-step:not(:last-child)::after {
+    content: '→'; position: absolute;
+    right: -16px; top: 50%; transform: translateY(-50%);
+    font-size: 1.4rem; color: #5C2D91; font-weight: 800; z-index: 2;
+  }
+  .pattern-num {
+    width: 30px; height: 30px; border-radius: 50%;
+    background: #5C2D91; color: #fff; font-weight: 800;
+    display: flex; align-items: center; justify-content: center;
+    font-size: .82rem; margin: 0 auto .6rem;
+  }
+  .pattern-step h5 { font-size: .88rem; color: #002050; font-weight: 700; margin-bottom: .3rem; }
+  .pattern-step p { font-size: .75rem; color: #555; line-height: 1.5; }
+
+  /* ── LICENSING BANNER ── */
+  .lic-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1rem;
+  }
+  .lic-card {
+    background: #fff; border-radius: 14px; padding: 1.5rem;
+    box-shadow: 0 2px 10px rgba(0,0,0,.04);
+    border-left: 5px solid;
+  }
+  .lic-card.work-b { border-color: var(--work); }
+  .lic-card.fabric-b { border-color: var(--fabric); }
+  .lic-card.foundry-b { border-color: var(--foundry); }
+  .lic-card h4 { font-size: .95rem; color: #002050; margin-bottom: .5rem; }
+  .lic-card p { font-size: .84rem; color: #555; line-height: 1.55; }
+  .lic-card .lic-price {
+    font-size: .78rem; font-weight: 700; margin-top: .5rem;
+    padding: .25rem .6rem; border-radius: 6px; display: inline-block;
+  }
+  .work-b .lic-price { background: var(--work-light); color: var(--work); }
+  .fabric-b .lic-price { background: var(--fabric-light); color: var(--fabric-dark); }
+  .foundry-b .lic-price { background: var(--foundry-light); color: var(--foundry); }
+
+  /* ── RESOURCE LINKS SECTION ── */
+  .res-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.25rem;
+  }
+  .res-card {
+    background: #fff; border-radius: 14px; padding: 1.75rem;
+    box-shadow: 0 2px 10px rgba(0,0,0,.04);
+    border-top: 4px solid;
+  }
+  .res-card.work-b { border-color: var(--work); }
+  .res-card.fabric-b { border-color: var(--fabric); }
+  .res-card.foundry-b { border-color: var(--foundry); }
+  .res-card h4 {
+    font-size: 1.05rem; margin-bottom: 1rem; color: #002050;
+    display: flex; align-items: center; gap: .5rem;
+  }
+  .res-card h4 .res-dot {
+    width: 10px; height: 10px; border-radius: 50%;
+  }
+  .res-card.work-b .res-dot { background: var(--work); }
+  .res-card.fabric-b .res-dot { background: var(--fabric); }
+  .res-card.foundry-b .res-dot { background: var(--foundry); }
+  .res-list { list-style: none; display: flex; flex-direction: column; gap: .5rem; }
+  .res-list li { font-size: .85rem; line-height: 1.4; }
+  .res-list a {
+    display: flex; align-items: center; gap: .5rem;
+    padding: .45rem .6rem; border-radius: 7px;
+    transition: background .2s;
+  }
+  .res-list a:hover { background: #f5f5f7; text-decoration: none; }
+  .res-list a::before { content: '→'; color: #5C2D91; font-weight: 700; }
+
+  /* ── CTA BANNER ── */
+  .cta-banner {
+    background: linear-gradient(135deg, #0a1840 0%, #1a2a60 40%, #4B1A84 100%);
+    border-radius: 16px; padding: 3rem; text-align: center; color: #fff;
+    position: relative; overflow: hidden; margin-top: 2.5rem;
+  }
+  .cta-banner::before {
+    content:''; position: absolute; right: -40px; top: -40px;
+    width: 220px; height: 220px; border-radius: 50%;
+    background: rgba(255,255,255,.04);
+  }
+  .cta-banner h3 { font-size: 1.5rem; margin-bottom: .5rem; }
+  .cta-banner p { font-size: 1rem; opacity: .9; margin-bottom: 1.5rem; max-width: 600px; margin-left: auto; margin-right: auto; }
+
+  /* ── FOOTER ── */
+  .footer {
+    text-align: center; padding: 2rem; color: #888; font-size: .82rem;
+    border-top: 1px solid #e0e0e0; margin-top: 2rem;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    .iq-body { grid-template-columns: 1fr; gap: 1.5rem; }
+    .pattern-steps { grid-template-columns: 1fr; gap: 1.5rem; }
+    .pattern-step:not(:last-child)::after { content: '↓'; right: 50%; top: auto; bottom: -22px; transform: translateX(50%); }
+  }
+  @media (max-width: 768px) {
+    .nav { padding: 0 1rem; }
+    section { padding: 3rem 1rem; }
+    .hero-stat { gap: 1.5rem; }
+    .hero-stat .stat-num { font-size: 1.5rem; }
+    .iq-hdr { flex-direction: column; text-align: center; padding: 1.5rem 1.25rem 2.5rem; }
+    .iq-preview { top: 0.75rem; right: 0.75rem; }
+  }
+  @media print {
+    .nav, .progress-bar { display: none; }
+    body { background: #fff; }
+    .hero { min-height: auto; padding: 3rem 2rem; }
+  }
+</style>
+<style>/* smec-back-btn v1 */
+.smec-back-btn { position: fixed; bottom: 16px; left: 16px; z-index: 9999;
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: 0; min-width: 44px; height: 44px; padding: 0; border-radius: 22px;
+  background: rgba(0, 120, 212, 0.92); color: #fff; text-decoration: none;
+  font: 600 13px/1 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18); backdrop-filter: blur(6px);
+  opacity: 0;
+  animation: smec-back-btn-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.4s forwards;
+  /* Collapsing: wait for the label to fade out, then shrink the pill. */
+  transition:
+    padding 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.2s,
+    gap 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.2s,
+    background 0.35s ease 0s,
+    box-shadow 0.35s ease 0s;
+  overflow: hidden; white-space: nowrap; }
+.smec-back-btn__icon { flex: 0 0 auto;
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1) 0.2s; }
+.smec-back-btn__label { max-width: 0; opacity: 0;
+  /* Collapsing: label fades out first, then its width collapses with the pill. */
+  transition:
+    opacity 0.18s ease 0s,
+    max-width 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.2s; }
+
+/* Expanding: pill and label grow together in one motion; text appears near the end. */
+.smec-back-btn:hover, .smec-back-btn:focus-visible {
+  gap: 10px; padding: 0 18px 0 12px;
+  background: rgba(0, 90, 158, 0.96); color: #fff; text-decoration: none;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.22);
+  transition:
+    padding 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0s,
+    gap 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0s,
+    background 0.35s ease 0s,
+    box-shadow 0.35s ease 0s; }
+.smec-back-btn:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+.smec-back-btn:hover .smec-back-btn__icon,
+.smec-back-btn:focus-visible .smec-back-btn__icon {
+  transform: translateX(-2px);
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1) 0s; }
+.smec-back-btn:hover .smec-back-btn__label,
+.smec-back-btn:focus-visible .smec-back-btn__label {
+  max-width: 260px; opacity: 1;
+  transition:
+    max-width 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0s,
+    opacity 0.3s ease 0.3s; }
+
+@keyframes smec-back-btn-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@media (hover: none) {
+  .smec-back-btn { gap: 10px; padding: 0 18px 0 12px; }
+  .smec-back-btn__label { max-width: 260px; opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .smec-back-btn, .smec-back-btn__icon, .smec-back-btn__label,
+  .smec-back-btn:hover, .smec-back-btn:focus-visible,
+  .smec-back-btn:hover .smec-back-btn__icon,
+  .smec-back-btn:focus-visible .smec-back-btn__icon,
+  .smec-back-btn:hover .smec-back-btn__label,
+  .smec-back-btn:focus-visible .smec-back-btn__label {
+    transition: background 0.2s ease, color 0.2s ease;
+    animation: none; opacity: 1; }
+}
+@media (max-width: 600px) { .smec-back-btn { bottom: 12px; left: 12px; } }
+</style>
+</head>
+<body>
+<a href="/" class="smec-back-btn" data-smec-back-button="v1" aria-label="Back to SME&amp;C Infographics"><svg class="smec-back-btn__icon" aria-hidden="true" viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg><span class="smec-back-btn__label">Back to SME&amp;C Infographics</span></a>
+
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <div class="nav-logo">
+    <svg viewBox="0 0 23 23"><path fill="#0078d4" d="M0 0h11v11H0z"/><path fill="#c19a00" d="M12 0h11v11H12z"/><path fill="#5C2D91" d="M0 12h11v11H0z"/><path fill="#008575" d="M12 12h11v11H12z"/></svg>
+    Microsoft IQ Guide
+  </div>
+  <div class="nav-links">
+    <a href="#overview">Overview</a>
+    <a href="#why">Why IQ</a>
+    <a href="#architecture">Architecture</a>
+    <a href="#platforms">The 3 IQs</a>
+    <a href="#compare">Compare</a>
+    <a href="#pattern">Build Pattern</a>
+    <a href="#decide">Which IQ?</a>
+    <a href="#resources">Resources</a>
+  </div>
+</nav>
+<div class="progress-bar" id="progressBar"></div>
+
+<!-- HERO -->
+<header class="hero" id="overview">
+  <div class="hero-badge">
+    <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+    The Knowledge Layer for Smarter Agents
+  </div>
+  <h1>Your Agents Are Only as Smart as What They Know</h1>
+  <p>Without context, agents hallucinate. With context, they transform. Microsoft's three IQ platforms &mdash; <strong>Foundry IQ</strong>, <strong>Fabric IQ</strong>, and <strong>Work IQ</strong> &mdash; give your agents governed, real-time understanding of your business, your data, and your people. Every answer grounded. Every action scoped. Every insight earned.</p>
+  <div class="preview-pill">All three platforms are in Public Preview</div>
+  <div class="hero-cta">
+    <a href="#platforms" class="btn btn-primary">Explore the 3 IQs</a>
+    <a href="#decide" class="btn btn-outline">Which IQ Do I Need?</a>
+  </div>
+  <div class="hero-stat">
+    <div><div class="stat-num">3</div><div class="stat-label">IQ Platforms</div></div>
+    <div><div class="stat-num">1</div><div class="stat-label">Unified Agent Endpoint</div></div>
+    <div><div class="stat-num">9+</div><div class="stat-label">Work IQ MCP Servers</div></div>
+    <div><div class="stat-num">6</div><div class="stat-label">Fabric IQ Items</div></div>
+  </div>
+</header>
+
+<!-- ═══════════ WHY IQ ═══════════ -->
+<section id="why">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label">The Problem We're Solving</span>
+      <h2 class="section-title">Why Agents Need an "IQ" Layer</h2>
+      <p class="section-sub">Most agents today know the web but not your business. They generate fluent nonsense about your customers, your policies, and your data &mdash; in perfect grammar. The IQ platforms close that gap, giving agents governed, grounded, real-time understanding of your organization so they can finally be trusted to act.</p>
+    </div>
+    <div class="why-grid reveal">
+      <div class="why-card">
+        <div class="why-ico">&#x1F9ED;</div>
+        <h4>Grounded Answers, Not Guesses</h4>
+        <p>Every response anchored in your enterprise data &mdash; not the model's imagination. Retrieval from SharePoint, Fabric, Graph, and beyond.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-ico">&#x1F511;</div>
+        <h4>Zero-Trust by Default</h4>
+        <p>Agents see only what the user is allowed to see &mdash; no more, no less. Entra ID and data-source ACLs enforced end-to-end across all three IQs.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-ico">&#x1F4A1;</div>
+        <h4>Your Language, Not Jargon</h4>
+        <p>Fabric IQ's ontology teaches agents what a "customer," "deal," or "invoice" actually means in <em>your</em> organization &mdash; not what the model guessed from the internet.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-ico">&#x1F500;</div>
+        <h4>Cross-Source Retrieval</h4>
+        <p>One agent call reaches across Microsoft 365, Fabric, Azure AI Search, and external systems &mdash; coherent answers assembled from scattered data in a single hop.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ ARCHITECTURE ═══════════ -->
+<section id="architecture" style="background:#fff;">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label">How They Fit Together</span>
+      <h2 class="section-title">The IQ Architecture at a Glance</h2>
+      <p class="section-sub">Foundry IQ sits at the center &mdash; the single retrieval endpoint your agents call. It aggregates, plans, and routes queries across Work IQ, Fabric IQ, and any other governed source, so your agent gets one answer from many places.</p>
+    </div>
+
+    <div class="arch-wrap reveal">
+      <div class="arch-title">&#x1F50D; Single endpoint, many sources, governed by design</div>
+
+      <!-- Agent Layer -->
+      <div class="arch-layer">
+        <div class="arch-agent">
+          Your Agent
+          <div class="arch-sub">Copilot Studio &bull; M365 Copilot &bull; Custom SDK (Agent Framework / Semantic Kernel)</div>
+        </div>
+      </div>
+
+      <div class="arch-connector">
+        <span class="arch-ctag">One API call</span>
+      </div>
+
+      <!-- Foundry IQ Aggregator -->
+      <div class="arch-foundry-box">
+        <span class="arch-prev">Public Preview</span>
+        <h4>&#x2728; Foundry IQ</h4>
+        <div class="arch-sub">Unified retrieval, agentic planning, permission-aware answers</div>
+      </div>
+
+      <div class="arch-connector multi">
+        <span class="arch-ctag">Pulls from knowledge sources</span>
+      </div>
+
+      <!-- Knowledge Sources -->
+      <div class="arch-sources">
+        <div class="arch-source work-bg">
+          <span class="arch-prev">Preview</span>
+          <h5>Work IQ</h5>
+          <p>Microsoft 365 context: Mail, Calendar, SharePoint, OneDrive, Teams, Word via MCP</p>
+        </div>
+        <div class="arch-source fabric-bg">
+          <span class="arch-prev">Preview</span>
+          <h5>Fabric IQ</h5>
+          <p>Business data + ontology: OneLake, semantic models, Data Agents, Graph</p>
+        </div>
+        <div class="arch-source other-bg">
+          <h5>Your Sources</h5>
+          <p>Azure AI Search indexes, Blob Storage, web, SaaS APIs via MCP connectors</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ THE THREE IQ PLATFORMS ═══════════ -->
+<section id="platforms">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label">Deep Dive</span>
+      <h2 class="section-title">The Three IQ Platforms</h2>
+      <p class="section-sub">Each IQ occupies a distinct layer in the knowledge stack. Together, they give your agents the full picture &mdash; from personal work signals to enterprise business logic to unified cross-source retrieval.</p>
+    </div>
+
+    <!-- WORK IQ -->
+    <div class="iq-card work-card reveal">
+      <div class="iq-hdr work-bg">
+        <span class="iq-preview">Public Preview</span>
+        <div class="iq-icon-box">&#x1F4BC;</div>
+        <div>
+          <h3>Work IQ</h3>
+          <div class="iq-tag">The intelligence layer behind Microsoft 365 &mdash; context, memory, and action for every agent that lives where work happens</div>
+        </div>
+      </div>
+      <div class="iq-body">
+        <div class="iq-col">
+          <h4>What it is</h4>
+          <div class="tag-row">
+            <span class="tag work-t">M365 Context</span>
+            <span class="tag work-t">MCP Servers</span>
+            <span class="tag work-t">Memory</span>
+          </div>
+          <ul>
+            <li>The intelligence layer that grounds M365 Copilot and your agents in real-time organizational context</li>
+            <li>Three layers: <strong>Data</strong> (who, what, where), <strong>Memory</strong> (persistent personal context), <strong>Inference</strong> (reasoning + action over work signals)</li>
+            <li>9+ MCP servers: <strong>Copilot, Calendar, Mail, SharePoint, OneDrive, Teams, User, Word</strong>, plus Dataverse &amp; Dynamics 365</li>
+            <li>Available via Copilot Studio, Agent 365, Microsoft Foundry, VS Code, or standalone CLI / GitHub Copilot plugin</li>
+          </ul>
+        </div>
+        <div class="iq-col">
+          <h4>How it works</h4>
+          <ul>
+            <li>Agent calls a Work IQ MCP server (e.g., <code>Work IQ Mail</code>, <code>Work IQ SharePoint</code>)</li>
+            <li>MCP server queries the <strong>Microsoft Graph</strong> on behalf of the signed-in user &mdash; scoped, auditable, compliant</li>
+            <li>Delegated Entra ID permissions enforce user-scoped access on every call</li>
+            <li>Memory layer builds persistent understanding of how people and teams work across sessions</li>
+            <li>Returns structured, citation-ready results the agent can reason and act on</li>
+          </ul>
+        </div>
+        <div class="iq-col">
+          <h4>When to use it</h4>
+          <ul>
+            <li>Personal productivity agents: email triage, meeting prep, document drafting</li>
+            <li>"Summarize my week across Teams, email, and calendar"</li>
+            <li>Agents that need <strong>activity context</strong> &mdash; who's collaborating with whom on what</li>
+            <li>Shipping into Teams, Outlook, or M365 Copilot surfaces</li>
+            <li>When you already have M365 Copilot licenses</li>
+          </ul>
+        </div>
+      </div>
+      <div class="iq-links">
+        <span class="iq-links-label">Learn:</span>
+        <a href="https://learn.microsoft.com/en-us/microsoft-365/copilot/extensibility/workiq-overview" target="_blank" class="iq-link-btn">Work IQ CLI &amp; Overview &rarr;</a>
+        <a href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/use-work-iq" target="_blank" class="iq-link-btn">Use in Copilot Studio &rarr;</a>
+        <a href="https://learn.microsoft.com/en-us/microsoft-agent-365/tooling-servers-overview" target="_blank" class="iq-link-btn">Agent 365 MCP Servers &rarr;</a>
+      </div>
+    </div>
+
+    <!-- FABRIC IQ -->
+    <div class="iq-card fabric-card reveal">
+      <div class="iq-hdr fabric-bg">
+        <span class="iq-preview">Public Preview</span>
+        <div class="iq-icon-box">&#x1F9F5;</div>
+        <div>
+          <h3>Fabric IQ</h3>
+          <div class="iq-tag">Your business vocabulary, made machine-readable &mdash; the semantic foundation that turns data platforms into intelligence platforms</div>
+        </div>
+      </div>
+      <div class="iq-body">
+        <div class="iq-col">
+          <h4>What it is</h4>
+          <div class="tag-row">
+            <span class="tag fabric-t">Business Ontology</span>
+            <span class="tag fabric-t">Semantic Graph</span>
+            <span class="tag fabric-t">Data Agents</span>
+          </div>
+          <ul>
+            <li>New Microsoft Fabric workload that elevates Fabric from a <strong>data platform</strong> into a <strong>unified intelligence platform</strong></li>
+            <li>Six core items: <strong>Ontology</strong>, <strong>Digital Twin Builder</strong>, <strong>Graph</strong>, <strong>Data Agent</strong>, <strong>Operations Agent</strong>, <strong>Semantic Models</strong> (Power BI)</li>
+            <li>Ontology captures your business entities, relationships, rules, and KPIs &mdash; so agents speak your language, not database jargon</li>
+            <li>Native Graph engine reasons over connected enterprise data in OneLake with multi-hop traversal</li>
+          </ul>
+        </div>
+        <div class="iq-col">
+          <h4>How it works</h4>
+          <ul>
+            <li>Define entities (Customer, Order, Asset) and their measures once in the <strong>Ontology item</strong> &mdash; bootstrap from existing Power BI semantic models in clicks</li>
+            <li><strong>Data Agents</strong> answer natural-language analytics questions grounded in your data model and business definitions</li>
+            <li><strong>Operations Agents</strong> monitor real-time data, detect anomalies, and trigger workflows autonomously within defined business rules</li>
+            <li>Queries cascade through Graph + OneLake with row/column-level security preserved on every hop</li>
+            <li>Plugs into Foundry IQ as a first-class knowledge source &mdash; seamless cross-platform retrieval</li>
+          </ul>
+        </div>
+        <div class="iq-col">
+          <h4>When to use it</h4>
+          <ul>
+            <li>Agents that need to reason over <strong>structured business data</strong>: revenue, inventory, customers, projects</li>
+            <li>Analytic / BI copilots with correct terminology and metric definitions</li>
+            <li>Cross-domain questions: "Which customers with open support tickets also have renewals this quarter?"</li>
+            <li>Operational automation: auto-detect inventory risks, trigger reorder workflows</li>
+            <li>When you're already on Microsoft Fabric &mdash; Fabric IQ is included in your SKU</li>
+          </ul>
+        </div>
+      </div>
+      <div class="iq-links">
+        <span class="iq-links-label">Learn:</span>
+        <a href="https://learn.microsoft.com/en-us/fabric/iq/overview" target="_blank" class="iq-link-btn">Fabric IQ Overview &rarr;</a>
+        <a href="https://learn.microsoft.com/en-us/fabric/iq/ontology/overview" target="_blank" class="iq-link-btn">Ontology Docs &rarr;</a>
+        <a href="https://blog.fabric.microsoft.com/en-us/blog/from-data-platform-to-intelligence-platform-introducing-microsoft-fabric-iq" target="_blank" class="iq-link-btn">Launch Announcement &rarr;</a>
+      </div>
+    </div>
+
+    <!-- FOUNDRY IQ -->
+    <div class="iq-card foundry-card reveal">
+      <div class="iq-hdr foundry-bg">
+        <span class="iq-preview">Public Preview</span>
+        <div class="iq-icon-box">&#x2728;</div>
+        <div>
+          <h3>Foundry IQ</h3>
+          <div class="iq-tag">One retrieval endpoint for every agent &mdash; ubiquitous, governed knowledge across your entire ecosystem</div>
+        </div>
+      </div>
+      <div class="iq-body">
+        <div class="iq-col">
+          <h4>What it is</h4>
+          <div class="tag-row">
+            <span class="tag foundry-t">Unified Retrieval</span>
+            <span class="tag foundry-t">Agentic Planning</span>
+            <span class="tag foundry-t">Context Engineering</span>
+          </div>
+          <ul>
+            <li><strong>Context engineering platform</strong> in Microsoft Foundry &mdash; a single retrieval endpoint that spans every knowledge source your agent needs</li>
+            <li>Built on Azure AI Search, extends it with <strong>agentic retrieval</strong>, LLM-powered query planning, and intelligent ranking</li>
+            <li>Core concepts: <strong>Knowledge Bases</strong> (curated collections of sources) and <strong>Knowledge Sources</strong> (indexed files, Fabric IQ, Work IQ, web, SharePoint, and custom)</li>
+            <li>Three retrieval reasoning tiers: <strong>minimal</strong>, <strong>low</strong>, <strong>medium</strong> &mdash; dial the knob between speed and depth per query</li>
+          </ul>
+        </div>
+        <div class="iq-col">
+          <h4>How it works</h4>
+          <ul>
+            <li>Agent makes <strong>one call</strong> to a Foundry IQ knowledge base &mdash; no hand-written retrieval orchestration</li>
+            <li>A <strong>query-planning LLM</strong> (GPT-4.1, GPT-5, GPT-5.4, or GPT-5.5) decomposes the question into targeted sub-queries</li>
+            <li>Sub-queries fan out in parallel across indexed content, Fabric IQ, Work IQ, web, and custom remote sources</li>
+            <li>Results are ranked, deduplicated, and consolidated with full citations &mdash; ready for the agent to reason over</li>
+            <li>Entra ID, Purview, and data-source ACLs enforced on every hop &mdash; zero-trust retrieval by design</li>
+          </ul>
+        </div>
+        <div class="iq-col">
+          <h4>When to use it</h4>
+          <ul>
+            <li>Any agent that needs <strong>knowledge from more than one source</strong> (the vast majority)</li>
+            <li>Enterprise RAG patterns &mdash; replace hand-written retrieval orchestration</li>
+            <li>Multi-domain agents: combines M365 context (Work IQ) + business data (Fabric IQ) + domain docs</li>
+            <li>When you need a single governed, auditable retrieval layer with Purview monitoring</li>
+            <li>Pro-code agents on Foundry or low-code agents in Copilot Studio</li>
+          </ul>
+        </div>
+      </div>
+      <div class="iq-links">
+        <span class="iq-links-label">Learn:</span>
+        <a href="https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/what-is-foundry-iq" target="_blank" class="iq-link-btn">What is Foundry IQ &rarr;</a>
+        <a href="https://azure.microsoft.com/en-us/products/ai-foundry/iq/" target="_blank" class="iq-link-btn">Foundry IQ Product &rarr;</a>
+        <a href="https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/foundry-iq-unlocking-ubiquitous-knowledge-for-agents/4470812" target="_blank" class="iq-link-btn">Launch Blog &rarr;</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════ COMPARISON TABLE ═══════════ -->
+<section id="compare" style="background:#fff;">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label">Side by Side</span>
+      <h2 class="section-title">What / How / When &mdash; at a Glance</h2>
+      <p class="section-sub">The three IQs are complementary, not competing. Most production agents will wire into two or all three &mdash; each contributing a different dimension of understanding.</p>
+    </div>
+    <div class="cmp-wrap reveal">
+      <table class="cmp-tbl">
+        <thead>
+          <tr>
+            <th>Dimension</th>
+            <th>Work IQ</th>
+            <th>Fabric IQ</th>
+            <th>Foundry IQ</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Role</td>
+            <td>Microsoft 365 context provider</td>
+            <td>Business-data intelligence layer</td>
+            <td>Unified retrieval aggregator</td>
+          </tr>
+          <tr>
+            <td>Primary data</td>
+            <td>Mail, Teams, SharePoint, OneDrive, Calendar, Word</td>
+            <td>OneLake, semantic models, business ontology</td>
+            <td>Any source: above + Azure AI Search + web + SaaS</td>
+          </tr>
+          <tr>
+            <td>Interface</td>
+            <td>MCP servers + CLI</td>
+            <td>Fabric items (Ontology, Digital Twin Builder, Graph, Data Agent, Operations Agent)</td>
+            <td>Knowledge base REST API + SDK</td>
+          </tr>
+          <tr>
+            <td>Where it lives</td>
+            <td>Microsoft 365 platform</td>
+            <td>Microsoft Fabric</td>
+            <td>Microsoft Foundry</td>
+          </tr>
+          <tr>
+            <td>Best at</td>
+            <td>Personal/work context &mdash; "what's happening with me"</td>
+            <td>Structured business reasoning &mdash; "what's happening with the business"</td>
+            <td>Orchestrating answers across many sources</td>
+          </tr>
+          <tr>
+            <td>Access control</td>
+            <td>Entra ID delegated &mdash; user sees only their data</td>
+            <td>Fabric workspace + row/column-level security</td>
+            <td>Entra ID + Purview + honors each source's ACLs</td>
+          </tr>
+          <tr>
+            <td>Typical builder</td>
+            <td>M365 / Copilot Studio developer</td>
+            <td>Fabric data engineer / analytics team</td>
+            <td>AI / agent platform team</td>
+          </tr>
+          <tr>
+            <td>Licensing</td>
+            <td>M365 Copilot license or consumption billing</td>
+            <td>Included in Microsoft Fabric SKU</td>
+            <td>Token-based + underlying Azure AI Search capacity</td>
+          </tr>
+          <tr>
+            <td>Status</td>
+            <td><span class="preview-inline">Public Preview</span></td>
+            <td><span class="preview-inline">Public Preview</span></td>
+            <td><span class="preview-inline">Public Preview</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ BUILDING PATTERN ═══════════ -->
+<section id="pattern">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label">End-to-End</span>
+      <h2 class="section-title">Building a Smarter Agent with IQ</h2>
+      <p class="section-sub">The canonical pattern: define your agent, front it with Foundry IQ as the unified knowledge layer, then wire in Work IQ and Fabric IQ to light up the full spectrum of organizational intelligence.</p>
+    </div>
+    <div class="pattern-wrap reveal">
+      <div class="pattern-steps">
+        <div class="pattern-step">
+          <div class="pattern-num">1</div>
+          <h5>Define the Agent</h5>
+          <p>Build in Copilot Studio (no/low-code) or with the Foundry Agent SDK and Agent Framework (pro-code). Choose your model.</p>
+        </div>
+        <div class="pattern-step">
+          <div class="pattern-num">2</div>
+          <h5>Create a Foundry IQ Knowledge Base</h5>
+          <p>Start with one knowledge base. Add sources: docs, SharePoint, Work IQ, Fabric IQ.</p>
+        </div>
+        <div class="pattern-step">
+          <div class="pattern-num">3</div>
+          <h5>Attach Work IQ</h5>
+          <p>Plug in MCP servers for Mail, Calendar, SharePoint &mdash; so the agent sees user activity context.</p>
+        </div>
+        <div class="pattern-step">
+          <div class="pattern-num">4</div>
+          <h5>Attach Fabric IQ</h5>
+          <p>Register Fabric IQ ontology + Data Agents to ground answers in business metrics and semantics.</p>
+        </div>
+        <div class="pattern-step">
+          <div class="pattern-num">5</div>
+          <h5>Govern &amp; Ship</h5>
+          <p>Apply Purview policies, set retrieval reasoning tier, deploy to Teams, web, or your app.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ DECISION TREE ═══════════ -->
+<section id="decide" style="background:#fff;">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label">Interactive Guide</span>
+      <h2 class="section-title">Which IQ Do I Need?</h2>
+      <p class="section-sub">Answer a couple of quick questions about your agent's knowledge requirements. We'll point you to the right starting platform &mdash; and the path forward.</p>
+    </div>
+    <div class="dt-wrap reveal">
+
+      <!-- Q1 -->
+      <div class="dt-node question active" id="q1">
+        <h4>What kind of knowledge does your agent need?</h4>
+        <div class="dt-choices">
+          <button class="dt-choice" onclick="dtAnswer('q1','work')">Personal work context &mdash; email, chats, meetings, docs</button>
+          <button class="dt-choice" onclick="dtAnswer('q1','biz')">Business data &mdash; KPIs, customers, operations, analytics</button>
+          <button class="dt-choice" onclick="dtAnswer('q1','mixed')">A bit of everything &mdash; multiple sources</button>
+          <button class="dt-choice" onclick="dtAnswer('q1','docs')">Just documents &amp; wikis for Q&amp;A</button>
+        </div>
+      </div>
+
+      <!-- Q2 Work -->
+      <div class="dt-node question dt-hidden" id="q2-work">
+        <h4>Where will this agent run?</h4>
+        <div class="dt-choices">
+          <button class="dt-choice" onclick="dtAnswer('q2-work','m365')">Inside Microsoft 365 (Teams, Outlook, Copilot)</button>
+          <button class="dt-choice" onclick="dtAnswer('q2-work','custom')">A custom or pro-code surface</button>
+        </div>
+      </div>
+
+      <!-- Q2 Biz -->
+      <div class="dt-node question dt-hidden" id="q2-biz">
+        <h4>Is your analytical data already in Microsoft Fabric / OneLake?</h4>
+        <div class="dt-choices">
+          <button class="dt-choice" onclick="dtAnswer('q2-biz','yes')">Yes &mdash; we're on Fabric</button>
+          <button class="dt-choice" onclick="dtAnswer('q2-biz','no')">No &mdash; it's in Azure SQL, Snowflake, or elsewhere</button>
+        </div>
+      </div>
+
+      <!-- Q2 Docs -->
+      <div class="dt-node question dt-hidden" id="q2-docs">
+        <h4>Do permissions vary by user?</h4>
+        <div class="dt-choices">
+          <button class="dt-choice" onclick="dtAnswer('q2-docs','yes')">Yes &mdash; must honor M365 / SharePoint ACLs</button>
+          <button class="dt-choice" onclick="dtAnswer('q2-docs','no')">No &mdash; same content for everyone</button>
+        </div>
+      </div>
+
+      <!-- Results -->
+      <div class="dt-result work-r dt-hidden" id="r-work">
+        <h4>&#x2192; Start with Work IQ</h4>
+        <p>Your agent needs Microsoft 365 context. Wire up the relevant <strong>Work IQ MCP servers</strong> (Mail, Calendar, SharePoint, Teams) in Copilot Studio or Agent 365. Deploy directly into the M365 surface where users already work.</p>
+        <p style="margin-top:.75rem;"><a href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/use-work-iq" target="_blank" style="font-weight:600;">Build with Work IQ in Copilot Studio &rarr;</a></p>
+        <button class="dt-restart" onclick="dtReset()">&#x21bb; Start Over</button>
+      </div>
+      <div class="dt-result work-r dt-hidden" id="r-work-custom">
+        <h4>&#x2192; Work IQ via Foundry IQ</h4>
+        <p>For a custom surface, call <strong>Work IQ through a Foundry IQ knowledge base</strong>. You get one endpoint, full governance, and the ability to mix in other sources later. Use the Work IQ MCP servers + Microsoft Graph delegated auth.</p>
+        <p style="margin-top:.75rem;"><a href="https://learn.microsoft.com/en-us/microsoft-365/copilot/extensibility/workiq-overview" target="_blank" style="font-weight:600;">Work IQ Overview &rarr;</a></p>
+        <button class="dt-restart" onclick="dtReset()">&#x21bb; Start Over</button>
+      </div>
+      <div class="dt-result fabric-r dt-hidden" id="r-fabric">
+        <h4>&#x2192; Start with Fabric IQ</h4>
+        <p>Define your business <strong>Ontology</strong> in Fabric. Build <strong>Data Agents</strong> for analytics questions and <strong>Operations Agents</strong> for monitoring. Expose everything through Foundry IQ when you're ready to ship a customer-facing agent.</p>
+        <p style="margin-top:.75rem;"><a href="https://learn.microsoft.com/en-us/fabric/iq/overview" target="_blank" style="font-weight:600;">Explore Fabric IQ &rarr;</a></p>
+        <button class="dt-restart" onclick="dtReset()">&#x21bb; Start Over</button>
+      </div>
+      <div class="dt-result fabric-r dt-hidden" id="r-fabric-mirror">
+        <h4>&#x2192; Mirror into Fabric, then Fabric IQ</h4>
+        <p>Use Fabric's <strong>Mirroring</strong> to replicate Azure SQL, Snowflake, or Cosmos DB data into OneLake with zero ETL. Then define your Fabric IQ ontology over the mirrored data &mdash; no data movement, instant semantic layer for agents.</p>
+        <p style="margin-top:.75rem;"><a href="https://learn.microsoft.com/en-us/fabric/iq/overview" target="_blank" style="font-weight:600;">Explore Fabric IQ &rarr;</a></p>
+        <button class="dt-restart" onclick="dtReset()">&#x21bb; Start Over</button>
+      </div>
+      <div class="dt-result foundry-r dt-hidden" id="r-foundry">
+        <h4>&#x2192; Start with Foundry IQ</h4>
+        <p>For document Q&amp;A with permission enforcement, build a <strong>Foundry IQ knowledge base</strong>. Add SharePoint, Azure AI Search indexes, or file stores as sources. Entra ID + source ACLs ensure every user sees only what they're allowed to.</p>
+        <p style="margin-top:.75rem;"><a href="https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/what-is-foundry-iq" target="_blank" style="font-weight:600;">Build with Foundry IQ &rarr;</a></p>
+        <button class="dt-restart" onclick="dtReset()">&#x21bb; Start Over</button>
+      </div>
+      <div class="dt-result foundry-r dt-hidden" id="r-foundry-simple">
+        <h4>&#x2192; Foundry IQ &mdash; Simple Knowledge Base</h4>
+        <p>For a shared knowledge agent, spin up a <strong>Foundry IQ knowledge base</strong> with your docs as the source. Start with <strong>minimal</strong> retrieval reasoning tier for speed, step up to <strong>medium</strong> for complex queries.</p>
+        <p style="margin-top:.75rem;"><a href="https://azure.microsoft.com/en-us/products/ai-foundry/iq/" target="_blank" style="font-weight:600;">Foundry IQ Product Page &rarr;</a></p>
+        <button class="dt-restart" onclick="dtReset()">&#x21bb; Start Over</button>
+      </div>
+      <div class="dt-result all-r dt-hidden" id="r-all">
+        <h4>&#x2192; Use All Three (Foundry IQ-First)</h4>
+        <p>This is the <strong>recommended enterprise pattern</strong>. Front your agent with a <strong>Foundry IQ knowledge base</strong>. Attach <strong>Work IQ</strong> for M365 context, <strong>Fabric IQ</strong> for business data, plus any other sources you need. One endpoint, governed end-to-end, easy to evolve.</p>
+        <p style="margin-top:.75rem;"><a href="https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/foundry-iq-unlocking-ubiquitous-knowledge-for-agents/4470812" target="_blank" style="font-weight:600;">Read the Foundry IQ Launch Post &rarr;</a></p>
+        <button class="dt-restart" onclick="dtReset()">&#x21bb; Start Over</button>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ LICENSING ═══════════ -->
+<section id="licensing">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label">Commercial</span>
+      <h2 class="section-title">Licensing &amp; Availability</h2>
+      <p class="section-sub">A quick commercial snapshot. All three IQs are in public preview today &mdash; pricing and terms may evolve at general availability.</p>
+    </div>
+    <div class="lic-grid reveal">
+      <div class="lic-card work-b">
+        <h4>Work IQ</h4>
+        <p>Available through <strong>Microsoft 365 Copilot</strong> licenses and as a standalone consumption option. CLI lets developers experiment locally.</p>
+        <span class="lic-price">M365 Copilot + consumption</span>
+      </div>
+      <div class="lic-card fabric-b">
+        <h4>Fabric IQ</h4>
+        <p>Included in your <strong>Microsoft Fabric capacity</strong>. Consumption against your existing Fabric SKU &mdash; no separate purchase required today.</p>
+        <span class="lic-price">Included with Fabric SKU</span>
+      </div>
+      <div class="lic-card foundry-b">
+        <h4>Foundry IQ</h4>
+        <p>Billed on <strong>tokens</strong> for the query-planning model plus the underlying <strong>Azure AI Search</strong> capacity. Pay as you go.</p>
+        <span class="lic-price">Tokens + Azure AI Search</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ RESOURCES ═══════════ -->
+<section id="resources" style="background:#fff;">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label">Keep Learning</span>
+      <h2 class="section-title">Go Deeper &mdash; Official Resources</h2>
+      <p class="section-sub">Official Microsoft Learn documentation, product pages, and launch announcements &mdash; everything you need to move from understanding to building.</p>
+    </div>
+    <div class="res-grid reveal">
+
+      <div class="res-card work-b">
+        <h4><span class="res-dot"></span> Work IQ Resources</h4>
+        <ul class="res-list">
+          <li><a href="https://learn.microsoft.com/en-us/microsoft-365/copilot/extensibility/workiq-overview" target="_blank">Work IQ Overview &amp; CLI (Microsoft Learn)</a></li>
+          <li><a href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/use-work-iq" target="_blank">Use Work IQ in Copilot Studio</a></li>
+          <li><a href="https://learn.microsoft.com/en-us/microsoft-agent-365/tooling-servers-overview" target="_blank">Agent 365 Tooling &amp; MCP Servers</a></li>
+          <li><a href="https://www.microsoft.com/en-us/microsoft-365/blog/2025/11/18/microsoft-ignite-2025-copilot-and-agents-built-to-power-the-frontier-firm/" target="_blank">Ignite 2025 Announcement</a></li>
+        </ul>
+      </div>
+
+      <div class="res-card fabric-b">
+        <h4><span class="res-dot"></span> Fabric IQ Resources</h4>
+        <ul class="res-list">
+          <li><a href="https://learn.microsoft.com/en-us/fabric/iq/" target="_blank">Fabric IQ Documentation Hub</a></li>
+          <li><a href="https://learn.microsoft.com/en-us/fabric/iq/overview" target="_blank">Fabric IQ Overview</a></li>
+          <li><a href="https://learn.microsoft.com/en-us/fabric/iq/ontology/overview" target="_blank">Ontology Overview</a></li>
+          <li><a href="https://blog.fabric.microsoft.com/en-us/blog/from-data-platform-to-intelligence-platform-introducing-microsoft-fabric-iq" target="_blank">From Data Platform to Intelligence Platform (Launch Blog)</a></li>
+        </ul>
+      </div>
+
+      <div class="res-card foundry-b">
+        <h4><span class="res-dot"></span> Foundry IQ Resources</h4>
+        <ul class="res-list">
+          <li><a href="https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/what-is-foundry-iq" target="_blank">What is Foundry IQ (Microsoft Learn)</a></li>
+          <li><a href="https://azure.microsoft.com/en-us/products/ai-foundry/iq/" target="_blank">Foundry IQ Product Page</a></li>
+          <li><a href="https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/foundry-iq-unlocking-ubiquitous-knowledge-for-agents/4470812" target="_blank">Foundry IQ Launch Blog</a></li>
+          <li><a href="https://azure.microsoft.com/en-us/products/ai-foundry/" target="_blank">Microsoft Foundry Platform</a></li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="cta-banner reveal">
+      <h3>Ready to Build Agents That Actually Know Your Business?</h3>
+      <p>Start with Foundry IQ as your unified knowledge layer. Wire in Work IQ for organizational context and Fabric IQ for business intelligence. All three platforms are in public preview &mdash; start building today.</p>
+      <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
+        <a href="https://azure.microsoft.com/en-us/products/ai-foundry/iq/" class="btn btn-primary" target="_blank">Get Started with Foundry IQ</a>
+        <a href="https://www.microsoft.com/en-us/microsoft-copilot/microsoft-copilot-studio" class="btn btn-outline" target="_blank">Build in Copilot Studio</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <p>Microsoft IQ Platforms Guide &bull; Updated April 2026 &bull; Foundry IQ, Fabric IQ, and Work IQ are all in Public Preview &mdash; validate capabilities against the latest <a href="https://learn.microsoft.com/en-us/azure/foundry/" target="_blank">Microsoft Foundry</a>, <a href="https://learn.microsoft.com/en-us/fabric/" target="_blank">Microsoft Fabric</a>, and <a href="https://learn.microsoft.com/en-us/microsoft-365/copilot/" target="_blank">Microsoft 365 Copilot</a> documentation.</p>
+</footer>
+
+<script>
+(function(){
+  // ── Scroll Progress ──
+  const bar = document.getElementById('progressBar');
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.width = (window.scrollY / max * 100) + '%';
+    nav.classList.toggle('scrolled', window.scrollY > 20);
+  });
+
+  // ── Active Nav Link ──
+  const sections = document.querySelectorAll('section, header');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(l => l.classList.remove('active'));
+        const active = document.querySelector('.nav-links a[href="#' + entry.target.id + '"]');
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-40% 0px -60% 0px' });
+  sections.forEach(s => observer.observe(s));
+
+  // ── Reveal on Scroll ──
+  const reveals = document.querySelectorAll('.reveal');
+  const revealObs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        revealObs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  reveals.forEach(r => revealObs.observe(r));
+})();
+
+// ── Decision Tree ──
+const dtState = {};
+function dtAnswer(qId, answer) {
+  dtState[qId] = answer;
+  document.getElementById(qId).classList.remove('active');
+  document.getElementById(qId).style.opacity = '0.5';
+  document.getElementById(qId).style.pointerEvents = 'none';
+
+  if (qId === 'q1') {
+    if (answer === 'work') showNode('q2-work');
+    else if (answer === 'biz') showNode('q2-biz');
+    else if (answer === 'mixed') showResult('r-all');
+    else if (answer === 'docs') showNode('q2-docs');
+  }
+  else if (qId === 'q2-work') {
+    if (answer === 'm365') showResult('r-work');
+    else if (answer === 'custom') showResult('r-work-custom');
+  }
+  else if (qId === 'q2-biz') {
+    if (answer === 'yes') showResult('r-fabric');
+    else if (answer === 'no') showResult('r-fabric-mirror');
+  }
+  else if (qId === 'q2-docs') {
+    if (answer === 'yes') showResult('r-foundry');
+    else if (answer === 'no') showResult('r-foundry-simple');
+  }
+}
+
+function showNode(id) {
+  const el = document.getElementById(id);
+  el.classList.remove('dt-hidden');
+  el.classList.add('active');
+  el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+function showResult(id) {
+  const el = document.getElementById(id);
+  el.classList.remove('dt-hidden');
+  el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+function dtReset() {
+  document.querySelectorAll('.dt-node, .dt-result').forEach(el => {
+    if (el.id === 'q1') {
+      el.classList.add('active');
+      el.classList.remove('dt-hidden');
+      el.style.opacity = '1';
+      el.style.pointerEvents = '';
+    } else {
+      el.classList.add('dt-hidden');
+      el.classList.remove('active');
+      el.style.opacity = '1';
+      el.style.pointerEvents = '';
+    }
+  });
+  document.getElementById('q1').scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+</script>
+
+</body>
+</html>
