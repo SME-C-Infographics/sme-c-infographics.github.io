@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Setup cost to first PR: AI coding agents on GitHub</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --gh-ink: #24292E;
+    --gh-ink-2: #1B1F23;
+    --gh-accent: #2DA44E;   /* GitHub green */
+    --gh-blue: #0969DA;
+    --gh-muted: #57606A;
+    --gh-border: #D0D7DE;
+    --gh-surface: #F6F8FA;
+    --gh-card: #FFFFFF;
+    --gh-ok: #1A7F37;
+    --gh-warn: #9A6700;
+    --gh-danger: #CF222E;
+    --radius: 10px;
+    --shadow: 0 1px 3px rgba(27,31,36,.08), 0 4px 12px rgba(27,31,36,.06);
+  }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  body {
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    color: var(--gh-ink);
+    background: var(--gh-surface);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--gh-blue); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .container { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+
+  /* ── Hero ─────────────────────────────── */
+  .hero {
+    background: linear-gradient(135deg, #24292E 0%, #1B1F23 55%, #0B1014 100%);
+    color: #fff;
+    padding: 80px 24px 64px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse at 20% 20%, rgba(45,164,78,.12) 0%, transparent 55%),
+      radial-gradient(ellipse at 80% 80%, rgba(9,105,218,.10) 0%, transparent 55%);
+    pointer-events: none;
+  }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 5px 14px; border-radius: 20px;
+    background: rgba(255,255,255,.10);
+    font-size: .78rem; font-weight: 600; letter-spacing: .4px;
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+    margin-bottom: 20px;
+    border: 1px solid rgba(255,255,255,.12);
+  }
+  .hero-badge svg { width: 14px; height: 14px; fill: #2DA44E; }
+  .hero h1 {
+    font-size: clamp(1.9rem, 4.2vw, 2.8rem);
+    font-weight: 700; line-height: 1.15; max-width: 820px;
+    margin: 0 auto 14px;
+  }
+  .hero p {
+    font-size: 1.05rem; opacity: .85; max-width: 680px; margin: 0 auto;
+  }
+  .hero-meta {
+    margin-top: 24px; font-size: .8rem; opacity: .6; letter-spacing: .3px;
+  }
+
+  /* ── Section shell ─────────────────────── */
+  section { padding: 56px 0; }
+  .section-label {
+    display: inline-block; font-size: .72rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: .12em; color: var(--gh-accent);
+    margin-bottom: 8px;
+  }
+  .section-title {
+    font-size: clamp(1.4rem, 2.6vw, 1.9rem); font-weight: 700;
+    margin-bottom: 10px; color: var(--gh-ink);
+  }
+  .section-sub { color: var(--gh-muted); max-width: 720px; margin-bottom: 32px; }
+
+  /* ── Big stat ─────────────────────────── */
+  .big-stat {
+    background: var(--gh-card); border: 1px solid var(--gh-border);
+    border-radius: var(--radius); box-shadow: var(--shadow);
+    padding: 36px 28px; margin-top: -32px; position: relative; z-index: 2;
+    text-align: center;
+  }
+  .big-stat .num {
+    font-size: clamp(2.4rem, 5.5vw, 3.6rem); font-weight: 800;
+    color: var(--gh-accent); line-height: 1; letter-spacing: -.02em;
+  }
+  .big-stat .num-sub {
+    font-size: 1rem; color: var(--gh-ink); margin-top: 8px; font-weight: 600;
+  }
+  .big-stat .num-caption {
+    font-size: .9rem; color: var(--gh-muted); margin-top: 4px;
+  }
+
+  /* ── Comparison grid ───────────────────── */
+  .matrix {
+    background: var(--gh-card); border: 1px solid var(--gh-border);
+    border-radius: var(--radius); box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+  .matrix-header,
+  .matrix-row {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr 1fr 1fr 1fr;
+    gap: 0;
+  }
+  .matrix-header {
+    background: var(--gh-ink); color: #fff;
+  }
+  .matrix-header > div {
+    padding: 14px 14px; font-size: .78rem; font-weight: 700;
+    letter-spacing: .04em; text-transform: uppercase;
+    border-right: 1px solid rgba(255,255,255,.08);
+  }
+  .matrix-header > div:last-child { border-right: 0; }
+  .matrix-header .tool-logo {
+    display: flex; align-items: center; gap: 6px;
+    font-size: .78rem;
+  }
+  .matrix-row {
+    border-top: 1px solid var(--gh-border);
+  }
+  .matrix-row > div {
+    padding: 16px 14px; font-size: .88rem;
+    border-right: 1px solid var(--gh-border);
+    display: flex; flex-direction: column; gap: 4px;
+    min-height: 84px;
+  }
+  .matrix-row > div:last-child { border-right: 0; }
+  .matrix-row .dim {
+    background: var(--gh-surface); font-weight: 600; color: var(--gh-ink);
+    justify-content: center;
+  }
+  .matrix-row .dim small {
+    font-weight: 400; color: var(--gh-muted); font-size: .78rem;
+  }
+  .cell-tag {
+    display: inline-flex; align-items: center; gap: 4px;
+    font-size: .72rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .04em; padding: 2px 8px; border-radius: 10px;
+    width: fit-content;
+  }
+  .tag-none { background: #DAFBE1; color: var(--gh-ok); }
+  .tag-light { background: #FFF8C5; color: var(--gh-warn); }
+  .tag-heavy { background: #FFEBE9; color: var(--gh-danger); }
+  .cell-note { color: var(--gh-muted); font-size: .82rem; line-height: 1.45; }
+
+  @media (max-width: 820px) {
+    .matrix-header { display: none; }
+    .matrix-row {
+      grid-template-columns: 1fr; border-top: 8px solid var(--gh-surface);
+    }
+    .matrix-row > div {
+      border-right: 0; border-bottom: 1px solid var(--gh-border);
+      min-height: 0;
+    }
+    .matrix-row > div:last-child { border-bottom: 0; }
+    .matrix-row .dim {
+      background: var(--gh-ink); color: #fff; padding: 10px 14px;
+      justify-content: flex-start;
+    }
+    .matrix-row .dim small { color: rgba(255,255,255,.7); }
+    .matrix-row > div:not(.dim)::before {
+      content: attr(data-label);
+      display: block; font-size: .68rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .06em;
+      color: var(--gh-muted); margin-bottom: 4px;
+    }
+  }
+
+  /* ── Takeaway / caveats ───────────────── */
+  .two-col {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
+  }
+  @media (max-width: 720px) { .two-col { grid-template-columns: 1fr; } }
+  .callout {
+    background: var(--gh-card); border: 1px solid var(--gh-border);
+    border-left: 4px solid var(--gh-accent);
+    border-radius: var(--radius); padding: 22px 22px; box-shadow: var(--shadow);
+  }
+  .callout.caveat { border-left-color: var(--gh-warn); }
+  .callout h3 {
+    font-size: 1.05rem; margin-bottom: 10px; color: var(--gh-ink);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .callout h3 svg { width: 18px; height: 18px; flex: 0 0 auto; }
+  .callout ul { padding-left: 18px; }
+  .callout li { margin-bottom: 8px; font-size: .92rem; color: var(--gh-ink); }
+  .callout li:last-child { margin-bottom: 0; }
+  .callout li strong { color: var(--gh-ink-2); }
+
+  /* ── Footer ───────────────────────────── */
+  footer {
+    background: var(--gh-ink); color: #C9D1D9;
+    padding: 40px 24px; font-size: .85rem; line-height: 1.7;
+  }
+  footer .container {
+    display: grid; grid-template-columns: 2fr 1fr; gap: 32px;
+  }
+  @media (max-width: 720px) {
+    footer .container { grid-template-columns: 1fr; }
+  }
+  footer a { color: #58A6FF; }
+  footer h4 {
+    font-size: .78rem; text-transform: uppercase; letter-spacing: .08em;
+    color: #fff; margin-bottom: 10px;
+  }
+  .disclosure {
+    margin-top: 16px; padding-top: 14px;
+    border-top: 1px solid rgba(255,255,255,.12);
+    font-size: .78rem; color: #8B949E;
+  }
+  .sources-list { list-style: none; padding: 0; }
+  .sources-list li { margin-bottom: 6px; font-size: .82rem; }
+  .section-flush-top { padding-top: 0; }
+</style>
+<script defer src="https://a.ndme.sh/script.js" data-website-id="9478c1a0-93c6-4c21-855a-69e50e15cbc4"></script>
+<style>/* smec-back-btn v1 */
+.smec-back-btn { position: fixed; bottom: 16px; left: 16px; z-index: 9999;
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: 0; min-width: 44px; height: 44px; padding: 0; border-radius: 22px;
+  background: rgba(0, 120, 212, 0.92); color: #fff; text-decoration: none;
+  font: 600 13px/1 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18); backdrop-filter: blur(6px);
+  opacity: 0;
+  animation: smec-back-btn-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.4s forwards;
+  /* Collapsing: wait for the label to fade out, then shrink the pill. */
+  transition:
+    padding 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.2s,
+    gap 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.2s,
+    background 0.35s ease 0s,
+    box-shadow 0.35s ease 0s;
+  overflow: hidden; white-space: nowrap; }
+.smec-back-btn__icon { flex: 0 0 auto;
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1) 0.2s; }
+.smec-back-btn__label { max-width: 0; opacity: 0;
+  /* Collapsing: label fades out first, then its width collapses with the pill. */
+  transition:
+    opacity 0.18s ease 0s,
+    max-width 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.2s; }
+
+/* Expanding: pill and label grow together in one motion; text appears near the end. */
+.smec-back-btn:hover, .smec-back-btn:focus-visible {
+  gap: 10px; padding: 0 18px 0 12px;
+  background: rgba(0, 90, 158, 0.96); color: #fff; text-decoration: none;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.22);
+  transition:
+    padding 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0s,
+    gap 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0s,
+    background 0.35s ease 0s,
+    box-shadow 0.35s ease 0s; }
+.smec-back-btn:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+.smec-back-btn:hover .smec-back-btn__icon,
+.smec-back-btn:focus-visible .smec-back-btn__icon {
+  transform: translateX(-2px);
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1) 0s; }
+.smec-back-btn:hover .smec-back-btn__label,
+.smec-back-btn:focus-visible .smec-back-btn__label {
+  max-width: 260px; opacity: 1;
+  transition:
+    max-width 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0s,
+    opacity 0.3s ease 0.3s; }
+
+@keyframes smec-back-btn-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@media (hover: none) {
+  .smec-back-btn { gap: 10px; padding: 0 18px 0 12px; }
+  .smec-back-btn__label { max-width: 260px; opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .smec-back-btn, .smec-back-btn__icon, .smec-back-btn__label,
+  .smec-back-btn:hover, .smec-back-btn:focus-visible,
+  .smec-back-btn:hover .smec-back-btn__icon,
+  .smec-back-btn:focus-visible .smec-back-btn__icon,
+  .smec-back-btn:hover .smec-back-btn__label,
+  .smec-back-btn:focus-visible .smec-back-btn__label {
+    transition: background 0.2s ease, color 0.2s ease;
+    animation: none; opacity: 1; }
+}
+@media (max-width: 600px) { .smec-back-btn { bottom: 12px; left: 12px; } }
+</style>
+<!-- smec-meta v1 -->
+<meta name="description" content="Setup cost to first PR: AI coding agents on GitHub — an interactive infographic from the SME&amp;C Infographic Hub.">
+<meta property="og:title" content="Setup cost to first PR: AI coding agents on GitHub">
+<meta property="og:description" content="Setup cost to first PR: AI coding agents on GitHub — an interactive infographic from the SME&amp;C Infographic Hub.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://sme-c-infographics.github.io/github-copilot/ai-agent-setup-cost.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Setup cost to first PR: AI coding agents on GitHub">
+<meta name="twitter:description" content="Setup cost to first PR: AI coding agents on GitHub — an interactive infographic from the SME&amp;C Infographic Hub.">
+<!-- smec-favicon v1 -->
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<!-- smec-accuracy v1 -->
+<meta name="smec:last-accuracy-check" content="2026-04-30">
+</head>
+<body>
+<a href="/" class="smec-back-btn" data-smec-back-button="v1" aria-label="Back to SME&amp;C Infographics"><svg class="smec-back-btn__icon" aria-hidden="true" viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg><span class="smec-back-btn__label">Back to SME&amp;C Infographics</span></a>
+
+
+<!-- ── Hero ───────────────────────────────────────── -->
+<header class="hero">
+  <div class="hero-badge">
+    <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+    </svg>
+    Platform engineering · GitHub Copilot series
+  </div>
+  <h1>Setup cost to first PR</h1>
+  <p>Async coding agents can all end in a pull request. The setup cost changes based on control plane: GitHub-native, GitHub-hosted third-party, standalone vendor workflow, or Cursor cloud.</p>
+  <div class="hero-meta">Accurate as of April 30, 2026 · Applies to GitHub.com-hosted repos and GitHub-connected agents</div>
+</header>
+
+<div class="container">
+  <!-- ── Big stat ─────────────────────────────── -->
+  <div class="big-stat">
+    <div class="num">0</div>
+    <div class="num-sub">repo-level workflow files required</div>
+    <div class="num-caption">for Copilot cloud agent or GitHub-hosted Claude/Codex after policy enablement. Standalone Claude Code Action is the notable workflow-file path.</div>
+  </div>
+</div>
+
+<!-- ── Matrix ────────────────────────────────── -->
+<section>
+  <div class="container">
+    <span class="section-label">The comparison</span>
+    <h2 class="section-title">Five dimensions, four setup paths</h2>
+    <p class="section-sub">Setup cost, not raw capability. The same model family can feel very different depending on whether it runs through GitHub, a GitHub Actions workflow, or a vendor dashboard.</p>
+
+    <div class="matrix" role="table" aria-label="AI coding agent setup comparison">
+
+      <div class="matrix-header" role="row">
+        <div role="columnheader">Dimension</div>
+        <div role="columnheader"><div class="tool-logo">Copilot cloud agent</div></div>
+        <div role="columnheader"><div class="tool-logo">GitHub-hosted Claude/Codex</div></div>
+        <div role="columnheader"><div class="tool-logo">Standalone Claude/Codex</div></div>
+        <div role="columnheader"><div class="tool-logo">Cursor Cloud Agents</div></div>
+      </div>
+
+      <!-- Row 1: Trigger surface -->
+      <div class="matrix-row" role="row">
+        <div class="dim" role="cell">Trigger surface<br><small>How a human starts it</small></div>
+        <div role="cell" data-label="Copilot cloud agent">
+          <span class="cell-tag tag-none">Native</span>
+          <span class="cell-note">Assign issue to <strong>Copilot</strong>, <code>@copilot</code> in a comment, agents panel, or IDE.</span>
+        </div>
+        <div role="cell" data-label="GitHub-hosted Claude/Codex">
+          <span class="cell-tag tag-none">Native</span>
+          <span class="cell-note">Agents tab, issue assignment, PR comment mention, GitHub Mobile, or VS Code delegation.</span>
+        </div>
+        <div role="cell" data-label="Standalone Claude/Codex">
+          <span class="cell-tag tag-light">Vendor path</span>
+          <span class="cell-note"><code>@claude</code> through Actions, or <code>@codex review</code> / <code>@codex &lt;task&gt;</code> through ChatGPT Codex settings.</span>
+        </div>
+        <div role="cell" data-label="Cursor">
+          <span class="cell-tag tag-none">Native-ish</span>
+          <span class="cell-note"><code>@cursor</code> PR/issue comment, plus Cursor web, Slack, Linear, API.</span>
+        </div>
+      </div>
+
+      <!-- Row 2: Org prereq -->
+      <div class="matrix-row" role="row">
+        <div class="dim" role="cell">Org-level prereq<br><small>What an admin sets up once</small></div>
+        <div role="cell" data-label="Copilot cloud agent">
+          <span class="cell-tag tag-light">Policy</span>
+          <span class="cell-note">Copilot plan eligibility plus account/org/enterprise policy enablement.</span>
+        </div>
+        <div role="cell" data-label="GitHub-hosted Claude/Codex">
+          <span class="cell-tag tag-light">Policy</span>
+          <span class="cell-note">Copilot Pro, Pro+, Business, or Enterprise eligibility; third-party agents are public preview and must be enabled.</span>
+        </div>
+        <div role="cell" data-label="Standalone Claude/Codex">
+          <span class="cell-tag tag-heavy">Vendor setup</span>
+          <span class="cell-note">Claude GitHub App + secret/workflow, or Codex cloud account + GitHub connection + per-repo review toggle.</span>
+        </div>
+        <div role="cell" data-label="Cursor">
+          <span class="cell-tag tag-heavy">External SaaS</span>
+          <span class="cell-note">Cursor team plan, GitHub connection with read-write, spend limit set.</span>
+        </div>
+      </div>
+
+      <!-- Row 3: Per-repo files -->
+      <div class="matrix-row" role="row">
+        <div class="dim" role="cell">Per-repo files<br><small>Committed into the repo</small></div>
+        <div role="cell" data-label="Copilot cloud agent">
+          <span class="cell-tag tag-none">None required</span>
+          <span class="cell-note">Optional <code>copilot-instructions.md</code>, MCP config, or custom agents — but zero required.</span>
+        </div>
+        <div role="cell" data-label="GitHub-hosted Claude/Codex">
+          <span class="cell-tag tag-none">None required</span>
+          <span class="cell-note">No workflow YAML required for GitHub-hosted third-party agents; repo instructions remain optional.</span>
+        </div>
+        <div role="cell" data-label="Standalone Claude/Codex">
+          <span class="cell-tag tag-heavy">Mixed</span>
+          <span class="cell-note">Claude Action needs workflow YAML + secret. Standalone Codex review needs no workflow; <code>AGENTS.md</code> is optional guidance.</span>
+        </div>
+        <div role="cell" data-label="Cursor">
+          <span class="cell-tag tag-light">Optional</span>
+          <span class="cell-note">No workflow needed. Optional <code>.cursor/hooks.json</code>, <code>AGENTS.md</code>.</span>
+        </div>
+      </div>
+
+      <!-- Row 4: Author identity -->
+      <div class="matrix-row" role="row">
+        <div class="dim" role="cell">Commit / PR author<br><small>Who shows up in <code>git log</code></small></div>
+        <div role="cell" data-label="Copilot cloud agent">
+          <span class="cell-tag tag-none">First-party bot</span>
+          <span class="cell-note">Authored by <code>Copilot</code>. Inherits Copilot-specific ruleset bypass options.</span>
+        </div>
+        <div role="cell" data-label="GitHub-hosted Claude/Codex">
+          <span class="cell-tag tag-light">Third-party App</span>
+          <span class="cell-note">Third-party agent selected inside GitHub; rulesets and compatible protections still apply.</span>
+        </div>
+        <div role="cell" data-label="Standalone Claude/Codex">
+          <span class="cell-tag tag-light">Third-party App</span>
+          <span class="cell-note">Bot/App identity depends on vendor integration and configured GitHub App/OAuth permissions.</span>
+        </div>
+        <div role="cell" data-label="Cursor">
+          <span class="cell-tag tag-light">Third-party App</span>
+          <span class="cell-note">Cursor bot identity; external service has R/W to the repo.</span>
+        </div>
+      </div>
+
+      <!-- Row 5: Templatable -->
+      <div class="matrix-row" role="row">
+        <div class="dim" role="cell">Templatable across N repos<br><small>If you have 50</small></div>
+        <div role="cell" data-label="Copilot cloud agent">
+          <span class="cell-tag tag-none">Policy-driven</span>
+          <span class="cell-note">Enable once at org level; repo owners can opt out. No per-repo fan-out.</span>
+        </div>
+        <div role="cell" data-label="GitHub-hosted Claude/Codex">
+          <span class="cell-tag tag-none">Policy-driven</span>
+          <span class="cell-note">Enable supported third-party agents through GitHub/Copilot policy; no repo workflow fan-out.</span>
+        </div>
+        <div role="cell" data-label="Standalone Claude/Codex">
+          <span class="cell-tag tag-light">Path-dependent</span>
+          <span class="cell-note">Claude Action fans out workflow files; standalone Codex uses ChatGPT Codex per-repo settings.</span>
+        </div>
+        <div role="cell" data-label="Cursor">
+          <span class="cell-tag tag-light">Per-repo connect</span>
+          <span class="cell-note">Each repo connected via Cursor's GitHub integration. Governance lives outside GitHub.</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── Takeaway + caveats ──────────────────── -->
+<section class="section-flush-top">
+  <div class="container">
+    <div class="two-col">
+
+      <div class="callout">
+        <h3>
+          <svg viewBox="0 0 16 16" fill="var(--gh-accent)" aria-hidden="true">
+            <path d="M8 0a8 8 0 100 16A8 8 0 008 0zm3.78 5.97L7.5 10.25l-2.28-2.28a.75.75 0 10-1.06 1.06l2.81 2.81a.75.75 0 001.06 0l4.81-4.81a.75.75 0 10-1.06-1.06z"/>
+          </svg>
+          When GitHub-hosted setup wins
+        </h3>
+        <ul>
+          <li><strong>You have many repos.</strong> Fleet-wide enablement beats per-repo plumbing.</li>
+          <li><strong>Security reviews the agent surface.</strong> GitHub-hosted agents keep more of the workflow in existing GitHub controls.</li>
+          <li><strong>You already have Copilot eligibility.</strong> Copilot and supported third-party agents can start from the same GitHub agent entry points.</li>
+          <li><strong>Governance starts in GitHub.</strong> Rulesets, branch protections, policies, and review comments remain central.</li>
+        </ul>
+      </div>
+
+      <div class="callout caveat">
+        <h3>
+          <svg viewBox="0 0 16 16" fill="var(--gh-warn)" aria-hidden="true">
+            <path d="M8 1.45l6.705 11.55H1.295L8 1.45zm0-1.45L0 14h16L8 0zm1 11H7v-2h2v2zm0-3H7V5h2v3z"/>
+          </svg>
+          When it doesn't
+        </h3>
+        <ul>
+          <li><strong>Capability ≠ setup cost.</strong> This card says nothing about which agent writes better code or resolves harder issues.</li>
+          <li><strong>One repo, no fleet.</strong> The per-repo workflow tax is a coffee break, not a program of work.</li>
+          <li><strong>You need a vendor-specific workflow.</strong> Claude Code Action, ChatGPT Codex, and Cursor all expose product-specific controls outside the GitHub-hosted agent path.</li>
+          <li><strong>Ruleset compatibility.</strong> GitHub-hosted agents can still be blocked by incompatible rules until configured correctly.</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── Footer ─────────────────────────────── -->
+<footer>
+  <div class="container">
+    <div>
+      <h4>About this infographic</h4>
+      <p>A setup-cost comparison for platform leads evaluating AI coding agents around GitHub. The claim is narrow: <strong>GitHub-hosted agents reduce per-repo onboarding; standalone vendor paths trade that for vendor-specific controls and workflows.</strong> Code quality, model quality, and procurement fit are intentionally out of scope.</p>
+      <p class="disclosure">Produced by a Microsoft employee. Views are my own; this is not an official Microsoft comparison and is not endorsed by GitHub, Anthropic, OpenAI, Cursor, or Anysphere. Published under the SME&amp;C Infographics library.</p>
+    </div>
+    <div>
+      <h4>Primary sources</h4>
+      <ul class="sources-list">
+        <li><a href="https://docs.github.com/en/copilot/concepts/agents/cloud-agent/about-cloud-agent">Copilot cloud agent — GitHub Docs</a></li>
+        <li><a href="https://docs.github.com/en/copilot/concepts/agents/about-third-party-agents">GitHub third-party agents</a></li>
+        <li><a href="https://code.claude.com/docs/en/github-actions">Claude Code GitHub Actions</a></li>
+        <li><a href="https://developers.openai.com/codex/integrations/github">Codex GitHub integration — OpenAI</a></li>
+        <li><a href="https://cursor.com/blog/cloud-agents">Cursor Cloud Agents</a></li>
+        <li><a href="https://cursor.com/pricing">Cursor pricing and plans</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

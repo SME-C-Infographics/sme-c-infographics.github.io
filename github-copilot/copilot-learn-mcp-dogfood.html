@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Copilot + Microsoft Learn: how this site schedules accuracy work</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --gh-ink: #24292E; --gh-ink-2: #1B1F23;
+    --gh-accent: #2DA44E; --gh-blue: #0969DA;
+    --gh-muted: #57606A; --gh-border: #D0D7DE;
+    --gh-surface: #F6F8FA; --gh-card: #FFFFFF;
+    --gh-ok: #1A7F37; --gh-warn: #9A6700; --gh-danger: #CF222E;
+    --radius: 10px; --shadow: 0 1px 3px rgba(27,31,36,.08), 0 4px 12px rgba(27,31,36,.06);
+  }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  body { font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    color: var(--gh-ink); background: var(--gh-surface); line-height: 1.55; -webkit-font-smoothing: antialiased; }
+  a { color: var(--gh-blue); text-decoration: none; } a:hover { text-decoration: underline; }
+  .container { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+  .hero { background: linear-gradient(135deg, #24292E 0%, #1B1F23 55%, #0B1014 100%);
+    color: #fff; padding: 80px 24px 64px; text-align: center; position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 20% 20%, rgba(45,164,78,.12) 0%, transparent 55%),
+      radial-gradient(ellipse at 80% 80%, rgba(9,105,218,.10) 0%, transparent 55%); pointer-events: none; }
+  .hero-badge { display: inline-flex; align-items: center; gap: 8px; padding: 5px 14px;
+    border-radius: 20px; background: rgba(255,255,255,.10); font-size: .78rem; font-weight: 600;
+    letter-spacing: .4px; -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px);
+    margin-bottom: 20px; border: 1px solid rgba(255,255,255,.12); }
+  .hero-badge svg { width: 14px; height: 14px; fill: #2DA44E; }
+  .hero h1 { font-size: clamp(1.9rem, 4.2vw, 2.8rem); font-weight: 700; line-height: 1.15;
+    max-width: 820px; margin: 0 auto 14px; }
+  .hero p { font-size: 1.05rem; opacity: .85; max-width: 680px; margin: 0 auto; }
+  .hero-meta { margin-top: 24px; font-size: .8rem; opacity: .6; letter-spacing: .3px; }
+  section { padding: 56px 0; }
+  .section-flush-top { padding-top: 0; }
+  .section-label { display: inline-block; font-size: .72rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: .12em; color: var(--gh-accent); margin-bottom: 8px; }
+  .section-title { font-size: clamp(1.4rem, 2.6vw, 1.9rem); font-weight: 700;
+    margin-bottom: 10px; color: var(--gh-ink); }
+  .section-sub { color: var(--gh-muted); max-width: 720px; margin-bottom: 32px; }
+  .big-stat { background: var(--gh-card); border: 1px solid var(--gh-border); border-radius: var(--radius);
+    box-shadow: var(--shadow); padding: 36px 28px; margin-top: -32px; position: relative; z-index: 2; text-align: center; }
+  .big-stat .num { font-size: clamp(2.4rem, 5.5vw, 3.6rem); font-weight: 800;
+    color: var(--gh-accent); line-height: 1; letter-spacing: -.02em; }
+  .big-stat .num-sub { font-size: 1rem; color: var(--gh-ink); margin-top: 8px; font-weight: 600; }
+  .big-stat .num-caption { font-size: .9rem; color: var(--gh-muted); margin-top: 4px; }
+  .pipeline { background: var(--gh-card); border: 1px solid var(--gh-border);
+    border-radius: var(--radius); box-shadow: var(--shadow); padding: 28px; }
+  .pipeline-steps { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0; position: relative; }
+  @media (max-width: 820px) { .pipeline-steps { grid-template-columns: 1fr; gap: 12px; } }
+  .step { text-align: center; padding: 16px 10px; position: relative; }
+  .step-num { display: inline-flex; align-items: center; justify-content: center;
+    width: 40px; height: 40px; border-radius: 50%; background: var(--gh-ink); color: #fff;
+    font-weight: 700; font-size: .95rem; margin-bottom: 10px; }
+  .step h4 { font-size: .9rem; margin-bottom: 6px; color: var(--gh-ink); }
+  .step p { font-size: .78rem; color: var(--gh-muted); line-height: 1.5; }
+  .step code { background: var(--gh-surface); padding: 1px 5px; border-radius: 4px; font-size: .72rem; }
+  @media (min-width: 821px) {
+    .step:not(:last-child)::after { content: '→'; position: absolute; right: -8px; top: 28px;
+      color: var(--gh-border); font-size: 1.4rem; font-weight: 700; }
+  }
+  @media (max-width: 820px) {
+    .pipeline { padding: 20px; }
+    .step { display: grid; grid-template-columns: 42px 1fr; column-gap: 12px; text-align: left; padding: 14px 0; }
+    .step:not(:last-child) { border-bottom: 1px solid var(--gh-border); }
+    .step-num { grid-row: span 2; margin-bottom: 0; }
+    .step h4 { font-size: .96rem; margin-bottom: 4px; }
+    .step p { font-size: .86rem; }
+  }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  @media (max-width: 720px) { .two-col { grid-template-columns: 1fr; } }
+  .callout { background: var(--gh-card); border: 1px solid var(--gh-border);
+    border-left: 4px solid var(--gh-accent); border-radius: var(--radius);
+    padding: 22px 22px; box-shadow: var(--shadow); }
+  .callout.caveat { border-left-color: var(--gh-warn); }
+  .callout h3 { font-size: 1.05rem; margin-bottom: 10px; color: var(--gh-ink);
+    display: flex; align-items: center; gap: 8px; }
+  .callout h3 svg { width: 18px; height: 18px; flex: 0 0 auto; }
+  .callout ul { padding-left: 18px; }
+  .callout li { margin-bottom: 8px; font-size: .92rem; color: var(--gh-ink); }
+  .callout li:last-child { margin-bottom: 0; }
+  footer { background: var(--gh-ink); color: #C9D1D9; padding: 40px 24px;
+    font-size: .85rem; line-height: 1.7; }
+  footer .container { display: grid; grid-template-columns: 2fr 1fr; gap: 32px; }
+  @media (max-width: 720px) { footer .container { grid-template-columns: 1fr; } }
+  footer a { color: #58A6FF; }
+  footer h4 { font-size: .78rem; text-transform: uppercase;
+    letter-spacing: .08em; color: #fff; margin-bottom: 10px; }
+  .disclosure { margin-top: 16px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,.12);
+    font-size: .78rem; color: #8B949E; }
+  .sources-list { list-style: none; padding: 0; }
+  .sources-list li { margin-bottom: 6px; font-size: .82rem; }
+</style>
+<script defer src="https://a.ndme.sh/script.js" data-website-id="9478c1a0-93c6-4c21-855a-69e50e15cbc4"></script>
+<style>/* smec-back-btn v1 */
+.smec-back-btn { position: fixed; bottom: 16px; left: 16px; z-index: 9999;
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: 0; min-width: 44px; height: 44px; padding: 0; border-radius: 22px;
+  background: rgba(0, 120, 212, 0.92); color: #fff; text-decoration: none;
+  font: 600 13px/1 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18); backdrop-filter: blur(6px);
+  opacity: 0;
+  animation: smec-back-btn-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.4s forwards;
+  /* Collapsing: wait for the label to fade out, then shrink the pill. */
+  transition:
+    padding 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.2s,
+    gap 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.2s,
+    background 0.35s ease 0s,
+    box-shadow 0.35s ease 0s;
+  overflow: hidden; white-space: nowrap; }
+.smec-back-btn__icon { flex: 0 0 auto;
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1) 0.2s; }
+.smec-back-btn__label { max-width: 0; opacity: 0;
+  /* Collapsing: label fades out first, then its width collapses with the pill. */
+  transition:
+    opacity 0.18s ease 0s,
+    max-width 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.2s; }
+
+/* Expanding: pill and label grow together in one motion; text appears near the end. */
+.smec-back-btn:hover, .smec-back-btn:focus-visible {
+  gap: 10px; padding: 0 18px 0 12px;
+  background: rgba(0, 90, 158, 0.96); color: #fff; text-decoration: none;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.22);
+  transition:
+    padding 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0s,
+    gap 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0s,
+    background 0.35s ease 0s,
+    box-shadow 0.35s ease 0s; }
+.smec-back-btn:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+.smec-back-btn:hover .smec-back-btn__icon,
+.smec-back-btn:focus-visible .smec-back-btn__icon {
+  transform: translateX(-2px);
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1) 0s; }
+.smec-back-btn:hover .smec-back-btn__label,
+.smec-back-btn:focus-visible .smec-back-btn__label {
+  max-width: 260px; opacity: 1;
+  transition:
+    max-width 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0s,
+    opacity 0.3s ease 0.3s; }
+
+@keyframes smec-back-btn-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@media (hover: none) {
+  .smec-back-btn { gap: 10px; padding: 0 18px 0 12px; }
+  .smec-back-btn__label { max-width: 260px; opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .smec-back-btn, .smec-back-btn__icon, .smec-back-btn__label,
+  .smec-back-btn:hover, .smec-back-btn:focus-visible,
+  .smec-back-btn:hover .smec-back-btn__icon,
+  .smec-back-btn:focus-visible .smec-back-btn__icon,
+  .smec-back-btn:hover .smec-back-btn__label,
+  .smec-back-btn:focus-visible .smec-back-btn__label {
+    transition: background 0.2s ease, color 0.2s ease;
+    animation: none; opacity: 1; }
+}
+@media (max-width: 600px) { .smec-back-btn { bottom: 12px; left: 12px; } }
+</style>
+<!-- smec-meta v1 -->
+<meta name="description" content="Copilot + Microsoft Learn: how this site schedules accuracy work — an interactive infographic from the SME&amp;C Infographic Hub.">
+<meta property="og:title" content="Copilot + Microsoft Learn: how this site schedules accuracy work">
+<meta property="og:description" content="Copilot + Microsoft Learn: how this site schedules accuracy work — an interactive infographic from the SME&amp;C Infographic Hub.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://sme-c-infographics.github.io/github-copilot/copilot-learn-mcp-dogfood.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Copilot + Microsoft Learn: how this site schedules accuracy work">
+<meta name="twitter:description" content="Copilot + Microsoft Learn: how this site schedules accuracy work — an interactive infographic from the SME&amp;C Infographic Hub.">
+<!-- smec-favicon v1 -->
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<!-- smec-accuracy v1 -->
+<meta name="smec:last-accuracy-check" content="2026-04-30">
+</head>
+<body>
+<a href="/" class="smec-back-btn" data-smec-back-button="v1" aria-label="Back to SME&amp;C Infographics"><svg class="smec-back-btn__icon" aria-hidden="true" viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg><span class="smec-back-btn__label">Back to SME&amp;C Infographics</span></a>
+
+
+<header class="hero">
+  <div class="hero-badge">
+    <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0a8 8 0 100 16A8 8 0 008 0zm3.78 5.97L7.5 10.25l-2.28-2.28a.75.75 0 10-1.06 1.06l2.81 2.81a.75.75 0 001.06 0l4.81-4.81a.75.75 0 10-1.06-1.06z"/></svg>
+    Dogfood evidence · This repo
+  </div>
+  <h1>How this site schedules accuracy work</h1>
+  <p>A scheduled loop creates review issues, gives Copilot enough context to propose fixes when assignment is configured, and keeps humans in the approval seat. The automation reduces discovery work; it does not guarantee a correct PR.</p>
+  <div class="hero-meta">Accurate as of April 30, 2026 · Evidence: this repository's workflow files</div>
+</header>
+
+<div class="container">
+  <div class="big-stat">
+    <div class="num">2</div>
+    <div class="num-sub">scheduled review loops in this repo</div>
+    <div class="num-caption"><code>accuracy-review.yml</code> checks stale accuracy metadata weekly. <code>copilot-page-review.yml</code> turns monthly audit findings into review issues. Copilot assignment is PAT-dependent; PR creation is the intended next step, not a YAML-level guarantee.</div>
+  </div>
+</div>
+
+<section>
+  <div class="container">
+    <span class="section-label">The loop</span>
+    <h2 class="section-title">Five steps from cron tick to review issue</h2>
+    <p class="section-sub">The durable handoff is the GitHub issue. If Copilot assignment is available and a user-scoped PAT is configured, that issue can start agent work; otherwise it remains visible for a human to assign or handle.</p>
+
+    <div class="pipeline">
+      <div class="pipeline-steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <h4>Scheduled trigger</h4>
+          <p><code>accuracy-review.yml</code> runs weekly on Thursdays. <code>copilot-page-review.yml</code> runs monthly on the 1st.</p>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <h4>Review bodies built</h4>
+          <p>Scripts emit issue bodies from stale accuracy metadata or audit findings, with per-run caps and duplicate checks.</p>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <h4>Issues opened</h4>
+          <p>Weekly issues use <code>accuracy-review</code>; monthly issues use <code>copilot-review</code>. Both include hidden page markers for deduplication.</p>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <h4>Assignment attempted</h4>
+          <p>If <code>COPILOT_ASSIGN_TOKEN</code> exists and Copilot is assignable, the workflow assigns Copilot. Without the PAT, issues are intentionally left unassigned.</p>
+        </div>
+        <div class="step">
+          <div class="step-num">5</div>
+          <h4>PR remains reviewed</h4>
+          <p>Copilot may open a draft PR with corrections and citations. Humans still merge, close, or ask for another round.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-flush-top">
+  <div class="container">
+    <div class="two-col">
+
+      <div class="callout">
+        <h3>
+          <svg viewBox="0 0 16 16" fill="#2DA44E" aria-hidden="true"><path d="M8 0a8 8 0 100 16A8 8 0 008 0zm3.78 5.97L7.5 10.25l-2.28-2.28a.75.75 0 10-1.06 1.06l2.81 2.81a.75.75 0 001.06 0l4.81-4.81a.75.75 0 10-1.06-1.06z"/></svg>
+          Why this shape works
+        </h3>
+        <ul>
+          <li><strong>Zero manual scheduling.</strong> Cron finds stale pages and audit findings without someone remembering to start the review cycle.</li>
+          <li><strong>Microsoft Learn is the expected source family.</strong> The weekly issue prompt asks Copilot to verify against current Learn documentation; Learn MCP can help when configured, but the workflow does not depend on MCP.</li>
+          <li><strong>Failure is visible.</strong> Without <code>COPILOT_ASSIGN_TOKEN</code>, the workflow creates unassigned issues instead of pretending Copilot started.</li>
+          <li><strong>Humans still approve.</strong> Nothing auto-merges. Every PR needs a reviewer to accept or reject the fact-check.</li>
+        </ul>
+      </div>
+
+      <div class="callout caveat">
+        <h3>
+          <svg viewBox="0 0 16 16" fill="#9A6700" aria-hidden="true"><path d="M8 1.45l6.705 11.55H1.295L8 1.45zm0-1.45L0 14h16L8 0zm1 11H7v-2h2v2zm0-3H7V5h2v3z"/></svg>
+          What it doesn't do
+        </h3>
+        <ul>
+          <li><strong>Not guaranteed PR creation.</strong> The workflows create issues. Copilot PRs require assignment to trigger, agent availability, and a task that results in edits.</li>
+          <li><strong>Not perfect.</strong> Copilot can miss subtle inaccuracies or flag false positives. Review quality still depends on the reviewer.</li>
+          <li><strong>Not fully portable as-is.</strong> This pattern fits public documentation-heavy content. Other domains may need different source rules and reviewers.</li>
+          <li><strong>Not a substitute for SME review.</strong> A correctly cited stale fact is still stale if the source lags the live product.</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div>
+      <h4>About this infographic</h4>
+      <p>This is the lived example, not a pitch. The workflow described here runs on <a href="https://github.com/SME-C-Infographics/sme-c-infographics.github.io">this repository</a>. The claim is narrow: <strong>weekly freshness checks and monthly page audits turn accuracy work into visible GitHub issues, and can trigger Copilot drafting when PAT-based assignment and agent access are configured.</strong></p>
+      <p class="disclosure">Produced by a Microsoft employee. Views are my own; this is not an official Microsoft artifact. The workflow and its results are public in the repository's history.</p>
+    </div>
+    <div>
+      <h4>Primary sources</h4>
+      <ul class="sources-list">
+        <li><a href="https://github.com/SME-C-Infographics/sme-c-infographics.github.io/blob/main/.github/workflows/accuracy-review.yml">accuracy-review.yml (weekly · Learn)</a></li>
+        <li><a href="https://github.com/SME-C-Infographics/sme-c-infographics.github.io/blob/main/.github/workflows/copilot-page-review.yml">copilot-page-review.yml (monthly · audit findings)</a></li>
+        <li><a href="https://github.com/SME-C-Infographics/sme-c-infographics.github.io/blob/main/scripts/check-accuracy-staleness.py">check-accuracy-staleness.py</a></li>
+        <li><a href="https://learn.microsoft.com/en-us/training/support/mcp">Microsoft Learn MCP server</a></li>
+        <li><a href="https://docs.github.com/en/copilot/concepts/agents/cloud-agent/about-cloud-agent">Copilot cloud agent docs</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
