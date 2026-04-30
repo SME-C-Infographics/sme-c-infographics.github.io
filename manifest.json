@@ -112,6 +112,10 @@
         "title": "App Platform Services Decision Guide — APIM, Logic Apps, Functions | SME&C"
       },
       {
+        "file": "azure-apim-v2-networking-guide.html",
+        "title": "Azure API Management v2 — Public & Private Networking Guide"
+      },
+      {
         "file": "azure-communication-services-guide.html",
         "title": "Azure Communication Services — The future of customer communication"
       }
