@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Microsoft AI Platform Decision Guide</title>
+<!-- smec-accuracy v1 -->
+<meta name="smec:last-accuracy-check" content="2026-04-27">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; font-size: 16px; }
@@ -689,7 +691,7 @@
           <h4 class="studio-a">What It Is</h4>
           <ul>
             <li>Enterprise-grade platform to create custom Copilots and <strong>autonomous agents</strong></li>
-            <li>Supports GPT-5, Claude Sonnet 4.6, Claude Opus, and bring-your-own models</li>
+            <li>Supports GPT-5, Claude Sonnet 4.6, Claude Opus 4.6, and bring-your-own models</li>
             <li>Connects to 1,000+ data sources via connectors, MCP, and plugins</li>
           </ul>
           <h4 class="studio-a">Best For</h4>
@@ -726,7 +728,7 @@
             <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/><path d="M2 17l10 5 10-5" fill="none" stroke="#fff" stroke-width="1.5"/><path d="M2 12l10 5 10-5" fill="none" stroke="#fff" stroke-width="1.5"/></svg>
           </div>
           <h3>Azure OpenAI Service <span class="new-badge-card">Updated</span></h3>
-          <div class="subtitle">Enterprise API access to GPT-5.2, GPT-o3, Realtime, Audio &amp; Image models</div>
+          <div class="subtitle">Enterprise API access to GPT-5.5, GPT-5.2, Realtime, Audio &amp; Image models</div>
           <a href="https://azure.microsoft.com/en-us/products/ai-services/openai-service/" target="_blank" class="plat-link"><svg viewBox="0 0 24 24"><path d="M14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/><path d="M5 5v14h14v-7h-2v5H7V7h5V5H5z"/></svg>Learn more</a>
         </div>
         <div class="plat-body">
@@ -748,6 +750,7 @@
             <span class="tag openai-t">Voice AI</span>
           </div>
           <ul>
+            <li><strong>GPT-5.5</strong> for frontier reasoning &mdash; 1M context, computer use, text &amp; image <span class="new-badge">New</span></li>
             <li><strong>GPT-5.2</strong> for enterprise reasoning &mdash; top benchmarks in math, science &amp; code <span class="new-badge">GA</span></li>
             <li><strong>GPT-Realtime-1.5</strong> and <strong>GPT-Audio-1.5</strong> for voice-first apps <span class="new-badge">New</span></li>
             <li><strong>GPT-image-1.5</strong> for advanced image generation and editing <span class="new-badge">New</span></li>
@@ -781,7 +784,7 @@
           <h4 class="foundry-a">What It Is</h4>
           <ul>
             <li>Microsoft's unified AI development platform (rebranded from Azure AI Foundry)</li>
-            <li>1,800+ model catalog: GPT-5.2, Meta Llama, Mistral Large 3, Phi, DeepSeek &amp; more</li>
+            <li>1,900+ model catalog: GPT-5.5, GPT-5.2, Meta Llama, Mistral Large 3, Phi, DeepSeek &amp; more</li>
             <li>Built-in tools for fine-tuning, evaluation, prompt engineering, and observability</li>
           </ul>
           <h4 class="foundry-a">Best For</h4>
@@ -791,8 +794,9 @@
             <span class="tag foundry-t">Agent Builder</span>
           </div>
           <ul>
+            <li><strong>GPT-5.5</strong> for frontier reasoning (1M context, computer use) <span class="new-badge">New</span></li>
             <li><strong>GPT-5.2 &amp; Codex Max</strong> for enterprise reasoning and autonomous coding <span class="new-badge">GA</span></li>
-            <li><strong>Mistral Large 3</strong> (Apache 2.0, 675B params) in model catalog <span class="new-badge">New</span></li>
+            <li><strong>Mistral Large 3</strong> in model catalog <span class="new-badge">Preview</span></li>
             <li><strong>Agent framework</strong> for building multi-agent AI applications</li>
             <li>End-to-end lifecycle: build, test, evaluate, deploy, and monitor</li>
             <li>Fine-tuning with your proprietary data across any model</li>
@@ -899,8 +903,8 @@
             <td>LLM / GPT Access</td>
             <td><span class="check">&#10004; GPT-5 built-in</span></td>
             <td><span class="check">&#10004; GPT-5, Claude, BYOM</span></td>
-            <td><span class="check">&#10004; GPT-5.2 API</span></td>
-            <td><span class="check">&#10004; 1,800+ model catalog</span></td>
+            <td><span class="check">&#10004; GPT-5.5 / 5.2 API</span></td>
+            <td><span class="check">&#10004; 1,900+ model catalog</span></td>
             <td><span class="no">&#10006; Not primary</span></td>
           </tr>
           <tr>
@@ -956,7 +960,7 @@
             <td>GPT-5 (managed)</td>
             <td>GPT-5, Claude, custom</td>
             <td>OpenAI family</td>
-            <td>1,800+ models</td>
+            <td>1,900+ models</td>
             <td>Task-specific models</td>
           </tr>
           <tr>
@@ -1045,14 +1049,14 @@
       </div>
       <div class="dt-result openai-r dt-hidden" id="r-openai">
         <h4>&#x2192; Azure OpenAI Service</h4>
-        <p>Direct API access to GPT-5.2, Realtime-1.5 voice, GPT-image-1.5, and Codex Max with Azure's enterprise security. Ideal for developers building LLM-powered, voice-enabled, or multimodal AI apps.</p>
+        <p>Direct API access to GPT-5.5, GPT-5.2, Realtime-1.5 voice, GPT-image-1.5, and Codex Max with Azure's enterprise security. Ideal for developers building LLM-powered, voice-enabled, or multimodal AI apps.</p>
         <p style="margin-top:.75rem;padding:.6rem;background:rgba(193,154,0,.1);border-radius:8px;font-size:.85rem;"><strong>&#x26A0; Recommendation:</strong> Azure OpenAI Service is fully available, but Microsoft highly recommends migrating to <a href="https://azure.microsoft.com/en-us/products/ai-foundry/" target="_blank" style="font-weight:600;">Microsoft Foundry</a> for a unified AI development experience. Existing endpoints and API keys are preserved during migration.</p>
         <p style="margin-top:.5rem;"><a href="https://azure.microsoft.com/en-us/products/ai-services/openai-service/" target="_blank" style="font-weight:600;">Explore Azure OpenAI Service &rarr;</a></p>
         <button class="dt-restart" onclick="dtReset()">&#x21bb; Start Over</button>
       </div>
       <div class="dt-result foundry-r dt-hidden" id="r-foundry">
         <h4>&#x2192; Microsoft Foundry</h4>
-        <p>The unified AI development platform (rebranded from Azure AI Foundry). Access 1,800+ models including GPT-5.2, Mistral Large 3, and Llama. Fine-tune, evaluate, and deploy to production with full observability.</p>
+        <p>The unified AI development platform (rebranded from Azure AI Foundry). Access 1,900+ models including GPT-5.5, GPT-5.2, Mistral Large 3, and Llama. Fine-tune, evaluate, and deploy to production with full observability.</p>
         <p style="margin-top:.75rem;"><a href="https://azure.microsoft.com/en-us/products/ai-foundry/" target="_blank" style="font-weight:600;">Explore Microsoft Foundry &rarr;</a></p>
         <button class="dt-restart" onclick="dtReset()">&#x21bb; Start Over</button>
       </div>
@@ -1115,7 +1119,7 @@
       <div class="scenario-card foundry-b reveal">
         <div class="sc-label">Microsoft Foundry</div>
         <h3>Multi-Model Healthcare AI</h3>
-        <p>A hospital evaluates GPT-5.2, Mistral Large 3, and Llama models in the Foundry catalog, fine-tunes the best performer on clinical notes, and deploys with full observability.</p>
+        <p>A hospital evaluates GPT-5.5, GPT-5.2, Mistral Large 3, and Llama models in the Foundry catalog, fine-tunes the best performer on clinical notes, and deploys with full observability.</p>
       </div>
 
       <div class="scenario-card foundry-b reveal">
@@ -1185,7 +1189,7 @@
         <ul class="cost-items">
           <li>No platform fee (pay for services used)</li>
           <li>Compute costs for training/inference</li>
-          <li>1,800+ model marketplace pricing</li>
+          <li>1,900+ model marketplace pricing</li>
           <li>Azure Savings Plans available</li>
         </ul>
       </div>
