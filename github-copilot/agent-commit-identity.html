@@ -106,8 +106,90 @@
   .sources-list { list-style: none; padding: 0; }
   .sources-list li { margin-bottom: 6px; font-size: .82rem; }
 </style>
+<script defer src="https://a.ndme.sh/script.js" data-website-id="9478c1a0-93c6-4c21-855a-69e50e15cbc4"></script>
+<style>/* smec-back-btn v1 */
+.smec-back-btn { position: fixed; bottom: 16px; left: 16px; z-index: 9999;
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: 0; min-width: 44px; height: 44px; padding: 0; border-radius: 22px;
+  background: rgba(0, 120, 212, 0.92); color: #fff; text-decoration: none;
+  font: 600 13px/1 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18); backdrop-filter: blur(6px);
+  opacity: 0;
+  animation: smec-back-btn-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.4s forwards;
+  /* Collapsing: wait for the label to fade out, then shrink the pill. */
+  transition:
+    padding 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.2s,
+    gap 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.2s,
+    background 0.35s ease 0s,
+    box-shadow 0.35s ease 0s;
+  overflow: hidden; white-space: nowrap; }
+.smec-back-btn__icon { flex: 0 0 auto;
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1) 0.2s; }
+.smec-back-btn__label { max-width: 0; opacity: 0;
+  /* Collapsing: label fades out first, then its width collapses with the pill. */
+  transition:
+    opacity 0.18s ease 0s,
+    max-width 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.2s; }
+
+/* Expanding: pill and label grow together in one motion; text appears near the end. */
+.smec-back-btn:hover, .smec-back-btn:focus-visible {
+  gap: 10px; padding: 0 18px 0 12px;
+  background: rgba(0, 90, 158, 0.96); color: #fff; text-decoration: none;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.22);
+  transition:
+    padding 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0s,
+    gap 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0s,
+    background 0.35s ease 0s,
+    box-shadow 0.35s ease 0s; }
+.smec-back-btn:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+.smec-back-btn:hover .smec-back-btn__icon,
+.smec-back-btn:focus-visible .smec-back-btn__icon {
+  transform: translateX(-2px);
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1) 0s; }
+.smec-back-btn:hover .smec-back-btn__label,
+.smec-back-btn:focus-visible .smec-back-btn__label {
+  max-width: 260px; opacity: 1;
+  transition:
+    max-width 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0s,
+    opacity 0.3s ease 0.3s; }
+
+@keyframes smec-back-btn-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@media (hover: none) {
+  .smec-back-btn { gap: 10px; padding: 0 18px 0 12px; }
+  .smec-back-btn__label { max-width: 260px; opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .smec-back-btn, .smec-back-btn__icon, .smec-back-btn__label,
+  .smec-back-btn:hover, .smec-back-btn:focus-visible,
+  .smec-back-btn:hover .smec-back-btn__icon,
+  .smec-back-btn:focus-visible .smec-back-btn__icon,
+  .smec-back-btn:hover .smec-back-btn__label,
+  .smec-back-btn:focus-visible .smec-back-btn__label {
+    transition: background 0.2s ease, color 0.2s ease;
+    animation: none; opacity: 1; }
+}
+@media (max-width: 600px) { .smec-back-btn { bottom: 12px; left: 12px; } }
+</style>
+<!-- smec-meta v1 -->
+<meta name="description" content="Who authored this PR? Agent identity on GitHub — an interactive infographic from the SME&amp;C Infographic Hub.">
+<meta property="og:title" content="Who authored this PR? Agent identity on GitHub">
+<meta property="og:description" content="Who authored this PR? Agent identity on GitHub — an interactive infographic from the SME&amp;C Infographic Hub.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://sme-c-infographics.github.io/github-copilot/agent-commit-identity.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Who authored this PR? Agent identity on GitHub">
+<meta name="twitter:description" content="Who authored this PR? Agent identity on GitHub — an interactive infographic from the SME&amp;C Infographic Hub.">
+<!-- smec-favicon v1 -->
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<!-- smec-accuracy v1 -->
+<meta name="smec:last-accuracy-check" content="2026-04-30">
 </head>
 <body>
+<a href="/" class="smec-back-btn" data-smec-back-button="v1" aria-label="Back to SME&amp;C Infographics"><svg class="smec-back-btn__icon" aria-hidden="true" viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg><span class="smec-back-btn__label">Back to SME&amp;C Infographics</span></a>
+
 
 <header class="hero">
   <div class="hero-badge">
@@ -115,15 +197,15 @@
     Governance · Commit authorship
   </div>
   <h1>Who authored this PR?</h1>
-  <p>Agent-generated PRs have an author identity. Whether that author is a first-party GitHub bot or a third-party OAuth App changes which rulesets apply, which audit logs fire, and which procurement conversations you need to have.</p>
-  <div class="hero-meta">Accurate as of April 2026 · Applies to git commit author, PR author, and ruleset evaluation</div>
+  <p>Agent-generated PRs have an author identity. The useful split is not just first-party vs third-party; it is whether the agent is GitHub-hosted or running through a standalone vendor integration.</p>
+  <div class="hero-meta">Accurate as of April 30, 2026 · Applies to GitHub-hosted and GitHub-connected async agents</div>
 </header>
 
 <section>
   <div class="container">
-    <span class="section-label">Four identities</span>
+    <span class="section-label">Four identity patterns</span>
     <h2 class="section-title">What shows up in <code>git log</code></h2>
-    <p class="section-sub">Two axes matter: <strong>first-party vs. third-party</strong> (who owns the bot), and <strong>App vs. user token</strong> (how commits are signed). The combination decides which governance surfaces see the agent.</p>
+    <p class="section-sub">Two axes matter: <strong>who owns the agent</strong> and <strong>where the agent is hosted</strong>. The combination decides which rulesets, audit logs, and procurement reviews are involved.</p>
 
     <div class="identity-grid">
 
@@ -135,43 +217,43 @@
           <dt>Commit author</dt><dd><code>Copilot</code> (GitHub-native actor)</dd>
           <dt>Identity source</dt><dd>GitHub itself</dd>
           <dt>Ruleset handling</dt><dd>Dedicated Copilot bypass option</dd>
-          <dt>Procurement</dt><dd>Covered by Copilot Business/Enterprise contract</dd>
+          <dt>Procurement</dt><dd>Covered by eligible Copilot plan and GitHub terms</dd>
+        </dl>
+      </div>
+
+      <div class="id-card third">
+        <span class="tag tag-third">Third-party App</span>
+        <h3>GitHub-hosted Claude / Codex</h3>
+        <div class="handle"><span class="dot"></span>agent selected in GitHub</div>
+        <dl>
+          <dt>Commit author</dt><dd>Third-party agent actor selected through GitHub</dd>
+          <dt>Identity source</dt><dd>GitHub-hosted agent surface backed by Anthropic or OpenAI</dd>
+          <dt>Ruleset handling</dt><dd>Subject to compatible GitHub agent protections and limitations</dd>
+          <dt>Procurement</dt><dd>Copilot plan eligibility plus third-party agent policy approval</dd>
         </dl>
       </div>
 
       <div class="id-card third">
         <span class="tag tag-third">Third-party App</span>
         <h3>Claude Code Action</h3>
-        <div class="handle"><span class="dot"></span>claude[bot]</div>
+        <div class="handle"><span class="dot"></span>claude[bot] or custom App</div>
         <dl>
-          <dt>Commit author</dt><dd><code>claude[bot]</code> or custom-App name</dd>
-          <dt>Identity source</dt><dd>Anthropic GitHub App (or your custom App)</dd>
-          <dt>Ruleset handling</dt><dd>Add App as bypass actor manually</dd>
-          <dt>Procurement</dt><dd>Separate Anthropic contract; App install approval</dd>
+          <dt>Commit author</dt><dd><code>claude[bot]</code> or custom GitHub App name</dd>
+          <dt>Identity source</dt><dd>Anthropic GitHub App, or a self-owned GitHub App</dd>
+          <dt>Ruleset handling</dt><dd>Add App as bypass actor manually if required</dd>
+          <dt>Procurement</dt><dd>Separate Anthropic/API or cloud-provider approval path</dd>
         </dl>
       </div>
 
       <div class="id-card third">
         <span class="tag tag-third">Third-party App</span>
-        <h3>OpenAI Codex</h3>
-        <div class="handle"><span class="dot"></span>codex bot</div>
+        <h3>Standalone Codex / Cursor</h3>
+        <div class="handle"><span class="dot"></span>vendor integration actor</div>
         <dl>
-          <dt>Commit author</dt><dd>Codex bot identity</dd>
-          <dt>Identity source</dt><dd>OpenAI-operated service</dd>
-          <dt>Ruleset handling</dt><dd>Add as bypass actor; signs commits as Codex</dd>
-          <dt>Procurement</dt><dd>Separate OpenAI/ChatGPT contract</dd>
-        </dl>
-      </div>
-
-      <div class="id-card third">
-        <span class="tag tag-third">Third-party App</span>
-        <h3>Cursor Cloud Agents</h3>
-        <div class="handle"><span class="dot"></span>cursor bot</div>
-        <dl>
-          <dt>Commit author</dt><dd>Cursor bot identity</dd>
-          <dt>Identity source</dt><dd>Cursor-operated service with R/W scope</dd>
-          <dt>Ruleset handling</dt><dd>Add as bypass actor; needs clone + push perms</dd>
-          <dt>Procurement</dt><dd>Separate Cursor team-plan contract</dd>
+          <dt>Commit author</dt><dd>Bot or App identity from vendor GitHub connection</dd>
+          <dt>Identity source</dt><dd>ChatGPT Codex settings or Cursor cloud integration</dd>
+          <dt>Ruleset handling</dt><dd>Depends on App/OAuth permissions and branch rules</dd>
+          <dt>Procurement</dt><dd>Separate vendor account, billing, and data review</dd>
         </dl>
       </div>
 
@@ -183,43 +265,43 @@
   <div class="container">
     <span class="section-label">Consequences</span>
     <h2 class="section-title">What changes based on identity</h2>
-    <p class="section-sub">Real operational differences, not flavor text. Each row is a surface where first-party vs. third-party actually behaves differently.</p>
+    <p class="section-sub">Real operational differences, not flavor text. Each row is a surface where hosted-vs-standalone identity changes review, audit, or setup work.</p>
 
     <div class="impact-table">
       <div class="impact-row">
         <div>Surface</div>
-        <div>First-party (Copilot)</div>
-        <div>Third-party (Claude / Codex / Cursor)</div>
+        <div>GitHub-hosted agents</div>
+        <div>Standalone vendor integrations</div>
       </div>
       <div class="impact-row">
         <div class="surface">Branch protection<small>Required reviewers, restrict push</small></div>
-        <div data-label="Copilot">Dedicated bypass option in ruleset UI</div>
-        <div data-label="Third-party">Must manually add the App as bypass actor per ruleset</div>
+        <div data-label="GitHub-hosted">Rulesets and branch protections stay in GitHub; incompatible rules can still block agent work</div>
+        <div data-label="Standalone">App/OAuth actor must satisfy or bypass branch rules per integration</div>
       </div>
       <div class="impact-row">
         <div class="surface">Audit log<small>Org-level GitHub audit</small></div>
-        <div data-label="Copilot">Native events (agent run, PR created, etc.)</div>
-        <div data-label="Third-party">GitHub App action events; vendor-side logs live elsewhere</div>
+        <div data-label="GitHub-hosted">Issue, PR, review, and agent entry points stay in GitHub surfaces</div>
+        <div data-label="Standalone">GitHub records PR events; vendor dashboards or Actions logs may hold run context</div>
       </div>
       <div class="impact-row">
         <div class="surface">Commit signing<small>Verified vs. unverified</small></div>
-        <div data-label="Copilot">Signed by GitHub</div>
-        <div data-label="Third-party">Signed by App; depends on App config</div>
+        <div data-label="GitHub-hosted">Depends on the GitHub-hosted agent actor and compatible ruleset settings</div>
+        <div data-label="Standalone">Depends on vendor App, custom App, OAuth, and signing configuration</div>
       </div>
       <div class="impact-row">
         <div class="surface">SSO / SCIM scope<small>Does the agent count as a seat?</small></div>
-        <div data-label="Copilot">Within Copilot seat entitlement</div>
-        <div data-label="Third-party">Bot identity; does not consume a human SSO seat</div>
+        <div data-label="GitHub-hosted">Requires eligible Copilot plan and agent policy enablement</div>
+        <div data-label="Standalone">Requires the vendor's account, plan, API key, or workspace billing model</div>
       </div>
       <div class="impact-row">
         <div class="surface">Content exclusions<small>Copilot content-exclusion policy</small></div>
-        <div data-label="Copilot">Not honored by Copilot cloud agent (explicit limitation)</div>
-        <div data-label="Third-party">N/A; third-party agents don't read Copilot exclusion config</div>
+        <div data-label="GitHub-hosted">Copilot cloud agent does not honor Copilot content exclusions; GitHub-hosted third-party agents share those limitations</div>
+        <div data-label="Standalone">Controlled by vendor repo scope, App permissions, runner filesystem, and local instruction files</div>
       </div>
       <div class="impact-row">
         <div class="surface">Procurement review<small>Legal / InfoSec approval</small></div>
-        <div data-label="Copilot">Usually already covered</div>
-        <div data-label="Third-party">New vendor; DPIA, data residency, App permissions review</div>
+        <div data-label="GitHub-hosted">Starts with Copilot/GitHub eligibility and policy approval</div>
+        <div data-label="Standalone">Usually requires separate vendor, data, billing, and App-permission review</div>
       </div>
     </div>
 
@@ -229,9 +311,9 @@
         What this doesn't say
       </h3>
       <ul>
-        <li><strong>Third-party doesn't mean worse.</strong> A custom GitHub App gives you more permission control than a first-party bot. The cost is setup, not security.</li>
-        <li><strong>Copilot has its own gaps.</strong> The content-exclusion limitation above is a real one — Copilot cloud agent does not honor Copilot content exclusions.</li>
-        <li><strong>Custom Apps exist.</strong> Claude Code Action supports a self-owned GitHub App with your chosen name; use it if org policy blocks the vendor-owned App.</li>
+        <li><strong>Third-party doesn't mean worse.</strong> GitHub-hosted Claude/Codex can keep review workflows in GitHub, and custom Apps can give teams more control.</li>
+        <li><strong>Copilot has its own gaps.</strong> The content-exclusion limitation above is real and should be called out in sensitive repos.</li>
+        <li><strong>Identity is an audit question.</strong> Before rollout, confirm the actual bot/App actor in your organization and test it against branch rules.</li>
       </ul>
     </div>
   </div>
@@ -241,16 +323,17 @@
   <div class="container">
     <div>
       <h4>About this infographic</h4>
-      <p>A platform-engineering view of commit-author identity for AI coding agents on GitHub. The claim is narrow: <strong>first-party bot identity reduces governance setup (rulesets, audit, procurement) but does not make an agent inherently more or less safe.</strong></p>
-      <p class="disclosure">Produced by a Microsoft employee. Views are my own; not endorsed by GitHub, Anthropic, OpenAI, or Cursor.</p>
+      <p>A platform-engineering view of commit-author identity for AI coding agents around GitHub. The claim is narrow: <strong>hosted-vs-standalone identity changes audit and setup work, but does not make an agent inherently safer or more capable.</strong></p>
+      <p class="disclosure">Produced by a Microsoft employee. Views are my own; not an official Microsoft comparison and not endorsed by GitHub, Anthropic, OpenAI, Cursor, or Anysphere.</p>
     </div>
     <div>
       <h4>Primary sources</h4>
       <ul class="sources-list">
         <li><a href="https://docs.github.com/en/copilot/concepts/agents/cloud-agent/about-cloud-agent">Copilot cloud agent limitations</a></li>
-        <li><a href="https://github.com/anthropics/claude-code-action/blob/main/docs/setup.md">Claude Code Action setup & custom App</a></li>
-        <li><a href="https://developers.openai.com/codex/cloud/code-review">Codex in GitHub</a></li>
-        <li><a href="https://cursor.com/docs/cloud-agent">Cursor Cloud Agents</a></li>
+        <li><a href="https://docs.github.com/en/copilot/concepts/agents/about-third-party-agents">GitHub third-party agents</a></li>
+        <li><a href="https://code.claude.com/docs/en/github-actions">Claude Code GitHub Actions</a></li>
+        <li><a href="https://developers.openai.com/codex/integrations/github">Codex GitHub integration</a></li>
+        <li><a href="https://cursor.com/blog/cloud-agents">Cursor Cloud Agents</a></li>
       </ul>
     </div>
   </div>

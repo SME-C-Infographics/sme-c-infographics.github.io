@@ -52,7 +52,32 @@
   },
   "github-copilot": {
     "displayName": "GitHub Copilot",
-    "items": []
+    "items": [
+      {
+        "file": "agent-commit-identity.html",
+        "title": "Who authored this PR? Agent identity on GitHub"
+      },
+      {
+        "file": "agent-correction-loop.html",
+        "title": "When the agent's PR is wrong: the correction loop"
+      },
+      {
+        "file": "agent-governance-surface.html",
+        "title": "Where does the agent's audit trail live?"
+      },
+      {
+        "file": "ai-agent-setup-cost.html",
+        "title": "Setup cost to first PR: AI coding agents on GitHub"
+      },
+      {
+        "file": "ai-coding-agent-landscape.html",
+        "title": "Which AI coding agent fits which team?"
+      },
+      {
+        "file": "copilot-learn-mcp-dogfood.html",
+        "title": "Copilot + Microsoft Learn: how this site schedules accuracy work"
+      }
+    ]
   },
   "avd": {
     "displayName": "AVD",

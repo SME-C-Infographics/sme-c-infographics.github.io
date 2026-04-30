@@ -102,8 +102,90 @@
   .sources-list { list-style: none; padding: 0; }
   .sources-list li { margin-bottom: 6px; font-size: .82rem; }
 </style>
+<script defer src="https://a.ndme.sh/script.js" data-website-id="9478c1a0-93c6-4c21-855a-69e50e15cbc4"></script>
+<style>/* smec-back-btn v1 */
+.smec-back-btn { position: fixed; bottom: 16px; left: 16px; z-index: 9999;
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: 0; min-width: 44px; height: 44px; padding: 0; border-radius: 22px;
+  background: rgba(0, 120, 212, 0.92); color: #fff; text-decoration: none;
+  font: 600 13px/1 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18); backdrop-filter: blur(6px);
+  opacity: 0;
+  animation: smec-back-btn-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.4s forwards;
+  /* Collapsing: wait for the label to fade out, then shrink the pill. */
+  transition:
+    padding 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.2s,
+    gap 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.2s,
+    background 0.35s ease 0s,
+    box-shadow 0.35s ease 0s;
+  overflow: hidden; white-space: nowrap; }
+.smec-back-btn__icon { flex: 0 0 auto;
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1) 0.2s; }
+.smec-back-btn__label { max-width: 0; opacity: 0;
+  /* Collapsing: label fades out first, then its width collapses with the pill. */
+  transition:
+    opacity 0.18s ease 0s,
+    max-width 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.2s; }
+
+/* Expanding: pill and label grow together in one motion; text appears near the end. */
+.smec-back-btn:hover, .smec-back-btn:focus-visible {
+  gap: 10px; padding: 0 18px 0 12px;
+  background: rgba(0, 90, 158, 0.96); color: #fff; text-decoration: none;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.22);
+  transition:
+    padding 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0s,
+    gap 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0s,
+    background 0.35s ease 0s,
+    box-shadow 0.35s ease 0s; }
+.smec-back-btn:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+.smec-back-btn:hover .smec-back-btn__icon,
+.smec-back-btn:focus-visible .smec-back-btn__icon {
+  transform: translateX(-2px);
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1) 0s; }
+.smec-back-btn:hover .smec-back-btn__label,
+.smec-back-btn:focus-visible .smec-back-btn__label {
+  max-width: 260px; opacity: 1;
+  transition:
+    max-width 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0s,
+    opacity 0.3s ease 0.3s; }
+
+@keyframes smec-back-btn-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@media (hover: none) {
+  .smec-back-btn { gap: 10px; padding: 0 18px 0 12px; }
+  .smec-back-btn__label { max-width: 260px; opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .smec-back-btn, .smec-back-btn__icon, .smec-back-btn__label,
+  .smec-back-btn:hover, .smec-back-btn:focus-visible,
+  .smec-back-btn:hover .smec-back-btn__icon,
+  .smec-back-btn:focus-visible .smec-back-btn__icon,
+  .smec-back-btn:hover .smec-back-btn__label,
+  .smec-back-btn:focus-visible .smec-back-btn__label {
+    transition: background 0.2s ease, color 0.2s ease;
+    animation: none; opacity: 1; }
+}
+@media (max-width: 600px) { .smec-back-btn { bottom: 12px; left: 12px; } }
+</style>
+<!-- smec-meta v1 -->
+<meta name="description" content="Where does the agent&#x27;s audit trail live? — an interactive infographic from the SME&amp;C Infographic Hub.">
+<meta property="og:title" content="Where does the agent&#x27;s audit trail live?">
+<meta property="og:description" content="Where does the agent&#x27;s audit trail live? — an interactive infographic from the SME&amp;C Infographic Hub.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://sme-c-infographics.github.io/github-copilot/agent-governance-surface.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Where does the agent&#x27;s audit trail live?">
+<meta name="twitter:description" content="Where does the agent&#x27;s audit trail live? — an interactive infographic from the SME&amp;C Infographic Hub.">
+<!-- smec-favicon v1 -->
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<!-- smec-accuracy v1 -->
+<meta name="smec:last-accuracy-check" content="2026-04-30">
 </head>
 <body>
+<a href="/" class="smec-back-btn" data-smec-back-button="v1" aria-label="Back to SME&amp;C Infographics"><svg class="smec-back-btn__icon" aria-hidden="true" viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg><span class="smec-back-btn__label">Back to SME&amp;C Infographics</span></a>
+
 
 <header class="hero">
   <div class="hero-badge">
@@ -111,70 +193,70 @@
     Governance · Audit surface
   </div>
   <h1>Where does the agent's audit trail live?</h1>
-  <p>Six governance surfaces — policy, audit log, secrets, rulesets, metrics, content exclusions. For each, which product owns the source of truth? GitHub, the vendor, or a mix?</p>
-  <div class="hero-meta">Accurate as of April 2026 · Surfaces an InfoSec reviewer will ask about</div>
+  <p>Six governance surfaces — policy, audit log, secrets, rulesets, metrics, content exclusions. For each, which control plane owns the source of truth?</p>
+  <div class="hero-meta">Accurate as of April 30, 2026 · Surfaces an InfoSec reviewer will ask about</div>
 </header>
 
 <section>
   <div class="container">
-    <span class="section-label">Six surfaces, four tools</span>
+    <span class="section-label">Six surfaces, four control planes</span>
     <h2 class="section-title">Who owns the source of truth</h2>
-    <p class="section-sub">This isn't about whether governance exists — all four tools have it. It's about where you have to look, and how many places a regulator or auditor has to query to reconstruct what happened.</p>
+    <p class="section-sub">This isn't about whether governance exists. It's about where you have to look, and how many places a regulator or auditor has to query to reconstruct what happened.</p>
 
     <div class="gov">
       <div class="gov-row">
         <div>Surface</div>
-        <div>GitHub Copilot</div>
-        <div>Claude Code Action</div>
-        <div>OpenAI Codex</div>
+        <div>Copilot cloud agent</div>
+        <div>GitHub-hosted Claude/Codex</div>
+        <div>Standalone Claude/Codex</div>
         <div>Cursor Cloud Agents</div>
       </div>
 
       <div class="gov-row">
         <div class="surface">Enablement policy<small>Who can turn it on</small></div>
-        <div data-label="Copilot"><span class="loc loc-gh">GitHub</span><span class="cell-note">Copilot admin policies; org opt-out of agent per repo.</span></div>
-        <div data-label="Claude"><span class="loc loc-mix">Mixed</span><span class="cell-note">App install in GitHub; API key in Anthropic console.</span></div>
-        <div data-label="Codex"><span class="loc loc-vendor">Vendor</span><span class="cell-note">Per-repo toggle in ChatGPT Codex settings.</span></div>
+        <div data-label="Copilot"><span class="loc loc-gh">GitHub</span><span class="cell-note">Copilot plan eligibility, account/org policy, repo opt-out.</span></div>
+        <div data-label="GitHub-hosted"><span class="loc loc-gh">GitHub</span><span class="cell-note">Third-party agent policy inside GitHub/Copilot; public preview.</span></div>
+        <div data-label="Standalone"><span class="loc loc-mix">Mixed</span><span class="cell-note">Claude App/workflow or ChatGPT Codex per-repo settings.</span></div>
         <div data-label="Cursor"><span class="loc loc-vendor">Vendor</span><span class="cell-note">Cursor team dashboard; per-repo connect.</span></div>
       </div>
 
       <div class="gov-row">
         <div class="surface">Audit log<small>Who did what, when</small></div>
-        <div data-label="Copilot"><span class="loc loc-gh">GitHub</span><span class="cell-note">GitHub audit log + Copilot metrics API.</span></div>
-        <div data-label="Claude"><span class="loc loc-mix">Mixed</span><span class="cell-note">GitHub Actions run log + Anthropic console usage.</span></div>
-        <div data-label="Codex"><span class="loc loc-mix">Mixed</span><span class="cell-note">PR events in GitHub; task history in ChatGPT.</span></div>
+        <div data-label="Copilot"><span class="loc loc-gh">GitHub</span><span class="cell-note">GitHub agent activity plus Copilot usage and PR metrics.</span></div>
+        <div data-label="GitHub-hosted"><span class="loc loc-gh">GitHub</span><span class="cell-note">Agent starts, PRs, and review comments stay in GitHub surfaces.</span></div>
+        <div data-label="Standalone"><span class="loc loc-mix">Mixed</span><span class="cell-note">GitHub PR events plus Actions logs, Anthropic usage, or ChatGPT Codex settings/history.</span></div>
         <div data-label="Cursor"><span class="loc loc-mix">Mixed</span><span class="cell-note">PR events in GitHub; agent runs in Cursor dashboard.</span></div>
       </div>
 
       <div class="gov-row">
         <div class="surface">Secrets management<small>API keys, tokens</small></div>
-        <div data-label="Copilot"><span class="loc loc-gh">GitHub</span><span class="cell-note">No user-supplied secret required.</span></div>
-        <div data-label="Claude"><span class="loc loc-gh">GitHub</span><span class="cell-note"><code>ANTHROPIC_API_KEY</code> as GitHub Actions secret.</span></div>
-        <div data-label="Codex"><span class="loc loc-vendor">Vendor</span><span class="cell-note">Codex holds credentials; GitHub connection via OAuth.</span></div>
+        <div data-label="Copilot"><span class="loc loc-gh">GitHub</span><span class="cell-note">No repo API key needed for default use.</span></div>
+        <div data-label="GitHub-hosted"><span class="loc loc-gh">GitHub</span><span class="cell-note">No repo workflow secret for the GitHub-hosted agent path.</span></div>
+        <div data-label="Standalone"><span class="loc loc-mix">Mixed</span><span class="cell-note">Claude Action uses GitHub secrets; standalone Codex uses ChatGPT/GitHub connection settings.</span></div>
         <div data-label="Cursor"><span class="loc loc-vendor">Vendor</span><span class="cell-note">Cursor holds credentials; repo R/W via OAuth.</span></div>
       </div>
 
       <div class="gov-row">
         <div class="surface">Rulesets & branch protection<small>Who can bypass</small></div>
         <div data-label="Copilot"><span class="loc loc-gh">GitHub</span><span class="cell-note">Native Copilot bypass actor option.</span></div>
-        <div data-label="Claude"><span class="loc loc-gh">GitHub</span><span class="cell-note">Add App as bypass actor manually.</span></div>
-        <div data-label="Codex"><span class="loc loc-gh">GitHub</span><span class="cell-note">Add App as bypass actor manually.</span></div>
+        <div data-label="GitHub-hosted"><span class="loc loc-gh">GitHub</span><span class="cell-note">Same compatible-ruleset constraint as Copilot cloud agent.</span></div>
+        <div data-label="Standalone"><span class="loc loc-gh">GitHub</span><span class="cell-note">Depends on GitHub App/OAuth identity and ruleset bypass configuration.</span></div>
         <div data-label="Cursor"><span class="loc loc-gh">GitHub</span><span class="cell-note">Add App as bypass actor manually.</span></div>
       </div>
 
       <div class="gov-row">
         <div class="surface">Usage metrics<small>PRs created, merge rate</small></div>
-        <div data-label="Copilot"><span class="loc loc-gh">GitHub</span><span class="cell-note">Copilot usage metrics API; PR-outcome breakdowns.</span></div>
-        <div data-label="Claude"><span class="loc loc-mix">Mixed</span><span class="cell-note">GitHub Insights + Anthropic billing/usage.</span></div>
-        <div data-label="Codex"><span class="loc loc-mix">Mixed</span><span class="cell-note">GitHub + ChatGPT Codex usage views.</span></div>
+        <div data-label="Copilot"><span class="loc loc-gh">GitHub</span><span class="cell-note">Copilot usage metrics and PR-outcome reporting.</span></div>
+        <div data-label="GitHub-hosted"><span class="loc loc-gh">GitHub</span><span class="cell-note">GitHub/Copilot premium request and agent session reporting.</span></div>
+        <div data-label="Standalone"><span class="loc loc-mix">Mixed</span><span class="cell-note">GitHub plus Anthropic/API, Actions, or ChatGPT Codex usage views.</span></div>
         <div data-label="Cursor"><span class="loc loc-mix">Mixed</span><span class="cell-note">GitHub + Cursor dashboard usage views.</span></div>
       </div>
 
       <div class="gov-row">
         <div class="surface">Content exclusions<small>Files the agent can't read</small></div>
         <div data-label="Copilot"><span class="loc loc-vendor">Not honored</span><span class="cell-note">Copilot cloud agent does <strong>not</strong> honor Copilot content exclusions.</span></div>
-        <div data-label="Claude"><span class="loc loc-gh">GitHub</span><span class="cell-note">Controlled by App permissions + runner filesystem.</span></div>
-        <div data-label="Codex"><span class="loc loc-vendor">Vendor</span><span class="cell-note">Governed by Codex's repo scope + <code>AGENTS.md</code>.</span></div>
+        <div data-label="GitHub-hosted"><span class="loc loc-vendor">Not honored</span><span class="cell-note">GitHub docs say third-party agents share Copilot cloud agent's protections and limitations.</span></div>
+        <div data-label="Standalone"><span class="loc loc-mix">Mixed</span><span class="cell-note">Depends on App permissions, runner filesystem, repo scope, and vendor config.</span></div>
         <div data-label="Cursor"><span class="loc loc-vendor">Vendor</span><span class="cell-note">Governed by Cursor's GitHub integration scope.</span></div>
       </div>
     </div>
@@ -182,7 +264,7 @@
     <div class="legend">
       <span class="loc loc-gh">GitHub</span> Source of truth in GitHub
       <span class="loc loc-mix">Mixed</span> Split between GitHub and vendor
-      <span class="loc loc-vendor">Vendor</span> Source of truth in vendor's dashboard
+      <span class="loc loc-vendor">Vendor</span> Source of truth is outside GitHub or limitation is not governed by GitHub content exclusion
     </div>
 
     <div class="two-col">
@@ -192,9 +274,9 @@
           When single-surface governance matters
         </h3>
         <ul>
-          <li><strong>Regulated industries.</strong> Auditors prefer one log to subpoena, not five.</li>
-          <li><strong>Incident response.</strong> One query to reconstruct "what did the agent touch?" beats four.</li>
-          <li><strong>Access revocation.</strong> Disabling a first-party bot is one toggle; off-boarding four vendors is four tickets.</li>
+          <li><strong>Regulated industries.</strong> Fewer control planes usually means fewer logs and policies to reconcile.</li>
+          <li><strong>Incident response.</strong> GitHub-hosted agents keep issue, PR, and review state close to the code.</li>
+          <li><strong>Access revocation.</strong> GitHub policy controls are simpler to audit than multiple disconnected vendor setups.</li>
         </ul>
       </div>
       <div class="callout caveat">
@@ -203,10 +285,10 @@
           Where this story gets complicated
         </h3>
         <ul>
-          <li><strong>Copilot's content-exclusion gap is real.</strong> The one place Copilot's governance is <em>worse</em> than the alternatives today.</li>
-          <li><strong>Claude Code Action runs on your runner.</strong> This means code never leaves your GitHub control plane — the cleanest third-party story.</li>
-          <li><strong>"Mixed" isn't inherently bad.</strong> Vendor-side usage views often have better product-specific analytics than GitHub's generic ones.</li>
-          <li><strong>All four tools change governance surfaces quarterly.</strong> Re-check this table every 90 days.</li>
+          <li><strong>Content exclusion is the key caveat.</strong> Copilot cloud agent does not honor Copilot content exclusions, and GitHub-hosted third-party agents share those limitations.</li>
+          <li><strong>Claude Code Action can be attractive for runner control.</strong> The tradeoff is workflow and secret management per repo.</li>
+          <li><strong>"Mixed" is not automatically bad.</strong> Vendor-side usage views may be valuable; they just add another evidence surface.</li>
+          <li><strong>Agent governance changes quickly.</strong> Re-check this table before reusing it after major product updates.</li>
         </ul>
       </div>
     </div>
@@ -217,16 +299,18 @@
   <div class="container">
     <div>
       <h4>About this infographic</h4>
-      <p>An InfoSec / platform-governance view of AI coding agents on GitHub. The claim is narrow: <strong>Copilot concentrates governance surfaces inside GitHub; the third-party options distribute them across at least two products.</strong> Each pattern has tradeoffs.</p>
-      <p class="disclosure">Produced by a Microsoft employee. Views are my own; not endorsed by GitHub, Anthropic, OpenAI, or Cursor.</p>
+      <p>An InfoSec / platform-governance view of AI coding agents around GitHub. The claim is narrow: <strong>GitHub-hosted agents concentrate the review workflow in GitHub; standalone vendor paths add useful controls but also additional evidence surfaces.</strong> Each pattern has tradeoffs.</p>
+      <p class="disclosure">Produced by a Microsoft employee. Views are my own; not an official Microsoft comparison and not endorsed by GitHub, Anthropic, OpenAI, Cursor, or Anysphere.</p>
     </div>
     <div>
       <h4>Primary sources</h4>
       <ul class="sources-list">
         <li><a href="https://docs.github.com/en/copilot/concepts/agents/cloud-agent/about-cloud-agent">Copilot cloud agent (incl. content-exclusion limitation)</a></li>
+        <li><a href="https://docs.github.com/en/copilot/concepts/agents/about-third-party-agents">GitHub third-party agents</a></li>
         <li><a href="https://code.claude.com/docs/en/github-actions">Claude Code GitHub Actions</a></li>
-        <li><a href="https://developers.openai.com/codex/cloud/code-review">Codex in GitHub</a></li>
-        <li><a href="https://cursor.com/docs/cloud-agent">Cursor Cloud Agents</a></li>
+        <li><a href="https://developers.openai.com/codex/integrations/github">Codex GitHub integration</a></li>
+        <li><a href="https://cursor.com/blog/cloud-agents">Cursor Cloud Agents</a></li>
+        <li><a href="https://cursor.com/pricing">Cursor pricing and plans</a></li>
       </ul>
     </div>
   </div>

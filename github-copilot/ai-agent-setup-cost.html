@@ -227,8 +227,90 @@
   .sources-list li { margin-bottom: 6px; font-size: .82rem; }
   .section-flush-top { padding-top: 0; }
 </style>
+<script defer src="https://a.ndme.sh/script.js" data-website-id="9478c1a0-93c6-4c21-855a-69e50e15cbc4"></script>
+<style>/* smec-back-btn v1 */
+.smec-back-btn { position: fixed; bottom: 16px; left: 16px; z-index: 9999;
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: 0; min-width: 44px; height: 44px; padding: 0; border-radius: 22px;
+  background: rgba(0, 120, 212, 0.92); color: #fff; text-decoration: none;
+  font: 600 13px/1 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18); backdrop-filter: blur(6px);
+  opacity: 0;
+  animation: smec-back-btn-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.4s forwards;
+  /* Collapsing: wait for the label to fade out, then shrink the pill. */
+  transition:
+    padding 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.2s,
+    gap 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.2s,
+    background 0.35s ease 0s,
+    box-shadow 0.35s ease 0s;
+  overflow: hidden; white-space: nowrap; }
+.smec-back-btn__icon { flex: 0 0 auto;
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1) 0.2s; }
+.smec-back-btn__label { max-width: 0; opacity: 0;
+  /* Collapsing: label fades out first, then its width collapses with the pill. */
+  transition:
+    opacity 0.18s ease 0s,
+    max-width 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.2s; }
+
+/* Expanding: pill and label grow together in one motion; text appears near the end. */
+.smec-back-btn:hover, .smec-back-btn:focus-visible {
+  gap: 10px; padding: 0 18px 0 12px;
+  background: rgba(0, 90, 158, 0.96); color: #fff; text-decoration: none;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.22);
+  transition:
+    padding 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0s,
+    gap 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0s,
+    background 0.35s ease 0s,
+    box-shadow 0.35s ease 0s; }
+.smec-back-btn:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+.smec-back-btn:hover .smec-back-btn__icon,
+.smec-back-btn:focus-visible .smec-back-btn__icon {
+  transform: translateX(-2px);
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1) 0s; }
+.smec-back-btn:hover .smec-back-btn__label,
+.smec-back-btn:focus-visible .smec-back-btn__label {
+  max-width: 260px; opacity: 1;
+  transition:
+    max-width 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0s,
+    opacity 0.3s ease 0.3s; }
+
+@keyframes smec-back-btn-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@media (hover: none) {
+  .smec-back-btn { gap: 10px; padding: 0 18px 0 12px; }
+  .smec-back-btn__label { max-width: 260px; opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .smec-back-btn, .smec-back-btn__icon, .smec-back-btn__label,
+  .smec-back-btn:hover, .smec-back-btn:focus-visible,
+  .smec-back-btn:hover .smec-back-btn__icon,
+  .smec-back-btn:focus-visible .smec-back-btn__icon,
+  .smec-back-btn:hover .smec-back-btn__label,
+  .smec-back-btn:focus-visible .smec-back-btn__label {
+    transition: background 0.2s ease, color 0.2s ease;
+    animation: none; opacity: 1; }
+}
+@media (max-width: 600px) { .smec-back-btn { bottom: 12px; left: 12px; } }
+</style>
+<!-- smec-meta v1 -->
+<meta name="description" content="Setup cost to first PR: AI coding agents on GitHub — an interactive infographic from the SME&amp;C Infographic Hub.">
+<meta property="og:title" content="Setup cost to first PR: AI coding agents on GitHub">
+<meta property="og:description" content="Setup cost to first PR: AI coding agents on GitHub — an interactive infographic from the SME&amp;C Infographic Hub.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://sme-c-infographics.github.io/github-copilot/ai-agent-setup-cost.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Setup cost to first PR: AI coding agents on GitHub">
+<meta name="twitter:description" content="Setup cost to first PR: AI coding agents on GitHub — an interactive infographic from the SME&amp;C Infographic Hub.">
+<!-- smec-favicon v1 -->
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<!-- smec-accuracy v1 -->
+<meta name="smec:last-accuracy-check" content="2026-04-30">
 </head>
 <body>
+<a href="/" class="smec-back-btn" data-smec-back-button="v1" aria-label="Back to SME&amp;C Infographics"><svg class="smec-back-btn__icon" aria-hidden="true" viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg><span class="smec-back-btn__label">Back to SME&amp;C Infographics</span></a>
+
 
 <!-- ── Hero ───────────────────────────────────────── -->
 <header class="hero">
@@ -239,16 +321,16 @@
     Platform engineering · GitHub Copilot series
   </div>
   <h1>Setup cost to first PR</h1>
-  <p>Four AI coding agents trigger from a GitHub issue or PR. Getting them <em>there</em> costs wildly different amounts of per-repo, per-org work.</p>
-  <div class="hero-meta">Accurate as of April 2026 · Applies to GitHub.com public and private repos</div>
+  <p>Async coding agents can all end in a pull request. The setup cost changes based on control plane: GitHub-native, GitHub-hosted third-party, standalone vendor workflow, or Cursor cloud.</p>
+  <div class="hero-meta">Accurate as of April 30, 2026 · Applies to GitHub.com-hosted repos and GitHub-connected agents</div>
 </header>
 
 <div class="container">
   <!-- ── Big stat ─────────────────────────────── -->
   <div class="big-stat">
     <div class="num">0</div>
-    <div class="num-sub">repo-level files, secrets, or workflows required</div>
-    <div class="num-caption">for GitHub Copilot cloud agent — the only option in this set where that's true. The other three all ship something into your repo or your CI.</div>
+    <div class="num-sub">repo-level workflow files required</div>
+    <div class="num-caption">for Copilot cloud agent or GitHub-hosted Claude/Codex after policy enablement. Standalone Claude Code Action is the notable workflow-file path.</div>
   </div>
 </div>
 
@@ -256,33 +338,33 @@
 <section>
   <div class="container">
     <span class="section-label">The comparison</span>
-    <h2 class="section-title">Five dimensions, four tools</h2>
-    <p class="section-sub">Setup cost, not raw capability. A capable agent that takes a week of org plumbing to enable is a different product than a weaker one you turn on from a dropdown.</p>
+    <h2 class="section-title">Five dimensions, four setup paths</h2>
+    <p class="section-sub">Setup cost, not raw capability. The same model family can feel very different depending on whether it runs through GitHub, a GitHub Actions workflow, or a vendor dashboard.</p>
 
     <div class="matrix" role="table" aria-label="AI coding agent setup comparison">
 
       <div class="matrix-header" role="row">
         <div role="columnheader">Dimension</div>
-        <div role="columnheader"><div class="tool-logo">GitHub Copilot</div></div>
-        <div role="columnheader"><div class="tool-logo">Claude Code Action</div></div>
-        <div role="columnheader"><div class="tool-logo">OpenAI Codex</div></div>
+        <div role="columnheader"><div class="tool-logo">Copilot cloud agent</div></div>
+        <div role="columnheader"><div class="tool-logo">GitHub-hosted Claude/Codex</div></div>
+        <div role="columnheader"><div class="tool-logo">Standalone Claude/Codex</div></div>
         <div role="columnheader"><div class="tool-logo">Cursor Cloud Agents</div></div>
       </div>
 
       <!-- Row 1: Trigger surface -->
       <div class="matrix-row" role="row">
         <div class="dim" role="cell">Trigger surface<br><small>How a human starts it</small></div>
-        <div role="cell" data-label="GitHub Copilot">
+        <div role="cell" data-label="Copilot cloud agent">
           <span class="cell-tag tag-none">Native</span>
           <span class="cell-note">Assign issue to <strong>Copilot</strong>, <code>@copilot</code> in a comment, agents panel, or IDE.</span>
         </div>
-        <div role="cell" data-label="Claude Code">
-          <span class="cell-tag tag-none">Native-ish</span>
-          <span class="cell-note"><code>@claude</code> mention in issue/PR comment (needs workflow in repo).</span>
+        <div role="cell" data-label="GitHub-hosted Claude/Codex">
+          <span class="cell-tag tag-none">Native</span>
+          <span class="cell-note">Agents tab, issue assignment, PR comment mention, GitHub Mobile, or VS Code delegation.</span>
         </div>
-        <div role="cell" data-label="Codex">
-          <span class="cell-tag tag-none">Native-ish</span>
-          <span class="cell-note"><code>@codex review</code> or <code>@codex &lt;task&gt;</code> in PR comment.</span>
+        <div role="cell" data-label="Standalone Claude/Codex">
+          <span class="cell-tag tag-light">Vendor path</span>
+          <span class="cell-note"><code>@claude</code> through Actions, or <code>@codex review</code> / <code>@codex &lt;task&gt;</code> through ChatGPT Codex settings.</span>
         </div>
         <div role="cell" data-label="Cursor">
           <span class="cell-tag tag-none">Native-ish</span>
@@ -293,17 +375,17 @@
       <!-- Row 2: Org prereq -->
       <div class="matrix-row" role="row">
         <div class="dim" role="cell">Org-level prereq<br><small>What an admin sets up once</small></div>
-        <div role="cell" data-label="GitHub Copilot">
+        <div role="cell" data-label="Copilot cloud agent">
           <span class="cell-tag tag-light">Policy</span>
-          <span class="cell-note">Copilot Business/Enterprise policy enable. Already in most GitHub customers.</span>
+          <span class="cell-note">Copilot plan eligibility plus account/org/enterprise policy enablement.</span>
         </div>
-        <div role="cell" data-label="Claude Code">
-          <span class="cell-tag tag-heavy">App install</span>
-          <span class="cell-note">Install Anthropic's Claude GitHub App (or build custom App). Requires org/repo admin.</span>
+        <div role="cell" data-label="GitHub-hosted Claude/Codex">
+          <span class="cell-tag tag-light">Policy</span>
+          <span class="cell-note">Copilot Pro, Pro+, Business, or Enterprise eligibility; third-party agents are public preview and must be enabled.</span>
         </div>
-        <div role="cell" data-label="Codex">
-          <span class="cell-tag tag-heavy">External SaaS</span>
-          <span class="cell-note">Codex cloud account, GitHub connection, per-repo toggle inside ChatGPT settings.</span>
+        <div role="cell" data-label="Standalone Claude/Codex">
+          <span class="cell-tag tag-heavy">Vendor setup</span>
+          <span class="cell-note">Claude GitHub App + secret/workflow, or Codex cloud account + GitHub connection + per-repo review toggle.</span>
         </div>
         <div role="cell" data-label="Cursor">
           <span class="cell-tag tag-heavy">External SaaS</span>
@@ -314,17 +396,17 @@
       <!-- Row 3: Per-repo files -->
       <div class="matrix-row" role="row">
         <div class="dim" role="cell">Per-repo files<br><small>Committed into the repo</small></div>
-        <div role="cell" data-label="GitHub Copilot">
+        <div role="cell" data-label="Copilot cloud agent">
           <span class="cell-tag tag-none">None required</span>
           <span class="cell-note">Optional <code>copilot-instructions.md</code>, MCP config, or custom agents — but zero required.</span>
         </div>
-        <div role="cell" data-label="Claude Code">
-          <span class="cell-tag tag-heavy">Workflow YAML</span>
-          <span class="cell-note"><code>.github/workflows/claude.yml</code> + <code>ANTHROPIC_API_KEY</code> secret per repo.</span>
+        <div role="cell" data-label="GitHub-hosted Claude/Codex">
+          <span class="cell-tag tag-none">None required</span>
+          <span class="cell-note">No workflow YAML required for GitHub-hosted third-party agents; repo instructions remain optional.</span>
         </div>
-        <div role="cell" data-label="Codex">
-          <span class="cell-tag tag-light">Optional</span>
-          <span class="cell-note">No workflow needed. Optional <code>AGENTS.md</code> for review guidelines.</span>
+        <div role="cell" data-label="Standalone Claude/Codex">
+          <span class="cell-tag tag-heavy">Mixed</span>
+          <span class="cell-note">Claude Action needs workflow YAML + secret. Standalone Codex review needs no workflow; <code>AGENTS.md</code> is optional guidance.</span>
         </div>
         <div role="cell" data-label="Cursor">
           <span class="cell-tag tag-light">Optional</span>
@@ -335,17 +417,17 @@
       <!-- Row 4: Author identity -->
       <div class="matrix-row" role="row">
         <div class="dim" role="cell">Commit / PR author<br><small>Who shows up in <code>git log</code></small></div>
-        <div role="cell" data-label="GitHub Copilot">
+        <div role="cell" data-label="Copilot cloud agent">
           <span class="cell-tag tag-none">First-party bot</span>
           <span class="cell-note">Authored by <code>Copilot</code>. Inherits Copilot-specific ruleset bypass options.</span>
         </div>
-        <div role="cell" data-label="Claude Code">
+        <div role="cell" data-label="GitHub-hosted Claude/Codex">
           <span class="cell-tag tag-light">Third-party App</span>
-          <span class="cell-note"><code>claude[bot]</code> or custom-App-name. Must be added as ruleset bypass actor.</span>
+          <span class="cell-note">Third-party agent selected inside GitHub; rulesets and compatible protections still apply.</span>
         </div>
-        <div role="cell" data-label="Codex">
+        <div role="cell" data-label="Standalone Claude/Codex">
           <span class="cell-tag tag-light">Third-party App</span>
-          <span class="cell-note">Codex bot identity; external service signs the commits.</span>
+          <span class="cell-note">Bot/App identity depends on vendor integration and configured GitHub App/OAuth permissions.</span>
         </div>
         <div role="cell" data-label="Cursor">
           <span class="cell-tag tag-light">Third-party App</span>
@@ -356,17 +438,17 @@
       <!-- Row 5: Templatable -->
       <div class="matrix-row" role="row">
         <div class="dim" role="cell">Templatable across N repos<br><small>If you have 50</small></div>
-        <div role="cell" data-label="GitHub Copilot">
+        <div role="cell" data-label="Copilot cloud agent">
           <span class="cell-tag tag-none">Policy-driven</span>
           <span class="cell-note">Enable once at org level; repo owners can opt out. No per-repo fan-out.</span>
         </div>
-        <div role="cell" data-label="Claude Code">
-          <span class="cell-tag tag-heavy">Fan-out</span>
-          <span class="cell-note">Workflow file + secret must land in every repo. Org-wide secret helps; file does not.</span>
+        <div role="cell" data-label="GitHub-hosted Claude/Codex">
+          <span class="cell-tag tag-none">Policy-driven</span>
+          <span class="cell-note">Enable supported third-party agents through GitHub/Copilot policy; no repo workflow fan-out.</span>
         </div>
-        <div role="cell" data-label="Codex">
-          <span class="cell-tag tag-light">Per-repo toggle</span>
-          <span class="cell-note">Toggle each repo inside ChatGPT Codex settings. Governance lives outside GitHub.</span>
+        <div role="cell" data-label="Standalone Claude/Codex">
+          <span class="cell-tag tag-light">Path-dependent</span>
+          <span class="cell-note">Claude Action fans out workflow files; standalone Codex uses ChatGPT Codex per-repo settings.</span>
         </div>
         <div role="cell" data-label="Cursor">
           <span class="cell-tag tag-light">Per-repo connect</span>
@@ -388,13 +470,13 @@
           <svg viewBox="0 0 16 16" fill="var(--gh-accent)" aria-hidden="true">
             <path d="M8 0a8 8 0 100 16A8 8 0 008 0zm3.78 5.97L7.5 10.25l-2.28-2.28a.75.75 0 10-1.06 1.06l2.81 2.81a.75.75 0 001.06 0l4.81-4.81a.75.75 0 10-1.06-1.06z"/>
           </svg>
-          When Copilot's setup advantage decides it
+          When GitHub-hosted setup wins
         </h3>
         <ul>
           <li><strong>You have many repos.</strong> Fleet-wide enablement beats per-repo plumbing.</li>
-          <li><strong>Security reviews the agent's identity.</strong> First-party GitHub bot needs less paperwork than three external OAuth apps with R/W scopes.</li>
-          <li><strong>You already pay for Copilot.</strong> No new vendor, new invoice, or new data-processing agreement.</li>
-          <li><strong>Governance lives in GitHub.</strong> Rulesets, branch protections, and audit log cover the agent by default.</li>
+          <li><strong>Security reviews the agent surface.</strong> GitHub-hosted agents keep more of the workflow in existing GitHub controls.</li>
+          <li><strong>You already have Copilot eligibility.</strong> Copilot and supported third-party agents can start from the same GitHub agent entry points.</li>
+          <li><strong>Governance starts in GitHub.</strong> Rulesets, branch protections, policies, and review comments remain central.</li>
         </ul>
       </div>
 
@@ -408,8 +490,8 @@
         <ul>
           <li><strong>Capability ≠ setup cost.</strong> This card says nothing about which agent writes better code or resolves harder issues.</li>
           <li><strong>One repo, no fleet.</strong> The per-repo workflow tax is a coffee break, not a program of work.</li>
-          <li><strong>You want a specific model.</strong> If you need Claude Opus, GPT-5, or Cursor's model pool against your repo, you need that vendor's path.</li>
-          <li><strong>Ruleset compatibility.</strong> Copilot itself can be blocked by branch-protection rules until added as a bypass actor — not zero-friction, just low-friction.</li>
+          <li><strong>You need a vendor-specific workflow.</strong> Claude Code Action, ChatGPT Codex, and Cursor all expose product-specific controls outside the GitHub-hosted agent path.</li>
+          <li><strong>Ruleset compatibility.</strong> GitHub-hosted agents can still be blocked by incompatible rules until configured correctly.</li>
         </ul>
       </div>
 
@@ -422,16 +504,18 @@
   <div class="container">
     <div>
       <h4>About this infographic</h4>
-      <p>A setup-cost comparison for platform leads evaluating AI coding agents on GitHub. The claim being made is narrow: <strong>GitHub Copilot has meaningfully less per-repo and per-org onboarding work than the other three</strong> because GitHub owns the surface. Every other question — code quality, model choice, cost at scale, trust — is intentionally out of scope.</p>
-      <p class="disclosure">Produced by a Microsoft employee. Views are my own; this is not an official Microsoft comparison and is not endorsed by GitHub, Anthropic, OpenAI, or Cursor. Published under the SME&amp;C Infographics library.</p>
+      <p>A setup-cost comparison for platform leads evaluating AI coding agents around GitHub. The claim is narrow: <strong>GitHub-hosted agents reduce per-repo onboarding; standalone vendor paths trade that for vendor-specific controls and workflows.</strong> Code quality, model quality, and procurement fit are intentionally out of scope.</p>
+      <p class="disclosure">Produced by a Microsoft employee. Views are my own; this is not an official Microsoft comparison and is not endorsed by GitHub, Anthropic, OpenAI, Cursor, or Anysphere. Published under the SME&amp;C Infographics library.</p>
     </div>
     <div>
       <h4>Primary sources</h4>
       <ul class="sources-list">
         <li><a href="https://docs.github.com/en/copilot/concepts/agents/cloud-agent/about-cloud-agent">Copilot cloud agent — GitHub Docs</a></li>
+        <li><a href="https://docs.github.com/en/copilot/concepts/agents/about-third-party-agents">GitHub third-party agents</a></li>
         <li><a href="https://code.claude.com/docs/en/github-actions">Claude Code GitHub Actions</a></li>
-        <li><a href="https://developers.openai.com/codex/cloud/code-review">Codex in GitHub — OpenAI</a></li>
-        <li><a href="https://cursor.com/docs/cloud-agent">Cursor Cloud Agents</a></li>
+        <li><a href="https://developers.openai.com/codex/integrations/github">Codex GitHub integration — OpenAI</a></li>
+        <li><a href="https://cursor.com/blog/cloud-agents">Cursor Cloud Agents</a></li>
+        <li><a href="https://cursor.com/pricing">Cursor pricing and plans</a></li>
       </ul>
     </div>
   </div>

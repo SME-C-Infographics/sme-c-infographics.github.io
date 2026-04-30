@@ -54,8 +54,12 @@
 
   /* Signature SVG: the correction loop */
   .loop-diagram { background: var(--gh-card); border: 1px solid var(--gh-border);
-    border-radius: var(--radius); box-shadow: var(--shadow); padding: 28px 24px 20px; }
+    border-radius: var(--radius); box-shadow: var(--shadow); padding: 28px 24px 20px; overflow-x: auto; }
   .loop-diagram svg { display: block; width: 100%; height: auto; max-width: 760px; margin: 0 auto; }
+  @media (max-width: 560px) {
+    .loop-diagram { padding: 20px 16px 18px; }
+    .loop-diagram svg { min-width: 680px; }
+  }
   .loop-diagram figcaption { font-size: .82rem; color: var(--gh-muted); text-align: center; margin-top: 12px; }
   .loop-diagram .legend-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 16px; margin-top: 12px;
     font-size: .78rem; color: var(--gh-muted); }
@@ -116,8 +120,90 @@
   .sources-list { list-style: none; padding: 0; }
   .sources-list li { margin-bottom: 6px; font-size: .82rem; }
 </style>
+<script defer src="https://a.ndme.sh/script.js" data-website-id="9478c1a0-93c6-4c21-855a-69e50e15cbc4"></script>
+<style>/* smec-back-btn v1 */
+.smec-back-btn { position: fixed; bottom: 16px; left: 16px; z-index: 9999;
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: 0; min-width: 44px; height: 44px; padding: 0; border-radius: 22px;
+  background: rgba(0, 120, 212, 0.92); color: #fff; text-decoration: none;
+  font: 600 13px/1 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18); backdrop-filter: blur(6px);
+  opacity: 0;
+  animation: smec-back-btn-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.4s forwards;
+  /* Collapsing: wait for the label to fade out, then shrink the pill. */
+  transition:
+    padding 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.2s,
+    gap 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.2s,
+    background 0.35s ease 0s,
+    box-shadow 0.35s ease 0s;
+  overflow: hidden; white-space: nowrap; }
+.smec-back-btn__icon { flex: 0 0 auto;
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1) 0.2s; }
+.smec-back-btn__label { max-width: 0; opacity: 0;
+  /* Collapsing: label fades out first, then its width collapses with the pill. */
+  transition:
+    opacity 0.18s ease 0s,
+    max-width 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.2s; }
+
+/* Expanding: pill and label grow together in one motion; text appears near the end. */
+.smec-back-btn:hover, .smec-back-btn:focus-visible {
+  gap: 10px; padding: 0 18px 0 12px;
+  background: rgba(0, 90, 158, 0.96); color: #fff; text-decoration: none;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.22);
+  transition:
+    padding 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0s,
+    gap 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0s,
+    background 0.35s ease 0s,
+    box-shadow 0.35s ease 0s; }
+.smec-back-btn:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+.smec-back-btn:hover .smec-back-btn__icon,
+.smec-back-btn:focus-visible .smec-back-btn__icon {
+  transform: translateX(-2px);
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1) 0s; }
+.smec-back-btn:hover .smec-back-btn__label,
+.smec-back-btn:focus-visible .smec-back-btn__label {
+  max-width: 260px; opacity: 1;
+  transition:
+    max-width 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0s,
+    opacity 0.3s ease 0.3s; }
+
+@keyframes smec-back-btn-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@media (hover: none) {
+  .smec-back-btn { gap: 10px; padding: 0 18px 0 12px; }
+  .smec-back-btn__label { max-width: 260px; opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .smec-back-btn, .smec-back-btn__icon, .smec-back-btn__label,
+  .smec-back-btn:hover, .smec-back-btn:focus-visible,
+  .smec-back-btn:hover .smec-back-btn__icon,
+  .smec-back-btn:focus-visible .smec-back-btn__icon,
+  .smec-back-btn:hover .smec-back-btn__label,
+  .smec-back-btn:focus-visible .smec-back-btn__label {
+    transition: background 0.2s ease, color 0.2s ease;
+    animation: none; opacity: 1; }
+}
+@media (max-width: 600px) { .smec-back-btn { bottom: 12px; left: 12px; } }
+</style>
+<!-- smec-meta v1 -->
+<meta name="description" content="When the agent&#x27;s PR is wrong: the correction loop — an interactive infographic from the SME&amp;C Infographic Hub.">
+<meta property="og:title" content="When the agent&#x27;s PR is wrong: the correction loop">
+<meta property="og:description" content="When the agent&#x27;s PR is wrong: the correction loop — an interactive infographic from the SME&amp;C Infographic Hub.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://sme-c-infographics.github.io/github-copilot/agent-correction-loop.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="When the agent&#x27;s PR is wrong: the correction loop">
+<meta name="twitter:description" content="When the agent&#x27;s PR is wrong: the correction loop — an interactive infographic from the SME&amp;C Infographic Hub.">
+<!-- smec-favicon v1 -->
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<!-- smec-accuracy v1 -->
+<meta name="smec:last-accuracy-check" content="2026-04-30">
 </head>
 <body>
+<a href="/" class="smec-back-btn" data-smec-back-button="v1" aria-label="Back to SME&amp;C Infographics"><svg class="smec-back-btn__icon" aria-hidden="true" viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg><span class="smec-back-btn__label">Back to SME&amp;C Infographics</span></a>
+
 
 <header class="hero">
   <div class="hero-badge">
@@ -125,15 +211,15 @@
     Review ergonomics · Iteration surface
   </div>
   <h1>When the agent's PR is wrong</h1>
-  <p>Every async coding agent ships broken first drafts sometimes. The question is how you tell it to try again — and whether that conversation survives in the repo or lives somewhere else.</p>
-  <div class="hero-meta">Accurate as of April 2026 · Focus: comment-driven iteration, not one-shot quality</div>
+  <p>Every async coding agent ships broken first drafts sometimes. The question is how you tell it to try again, which control plane owns the next round, and whether the review trail stays easy to reconstruct.</p>
+  <div class="hero-meta">Accurate as of April 30, 2026 · Focus: comment-driven iteration, not one-shot quality</div>
 </header>
 
 <div class="container">
   <div class="big-stat">
     <div class="num">2–3</div>
     <div class="num-sub">rounds before you should take it over manually</div>
-    <div class="num-caption">Past that, iteration cost exceeds the cost of writing the fix yourself. Applies to all four agents — their loop shape just changes how much each round costs.</div>
+    <div class="num-caption">Past that, iteration cost often exceeds the cost of writing the fix yourself. Applies across hosted and standalone agents - their loop shape changes how much each round costs.</div>
   </div>
 </div>
 
@@ -141,11 +227,11 @@
   <div class="container">
     <span class="section-label">Shape of the loop</span>
     <h2 class="section-title">Four phases, same order</h2>
-    <p class="section-sub">Every async agent cycles through the same four phases. What differs is <strong>where state lives</strong> at each phase — inside the PR, or out in a vendor dashboard.</p>
+    <p class="section-sub">Every async agent cycles through the same four phases. What differs is <strong>where state lives</strong> at each phase - in GitHub issues and PRs, in Actions logs, or in a vendor workspace.</p>
 
     <figure class="loop-diagram" role="group" aria-labelledby="loop-dia-title" aria-describedby="loop-dia-desc">
       <p id="loop-dia-title" class="sr-only">The four-phase correction loop</p>
-      <p id="loop-dia-desc" class="sr-only">A circular flow with four phases in order: Comment, Run, Commit, Review, then back to Comment. Arrows between phases are color-coded. Green arrows indicate the phase state lives inside the GitHub PR (cheap, native). Amber arrows indicate state lives in a vendor dashboard (state leak). Copilot and Claude Code Action keep all four arrows green. OpenAI Codex and Cursor Cloud Agents keep Comment-to-Run green but the Run and Review phases split to a vendor surface.</p>
+      <p id="loop-dia-desc" class="sr-only">A circular flow with four phases in order: Comment, Run, Commit, Review, then back to Comment. Arrows between phases are color-coded. Green arrows indicate the phase state primarily lives in GitHub issues or PRs. Amber arrows indicate added cost or state outside the normal PR review trail, such as Actions logs, vendor API usage, or a vendor workspace. GitHub-hosted Copilot, Claude, and Codex keep routine feedback in GitHub. Standalone integrations can add workflow logs, external run state, or product dashboards.</p>
       <svg viewBox="0 0 760 360" role="img" aria-hidden="true" focusable="false">
         <defs>
           <marker id="arrow-green" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
@@ -177,15 +263,15 @@
           <text x="120" y="276" text-anchor="middle" font-size="13" font-weight="700" fill="#24292E">4 · Review</text>
           <text x="120" y="298" text-anchor="middle" font-size="11" fill="#57606A">decide next round or stop</text>
 
-          <!-- Arrow 1→2 (top, green: all four tools trigger cheaply) -->
+          <!-- Arrow 1→2 (top, green: all tools start from GitHub feedback) -->
           <line x1="215" y1="76" x2="540" y2="76" stroke="#2DA44E" stroke-width="2.5" marker-end="url(#arrow-green)"/>
-          <text x="377" y="66" text-anchor="middle" font-size="11" font-weight="600" fill="#1A7F37">native trigger</text>
-          <text x="377" y="96" text-anchor="middle" font-size="10" fill="#57606A">PR comment fires all four</text>
+          <text x="377" y="66" text-anchor="middle" font-size="11" font-weight="600" fill="#1A7F37">GitHub feedback</text>
+          <text x="377" y="96" text-anchor="middle" font-size="10" fill="#57606A">issue, assignment, or PR comment</text>
 
           <!-- Arrow 2→3 (right side, amber: run state varies) -->
           <line x1="640" y1="117" x2="640" y2="243" stroke="#9A6700" stroke-width="2.5" marker-end="url(#arrow-amber)"/>
           <text x="730" y="176" text-anchor="end" font-size="11" font-weight="600" fill="#9A6700">run cost</text>
-          <text x="730" y="192" text-anchor="end" font-size="10" fill="#57606A">Actions min. or API tokens</text>
+          <text x="730" y="192" text-anchor="end" font-size="10" fill="#57606A">premium requests, minutes, tokens</text>
 
           <!-- Arrow 3→4 (bottom, green: commit goes to PR for all) -->
           <line x1="540" y1="284" x2="215" y2="284" stroke="#2DA44E" stroke-width="2.5" marker-end="url(#arrow-green)"/>
@@ -194,21 +280,21 @@
 
           <!-- Arrow 4→1 (left side, mixed color gradient) -->
           <line x1="120" y1="243" x2="120" y2="117" stroke="#9A6700" stroke-width="2.5" stroke-dasharray="5 4" marker-end="url(#arrow-amber)"/>
-          <text x="30" y="176" text-anchor="start" font-size="11" font-weight="600" fill="#9A6700">state leak risk</text>
-          <text x="30" y="192" text-anchor="start" font-size="10" fill="#57606A">Codex / Cursor: deliberation</text>
-          <text x="30" y="206" text-anchor="start" font-size="10" fill="#57606A">in vendor dashboard</text>
+          <text x="30" y="176" text-anchor="start" font-size="11" font-weight="600" fill="#9A6700">extra state risk</text>
+          <text x="30" y="192" text-anchor="start" font-size="10" fill="#57606A">standalone integrations may</text>
+          <text x="30" y="206" text-anchor="start" font-size="10" fill="#57606A">add vendor workspace state</text>
 
           <!-- Tool footprint strip below -->
           <g transform="translate(0, 340)">
-            <text x="380" y="0" text-anchor="middle" font-size="10" fill="#57606A" font-style="italic">Solid green arrows = state in PR · dashed amber = state in vendor UI</text>
+            <text x="380" y="0" text-anchor="middle" font-size="10" fill="#57606A" font-style="italic">Solid green arrows = normal GitHub review trail · dashed amber = added cost or outside state</text>
           </g>
         </g>
       </svg>
       <div class="legend-row">
-        <span><span class="sw sw-green"></span>PR-native phase</span>
-        <span><span class="sw sw-amber"></span>Has a cost or state-leak risk</span>
+        <span><span class="sw sw-green"></span>GitHub-native phase</span>
+        <span><span class="sw sw-amber"></span>Has added cost or outside-state risk</span>
       </div>
-      <figcaption>Copilot &amp; Claude Code Action keep deliberation inside the PR across all four phases. Codex &amp; Cursor split phases 2 and 4 to their own dashboards.</figcaption>
+      <figcaption>GitHub-hosted agents keep routine feedback in GitHub. Standalone actions and vendor cloud agents can still post back to the PR, but may add Actions logs, API token usage, or vendor workspace state.</figcaption>
     </figure>
 
   </div>
@@ -218,7 +304,7 @@
   <div class="container">
     <span class="section-label">The loop</span>
     <h2 class="section-title">Four tools, four correction shapes</h2>
-    <p class="section-sub">What a reviewer has to do to get a v2. The cheaper this loop is, the more viable the "assign it to the bot" pattern becomes for real work.</p>
+    <p class="section-sub">What a reviewer has to do to get a v2. The cheaper and more inspectable this loop is, the more viable the "assign it to the agent" pattern becomes for real work.</p>
 
     <div class="loop-grid">
 
@@ -228,7 +314,17 @@
           <div class="loop-step"><div class="n">1</div><div class="t"><strong>Comment in the PR.</strong> <code>@copilot address the null-check on line 42</code>.</div></div>
           <div class="loop-step"><div class="n">2</div><div class="t"><strong>Agent wakes on the same branch.</strong> New commit pushed, same PR.</div></div>
           <div class="loop-step"><div class="n">3</div><div class="t"><strong>Review comments resolve inline.</strong> Standard GitHub review UI.</div></div>
-          <div class="loop-step"><div class="n">4</div><div class="t"><strong>Conversation stays in the PR.</strong> Every iteration is <code>git log</code>-visible.</div></div>
+          <div class="loop-step pain"><div class="n">!</div><div class="t"><strong>Watch the limits.</strong> Runs can consume Actions minutes and Copilot premium requests, and content exclusions are not honored by the cloud agent.</div></div>
+        </div>
+      </div>
+
+      <div class="loop-card">
+        <header><h3>GitHub-hosted Claude / Codex</h3><div class="sub">Third-party agents in GitHub</div></header>
+        <div class="loop-steps">
+          <div class="loop-step"><div class="n">1</div><div class="t"><strong>Use the GitHub agent surface.</strong> Ask from supported GitHub issues or PR workflows instead of switching to a vendor dashboard first.</div></div>
+          <div class="loop-step"><div class="n">2</div><div class="t"><strong>GitHub-hosted run starts.</strong> The agent works in a GitHub-managed environment and posts results back through GitHub.</div></div>
+          <div class="loop-step"><div class="n">3</div><div class="t"><strong>Review stays where the code review lives.</strong> Follow-up feedback can stay attached to the issue or PR.</div></div>
+          <div class="loop-step pain"><div class="n">!</div><div class="t"><strong>Same cloud-agent limits apply.</strong> GitHub says third-party agents share Copilot cloud agent protections and limitations.</div></div>
         </div>
       </div>
 
@@ -236,29 +332,19 @@
         <header><h3>Claude Code Action</h3><div class="sub">@claude-triggered workflow</div></header>
         <div class="loop-steps">
           <div class="loop-step"><div class="n">1</div><div class="t"><strong>Comment with <code>@claude</code>.</strong> Workflow fires on the event.</div></div>
-          <div class="loop-step"><div class="n">2</div><div class="t"><strong>Action runs on your runner.</strong> Progress tracked in the comment itself (checkboxes that update live).</div></div>
-          <div class="loop-step"><div class="n">3</div><div class="t"><strong>New commit on the PR branch.</strong> Same PR, one Actions run per <code>@claude</code> trigger.</div></div>
-          <div class="loop-step pain"><div class="n">!</div><div class="t"><strong>Each <code>@claude</code> = Actions minutes + Anthropic API tokens.</strong> Chatty reviewers cost more.</div></div>
+          <div class="loop-step"><div class="n">2</div><div class="t"><strong>Action runs in GitHub Actions.</strong> Progress is visible through the workflow run and PR comments.</div></div>
+          <div class="loop-step"><div class="n">3</div><div class="t"><strong>New commit on the PR branch.</strong> Same PR, one Actions run per trigger.</div></div>
+          <div class="loop-step pain"><div class="n">!</div><div class="t"><strong>Each round has runner and model cost.</strong> You manage workflow YAML, app permissions, and Anthropic credentials.</div></div>
         </div>
       </div>
 
       <div class="loop-card">
-        <header><h3>OpenAI Codex in GitHub</h3><div class="sub">@codex PR comment</div></header>
+        <header><h3>Standalone Codex / Cursor</h3><div class="sub">Vendor cloud workspace</div></header>
         <div class="loop-steps">
-          <div class="loop-step"><div class="n">1</div><div class="t"><strong>Comment <code>@codex &lt;task&gt;</code>.</strong> Codex reacts with 👀.</div></div>
-          <div class="loop-step"><div class="n">2</div><div class="t"><strong>Codex opens a cloud task.</strong> Uses the PR as context.</div></div>
-          <div class="loop-step"><div class="n">3</div><div class="t"><strong>Updates posted back to the PR.</strong> Review step is <code>@codex review</code>, a separate command.</div></div>
-          <div class="loop-step pain"><div class="n">!</div><div class="t"><strong>Full task state lives in ChatGPT Codex UI.</strong> PR sees the outputs; the deliberation is elsewhere.</div></div>
-        </div>
-      </div>
-
-      <div class="loop-card">
-        <header><h3>Cursor Cloud Agents</h3><div class="sub">@cursor PR comment (or Cursor web)</div></header>
-        <div class="loop-steps">
-          <div class="loop-step"><div class="n">1</div><div class="t"><strong>Comment <code>@cursor</code> on the PR</strong> — or kick off a new run from Cursor web, Slack, Linear, or API.</div></div>
-          <div class="loop-step"><div class="n">2</div><div class="t"><strong>Agent clones, modifies, pushes.</strong> Cloud VM with own tools, MCP, hooks.</div></div>
-          <div class="loop-step"><div class="n">3</div><div class="t"><strong>Optional: follow up from the IDE.</strong> Cursor Desktop can view and continue cloud-agent runs.</div></div>
-          <div class="loop-step pain"><div class="n">!</div><div class="t"><strong>Run history in Cursor dashboard.</strong> PR shows outputs; reasoning lives in Cursor's UI.</div></div>
+          <div class="loop-step"><div class="n">1</div><div class="t"><strong>Start from GitHub or the vendor product.</strong> Codex and Cursor both support GitHub-connected review/task flows.</div></div>
+          <div class="loop-step"><div class="n">2</div><div class="t"><strong>Agent works in a vendor-hosted environment.</strong> The product owns much of the run orchestration and task state.</div></div>
+          <div class="loop-step"><div class="n">3</div><div class="t"><strong>Outputs come back to GitHub.</strong> Commits or review results can still land on the PR.</div></div>
+          <div class="loop-step pain"><div class="n">!</div><div class="t"><strong>Reviewers may need a second surface.</strong> Detailed task history or continuation can live in ChatGPT Codex, Cursor web, Cursor Desktop, Slack, Linear, or API-driven flows.</div></div>
         </div>
       </div>
 
@@ -297,9 +383,9 @@ as the fallback and add a test for the anonymous case.
           What makes a good correction loop
         </h3>
         <ul>
-          <li><strong>One surface.</strong> Reviewers shouldn't tab between GitHub and a vendor dashboard to give feedback.</li>
-          <li><strong>Cheap iteration.</strong> The cost of a "try again" comment should not change reviewer behavior.</li>
-          <li><strong>State in the PR.</strong> Future maintainers reading <code>git log</code> + PR comments should see the whole conversation.</li>
+          <li><strong>One routine surface.</strong> Reviewers should be able to give normal correction feedback without leaving the issue or PR.</li>
+          <li><strong>Visible iteration cost.</strong> Teams should know whether a "try again" consumes Copilot premium requests, Actions minutes, vendor tokens, or subscription quota.</li>
+          <li><strong>State in the review trail.</strong> Future maintainers reading <code>git log</code> and PR comments should understand why the final patch looks the way it does.</li>
           <li><strong>Stop after 2-3 rounds.</strong> If it's still wrong, take over manually; iteration cost exceeds writing the fix.</li>
         </ul>
       </div>
@@ -312,7 +398,7 @@ as the fallback and add a test for the anonymous case.
           <li><strong>Not iteration quality.</strong> No claim about which tool's v2 is better than its v1.</li>
           <li><strong>Not response latency.</strong> All four run async; seconds-to-response varies by load, not product.</li>
           <li><strong>Not custom prompts.</strong> Each tool has fine-grained prompt-tuning features; this piece only covers the default review-driven loop.</li>
-          <li><strong>Not trigger-phrase overrides.</strong> Claude lets you rename <code>@claude</code>; Codex and Cursor likewise customize.</li>
+          <li><strong>Not trigger-phrase overrides.</strong> Agent names and triggers can vary by configuration; this piece compares the default public workflow shapes.</li>
         </ul>
       </div>
     </div>
@@ -323,15 +409,16 @@ as the fallback and add a test for the anonymous case.
   <div class="container">
     <div>
       <h4>About this infographic</h4>
-      <p>A review-ergonomics view of AI coding agents on GitHub. The claim is narrow: <strong>Copilot and Claude keep the correction conversation inside the PR; Codex and Cursor push part of it into their own dashboards.</strong> This is a workflow-shape fact, not a capability claim.</p>
+      <p>A review-ergonomics view of AI coding agents on GitHub. The claim is narrow: <strong>GitHub-hosted agents keep routine correction feedback closest to the issue or PR; standalone vendor integrations can add valuable control, but may also add Actions logs, API credentials, subscription quota, or vendor workspace state.</strong> This is a workflow-shape fact, not a capability claim.</p>
       <p class="disclosure">Produced by a Microsoft employee. Views are my own; not endorsed by GitHub, Anthropic, OpenAI, or Cursor.</p>
     </div>
     <div>
       <h4>Primary sources</h4>
       <ul class="sources-list">
         <li><a href="https://docs.github.com/en/copilot/how-tos/use-copilot-agents/cloud-agent/make-changes-to-an-existing-pr">Copilot: make changes to an existing PR</a></li>
+        <li><a href="https://docs.github.com/en/copilot/concepts/agents/about-third-party-agents">GitHub third-party agents</a></li>
         <li><a href="https://code.claude.com/docs/en/github-actions">Claude Code GitHub Actions</a></li>
-        <li><a href="https://developers.openai.com/codex/cloud/code-review">Codex in GitHub</a></li>
+        <li><a href="https://developers.openai.com/codex/integrations/github">Codex GitHub integration</a></li>
         <li><a href="https://cursor.com/docs/cloud-agent">Cursor Cloud Agents</a></li>
       </ul>
     </div>
