@@ -1,0 +1,1143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Azure API Management v2 — Public &amp; Private Networking Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --azure-deep:#0a2540;
+  --azure-primary:#0078d4;
+  --azure-light:#50e6ff;
+  --azure-accent:#3aa1ff;
+  --teal:#00b4a6;
+  --coral:#ff6b6b;
+  --amber:#ffb547;
+  --green:#3ecf8e;
+  --purple:#8b5cf6;
+  --bg:#f4f8fc;
+  --card:#ffffff;
+  --text:#1b2a3a;
+  --muted:#5a6b7d;
+  --border:#e3ecf5;
+  --shadow:0 10px 30px rgba(10,37,64,0.08);
+  --shadow-lg:0 20px 50px rgba(10,37,64,0.15);
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Nunito',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.65;
+  overflow-x:hidden;
+}
+h1,h2,h3,h4,h5,.font-header{
+  font-family:'Quicksand',sans-serif;
+  font-weight:700;
+  letter-spacing:-0.01em;
+}
+code,kbd,pre{
+  font-family:'SF Mono','Consolas',monospace;
+  background:#eef4fb;
+  padding:2px 8px;
+  border-radius:5px;
+  font-size:0.88em;
+  color:#0a2540;
+}
+pre{padding:14px 16px;border-radius:8px;overflow-x:auto;font-size:0.85rem;line-height:1.5;border:1px solid var(--border)}
+
+/* ============ HERO ============ */
+.hero{
+  position:relative;
+  min-height:90vh;
+  background:linear-gradient(135deg,#0a2540 0%,#0078d4 50%,#3aa1ff 100%);
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:80px 20px;
+  overflow:hidden;
+}
+.hero::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  background-image:
+    radial-gradient(circle at 20% 30%, rgba(80,230,255,0.3) 0%, transparent 40%),
+    radial-gradient(circle at 80% 70%, rgba(58,161,255,0.4) 0%, transparent 40%);
+  animation:pulse 8s ease-in-out infinite;
+}
+@keyframes pulse{
+  0%,100%{opacity:0.6;transform:scale(1)}
+  50%{opacity:1;transform:scale(1.05)}
+}
+.hero-content{position:relative;z-index:2;max-width:900px}
+.hero h1{
+  font-size:clamp(2.5rem,6vw,4.5rem);
+  margin-bottom:20px;
+  animation:slideUp 1s ease-out;
+}
+.hero .subtitle{
+  font-size:clamp(1.1rem,2.5vw,1.5rem);
+  font-weight:500;
+  opacity:0.95;
+  margin-bottom:18px;
+  animation:slideUp 1s ease-out 0.2s backwards;
+}
+.hero .lead{
+  font-size:1.05rem;
+  max-width:700px;
+  margin:0 auto 40px;
+  opacity:0.88;
+  animation:slideUp 1s ease-out 0.4s backwards;
+}
+.hero-badge{
+  display:inline-block;
+  background:rgba(255,255,255,0.15);
+  border:1px solid rgba(255,255,255,0.3);
+  padding:8px 18px;
+  border-radius:999px;
+  font-size:0.85rem;
+  font-weight:600;
+  margin-bottom:24px;
+  backdrop-filter:blur(10px);
+  animation:slideUp 1s ease-out backwards;
+}
+@keyframes slideUp{
+  from{opacity:0;transform:translateY(30px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+/* Floating network nodes */
+.floating-nodes{position:absolute;inset:0;pointer-events:none}
+.node{
+  position:absolute;
+  width:14px;height:14px;
+  border-radius:50%;
+  background:#50e6ff;
+  box-shadow:0 0 20px #50e6ff;
+  animation:float 6s ease-in-out infinite;
+}
+.node:nth-child(1){top:15%;left:10%;animation-delay:0s}
+.node:nth-child(2){top:25%;right:15%;animation-delay:1s;background:#3aa1ff;box-shadow:0 0 20px #3aa1ff}
+.node:nth-child(3){bottom:20%;left:18%;animation-delay:2s;background:#fff;box-shadow:0 0 20px #fff}
+.node:nth-child(4){bottom:30%;right:12%;animation-delay:3s}
+.node:nth-child(5){top:50%;left:5%;animation-delay:1.5s;background:#3aa1ff;box-shadow:0 0 20px #3aa1ff}
+.node:nth-child(6){top:60%;right:8%;animation-delay:2.5s;background:#fff;box-shadow:0 0 20px #fff}
+@keyframes float{
+  0%,100%{transform:translateY(0) scale(1);opacity:0.7}
+  50%{transform:translateY(-25px) scale(1.2);opacity:1}
+}
+.scroll-cue{
+  position:absolute;bottom:30px;left:50%;transform:translateX(-50%);
+  font-size:0.85rem;opacity:0.7;
+  animation:bounce 2s ease-in-out infinite;z-index:2;
+}
+@keyframes bounce{
+  0%,100%{transform:translateX(-50%) translateY(0)}
+  50%{transform:translateX(-50%) translateY(8px)}
+}
+
+/* ============ NAV ============ */
+.nav{
+  position:sticky;top:0;
+  background:rgba(255,255,255,0.95);
+  backdrop-filter:blur(15px);
+  border-bottom:1px solid var(--border);
+  z-index:100;padding:14px 20px;
+}
+.nav-inner{
+  max-width:1200px;margin:0 auto;
+  display:flex;flex-wrap:wrap;gap:8px;justify-content:center;
+}
+.nav a{
+  font-family:'Quicksand',sans-serif;font-weight:600;font-size:0.9rem;
+  color:var(--text);text-decoration:none;
+  padding:8px 14px;border-radius:8px;transition:all 0.25s;
+}
+.nav a:hover{background:var(--azure-primary);color:#fff}
+
+/* ============ SECTIONS ============ */
+section{padding:80px 20px}
+.container{max-width:1200px;margin:0 auto}
+.section-head{text-align:center;margin-bottom:60px}
+.section-head .eyebrow{
+  display:inline-block;font-family:'Quicksand',sans-serif;font-weight:600;
+  font-size:0.85rem;text-transform:uppercase;letter-spacing:0.15em;
+  color:var(--azure-primary);margin-bottom:12px;
+}
+.section-head h2{font-size:clamp(2rem,4vw,2.8rem);margin-bottom:14px}
+.section-head p{font-size:1.05rem;color:var(--muted);max-width:720px;margin:0 auto}
+
+/* ============ GLOSSARY ============ */
+.glossary-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px;
+}
+.glossary-card{
+  background:var(--card);padding:30px 26px;border-radius:16px;
+  box-shadow:var(--shadow);transition:all 0.35s;
+  border:1px solid var(--border);
+  opacity:0;transform:translateY(30px);
+}
+.glossary-card.visible{opacity:1;transform:translateY(0)}
+.glossary-card:hover{
+  transform:translateY(-6px);box-shadow:var(--shadow-lg);
+  border-color:var(--azure-light);
+}
+.glossary-icon{
+  width:54px;height:54px;border-radius:14px;
+  background:linear-gradient(135deg,var(--azure-primary),var(--azure-light));
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:18px;font-size:1.6rem;
+}
+.glossary-card h3{font-size:1.2rem;margin-bottom:10px}
+.glossary-card p{color:var(--muted);font-size:0.93rem}
+.glossary-card .pill{
+  display:inline-block;background:#eef4fb;color:var(--azure-primary);
+  padding:3px 10px;border-radius:20px;font-size:0.75rem;font-weight:600;margin-top:10px;
+}
+
+/* ============ ARCHITECTURE PROGRESSION ============ */
+.architecture{background:#fff}
+.progression{
+  position:relative;display:grid;grid-template-columns:repeat(4,1fr);
+  gap:20px;margin-top:40px;
+}
+.progression::before{
+  content:'';position:absolute;top:38px;left:5%;right:5%;height:3px;
+  background:linear-gradient(90deg,var(--azure-light),var(--azure-primary),var(--teal),var(--green));
+  z-index:0;border-radius:3px;
+}
+.stage{
+  position:relative;z-index:1;text-align:center;
+  background:var(--card);padding:24px 18px;border-radius:14px;
+  border:1px solid var(--border);transition:all 0.35s;cursor:pointer;
+}
+.stage:hover{transform:translateY(-6px);box-shadow:var(--shadow-lg)}
+.stage-circle{
+  width:78px;height:78px;border-radius:50%;background:#fff;
+  border:4px solid var(--azure-primary);
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 18px;font-family:'Quicksand',sans-serif;font-weight:700;
+  font-size:1.4rem;color:var(--azure-primary);position:relative;
+}
+.stage-circle::after{
+  content:'';position:absolute;inset:-4px;border-radius:50%;
+  border:4px solid transparent;animation:rotate 4s linear infinite;
+}
+.stage:nth-child(1) .stage-circle{border-color:#50e6ff;color:#0078d4}
+.stage:nth-child(2) .stage-circle{border-color:#0078d4;color:#0078d4}
+.stage:nth-child(3) .stage-circle{border-color:#00b4a6;color:#00b4a6}
+.stage:nth-child(4) .stage-circle{border-color:#3ecf8e;color:#3ecf8e}
+@keyframes rotate{to{transform:rotate(360deg)}}
+.stage h4{font-size:1.05rem;margin-bottom:8px}
+.stage p{font-size:0.88rem;color:var(--muted)}
+
+@media (max-width:768px){
+  .progression{grid-template-columns:1fr;gap:14px}
+  .progression::before{display:none}
+}
+
+/* ============ SCENARIOS ============ */
+.scenarios{background:linear-gradient(180deg,#f4f8fc 0%,#fff 100%)}
+.tabs{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-bottom:34px}
+.tab-btn{
+  font-family:'Quicksand',sans-serif;font-weight:600;font-size:0.95rem;
+  padding:14px 22px;border:2px solid var(--border);background:#fff;
+  border-radius:12px;cursor:pointer;transition:all 0.3s;color:var(--text);
+}
+.tab-btn:hover{border-color:var(--azure-primary)}
+.tab-btn.active{
+  background:linear-gradient(135deg,var(--azure-primary),var(--azure-accent));
+  color:#fff;border-color:var(--azure-primary);
+  box-shadow:0 8px 20px rgba(0,120,212,0.3);
+}
+.tab-content{display:none;animation:fadeIn 0.5s ease}
+.tab-content.active{display:block}
+@keyframes fadeIn{
+  from{opacity:0;transform:translateY(15px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+.scenario-card{
+  background:#fff;border-radius:20px;box-shadow:var(--shadow);
+  overflow:hidden;border:1px solid var(--border);
+}
+.scenario-header{padding:34px;color:#fff;position:relative;overflow:hidden}
+.scenario-header::before{
+  content:'';position:absolute;inset:0;
+  background-image:radial-gradient(circle at 80% 50%, rgba(255,255,255,0.15) 0%, transparent 60%);
+}
+.scenario-header.std-pub{background:linear-gradient(135deg,#0078d4,#50e6ff)}
+.scenario-header.std-int{background:linear-gradient(135deg,#0a2540,#0078d4)}
+.scenario-header.prem-pub{background:linear-gradient(135deg,#5b21b6,#8b5cf6)}
+.scenario-header.prem-int{background:linear-gradient(135deg,#0f172a,#5b21b6)}
+.scenario-header h3{font-size:1.7rem;margin-bottom:6px;position:relative;z-index:1}
+.scenario-header .tag{
+  display:inline-block;background:rgba(255,255,255,0.25);
+  padding:4px 12px;border-radius:20px;font-size:0.8rem;font-weight:600;
+  margin-bottom:10px;position:relative;z-index:1;
+}
+.scenario-header p{opacity:0.95;position:relative;z-index:1;font-size:0.95rem}
+
+.scenario-body{padding:34px;display:grid;grid-template-columns:1fr 1fr;gap:30px}
+@media (max-width:768px){.scenario-body{grid-template-columns:1fr}}
+
+.scenario-block h4{
+  font-size:1rem;text-transform:uppercase;letter-spacing:0.08em;
+  color:var(--azure-primary);margin-bottom:14px;
+  display:flex;align-items:center;gap:8px;
+}
+.scenario-block ul{list-style:none;padding:0}
+.scenario-block li{
+  padding:10px 0 10px 28px;position:relative;font-size:0.95rem;
+  border-bottom:1px solid var(--border);
+}
+.scenario-block li:last-child{border-bottom:none}
+.scenario-block.pros li::before{
+  content:'✓';position:absolute;left:0;top:10px;
+  color:var(--green);font-weight:700;font-size:1.1rem;
+}
+.scenario-block.cons li::before{
+  content:'✕';position:absolute;left:0;top:10px;
+  color:var(--coral);font-weight:700;font-size:1rem;
+}
+.scenario-block.when li::before{
+  content:'★';position:absolute;left:0;top:10px;
+  color:var(--amber);font-size:1rem;
+}
+
+.steps-section{
+  grid-column:1/-1;background:#f4f8fc;
+  padding:28px;border-radius:14px;margin-top:8px;
+}
+.steps-section h4{margin-bottom:8px;color:var(--azure-deep);font-size:1.1rem}
+.steps-section .steps-sub{font-size:0.9rem;color:var(--muted);margin-bottom:22px}
+.step-list{display:grid;grid-template-columns:1fr;gap:14px}
+.step{
+  background:#fff;padding:18px 22px;border-radius:10px;
+  border-left:4px solid var(--azure-primary);font-size:0.95rem;
+  position:relative;display:flex;gap:16px;align-items:flex-start;
+}
+.step-num-circle{
+  flex-shrink:0;width:34px;height:34px;border-radius:50%;
+  background:linear-gradient(135deg,var(--azure-primary),var(--azure-accent));
+  color:#fff;display:flex;align-items:center;justify-content:center;
+  font-family:'Quicksand',sans-serif;font-weight:700;font-size:0.95rem;
+}
+.step-body{flex:1}
+.step-body strong{font-family:'Quicksand',sans-serif;font-weight:700;display:block;margin-bottom:4px;color:var(--azure-deep)}
+.step-body p{margin:0;color:var(--text);font-size:0.92rem}
+.step-body .step-detail{color:var(--muted);font-size:0.88rem;margin-top:6px}
+
+.callout{
+  background:linear-gradient(135deg,rgba(255,181,71,0.12),rgba(255,107,107,0.08));
+  border-left:4px solid var(--amber);
+  padding:18px 22px;border-radius:10px;margin:14px 0;font-size:0.92rem;
+}
+.callout.danger{
+  background:linear-gradient(135deg,rgba(255,107,107,0.12),rgba(255,107,107,0.05));
+  border-left-color:var(--coral);
+}
+.callout.info{
+  background:linear-gradient(135deg,rgba(0,120,212,0.10),rgba(80,230,255,0.05));
+  border-left-color:var(--azure-primary);
+}
+.callout strong{color:var(--azure-deep)}
+
+.test-block{
+  background:#0a2540;color:#e3ecf5;padding:22px 26px;
+  border-radius:10px;margin-top:16px;font-size:0.92rem;
+}
+.test-block h5{
+  font-family:'Quicksand',sans-serif;color:#50e6ff;
+  margin-bottom:10px;font-size:0.85rem;text-transform:uppercase;letter-spacing:0.12em;
+}
+.test-block code,.test-block pre{background:rgba(255,255,255,0.08);color:#fff;border:none}
+
+.summary-box{
+  grid-column:1/-1;
+  background:linear-gradient(135deg,rgba(0,120,212,0.08),rgba(80,230,255,0.08));
+  border:1px solid var(--azure-light);
+  padding:22px 26px;border-radius:12px;font-size:0.98rem;
+}
+.summary-box strong{color:var(--azure-primary)}
+
+.diagram{
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  flex-wrap:wrap;margin-top:18px;padding:18px;
+  background:rgba(255,255,255,0.12);border-radius:10px;
+}
+.diagram .node-box{
+  background:rgba(255,255,255,0.95);color:var(--azure-deep);
+  padding:8px 14px;border-radius:8px;font-size:0.85rem;font-weight:600;
+  font-family:'Quicksand',sans-serif;
+}
+.diagram .arrow{font-size:1.3rem;opacity:0.85;animation:arrowMove 2s ease-in-out infinite}
+@keyframes arrowMove{0%,100%{transform:translateX(0)}50%{transform:translateX(4px)}}
+
+/* ============ COMPARISON TABLE ============ */
+.comparison{background:#fff}
+.compare-table{
+  width:100%;border-collapse:separate;border-spacing:0;
+  background:#fff;border-radius:16px;overflow:hidden;box-shadow:var(--shadow);
+}
+.compare-table th{
+  background:var(--azure-deep);color:#fff;padding:18px 20px;text-align:left;
+  font-family:'Quicksand',sans-serif;font-size:0.98rem;font-weight:700;
+}
+.compare-table td{
+  padding:16px 20px;border-bottom:1px solid var(--border);font-size:0.93rem;
+}
+.compare-table tr:last-child td{border-bottom:none}
+.compare-table tr:hover{background:#f4f8fc}
+.compare-table td:first-child{font-weight:600}
+.check{color:var(--green);font-weight:700;font-size:1.15rem}
+.cross{color:var(--coral);font-weight:700;font-size:1.15rem}
+.partial{color:var(--amber);font-weight:600;font-size:0.85rem}
+
+/* ============ STATS ============ */
+.stats{background:linear-gradient(135deg,var(--azure-deep) 0%, #1a3a6a 100%);color:#fff}
+.stats .section-head h2{color:#fff}
+.stats .section-head p{color:rgba(255,255,255,0.8)}
+.stats .section-head .eyebrow{color:var(--azure-light)}
+.stats-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:24px;margin-top:40px;
+}
+.stat-card{
+  background:rgba(255,255,255,0.05);
+  border:1px solid rgba(255,255,255,0.15);
+  padding:34px 24px;border-radius:16px;text-align:center;
+  backdrop-filter:blur(10px);transition:all 0.35s;
+}
+.stat-card:hover{transform:translateY(-6px);background:rgba(255,255,255,0.1);border-color:var(--azure-light)}
+.stat-num{
+  font-family:'Quicksand',sans-serif;font-weight:700;font-size:3.5rem;
+  background:linear-gradient(135deg,#50e6ff,#fff);
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;line-height:1;margin-bottom:10px;
+}
+.stat-label{font-size:0.95rem;opacity:0.9}
+
+/* ============ SECURITY ============ */
+.security{background:#f4f8fc}
+.security-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:22px;
+}
+.security-item{
+  background:#fff;padding:28px;border-radius:14px;
+  border-left:5px solid var(--azure-primary);
+  box-shadow:var(--shadow);transition:all 0.3s;
+}
+.security-item:hover{transform:translateX(6px);border-left-width:8px}
+.security-item h4{font-size:1.1rem;margin-bottom:8px;color:var(--azure-deep)}
+.security-item p{color:var(--muted);font-size:0.92rem}
+.security-item.danger{border-left-color:var(--coral)}
+.security-item.warn{border-left-color:var(--amber)}
+.security-item.success{border-left-color:var(--green)}
+
+/* ============ DECISION TREE ============ */
+.decision{background:#fff}
+.tree{max-width:850px;margin:0 auto}
+.tree-node{
+  background:#fff;border:2px solid var(--azure-primary);
+  padding:20px 26px;border-radius:14px;text-align:center;
+  margin:0 auto;max-width:480px;
+  font-family:'Quicksand',sans-serif;font-weight:600;
+  position:relative;box-shadow:var(--shadow);
+}
+.tree-node.question{
+  background:linear-gradient(135deg,var(--azure-primary),var(--azure-accent));
+  color:#fff;border:none;
+}
+.tree-branches{
+  display:grid;grid-template-columns:1fr 1fr;gap:30px;margin:30px 0;
+  position:relative;
+}
+.tree-branches::before{
+  content:'';position:absolute;top:-30px;left:50%;width:2px;height:30px;
+  background:var(--azure-primary);
+}
+.tree-branches::after{
+  content:'';position:absolute;top:-30px;left:25%;right:25%;height:2px;
+  background:var(--azure-primary);
+}
+.tree-branch{position:relative;padding-top:30px}
+.tree-branch::before{
+  content:'';position:absolute;top:0;left:50%;width:2px;height:30px;
+  background:var(--azure-primary);
+}
+.branch-label{
+  position:absolute;top:8px;left:50%;transform:translateX(-50%);
+  background:#fff;padding:2px 12px;font-size:0.8rem;font-weight:700;
+  font-family:'Quicksand',sans-serif;color:var(--azure-primary);
+  border:1px solid var(--azure-primary);border-radius:20px;z-index:2;
+}
+.tree-result{
+  background:#fff;border:2px dashed var(--green);
+  padding:20px;border-radius:14px;text-align:center;font-family:'Quicksand',sans-serif;
+}
+.tree-result.alt{border-color:var(--azure-primary)}
+.tree-result strong{display:block;font-size:1.05rem;margin-bottom:6px;color:var(--azure-deep)}
+.tree-result span{font-size:0.88rem;font-weight:500;color:var(--muted);font-family:'Nunito',sans-serif}
+
+@media (max-width:600px){
+  .tree-branches{grid-template-columns:1fr}
+  .tree-branches::after{display:none}
+}
+
+/* ============ FOOTER ============ */
+.footer{
+  background:var(--azure-deep);color:#fff;
+  padding:50px 20px;text-align:center;
+}
+.footer h3{font-size:1.3rem;margin-bottom:10px}
+.footer p{opacity:0.8;font-size:0.95rem;max-width:580px;margin:0 auto}
+.footer-divider{width:60px;height:3px;background:var(--azure-light);margin:20px auto;border-radius:3px}
+
+/* Reveal on scroll */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity 0.7s ease, transform 0.7s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="floating-nodes">
+    <div class="node"></div><div class="node"></div><div class="node"></div>
+    <div class="node"></div><div class="node"></div><div class="node"></div>
+  </div>
+  <div class="hero-content">
+    <span class="hero-badge">Learning Guide • For Customers &amp; Solution Engineers</span>
+    <h1>Azure API Management v2</h1>
+    <p class="subtitle">Public &amp; Private Networking — explained simply</p>
+    <p class="lead">A friendly walkthrough of how Standard v2 and Premium v2 deploy, where they live on the network, and exactly how to set each one up in the Azure portal. No deep networking background required.</p>
+  </div>
+  <div class="scroll-cue">↓ Scroll to explore</div>
+</header>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="#glossary">Glossary</a>
+    <a href="#architecture">Architecture Journey</a>
+    <a href="#scenarios">4 Scenarios</a>
+    <a href="#comparison">Std vs. Premium</a>
+    <a href="#limits">Key Limits</a>
+    <a href="#security">Security</a>
+    <a href="#decision">Decision Helper</a>
+  </div>
+</nav>
+
+<!-- GLOSSARY -->
+<section id="glossary">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Words We Will Use</span>
+      <h2>Four ideas to know first</h2>
+      <p>Before we look at deployment scenarios, let's level-set on the building blocks. Each one shows up later in this guide.</p>
+    </div>
+    <div class="glossary-grid">
+      <div class="glossary-card reveal">
+        <div class="glossary-icon">🌐</div>
+        <h3>Public</h3>
+        <p>The APIM endpoint is internet-accessible. Even when APIM has VNet integration for outbound, the gateway and developer portal endpoints stay publicly reachable. You secure it using the APIM <code>ip-filter</code> policy.</p>
+      </div>
+      <div class="glossary-card reveal">
+        <div class="glossary-icon">🚪</div>
+        <h3>Internal (Private)</h3>
+        <p>The APIM endpoint is closed to the public internet — only reachable through your private network. A Private Endpoint uses a VNet IP, traffic flows over Private Link on the Microsoft backbone, eliminating public exposure.</p>
+      </div>
+      <div class="glossary-card reveal">
+        <div class="glossary-icon">🔌</div>
+        <h3>Integration</h3>
+        <p>VNet <strong>integration</strong> means APIM connects <strong>outbound</strong> to private backends through a VNet, but the gateway itself stays public (unless you add a Private Endpoint). Both Standard v2 and Premium v2 support this.</p>
+        <span class="pill">Outbound only</span>
+      </div>
+      <div class="glossary-card reveal">
+        <div class="glossary-icon">🛡️</div>
+        <h3>Injection</h3>
+        <p>Full VNet <strong>injection</strong> means APIM lives inside a VNet — the gateway is reachable at a <strong>private IP only</strong>. Best for full network isolation. Only Premium v2 supports injection. Standard v2 cannot be injected.</p>
+        <span class="pill">Premium v2 only</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ARCHITECTURE PROGRESSION -->
+<section id="architecture" class="architecture">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Network Architecture Progression</span>
+      <h2>From fully public to fully private</h2>
+      <p>Think of these as four points on a spectrum. Each step adds isolation — and complexity.</p>
+    </div>
+    <div class="progression">
+      <div class="stage reveal">
+        <div class="stage-circle">1</div>
+        <h4>Public Gateway</h4>
+        <p>Default internet endpoint with optional IP filtering.</p>
+      </div>
+      <div class="stage reveal">
+        <div class="stage-circle">2</div>
+        <h4>Outbound VNet Integration</h4>
+        <p>APIM reaches private backends while remaining publicly reachable.</p>
+      </div>
+      <div class="stage reveal">
+        <div class="stage-circle">3</div>
+        <h4>Inbound Private Endpoint</h4>
+        <p>Gateway becomes reachable only from your private network.</p>
+      </div>
+      <div class="stage reveal">
+        <div class="stage-circle">4</div>
+        <h4>Full VNet Injection</h4>
+        <p>APIM lives entirely inside the VNet with a private IP only.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SCENARIOS -->
+<section id="scenarios" class="scenarios">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">The Four Deployment Scenarios</span>
+      <h2>Pick the model that matches your need</h2>
+      <p>Each scenario lists when to use it, what's good and bad about it, plus a step-by-step setup summary based on the Azure portal flow.</p>
+    </div>
+
+    <div class="tabs reveal">
+      <button class="tab-btn active" data-tab="s1">1 · Standard v2 Public</button>
+      <button class="tab-btn" data-tab="s2">2 · Standard v2 Internal</button>
+      <button class="tab-btn" data-tab="s3">3 · Premium v2 Public</button>
+      <button class="tab-btn" data-tab="s4">4 · Premium v2 Internal</button>
+    </div>
+
+    <!-- SCENARIO 1 -->
+    <div class="tab-content active" id="s1">
+      <div class="scenario-card">
+        <div class="scenario-header std-pub">
+          <span class="tag">Scenario 1</span>
+          <h3>Standard v2 — Public</h3>
+          <p>Internet-facing gateway, locked down with an IP restriction policy. The simplest place to start.</p>
+          <div class="diagram">
+            <span class="node-box">🌍 Internet</span>
+            <span class="arrow">→</span>
+            <span class="node-box">🔒 ip-filter Policy</span>
+            <span class="arrow">→</span>
+            <span class="node-box">⚡ APIM (public URL)</span>
+            <span class="arrow">→</span>
+            <span class="node-box">🎯 Backend</span>
+          </div>
+        </div>
+        <div class="scenario-body">
+          <div class="scenario-block when">
+            <h4>★ When to use</h4>
+            <ul>
+              <li>Publishing APIs to external developers or partners</li>
+              <li>Cost-efficiency matters, full isolation is not required</li>
+              <li>Backends are reachable on the public internet or through service-level firewalls</li>
+              <li>You want the fastest path from zero to a working gateway</li>
+            </ul>
+          </div>
+          <div class="scenario-block pros">
+            <h4>✓ Pros</h4>
+            <ul>
+              <li>Simplest, fastest to deploy</li>
+              <li>Lowest-cost SKU in the v2 family</li>
+              <li><code>ip-filter</code> policy works at global, workspace, product, API, or operation scope</li>
+              <li>No VNet, subnet, or NSG planning required</li>
+            </ul>
+          </div>
+          <div class="scenario-block cons">
+            <h4>✕ Cons</h4>
+            <ul>
+              <li>Gateway is reachable from the internet by default</li>
+              <li>No NSG rules — only IP filter policy</li>
+              <li>Not suitable for strict private-only requirements</li>
+            </ul>
+          </div>
+
+          <div class="steps-section">
+            <h4>Step-by-step setup (Azure portal)</h4>
+            <p class="steps-sub">Result: a Standard v2 instance with a public gateway URL, locked to a specific IP via the <code>ip-filter</code> policy.</p>
+            <div class="step-list">
+              <div class="step"><div class="step-num-circle">1</div><div class="step-body"><strong>Create the resource</strong><p>Azure portal → <strong>Create a resource</strong> → search <strong>API Management</strong> → <strong>Create</strong>.</p></div></div>
+              <div class="step"><div class="step-num-circle">2</div><div class="step-body"><strong>Basics tab — service details</strong><p>Subscription, Resource group (e.g., <code>demo-apim-rg</code>), Name (e.g., <code>demo-apim-public</code>), Region, and <strong>Pricing tier = Standard v2</strong>.</p></div></div>
+              <div class="step"><div class="step-num-circle">3</div><div class="step-body"><strong>Networking tab — keep defaults</strong><p>Leave public network access enabled. APIM will get a public URL like <code>https://demo-apim-public.azure-api.net</code>.</p></div></div>
+              <div class="step"><div class="step-num-circle">4</div><div class="step-body"><strong>Review + Create</strong><p>Click <strong>Review + create</strong>, then <strong>Create</strong>. Wait for the deployment-complete notification.</p></div></div>
+              <div class="step"><div class="step-num-circle">5</div><div class="step-body"><strong>Add a sample API</strong><p>Open the instance → <strong>APIs</strong> → <strong>+ Add API</strong> → choose the built-in <strong>Echo API</strong> → leave defaults → <strong>Create</strong>.</p></div></div>
+              <div class="step"><div class="step-num-circle">6</div><div class="step-body"><strong>Apply IP restriction policy</strong><p>APIs → All APIs → click the inbound processing <code>&lt;/&gt;</code> code editor. Inside <code>&lt;inbound&gt;</code>:</p>
+              <pre>&lt;ip-filter action="allow"&gt;
+  &lt;address&gt;1.2.3.4&lt;/address&gt;
+&lt;/ip-filter&gt;</pre>
+              <p class="step-detail">Replace <code>1.2.3.4</code> with your client IP. With <code>action="allow"</code>, any IP not listed is automatically denied. Use <code>&lt;address-range from="x.x.x.x" to="y.y.y.y" /&gt;</code> for ranges. Click <strong>Save</strong>.</p>
+              </div></div>
+            </div>
+            <div class="test-block">
+              <h5>How to test</h5>
+              <p>From the allowed IP, hit:</p>
+              <pre>https://demo-apim-public.azure-api.net/echo/resource</pre>
+              <p>You should get a successful response. From any other IP, APIM returns <strong>HTTP 403 Forbidden</strong>.</p>
+            </div>
+          </div>
+          <div class="summary-box">
+            <strong>In one line:</strong> A public gateway you can spin up in minutes, then lock down with IP allow-lists. Best fit for partner or developer APIs that don't require network-level isolation.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCENARIO 2 -->
+    <div class="tab-content" id="s2">
+      <div class="scenario-card">
+        <div class="scenario-header std-int">
+          <span class="tag">Scenario 2</span>
+          <h3>Standard v2 — Internal (Private Endpoint + VNet Integration)</h3>
+          <p>Inbound Private Endpoint + outbound VNet integration. End-to-end isolation without paying for Premium injection.</p>
+          <div class="diagram">
+            <span class="node-box">🏢 Internal Apps</span>
+            <span class="arrow">→</span>
+            <span class="node-box">🚪 Private Endpoint</span>
+            <span class="arrow">→</span>
+            <span class="node-box">⚡ APIM</span>
+            <span class="arrow">→</span>
+            <span class="node-box">🔌 VNet Integration</span>
+            <span class="arrow">→</span>
+            <span class="node-box">🎯 Private Backend</span>
+          </div>
+        </div>
+        <div class="scenario-body">
+          <div class="scenario-block when">
+            <h4>★ When to use</h4>
+            <ul>
+              <li>APIs are for internal apps only — no public exposure</li>
+              <li>Backends live in a VNet, on-prem (via ExpressRoute), or another private network</li>
+              <li>You need private-IP inbound but want Standard v2 pricing</li>
+              <li>You can accept that the underlying platform is multi-tenant (vs. injection)</li>
+            </ul>
+          </div>
+          <div class="scenario-block pros">
+            <h4>✓ Pros</h4>
+            <ul>
+              <li>No public inbound surface once Private Endpoint is wired up</li>
+              <li>Reach private backends through outbound VNet integration</li>
+              <li>Cheaper than Premium v2 isolation options</li>
+              <li>Public access can be disabled after Private Endpoint is created</li>
+              <li>End-to-end isolation between clients and backends</li>
+            </ul>
+          </div>
+          <div class="scenario-block cons">
+            <h4>✕ Cons</h4>
+            <ul>
+              <li>Inbound NSG rules <strong>do not apply</strong> on integration (only injection)</li>
+              <li>No full VNet injection — the gateway itself isn't in your VNet</li>
+              <li>DNS resolution must be planned (private DNS zones)</li>
+              <li>Two subnets needed: one for integration, one for the Private Endpoint</li>
+            </ul>
+          </div>
+
+          <div class="callout info"><strong>Why not injection?</strong> Standard v2 doesn't support full VNet injection — only Premium v2 does. Standard v2 uses Integration (outbound) + Private Endpoint (inbound) to achieve a similar result.</div>
+
+          <div class="steps-section">
+            <h4>Step-by-step setup (Azure portal)</h4>
+            <p class="steps-sub">Result: a Standard v2 instance reachable only via Private Endpoint, with outbound traffic flowing through your VNet.</p>
+            <div class="step-list">
+              <div class="step"><div class="step-num-circle">1</div><div class="step-body"><strong>Create a Virtual Network with two subnets</strong><p>Create <code>demo-vnet</code> with address space <code>10.0.0.0/16</code> (same region as APIM).</p>
+              <p class="step-detail"><strong>Subnet A — <code>apim-integration-subnet</code></strong>: <code>10.0.0.0/24</code> (min /27, /24 recommended). Delegate to <code>Microsoft.Web/serverFarms</code>.<br><strong>Subnet B — <code>apim-private-endpoint-subnet</code></strong>: <code>10.0.1.0/27</code>. No delegation. The Private Endpoint subnet cannot be delegated.</p></div></div>
+
+              <div class="step"><div class="step-num-circle">2</div><div class="step-body"><strong>Create an NSG for the integration subnet</strong><p>Name it <code>apim-integration-nsg</code> in the same region.</p></div></div>
+
+              <div class="step"><div class="step-num-circle">3</div><div class="step-body"><strong>Attach the NSG and add outbound rules</strong><p>Open the NSG → <strong>Subnets</strong> → <strong>Associate</strong> with <code>apim-integration-subnet</code>. An NSG <strong>must</strong> be associated with the integration subnet.</p>
+              <p class="step-detail">Add two outbound rules — both TCP/443, Action: Allow:<br>• <strong>AllowStorage</strong> → Service Tag <code>Storage</code>, priority 100<br>• <strong>AllowKeyVault</strong> → Service Tag <code>AzureKeyVault</code>, priority 110</p>
+              <p class="step-detail">Inbound NSG rules are not enforced for v2 integration. To enforce inbound NSG, use injection (Scenario 4).</p></div></div>
+
+              <div class="step"><div class="step-num-circle">4</div><div class="step-body"><strong>Create the APIM instance with Private Endpoint + Integration</strong><p>Create resource → API Management → Pricing tier <strong>Standard v2</strong>.</p>
+              <p class="step-detail"><strong>Networking tab</strong> → choose <em>Inbound private link and/or outbound virtual network integration</em>.<br>• <strong>Private Endpoint</strong>: Name <code>apim-private-ep</code>, Sub-resource <strong>Gateway</strong>, VNet <code>demo-vnet</code>, Subnet <code>apim-private-endpoint-subnet</code>, integrate with private DNS zone <code>privatelink.azure-api.net</code> (default).<br>• <strong>Outbound VNet Integration</strong>: select <code>demo-vnet</code> + <code>apim-integration-subnet</code>.</p></div></div>
+
+              <div class="step"><div class="step-num-circle">5</div><div class="step-body"><strong>Disable public network access</strong><p>You can only do this <strong>after</strong> the Private Endpoint is configured. Instance → <strong>Deployment + infrastructure</strong> → <strong>Network</strong> → <strong>Edit</strong> → set <strong>Public network access = Disabled</strong> → <strong>Save</strong>.</p></div></div>
+
+              <div class="step"><div class="step-num-circle">6</div><div class="step-body"><strong>Verify DNS</strong><p>Azure auto-creates a record in <code>privatelink.azure-api.net</code> pointing the APIM hostname to its private IP. Confirm under the Private Endpoint → <strong>DNS configuration</strong>. Make sure your VNet is linked to the private DNS zone.</p></div></div>
+
+              <div class="step"><div class="step-num-circle">7</div><div class="step-body"><strong>Add a sample API</strong><p>APIs → <strong>+ Add API</strong> → import the <strong>Echo API</strong>. To verify outbound, set the Web service URL to a backend inside <code>demo-vnet</code> or a peered network.</p></div></div>
+            </div>
+            <div class="test-block">
+              <h5>How to test</h5>
+              <p>From a VM inside <code>demo-vnet</code>:</p>
+              <pre>https://demo-apim-internal.azure-api.net/echo/resource</pre>
+              <p>Should succeed over the private network. From a machine outside the VNet, the URL should not load — proving the gateway is internal-only. Reminder: each APIM instance supports up to <strong>100 Private Link connections</strong>, and only the <strong>Gateway</strong> sub-resource supports inbound Private Link.</p>
+            </div>
+          </div>
+          <div class="summary-box">
+            <strong>In one line:</strong> The semi-private sweet spot — private inbound and private outbound, without paying for full injection. Great for internal-only APIs on a budget.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCENARIO 3 -->
+    <div class="tab-content" id="s3">
+      <div class="scenario-card">
+        <div class="scenario-header prem-pub">
+          <span class="tag">Scenario 3</span>
+          <h3>Premium v2 — Public</h3>
+          <p>Internet-facing Premium gateway with higher scale (up to 30 units), availability zones, and the ability to add Private Endpoint later.</p>
+          <div class="diagram">
+            <span class="node-box">🌍 Internet</span>
+            <span class="arrow">→</span>
+            <span class="node-box">🔒 ip-filter Policy</span>
+            <span class="arrow">→</span>
+            <span class="node-box">⚡ APIM Premium</span>
+            <span class="arrow">→</span>
+            <span class="node-box">🎯 Backend</span>
+          </div>
+        </div>
+        <div class="scenario-body">
+          <div class="scenario-block when">
+            <h4>★ When to use</h4>
+            <ul>
+              <li>You need higher scale-out (up to <strong>30 units</strong>) than Standard v2 offers</li>
+              <li>You want availability-zone support or premium features</li>
+              <li>You may evolve into private inbound later via Private Endpoint</li>
+              <li>SLA, multi-region, or advanced policy needs justify Premium pricing</li>
+            </ul>
+          </div>
+          <div class="scenario-block pros">
+            <h4>✓ Pros</h4>
+            <ul>
+              <li>Higher scale and richer feature set than Standard v2</li>
+              <li>Public by default, but can add Private Endpoint inbound</li>
+              <li>Outbound VNet integration available for private backends</li>
+              <li><code>ip-filter</code> policy works identically to Standard v2</li>
+            </ul>
+          </div>
+          <div class="scenario-block cons">
+            <h4>✕ Cons</h4>
+            <ul>
+              <li>Higher cost than Standard v2</li>
+              <li>VNet injection cannot be turned on later — only at creation (see Scenario 4)</li>
+              <li>Still public-facing unless you actively add Private Endpoint</li>
+              <li>You can't switch between injection and integration once chosen</li>
+            </ul>
+          </div>
+
+          <div class="callout info"><strong>When to choose Premium v2 over Standard v2 for public:</strong> when you need full VNet injection later, higher scale (up to 30 units), or availability-zone support. Otherwise Standard v2 gives the same public functionality at a lower cost.</div>
+
+          <div class="steps-section">
+            <h4>Step-by-step setup (Azure portal)</h4>
+            <p class="steps-sub">Result: a Premium v2 instance with a public gateway URL, locked to a specific IP via the <code>ip-filter</code> policy.</p>
+            <div class="step-list">
+              <div class="step"><div class="step-num-circle">1</div><div class="step-body"><strong>Create API Management — Premium v2</strong><p>Create resource → API Management → fill Subscription, Resource group, Name, Region. Set <strong>Pricing tier = Premium v2</strong>.</p></div></div>
+              <div class="step"><div class="step-num-circle">2</div><div class="step-body"><strong>Networking tab — public access</strong><p>Keep default <strong>Public</strong> connectivity (no VNet injection, no Private Endpoint). Click <strong>Review + create</strong> → <strong>Create</strong>. Premium v2 may take some time to deploy.</p></div></div>
+              <div class="step"><div class="step-num-circle">3</div><div class="step-body"><strong>Add a sample API</strong><p>After deployment, go to <strong>APIs</strong> and add the <strong>Echo API</strong> (same as Scenario 1, Step 5).</p></div></div>
+              <div class="step"><div class="step-num-circle">4</div><div class="step-body"><strong>Apply IP restriction policy</strong><p>Repeat Scenario 1 Step 6 — add the <code>&lt;ip-filter action="allow"&gt;</code> snippet inside <code>&lt;inbound&gt;</code> and <strong>Save</strong>. The policy works identically across all v2 tiers.</p></div></div>
+            </div>
+            <div class="test-block">
+              <h5>How to test</h5>
+              <pre>https://&lt;your-premium-apim-name&gt;.azure-api.net/echo/resource</pre>
+              <p>From the allowed IP it should succeed. Any other IP gets <strong>HTTP 403 Forbidden</strong>.</p>
+            </div>
+          </div>
+          <div class="summary-box">
+            <strong>In one line:</strong> Premium scale and features without full lockdown — flexible for high-throughput public APIs that may grow into a private posture over time (via Private Endpoint, not injection).
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCENARIO 4 -->
+    <div class="tab-content" id="s4">
+      <div class="scenario-card">
+        <div class="scenario-header prem-int">
+          <span class="tag">Scenario 4</span>
+          <h3>Premium v2 — Internal (Full VNet Injection)</h3>
+          <p>The most secure configuration. APIM lives entirely inside your VNet with a private IP only — no public endpoint at all.</p>
+          <div class="diagram">
+            <span class="node-box">🏢 Private Network</span>
+            <span class="arrow">→</span>
+            <span class="node-box">🛡️ NSG (inbound rules apply)</span>
+            <span class="arrow">→</span>
+            <span class="node-box">⚡ APIM (inside VNet)</span>
+            <span class="arrow">→</span>
+            <span class="node-box">🎯 Private Backend</span>
+          </div>
+        </div>
+        <div class="scenario-body">
+          <div class="scenario-block when">
+            <h4>★ When to use</h4>
+            <ul>
+              <li>Compliance, regulatory, or security policy mandates no public IP at all</li>
+              <li>You need NSG enforcement on inbound traffic, not just <code>ip-filter</code></li>
+              <li>APIM and backends must both stay inside the corporate network boundary</li>
+              <li>You can lock the deployment model in at creation time (it's irreversible)</li>
+            </ul>
+          </div>
+          <div class="scenario-block pros">
+            <h4>✓ Pros</h4>
+            <ul>
+              <li>Fully private — no public IP exposure</li>
+              <li>NSG rules apply for full network-level inbound control</li>
+              <li>Highest level of isolation v2 offers</li>
+              <li>Premium scale (up to <strong>30 units</strong>) and feature set</li>
+            </ul>
+          </div>
+          <div class="scenario-block cons">
+            <h4>✕ Cons</h4>
+            <ul>
+              <li>Injection can <strong>only</strong> be set at creation — not switchable later</li>
+              <li>Cannot switch between injection ↔ integration on the same instance</li>
+              <li>Highest-cost option in the v2 family</li>
+              <li>Requires careful subnet planning (≥ /27 minimum, /24 recommended)</li>
+              <li>You must manage your own DNS — public DNS won't resolve the gateway</li>
+              <li>External developers can't reach the gateway without extra plumbing</li>
+            </ul>
+          </div>
+
+          <div class="callout danger"><strong>📌 Critical timing rules:</strong> You can <strong>only</strong> inject Premium v2 into a VNet at creation time. You cannot inject an existing instance later. You also cannot switch between injection and integration once an instance is created.</div>
+
+          <div class="steps-section">
+            <h4>Step-by-step setup (Azure portal)</h4>
+            <p class="steps-sub">Result: a Premium v2 instance with a private IP only, inside your VNet, with NSG-enforced inbound rules and a self-managed DNS record.</p>
+            <div class="step-list">
+              <div class="step"><div class="step-num-circle">1</div><div class="step-body"><strong>Create a Virtual Network and injection subnet</strong><p>Create <code>demo-vnet2</code> in the same region/subscription as your APIM, address space <code>10.1.0.0/16</code>.</p>
+              <p class="step-detail"><strong>Subnet — <code>apim-injection-subnet</code></strong>: <code>10.1.0.0/24</code> (min /27, /24 recommended). Delegate to <strong><code>Microsoft.Web/hostingEnvironments</code></strong> (different from the integration scenario).</p>
+              <p class="step-detail">The injection subnet can only be used by <strong>one</strong> APIM instance and cannot be shared.</p></div></div>
+
+              <div class="step"><div class="step-num-circle">2</div><div class="step-body"><strong>Create an NSG for the injection subnet</strong><p>Name it <code>apim-injection-nsg</code> in the same region.</p></div></div>
+
+              <div class="step"><div class="step-num-circle">3</div><div class="step-body"><strong>Attach NSG and add outbound rules</strong><p>NSG → <strong>Subnets</strong> → <strong>Associate</strong> with <code>apim-injection-subnet</code>. NSG association is mandatory.</p>
+              <p class="step-detail">Add two outbound rules — TCP/443, Action: Allow:<br>• <strong>AllowStorage</strong> → Service Tag <code>Storage</code>, priority 100<br>• <strong>AllowKeyVault</strong> → Service Tag <code>AzureKeyVault</code>, priority 110</p>
+              <p class="step-detail">You can additionally restrict outbound to internet and only allow VNet/peered destinations.</p></div></div>
+
+              <div class="step"><div class="step-num-circle">4</div><div class="step-body"><strong>Create APIM (Premium v2) with VNet Injection</strong><p>Create resource → API Management → <strong>Pricing tier = Premium v2</strong>.</p>
+              <p class="step-detail"><strong>Networking tab</strong>:<br>• <strong>Connectivity type</strong> = Virtual network<br>• <strong>Type</strong> = Virtual Network injection<br>• Select <code>demo-vnet2</code> + <code>apim-injection-subnet</code></p>
+              <p class="step-detail">Click <strong>Review + create</strong> → <strong>Create</strong>. Deployment may take 30+ minutes.</p></div></div>
+
+              <div class="step"><div class="step-num-circle">5</div><div class="step-body"><strong>Note the private IP</strong><p>From the APIM <strong>Overview</strong> page, capture the assigned private IP (e.g., <code>10.1.0.4</code>).</p>
+              <p class="step-detail">The IP is dynamically assigned — you can't predict it before deployment, and switching subnets can change it.</p></div></div>
+
+              <div class="step"><div class="step-num-circle">6</div><div class="step-body"><strong>Set up DNS for the private hostname</strong><p>Public DNS won't resolve the gateway. Recommended:</p>
+              <p class="step-detail">• Create an Azure <strong>Private DNS Zone</strong> for <code>azure-api.net</code><br>• Link the zone to <code>demo-vnet2</code><br>• Add an <strong>A record</strong> mapping <code>demo-apim-injected</code> → the APIM private IP</p>
+              <p class="step-detail">Quick demo alt: edit the hosts file on a VM inside the VNet:<br><code>10.1.0.4&nbsp;&nbsp;demo-apim-injected.azure-api.net</code></p>
+              <p class="step-detail">If you use a custom DNS resolver, also ensure name resolution for <code>*.vault.azure.net</code> (Key Vault). Azure Private DNS handles this automatically.</p></div></div>
+
+              <div class="step"><div class="step-num-circle">7</div><div class="step-body"><strong>Add a sample API</strong><p>APIs → <strong>+ Add API</strong> → import the <strong>Echo API</strong>. Set the backend URL to a service accessible inside <code>demo-vnet2</code> (or via peering).</p></div></div>
+            </div>
+            <div class="test-block">
+              <h5>How to test</h5>
+              <p>From a VM inside <code>demo-vnet2</code>:</p>
+              <pre>nslookup demo-apim-injected.azure-api.net
+curl https://demo-apim-injected.azure-api.net/echo/resource</pre>
+              <p><code>nslookup</code> should return the private IP. <code>curl</code> should succeed. From outside the VNet, DNS won't resolve and the call should time out — proving full isolation.</p>
+            </div>
+          </div>
+          <div class="summary-box">
+            <strong>In one line:</strong> Maximum isolation. Full VNet injection is a one-time, irreversible decision — make it deliberately when full network isolation is mandatory.
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- COMPARISON -->
+<section id="comparison" class="comparison">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Side-by-Side</span>
+      <h2>Standard v2 vs. Premium v2</h2>
+      <p>Quick reference for what each tier supports out of the box.</p>
+    </div>
+    <div style="overflow-x:auto" class="reveal">
+      <table class="compare-table">
+        <thead>
+          <tr><th>Capability</th><th>Standard v2</th><th>Premium v2</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Public endpoint by default</td><td><span class="check">✓</span></td><td><span class="check">✓</span></td></tr>
+          <tr><td>Internal-only mode (no public)</td><td>Workaround: Private Endpoint + disable public access</td><td>Built-in via full VNet injection</td></tr>
+          <tr><td>Outbound VNet integration</td><td><span class="check">✓</span></td><td><span class="check">✓</span></td></tr>
+          <tr><td>Inbound Private Endpoint</td><td><span class="check">✓</span></td><td><span class="check">✓</span></td></tr>
+          <tr><td>Full VNet injection</td><td><span class="cross">✕</span></td><td><span class="check">✓</span> <span class="partial">(creation time only)</span></td></tr>
+          <tr><td>Integration subnet delegation</td><td><code>Microsoft.Web/serverFarms</code></td><td><code>Microsoft.Web/serverFarms</code></td></tr>
+          <tr><td>Injection subnet delegation</td><td>N/A</td><td><code>Microsoft.Web/hostingEnvironments</code></td></tr>
+          <tr><td>Switch injection ↔ integration</td><td>N/A</td><td><span class="cross">✕</span> <span class="partial">cannot switch</span></td></tr>
+          <tr><td>Inbound NSG enforcement (integration)</td><td><span class="cross">✕</span></td><td><span class="cross">✕</span></td></tr>
+          <tr><td>Inbound NSG enforcement (injection)</td><td>N/A</td><td><span class="check">✓</span></td></tr>
+          <tr><td>Min subnet / recommended</td><td>/27 min · /24 recommended</td><td>/27 min · /24 recommended</td></tr>
+          <tr><td>Max scale-out units</td><td>Lower</td><td><strong>30</strong></td></tr>
+          <tr><td>Dedicated subnet required</td><td><span class="check">✓</span></td><td><span class="check">✓</span></td></tr>
+          <tr><td>Best for</td><td>Cost-efficient public or semi-private APIs</td><td>Full isolation, high scale, premium features</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- LIMITS / STATS -->
+<section id="limits" class="stats">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Numbers to Remember</span>
+      <h2>Key quantitative limits</h2>
+      <p>These are the ceilings and floors that shape your design decisions.</p>
+    </div>
+    <div class="stats-grid">
+      <div class="stat-card reveal">
+        <div class="stat-num" data-target="100">0</div>
+        <div class="stat-label">Max Private Link connections per APIM instance (Gateway sub-resource only)</div>
+      </div>
+      <div class="stat-card reveal">
+        <div class="stat-num" data-target="30">0</div>
+        <div class="stat-label">Max scale-out units for Premium v2 injection</div>
+      </div>
+      <div class="stat-card reveal">
+        <div class="stat-num">/27</div>
+        <div class="stat-label">Minimum subnet size for integration &amp; injection (32 addresses)</div>
+      </div>
+      <div class="stat-card reveal">
+        <div class="stat-num">/24</div>
+        <div class="stat-label">Recommended subnet size for scaling headroom (256 addresses)</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECURITY -->
+<section id="security" class="security">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Security &amp; Access Controls</span>
+      <h2>Controls you can layer on</h2>
+      <p>Different scenarios unlock different controls. Here's what's available — and where it applies.</p>
+    </div>
+    <div class="security-grid">
+      <div class="security-item success reveal">
+        <h4>🔐 IP Filter Policy</h4>
+        <p>Enforces allow/deny rules for public endpoints. Works on all v2 tiers and can be scoped at global, workspace, product, API, or operation level.</p>
+      </div>
+      <div class="security-item reveal">
+        <h4>🚪 Private Endpoint</h4>
+        <p>Removes inbound internet exposure entirely. Available on both Standard v2 and Premium v2. Only the <strong>Gateway</strong> sub-resource is supported.</p>
+      </div>
+      <div class="security-item warn reveal">
+        <h4>🛡️ Inbound NSG Rules</h4>
+        <p>Apply only when full VNet injection is in place — meaning Premium v2 injected at creation time. Inbound NSG does <strong>not</strong> apply to integration on either tier.</p>
+      </div>
+      <div class="security-item danger reveal">
+        <h4>🚫 Disable Public Access</h4>
+        <p>Once a Private Endpoint is created, you can turn off public network access from <strong>Deployment + infrastructure → Network</strong> for clean private-only posture.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DECISION TREE -->
+<section id="decision" class="decision">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Decision Helper</span>
+      <h2>Which scenario fits you?</h2>
+      <p>A short flow to land on the right starting point. Choose carefully — VNet injection is a creation-time-only decision.</p>
+    </div>
+
+    <div class="tree reveal">
+      <div class="tree-node question">Is full network isolation mandatory?</div>
+      <div class="tree-branches">
+        <div class="tree-branch">
+          <span class="branch-label">YES</span>
+          <div class="tree-node">Need NSG inbound enforcement &amp; OK with Premium pricing?</div>
+          <div class="tree-branches">
+            <div class="tree-branch">
+              <span class="branch-label">YES</span>
+              <div class="tree-result"><strong>Premium v2 — Internal</strong><span>Full VNet injection at creation</span></div>
+            </div>
+            <div class="tree-branch">
+              <span class="branch-label">NO</span>
+              <div class="tree-result alt"><strong>Standard v2 — Internal</strong><span>Private Endpoint + VNet integration</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="tree-branch">
+          <span class="branch-label">NO</span>
+          <div class="tree-node">Need 30-unit scale, AZ support, or premium features?</div>
+          <div class="tree-branches">
+            <div class="tree-branch">
+              <span class="branch-label">YES</span>
+              <div class="tree-result alt"><strong>Premium v2 — Public</strong><span>High scale; can add Private Endpoint later</span></div>
+            </div>
+            <div class="tree-branch">
+              <span class="branch-label">NO</span>
+              <div class="tree-result alt"><strong>Standard v2 — Public</strong><span>Cost-efficient public APIs with IP filtering</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <h3>You've got this 🎉</h3>
+  <div class="footer-divider"></div>
+  <p>Pick the scenario that matches your security posture today, but plan for where you'll be in 12 months — VNet injection is a creation-time-only decision, and you can't switch between injection and integration. When in doubt, start with Standard v2 Public and evolve.</p>
+</footer>
+
+<script>
+// Tab switching
+document.querySelectorAll('.tab-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(btn.dataset.tab).classList.add('active');
+    window.scrollTo({top:document.getElementById('scenarios').offsetTop-20,behavior:'smooth'});
+  });
+});
+
+// Reveal on scroll
+const io=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.classList.add('visible');
+      io.unobserve(e.target);
+    }
+  });
+},{threshold:0.12});
+document.querySelectorAll('.reveal,.glossary-card,.stage,.stat-card,.security-item').forEach(el=>io.observe(el));
+
+// Animated counters
+const counters=document.querySelectorAll('[data-target]');
+const counterIO=new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      const el=entry.target;
+      const target=+el.dataset.target;
+      let current=0;
+      const step=Math.max(1,Math.ceil(target/40));
+      const tick=()=>{
+        current+=step;
+        if(current>=target){el.textContent=target;return;}
+        el.textContent=current;
+        requestAnimationFrame(tick);
+      };
+      tick();
+      counterIO.unobserve(el);
+    }
+  });
+},{threshold:0.5});
+counters.forEach(c=>counterIO.observe(c));
+</script>
+
+</body>
+</html>
