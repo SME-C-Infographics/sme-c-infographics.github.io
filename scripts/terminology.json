@@ -3,7 +3,8 @@
   "version": 1,
   "_warnings": [
     "Running `check-deprecated-terms.py --apply` applies rules in order. Cascading edits can produce awkward output: e.g. 'Azure Active Directory (Azure AD)' becomes 'Microsoft Entra ID (Microsoft Entra ID)' after both AAD rules fire. Review apply output before committing.",
-    "Rules at severity=low require human judgement; they are listed for awareness but should usually be reviewed in context before `--apply`."
+    "Rules at severity=low require human judgement; they are listed for awareness but should usually be reviewed in context before `--apply`.",
+    "Per-page exception: wrap an intentional use of a deprecated term inline with `<!-- smec-keep-term -->...<!-- /smec-keep-term -->` to exempt it from both --check and --apply. Use this for pages that teach a rename or otherwise need the legacy term verbatim. Do NOT nest the marker inside another HTML comment (the outer comment will terminate early). Exempted matches are still listed under the report's top-level `exempted` map for audit."
   ],
   "rules": [
     {

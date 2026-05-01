@@ -80,6 +80,12 @@ step — opening any `.html` file in a browser is the local preview.
   field. `high` (e.g. Azure AD → Entra ID, Cognitive Services → Azure AI
   Services, Form Recognizer → Document Intelligence) is safe to `--apply`;
   `low` / `medium` are report-only by default and need human review.
+  Per-page exception: wrap an intentional use of a deprecated term inline
+  with `<!-- smec-keep-term -->...<!-- /smec-keep-term -->` to exempt it
+  from both `--check` and `--apply` (e.g. on pages that teach a rename).
+  Don't nest the marker inside another HTML comment — the outer comment
+  will terminate at the first `-->`. Exempted matches are still recorded
+  under the report's top-level `exempted` map.
 - **Page freshness** is tracked via a `smec:last-accuracy-check` meta tag
   stamped by `scripts/stamp-accuracy-date.py`. The weekly accuracy-review
   workflow flags pages older than 28 days.
