@@ -114,7 +114,14 @@ Findings from each phase are appended below as the spike progresses.
   rules ship at `severity: low` or `medium` and require review; the
   high-severity ones — Azure AD → Entra ID, Cognitive Services → Azure
   AI Services, Form Recognizer → Document Intelligence — are safe to
-  `--apply` when they appear).
+  `--apply` when they appear). Pages that legitimately need the legacy
+  term (e.g. a decision guide explaining the rename) can wrap the
+  occurrence inline with
+  `<!-- smec-keep-term -->Azure OpenAI Service<!-- /smec-keep-term -->`
+  to exempt it from both `--check` and `--apply`. Exempted matches are
+  still surfaced in `reports/deprecated-terms.json` under a top-level
+  `exempted` map so the bypass list stays auditable; unmatched
+  open/close markers fail `--check`.
 - Composing the content of any bulk-templating spec before applying it.
 
 ### Workflows
