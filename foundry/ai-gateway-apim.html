@@ -631,6 +631,8 @@
 <meta name="twitter:description" content="AI Gateway in Azure API Management — One Front Door for Every Model — an interactive infographic from the SME&amp;C Infographic Hub.">
 <!-- smec-favicon v1 -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<!-- smec-accuracy v1 -->
+<meta name="smec:last-accuracy-check" content="2026-05-07">
 </head>
 <body>
 <a href="/" class="smec-back-btn" data-smec-back-button="v1" aria-label="Back to SME&amp;C Infographics"><svg class="smec-back-btn__icon" aria-hidden="true" viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg><span class="smec-back-btn__label">Back to SME&amp;C Infographics</span></a>
@@ -1022,7 +1024,7 @@
         </div>
         <ul>
           <li><strong>MCP server hosting</strong> — REST API → MCP tools at <code>/mcp</code></li>
-          <li><strong>External MCP pass-through</strong> for Logic Apps, Functions, custom <span class="pv">Preview</span></li>
+          <li><strong>External MCP pass-through</strong> for Logic Apps, Functions, custom</li>
           <li><strong>A2A (Agent2Agent)</strong> communication for multi-agent workflows <span class="pv">Preview</span></li>
           <li>Rate-limit-by-key on <code>Mcp-Session-Id</code></li>
           <li><strong>AI Gateway in Microsoft Foundry</strong> control plane <span class="pv">Preview</span></li>
@@ -1203,7 +1205,7 @@
       <h4>⚠ Important caveats — don't overclaim</h4>
       <ul>
         <li>For <strong>REST-derived MCP servers</strong> in APIM, only <strong>MCP tools</strong> are supported — <strong>resources and prompts are not supported today</strong>, and MCP capabilities are <strong>not supported in workspaces</strong>.</li>
-        <li>MCP support in <strong>v2 SKUs</strong> (Basic v2 / Standard v2 / Premium v2) is in <strong>public preview</strong> as of Aug 5, 2025.</li>
+        <li>MCP support in <strong>v2 SKUs</strong> (Basic v2 / Standard v2 / Premium v2) is now <strong>generally available</strong> across all classic and v2 APIM tiers.</li>
         <li>The <strong>MCP tool limit per server</strong> was previously hardcoded at 20 — removed in the March 2026 release. Now bounded by the APIM SKU operation limit.</li>
         <li><strong>A2A</strong> support and <strong>AI Gateway in Microsoft Foundry</strong> are <strong>preview</strong>. Show a "Preview" badge wherever your design depends on them.</li>
       </ul>
