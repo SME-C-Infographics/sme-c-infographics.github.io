@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Microsoft AI Platform Decision Guide</title>
 <!-- smec-accuracy v1 -->
-<meta name="smec:last-accuracy-check" content="2026-06-18">
+<meta name="smec:last-accuracy-check" content="2026-06-27">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; font-size: 16px; }
@@ -612,7 +612,7 @@
     <div class="reveal">
       <span class="section-label">Platform Deep Dive</span>
       <h2 class="section-title">Five Pillars of Microsoft AI</h2>
-      <p class="section-sub">Each platform serves a distinct audience and use case. Updated with the latest features as of April 2026.</p>
+      <p class="section-sub">Each platform serves a distinct audience and use case. Updated with the latest features as of Build 2026 (June 2026).</p>
     </div>
 
     <!-- Filter -->
@@ -682,7 +682,7 @@
           <h4 class="studio-a">What It Is</h4>
           <ul>
             <li>Enterprise-grade platform to create custom Copilots and <strong>autonomous agents</strong> &mdash; see <a href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/" target="_blank">Microsoft Learn docs</a></li>
-            <li>Supports GPT-5, Claude Sonnet 4.6, Claude Opus 4.6, and bring-your-own models</li>
+            <li>Supports GPT-5, GPT-5.2, Claude Sonnet 4.6, Claude Opus 4.6 / 4.8, Microsoft’s MAI family, and bring-your-own models</li>
             <li>Connects to 1,000+ data sources via connectors, MCP, and plugins</li>
           </ul>
           <h4 class="studio-a">Best For</h4>
@@ -774,9 +774,10 @@
         <div class="plat-body">
           <h4 class="foundry-a">What It Is</h4>
           <ul>
-            <li>Microsoft's unified AI development platform (rebranded from Azure AI Foundry) &mdash; see <a href="https://learn.microsoft.com/en-us/azure/foundry/" target="_blank">Microsoft Learn docs</a></li>
-            <li>1,900+ model catalog: GPT-5.5, GPT-5.2, Meta Llama, Mistral Large 3, Phi, DeepSeek &amp; more</li>
-            <li>Built-in tools for fine-tuning, evaluation, prompt engineering, and observability</li>
+            <li>Microsoft’s unified AI development platform (rebranded from Azure AI Foundry) &mdash; see <a href="https://learn.microsoft.com/en-us/azure/ai-foundry/" target="_blank">Microsoft Learn docs</a></li>
+            <li><strong>12,000+ model catalog</strong> &mdash; GPT-5.5, GPT-5.2, Claude Opus 4.8, Microsoft <strong>MAI</strong> family, Meta Llama, Mistral, Phi, DeepSeek, plus open-weight models via the <strong>Fireworks AI</strong> partnership <span class="new-badge">Build 2026</span></li>
+            <li>Hosted agents with sub-100&nbsp;ms sandbox cold starts and zero idle cost; one-click publish to Teams and M365 Copilot <span class="new-badge">Build 2026</span></li>
+            <li>Built-in tools for fine-tuning, evaluation, prompt engineering, Agent Optimizer, Adaptive Evaluations, and observability</li>
           </ul>
           <h4 class="foundry-a">Best For</h4>
           <div class="tag-row">
@@ -787,10 +788,12 @@
           <ul>
             <li><strong>GPT-5.5</strong> for frontier reasoning (1M context, computer use) <span class="new-badge">New</span></li>
             <li><strong>GPT-5.2 &amp; Codex Max</strong> for enterprise reasoning and autonomous coding <span class="new-badge">GA</span></li>
-            <li><strong>Mistral Large 3</strong> in model catalog <span class="new-badge">GA</span></li>
+            <li><strong>Claude Opus 4.8</strong> available natively in Microsoft Foundry <span class="new-badge">Build 2026</span></li>
+            <li><strong>Microsoft MAI</strong> family &mdash; MAI-Thinking-1 (reasoning), MAI-Code-1-Flash (coding), MAI-Image-2.5, MAI-Voice-2, MAI-Transcribe-1.5 <span class="new-badge">Build 2026</span></li>
+            <li><strong>Mistral Large 3</strong> in model catalog <span class="new-badge">Preview</span></li>
             <li><strong>Agent framework</strong> for building multi-agent AI applications</li>
             <li>End-to-end lifecycle: build, test, evaluate, deploy, and monitor</li>
-            <li>Fine-tuning with your proprietary data across any model</li>
+            <li>Fine-tuning &mdash; including new <strong>Frontier Tuning</strong> with reinforcement-learning environments (RLEs) <span class="new-badge">Build 2026</span></li>
             <li>Integrated with Azure AI Search, Content Safety, and Responsible AI tools</li>
           </ul>
           <h4 class="foundry-a">Operational Profile</h4>
@@ -893,9 +896,9 @@
           <tr>
             <td>LLM / GPT Access</td>
             <td><span class="check">&#10004; GPT-5 built-in</span></td>
-            <td><span class="check">&#10004; GPT-5, Claude, BYOM</span></td>
+            <td><span class="check">&#10004; GPT-5, Claude, MAI, BYOM</span></td>
             <td><span class="check">&#10004; GPT-5.5 / 5.2 API</span></td>
-            <td><span class="check">&#10004; 1,900+ model catalog</span></td>
+            <td><span class="check">&#10004; 12,000+ model catalog</span></td>
             <td><span class="no">&#10006; Not primary</span></td>
           </tr>
           <tr>
@@ -1264,8 +1267,8 @@
       </a>
       <a href="microsoft-iq-platforms-guide.html" style="display:block;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:1.25rem;color:#fff;text-decoration:none;">
         <div style="font-size:.66rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#50e6ff;">Data</div>
-        <div style="font-weight:700;margin-top:.3rem;">The 3 IQ Platforms</div>
-        <div style="font-size:.84rem;color:rgba(255,255,255,.7);margin-top:.3rem;">Foundry IQ, Fabric IQ, Work IQ.</div>
+        <div style="font-weight:700;margin-top:.3rem;">The 4 IQ Platforms</div>
+        <div style="font-size:.84rem;color:rgba(255,255,255,.7);margin-top:.3rem;">Foundry IQ, Fabric IQ, Work IQ, Web IQ.</div>
       </a>
     </div>
   </div>
@@ -1273,7 +1276,7 @@
 
 <!-- FOOTER -->
 <div class="footer">
-  <p>Microsoft AI Platform Decision Guide &bull; Updated April 2026 &bull; Always validate against the latest <a href="https://learn.microsoft.com/en-us/azure/foundry/" target="_blank">Microsoft Foundry documentation</a></p>
+  <p>Microsoft AI Platform Decision Guide &bull; Updated June 2026 (Build 2026) &bull; Always validate against the latest <a href="https://learn.microsoft.com/en-us/azure/ai-foundry/" target="_blank">Microsoft Foundry documentation</a> &bull; Build 2026 highlights: <a href="https://devblogs.microsoft.com/foundry/whats-new-in-microsoft-foundry-build-2026/" target="_blank">What’s New in Foundry</a>, <a href="https://microsoft.ai/news/building-a-hillclimbing-machine-launching-seven-new-mai-models/" target="_blank">MAI models</a></p>
   <p style="margin-top:.5rem;">Pricing and features subject to change. Visit <a href="https://azure.microsoft.com/en-us/pricing/calculator/" target="_blank">Azure Pricing Calculator</a> for current details.</p>
 </div>
 

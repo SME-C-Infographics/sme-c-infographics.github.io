@@ -302,7 +302,7 @@
 <meta name="twitter:title" content="The Anatomy of an AI Agent — A Field Guide">
 <meta name="twitter:description" content="The Anatomy of an AI Agent — A Field Guide — an interactive infographic from the SME&amp;C Infographic Hub.">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-<meta name="smec:last-accuracy-check" content="2026-06-18">
+<meta name="smec:last-accuracy-check" content="2026-06-27">
 <!-- smec-meta v1 -->
 <style>/* smec-back-btn v2 */
 .smec-back-btn { position: fixed; bottom: 16px; left: 16px; z-index: 9999;
@@ -672,10 +672,11 @@
         </div>
         <p class="tagline">Input, output, and runtime safety — not bolted on after launch, but woven into every call. The ribcage doesn't slow the heart; it protects it.</p>
         <ul class="bits">
-          <li><strong>Input shields</strong> — prompt injection detection, jailbreak prevention</li>
-          <li><strong>Output filters</strong> — PII redaction, toxicity detection, groundedness checks</li>
-          <li><strong>Policy checks</strong> — tool-use allowlists, data-boundary enforcement, Purview labels</li>
-          <li><strong>Human-in-the-loop</strong> — approval gates for high-stakes, irreversible actions</li>
+          <li><strong>Input shields</strong> &mdash; prompt injection detection, jailbreak prevention</li>
+          <li><strong>Output filters</strong> &mdash; PII redaction, toxicity detection, groundedness checks</li>
+          <li><strong>Policy checks</strong> &mdash; tool-use allowlists, data-boundary enforcement, Purview labels</li>
+          <li><strong>Sandboxing</strong> &mdash; <strong>Microsoft Execution Containers (MXC)</strong> isolate code-interpreter, browser, and tool-use side effects with sub-100&nbsp;ms cold starts <span style="background:#fff4d6;border:1px solid #f0d97a;color:#7a5a00;padding:.1rem .4rem;border-radius:6px;font-size:.65rem;font-weight:700;">Build 2026</span></li>
+          <li><strong>Human-in-the-loop</strong> &mdash; approval gates for high-stakes, irreversible actions</li>
         </ul>
         <div class="without"><strong>Without them</strong>One jailbreak or prompt injection exfiltrates data, books travel, or sends the wrong email — and you find out from a customer.</div>
         <a class="learn-link" href="https://learn.microsoft.com/en-us/training/modules/moderate-content-detect-harm-azure-ai-content-safety/" target="_blank" rel="noopener noreferrer" aria-label="Build Guardrails with Azure AI Content Safety on Microsoft Learn (opens in new tab)">
@@ -724,10 +725,11 @@
         </div>
         <p class="tagline">Agents are first-class workforce identities — they authenticate, inherit permissions, and leave audit trails, just like employees. No badge, no access.</p>
         <ul class="bits">
-          <li><strong>Entra Agent ID</strong> — a dedicated agent identity in Microsoft Entra, not a shared service key</li>
-          <li><strong>Delegated access</strong> — act on behalf of the signed-in user, scoped to their permissions</li>
-          <li><strong>Least-privilege tools</strong> — only the APIs and data the agent's role requires</li>
-          <li><strong>Audit trail</strong> — every action attributable to this specific agent identity</li>
+          <li><strong>Entra Agent ID</strong> &mdash; a dedicated agent identity in Microsoft Entra, not a shared service key</li>
+          <li><strong>Delegated access</strong> &mdash; act on behalf of the signed-in user, scoped to their permissions</li>
+          <li><strong>Least-privilege tools</strong> &mdash; only the APIs and data the agent's role requires</li>
+          <li><strong>Agent 365</strong> &mdash; the unified Entra + Defender + Purview governance plane for agents (lifecycle, conditional access, DLP, audit) <span style="background:#fff4d6;border:1px solid #f0d97a;color:#7a5a00;padding:.1rem .4rem;border-radius:6px;font-size:.65rem;font-weight:700;">Build 2026</span></li>
+          <li><strong>Audit trail</strong> &mdash; every action attributable to this specific agent identity</li>
         </ul>
         <div class="without"><strong>Without it</strong>Over-privileged service principals with God-mode access. Compliance can't prove what the agent did — or didn't do.</div>
         <a class="learn-link" href="https://learn.microsoft.com/en-us/entra/agent-id/" target="_blank" rel="noopener noreferrer" aria-label="Set up Entra Agent ID on Microsoft Learn (opens in new tab)">
@@ -1002,7 +1004,7 @@
   <div class="container">
     <div class="brand-mark">The Anatomy of an AI Agent</div>
     <p>A field guide for builders who want agents that survive Monday morning — not just Friday's demo.</p>
-    <p style="margin-top: 1.2rem; font-size: 0.75rem; color: rgba(253,251,247,0.4);">Built on the working definition of an agent shared across Microsoft Foundry, Copilot Studio, and the Microsoft Agent Framework (GA 1.0). For platform docs, see <a href="https://learn.microsoft.com/en-us/azure/ai-foundry/agents/" target="_blank" rel="noopener noreferrer" style="color:rgba(253,251,247,0.6);text-decoration:underline dotted;">Foundry Agent Service (GA)</a>. Updated May 2026.</p>
+    <p style="margin-top: 1.2rem; font-size: 0.75rem; color: rgba(253,251,247,0.4);">Built on the working definition of an agent shared across Microsoft Foundry, Copilot Studio, and the Microsoft Agent Framework (GA 1.0). For platform docs, see <a href="https://learn.microsoft.com/en-us/azure/ai-foundry/agents/" target="_blank" rel="noopener noreferrer" style="color:rgba(253,251,247,0.6);text-decoration:underline dotted;">Foundry Agent Service (GA)</a>. Updated June 2026 (Build 2026) with <strong>Agent 365</strong> governance and <strong>MXC</strong> sandboxing &mdash; see <a href="https://devblogs.microsoft.com/foundry/whats-new-in-microsoft-foundry-build-2026/" target="_blank" rel="noopener noreferrer" style="color:rgba(253,251,247,0.6);text-decoration:underline dotted;">What’s New in Microsoft Foundry @ Build 2026</a>.</p>
   </div>
 </footer>
 

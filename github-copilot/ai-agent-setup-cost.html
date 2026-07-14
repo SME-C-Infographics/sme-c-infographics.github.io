@@ -114,7 +114,7 @@
   .matrix-header,
   .matrix-row {
     display: grid;
-    grid-template-columns: 1.6fr 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1.6fr 1fr 1fr 1fr 1fr 1fr;
     gap: 0;
   }
   .matrix-header {
@@ -240,7 +240,7 @@
 <!-- smec-favicon v1 -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <!-- smec-accuracy v1 -->
-<meta name="smec:last-accuracy-check" content="2026-06-04">
+<meta name="smec:last-accuracy-check" content="2026-06-27">
 <style>/* smec-back-btn v2 */
 .smec-back-btn { position: fixed; bottom: 16px; left: 16px; z-index: 9999;
   box-sizing: border-box;
@@ -312,8 +312,8 @@
     Platform engineering · GitHub Copilot series
   </div>
   <h1>Setup cost to first PR</h1>
-  <p>Async coding agents can all end in a pull request. The setup cost changes based on control plane: GitHub-native, GitHub-hosted third-party, standalone vendor workflow, or Cursor cloud.</p>
-  <div class="hero-meta">Accurate as of June 4, 2026 · Applies to GitHub.com-hosted repos and GitHub-connected agents</div>
+  <p>Async coding agents can all end in a pull request. The setup cost changes based on control plane: GitHub-native (web or new desktop app), GitHub-hosted third-party, standalone vendor workflow, or Cursor cloud.</p>
+  <div class="hero-meta">Accurate as of June 27, 2026 · Applies to GitHub.com-hosted repos and GitHub-connected agents</div>
 </header>
 
 <div class="container">
@@ -329,7 +329,7 @@
 <section>
   <div class="container">
     <span class="section-label">The comparison</span>
-    <h2 class="section-title">Five dimensions, four setup paths</h2>
+    <h2 class="section-title">Five dimensions, five setup paths</h2>
     <p class="section-sub">Setup cost, not raw capability. The same model family can feel very different depending on whether it runs through GitHub, a GitHub Actions workflow, or a vendor dashboard.</p>
 
     <div class="matrix" role="table" aria-label="AI coding agent setup comparison">
@@ -337,6 +337,7 @@
       <div class="matrix-header" role="row">
         <div role="columnheader">Dimension</div>
         <div role="columnheader"><div class="tool-logo">Copilot cloud agent</div></div>
+        <div role="columnheader"><div class="tool-logo">Copilot desktop app</div></div>
         <div role="columnheader"><div class="tool-logo">GitHub-hosted Claude/Codex</div></div>
         <div role="columnheader"><div class="tool-logo">Standalone Claude/Codex</div></div>
         <div role="columnheader"><div class="tool-logo">Cursor Cloud Agents</div></div>
@@ -348,6 +349,10 @@
         <div role="cell" data-label="Copilot cloud agent">
           <span class="cell-tag tag-none">Native</span>
           <span class="cell-note">Assign issue to <strong>Copilot</strong>, <code>@copilot</code> in a comment, agents panel, or IDE.</span>
+        </div>
+        <div role="cell" data-label="Copilot desktop app">
+          <span class="cell-tag tag-none">Native</span>
+          <span class="cell-note">Desktop app surface: parallel worktrees, Canvases for visual planning, <code>@copilot</code> with multi-model picker (OpenAI, Anthropic, Google).</span>
         </div>
         <div role="cell" data-label="GitHub-hosted Claude/Codex">
           <span class="cell-tag tag-none">Native</span>
@@ -370,6 +375,10 @@
           <span class="cell-tag tag-light">Policy</span>
           <span class="cell-note">Copilot plan eligibility plus account/org/enterprise policy enablement.</span>
         </div>
+        <div role="cell" data-label="Copilot desktop app">
+          <span class="cell-tag tag-light">Policy</span>
+          <span class="cell-note">Same Copilot plan + org policy. App is in public preview — install per developer; org enablement is still routed through GitHub.</span>
+        </div>
         <div role="cell" data-label="GitHub-hosted Claude/Codex">
           <span class="cell-tag tag-light">Policy</span>
           <span class="cell-note">Copilot Pro, Pro+, Max, Business, or Enterprise eligibility; third-party agents are public preview and must be enabled.</span>
@@ -390,6 +399,10 @@
         <div role="cell" data-label="Copilot cloud agent">
           <span class="cell-tag tag-none">None required</span>
           <span class="cell-note">Optional <code>copilot-instructions.md</code>, MCP config, or custom agents — but zero required.</span>
+        </div>
+        <div role="cell" data-label="Copilot desktop app">
+          <span class="cell-tag tag-none">None required</span>
+          <span class="cell-note">No repo files needed. Worktrees, Agent Merge config, and Canvases are local to the app.</span>
         </div>
         <div role="cell" data-label="GitHub-hosted Claude/Codex">
           <span class="cell-tag tag-none">None required</span>
@@ -412,6 +425,10 @@
           <span class="cell-tag tag-none">First-party bot</span>
           <span class="cell-note">Authored by <code>Copilot</code>. Inherits Copilot-specific ruleset bypass options.</span>
         </div>
+        <div role="cell" data-label="Copilot desktop app">
+          <span class="cell-tag tag-none">First-party bot</span>
+          <span class="cell-note">Same Copilot identity as the cloud agent — commits show <code>Copilot</code> with developer co-author when Agent Merge is used.</span>
+        </div>
         <div role="cell" data-label="GitHub-hosted Claude/Codex">
           <span class="cell-tag tag-light">Third-party App</span>
           <span class="cell-note">Third-party agent selected inside GitHub; rulesets and compatible protections still apply.</span>
@@ -432,6 +449,10 @@
         <div role="cell" data-label="Copilot cloud agent">
           <span class="cell-tag tag-none">Policy-driven</span>
           <span class="cell-note">Enable once at org level; repo owners can opt out. No per-repo fan-out.</span>
+        </div>
+        <div role="cell" data-label="Copilot desktop app">
+          <span class="cell-tag tag-none">Policy-driven</span>
+          <span class="cell-note">Same org policy gate as cloud agent. Developers install the app once; no repo fan-out.</span>
         </div>
         <div role="cell" data-label="GitHub-hosted Claude/Codex">
           <span class="cell-tag tag-none">Policy-driven</span>
@@ -507,6 +528,8 @@
         <li><a href="https://developers.openai.com/codex/integrations/github">Codex GitHub integration — OpenAI</a></li>
         <li><a href="https://cursor.com/blog/cloud-agents">Cursor Cloud Agents</a></li>
         <li><a href="https://cursor.com/pricing">Cursor pricing and plans</a></li>
+        <li><a href="https://github.blog/news-insights/product-news/github-copilot-app-the-agent-native-desktop-experience/">GitHub Copilot desktop app announcement</a></li>
+        <li><a href="https://github.com/github/app">github/app repo</a></li>
       </ul>
     </div>
   </div>

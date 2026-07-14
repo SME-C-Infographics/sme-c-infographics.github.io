@@ -119,7 +119,7 @@
 <!-- smec-favicon v1 -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <!-- smec-accuracy v1 -->
-<meta name="smec:last-accuracy-check" content="2026-06-04">
+<meta name="smec:last-accuracy-check" content="2026-06-27">
 <style>/* smec-back-btn v2 */
 .smec-back-btn { position: fixed; bottom: 16px; left: 16px; z-index: 9999;
   box-sizing: border-box;
@@ -189,12 +189,12 @@
   </div>
   <h1>Who authored this PR?</h1>
   <p>Agent-generated PRs have an author identity. The useful split is not just first-party vs third-party; it is whether the agent is GitHub-hosted or running through a standalone vendor integration.</p>
-  <div class="hero-meta">Accurate as of June 4, 2026 · Applies to GitHub-hosted and GitHub-connected async agents</div>
+  <div class="hero-meta">Accurate as of June 27, 2026 · Applies to GitHub-hosted and GitHub-connected async agents</div>
 </header>
 
 <section>
   <div class="container">
-    <span class="section-label">Four identity patterns</span>
+    <span class="section-label">Five identity patterns</span>
     <h2 class="section-title">What shows up in <code>git log</code></h2>
     <p class="section-sub">Two axes matter: <strong>who owns the agent</strong> and <strong>where the agent is hosted</strong>. The combination decides which rulesets, audit logs, and procurement reviews are involved.</p>
 
@@ -245,6 +245,18 @@
           <dt>Identity source</dt><dd>ChatGPT Codex settings or Cursor cloud integration</dd>
           <dt>Ruleset handling</dt><dd>Depends on App/OAuth permissions and branch rules</dd>
           <dt>Procurement</dt><dd>Separate vendor account, billing, and data review</dd>
+        </dl>
+      </div>
+
+      <div class="id-card">
+        <span class="tag tag-first">First-party · Preview</span>
+        <h3>GitHub Copilot desktop app</h3>
+        <div class="handle"><span class="dot"></span>Copilot (desktop)</div>
+        <dl>
+          <dt>Commit author</dt><dd><code>Copilot</code> with developer co-author when Agent Merge ships the change</dd>
+          <dt>Identity source</dt><dd>GitHub identity · same Copilot actor as the cloud agent</dd>
+          <dt>Ruleset handling</dt><dd>Same Copilot bypass + Agent Merge waits on required checks</dd>
+          <dt>Procurement</dt><dd>Existing Copilot plan; per-developer desktop install during public preview</dd>
         </dl>
       </div>
 
@@ -302,9 +314,10 @@
         What this doesn't say
       </h3>
       <ul>
-        <li><strong>Third-party doesn't mean worse.</strong> GitHub-hosted Claude/Codex can keep review workflows in GitHub, and custom Apps can give teams more control.</li>
+        <li><strong>Third-party doesn’t mean worse.</strong> GitHub-hosted Claude/Codex can keep review workflows in GitHub, and custom Apps can give teams more control.</li>
         <li><strong>Copilot has its own gaps.</strong> The content-exclusion limitation above is real and should be called out in sensitive repos.</li>
         <li><strong>Identity is an audit question.</strong> Before rollout, confirm the actual bot/App actor in your organization and test it against branch rules.</li>
+        <li><strong>Model behind the identity can shift.</strong> At Build 2026 Microsoft introduced its own MAI family (MAI-Code-1-Flash for code) and Foundry now offers 12,000+ models including Anthropic Claude Opus 4.8 — the Copilot identity is unchanged, but the model picker behind it is expanding.</li>
       </ul>
     </div>
   </div>
@@ -325,6 +338,8 @@
         <li><a href="https://code.claude.com/docs/en/github-actions">Claude Code GitHub Actions</a></li>
         <li><a href="https://developers.openai.com/codex/integrations/github">Codex GitHub integration</a></li>
         <li><a href="https://cursor.com/blog/cloud-agents">Cursor Cloud Agents</a></li>
+        <li><a href="https://github.blog/news-insights/product-news/github-copilot-app-the-agent-native-desktop-experience/">GitHub Copilot desktop app announcement</a></li>
+        <li><a href="https://devblogs.microsoft.com/foundry/whats-new-in-microsoft-foundry-build-2026/">Foundry @ Build 2026 (MAI model family)</a></li>
       </ul>
     </div>
   </div>

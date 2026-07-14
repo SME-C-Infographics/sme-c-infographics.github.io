@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Microsoft App, AI &amp; Data Stack — A Top-to-Bottom Map</title>
 <!-- smec-accuracy v1 -->
-<meta name="smec:last-accuracy-check" content="2026-06-18">
+<meta name="smec:last-accuracy-check" content="2026-06-27">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; font-size: 16px; }
@@ -468,7 +468,7 @@
 <meta property="og:title" content="The Microsoft App, AI &amp; Data Stack — A Top-to-Bottom Map">
 <meta property="og:description" content="The Microsoft App, AI &amp; Data Stack — A Top-to-Bottom Map — an interactive entry-point infographic from the SME&amp;C Infographic Hub.">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://sme-c-infographics.github.io/foundry/microsoft-stack-overview.html">
+<meta property="og:url" content="https://sme-c-infographics.github.io/foundry/00-microsoft-stack-overview.html">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="The Microsoft App, AI &amp; Data Stack — A Top-to-Bottom Map">
 <meta name="twitter:description" content="The Microsoft App, AI &amp; Data Stack — A Top-to-Bottom Map — an interactive entry-point infographic from the SME&amp;C Infographic Hub.">
@@ -679,7 +679,7 @@
             <li>Outlook &middot; Teams &middot; Word &middot; Excel &middot; PowerPoint</li>
             <li>Dynamics 365 &middot; Power Apps &middot; Power Automate &middot; Power Pages</li>
             <li>Custom apps on App Service / Container Apps / AKS</li>
-            <li>Grounded via Microsoft Graph and Dataverse; powered by Azure OpenAI and Anthropic models</li>
+            <li>Powered by GPT-5, grounded via Microsoft Graph and Dataverse</li>
           </ul>
         </div>
         <div class="next">
@@ -718,7 +718,7 @@
         <div>
           <h3>Where intelligence is built</h3>
           <div class="role">The model catalog, the gateway, and the lifecycle tools that turn raw LLMs into governed services.</div>
-          <p><strong>Microsoft Foundry</strong> (rebranded from Azure AI Foundry) gives you 1,900+ models &mdash; GPT-5.5, GPT-5.4 family, Mistral Medium 3, Llama, Phi &mdash; with fine-tuning, evaluation, and observability. <strong>AI Gateway in Azure API Management</strong> is the front door: token-aware throttling, semantic caching, content safety, OAuth 2.1 for MCP, and PTU-first load balancing.</p>
+          <p><strong>Microsoft Foundry</strong> (rebranded from Azure AI Foundry) gives you 1,900+ models &mdash; GPT-5.5, GPT-5.4 family, Mistral Large 3, Llama, Phi &mdash; with fine-tuning, evaluation, and observability. <strong>AI Gateway in Azure API Management</strong> is the front door: token-aware throttling, semantic caching, content safety, OAuth 2.1 for MCP, and PTU-first load balancing.</p>
           <ul class="examples">
             <li>Microsoft Foundry &middot; Foundry Tools (Azure AI Services)</li>
             <li><!-- smec-keep-term -->Azure OpenAI Service<!-- /smec-keep-term --> (migration to Foundry recommended)</li>
@@ -740,17 +740,17 @@
         <div>
           <h3>Where AI is grounded</h3>
           <div class="role">The fabric that holds the truth your agents need to be useful and safe.</div>
-          <p><strong>Microsoft Fabric</strong> unifies data engineering, warehousing, real-time analytics, and Power BI on a single SaaS surface backed by <strong>OneLake</strong>. The <strong>IQ family</strong> &mdash; Foundry IQ, Fabric IQ, Work IQ &mdash; provides the retrieval, semantic-model, and M365-context layers that make grounding work without rebuilding indexes for every agent.</p>
+          <p><strong>Microsoft Fabric</strong> unifies data engineering, warehousing, real-time analytics, and Power BI on a single SaaS surface backed by <strong>OneLake</strong>. The <strong>Microsoft IQ</strong> family &mdash; Foundry IQ, Fabric IQ, Work IQ, and the new <strong>Web IQ</strong> (Build 2026) &mdash; provides the retrieval, semantic-model, M365-context, and open-web layers that make grounding work without rebuilding indexes for every agent.</p>
           <ul class="examples">
             <li>Microsoft Fabric &middot; OneLake (the OneDrive for data)</li>
             <li>Power BI &middot; semantic models &middot; verified answers</li>
             <li>Azure AI Search &middot; vector + semantic + hybrid retrieval</li>
-            <li>Foundry IQ (partial GA) &middot; Fabric IQ &middot; Work IQ (Preview)</li>
+            <li>Foundry IQ &middot; Fabric IQ &middot; Work IQ &middot; Web IQ (Public Preview)</li>
           </ul>
         </div>
         <div class="next">
           <div class="next-title">Go deeper</div>
-          <a href="microsoft-iq-platforms-guide.html">The 3 IQ platforms guide &rarr;</a>
+          <a href="microsoft-iq-platforms-guide.html">The 4 IQ platforms guide &rarr;</a>
           <div class="learn">Docs: <a href="https://learn.microsoft.com/en-us/fabric/" target="_blank">Microsoft Fabric</a> &middot; <a href="https://learn.microsoft.com/en-us/fabric/onelake/" target="_blank">OneLake</a></div>
         </div>
       </div>
@@ -977,7 +977,7 @@
       <details class="gl" data-cat="agent">
         <summary><span class="term-cat">Agent</span> A2A (Agent2Agent)</summary>
         <div class="body">
-          An open standard for agent-to-agent communication, letting multiple agents collaborate on a single workflow. Developed by Google and adopted by Microsoft as a supported open protocol. Currently in preview in Foundry Agent Service and APIM.
+          Microsoft's protocol for agent-to-agent communication, letting multiple agents collaborate on a single workflow. Currently in preview as part of the March 2026 APIM AI Gateway release.
           <div class="where">See: <a href="ai-gateway-apim.html">AI Gateway in APIM</a> (timeline section)</div>
         </div>
       </details>
@@ -1017,7 +1017,7 @@
       <details class="gl" data-cat="data">
         <summary><span class="term-cat">Data</span> Foundry IQ</summary>
         <div class="body">
-          The retrieval layer for AI Foundry &mdash; multi-source grounding, indexing, and reranking under one API. Some features are generally available; others remain in preview.
+          The retrieval layer for AI Foundry &mdash; multi-source grounding, indexing, and reranking under one API. Public Preview at time of writing.
           <div class="where">See: <a href="microsoft-iq-platforms-guide.html">IQ Platforms Guide</a></div>
         </div>
       </details>
@@ -1038,11 +1038,19 @@
         </div>
       </details>
 
+      <details class="gl" data-cat="data">
+        <summary><span class="term-cat">Data</span> Web IQ</summary>
+        <div class="body">
+          The open-web grounding layer for every agent &mdash; model-agnostic, MCP-native search built for the AI era. Announced at Build 2026; Public Preview.
+          <div class="where">See: <a href="microsoft-iq-platforms-guide.html">IQ Platforms Guide</a> &middot; <a href="https://webiq.microsoft.ai/" target="_blank">webiq.microsoft.ai</a></div>
+        </div>
+      </details>
+
       <details class="gl" data-cat="platform">
         <summary><span class="term-cat">Platform</span> Microsoft Foundry</summary>
         <div class="body">
-          Microsoft's unified AI development platform (rebranded from Azure AI Foundry). 1,900+ models including GPT-5.5, GPT-5.4 family, Mistral Medium 3, Llama, Phi. Fine-tuning, evaluation, observability, and the Agent Service all in one control plane.
-          <div class="where">Docs: <a href="https://learn.microsoft.com/en-us/azure/ai-foundry/" target="_blank">Microsoft Foundry</a></div>
+          Microsoft’s unified AI development platform (rebranded from Azure AI Foundry). 12,000+ models including GPT-5.5, GPT-5.2, Claude Opus 4.8, the new Microsoft <strong>MAI</strong> family, Mistral, Llama, Phi, plus open-weight models via the Fireworks AI partnership (Build 2026). Fine-tuning &mdash; including new <strong>Frontier Tuning</strong> with RLEs &mdash; evaluation, observability, and Agent Service all in one control plane.
+          <div class="where">Docs: <a href="https://learn.microsoft.com/en-us/azure/ai-foundry/" target="_blank">Microsoft Foundry</a> &middot; <a href="https://devblogs.microsoft.com/foundry/whats-new-in-microsoft-foundry-build-2026/" target="_blank">What’s New @ Build 2026</a></div>
         </div>
       </details>
 
@@ -1126,8 +1134,8 @@
       </a>
       <a class="related-card reveal" href="microsoft-iq-platforms-guide.html">
         <div class="eyebrow">Data &middot; Layer 2</div>
-        <h4>The 3 IQ Platforms Guide</h4>
-        <p>Foundry IQ, Fabric IQ, Work IQ &mdash; how Microsoft's retrieval, semantic, and context layers combine to ground every agent.</p>
+        <h4>The 4 IQ Platforms Guide</h4>
+        <p>Foundry IQ, Fabric IQ, Work IQ, Web IQ &mdash; how Microsoft’s retrieval, semantic, context, and open-web layers combine to ground every agent.</p>
         <div class="arrow">Open &rarr;</div>
       </a>
       <a class="related-card reveal" href="ai-landing-zones.html">

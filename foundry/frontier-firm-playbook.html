@@ -196,6 +196,59 @@
   }
   .provoc p { font-size: 1.15rem; opacity: .85; }
 
+  /* ── FRONTIER ECOSYSTEM ── */
+  .ecosystem-section {
+    background: #071126; color: #fff; overflow: hidden;
+  }
+  .ecosystem-section::before {
+    content:''; position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse at 18% 20%, rgba(80,230,255,.16), transparent 45%),
+      radial-gradient(ellipse at 82% 70%, rgba(180,140,222,.18), transparent 50%);
+    pointer-events: none;
+  }
+  .ecosystem-section .container { position: relative; z-index: 1; }
+  .ecosystem-section .section-label { color: #50e6ff; }
+  .ecosystem-section .section-sub { color: rgba(255,255,255,.68); }
+  .ecosystem-map {
+    display: grid; grid-template-columns: 180px 1fr 180px; gap: 1rem;
+    align-items: center; margin: 2.5rem 0 1.5rem;
+  }
+  .ecosystem-rail, .ecosystem-core {
+    border: 1px solid rgba(255,255,255,.12);
+    background: rgba(255,255,255,.055); backdrop-filter: blur(10px);
+    box-shadow: 0 12px 40px rgba(0,0,0,.18);
+  }
+  .ecosystem-rail {
+    min-height: 250px; border-radius: 28px; padding: 1.25rem;
+    display: flex; flex-direction: column; justify-content: center; gap: .5rem;
+    text-align: center;
+  }
+  .ecosystem-rail strong { color: #fff; font-size: .98rem; }
+  .ecosystem-rail span { color: rgba(255,255,255,.62); font-size: .78rem; line-height: 1.45; }
+  .ecosystem-core { border-radius: 24px; padding: 1.5rem; }
+  .ecosystem-row { display: grid; gap: .75rem; margin-bottom: .75rem; }
+  .ecosystem-row:last-child { margin-bottom: 0; }
+  .ecosystem-row.two { grid-template-columns: repeat(2, 1fr); }
+  .ecosystem-row.three { grid-template-columns: repeat(3, 1fr); }
+  .ecosystem-node {
+    border-radius: 14px; padding: .9rem 1rem; text-align: center;
+    background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.1);
+    font-weight: 700; font-size: .88rem;
+  }
+  .ecosystem-node.accent { background: rgba(80,230,255,.12); border-color: rgba(80,230,255,.35); color: #bff6ff; }
+  .ecosystem-node.iq { background: rgba(180,140,222,.18); border-color: rgba(180,140,222,.4); }
+  .ecosystem-node.foundation { background: rgba(255,255,255,.12); color: rgba(255,255,255,.88); }
+  .ecosystem-insights {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 1rem;
+  }
+  .ecosystem-insight {
+    background: rgba(255,255,255,.055); border: 1px solid rgba(255,255,255,.1);
+    border-radius: 14px; padding: 1.25rem;
+  }
+  .ecosystem-insight h4 { color: #50e6ff; font-size: .95rem; margin-bottom: .45rem; }
+  .ecosystem-insight p { color: rgba(255,255,255,.66); font-size: .86rem; line-height: 1.55; }
+
   /* ── THREE STAGES ── */
   .stages-wrap {
     display: grid; grid-template-columns: 1fr 1fr 1fr;
@@ -454,6 +507,9 @@
     .stages-wrap { grid-template-columns: 1fr; }
     .wheel-grid { grid-template-columns: 1fr; }
     .matrix-grid { grid-template-columns: 1fr; min-width: auto; }
+    .ecosystem-map { grid-template-columns: 1fr; }
+    .ecosystem-rail { min-height: auto; }
+    .ecosystem-insights { grid-template-columns: 1fr; }
   }
   @media (max-width: 768px) {
     .nav { padding: 0 1rem; }
@@ -482,7 +538,7 @@
 <!-- smec-favicon v1 -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <!-- smec-accuracy v1 -->
-<meta name="smec:last-accuracy-check" content="2026-06-18">
+<meta name="smec:last-accuracy-check" content="2026-07-14">
 <style>/* smec-back-btn v2 */
 .smec-back-btn { position: fixed; bottom: 16px; left: 16px; z-index: 9999;
   box-sizing: border-box;
@@ -553,8 +609,9 @@
   </div>
   <div class="nav-links">
     <a href="#top">The Shift</a>
+    <a href="#ecosystem">Ecosystem</a>
     <a href="#stages">3 Stages</a>
-    <a href="#pillars">4 Pillars</a>
+    <a href="#pillars">5 Pillars</a>
     <a href="#approach">360° Approach</a>
     <a href="#governance">Governance</a>
     <a href="#principles">Principles</a>
@@ -569,19 +626,19 @@
   <div class="hero-content">
     <div class="hero-badge">Microsoft Digital Customer Zero Playbook</div>
     <h1>The Frontier Firm Isn't Coming.<br><span class="accent">It's Already Here.</span></h1>
-    <p class="hero-tag">A new kind of company is emerging &mdash; AI-operated, human-led, and scaling through teams of autonomous agents. Microsoft spent three years becoming one. This is what we learned so you can move faster than we did.</p>
+    <p class="hero-tag">A new kind of company is emerging &mdash; AI-operated, human-led, and scaling through teams of autonomous agents. The newest signal is sharper: the winners will compound their own organizational IQ while running every agent inside a trusted, observable, cost-aware system.</p>
     <div class="hero-quote">
       &ldquo;A new organizational blueprint is emerging. It blends machine intelligence with human judgment to create systems that are <strong>AI-operated but human-led</strong>. We have a name for an organization that enacts this model: The Frontier Firm.&rdquo;
     </div>
     <div class="hero-cta">
-      <a href="#stages" class="btn btn-primary">See the 3 Stages &rarr;</a>
+      <a href="#ecosystem" class="btn btn-primary">See the Ecosystem &rarr;</a>
       <a href="#act" class="btn btn-outline">What Should I Do Monday?</a>
     </div>
     <div class="hero-stats">
       <div class="hero-stat"><div class="stat-num">3 yrs</div><div class="stat-label">Microsoft's journey so far</div></div>
-      <div class="hero-stat"><div class="stat-num">4</div><div class="stat-label">Pillars of practice</div></div>
+      <div class="hero-stat"><div class="stat-num">5</div><div class="stat-label">Pillars of practice</div></div>
       <div class="hero-stat"><div class="stat-num">6</div><div class="stat-label">Governance principles</div></div>
-      <div class="hero-stat"><div class="stat-num">1</div><div class="stat-label">Decision you're avoiding</div></div>
+      <div class="hero-stat"><div class="stat-num">2</div><div class="stat-label">Intelligence + trust</div></div>
     </div>
   </div>
 </header>
@@ -593,6 +650,63 @@
     <p>Every process you haven't automated, every insight locked in a 200-page PDF, every hour your team spends on repetitive work &mdash; that's where agents will live. The question isn't <em>whether</em>. The question is <em>who builds them first: you, or your competitor?</em></p>
   </div>
 </div>
+
+<!-- ═══════════ FRONTIER ECOSYSTEM ═══════════ -->
+<section id="ecosystem" class="ecosystem-section">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label">Fresh Signal: June 2026</span>
+      <h2 class="section-title">A Frontier Firm Needs an Ecosystem, Not Just a Model</h2>
+      <p class="section-sub">The latest Microsoft guidance reframes agentic transformation around <strong>Intelligence + Trust</strong>. Models matter, but the durable advantage is the learning loop you own: people, agents, data, evals, governance, and cost signals compounding inside your business.</p>
+    </div>
+
+    <div class="ecosystem-map reveal" aria-label="Empowering Frontier Transformation ecosystem map">
+      <div class="ecosystem-rail">
+        <strong>Microsoft 365 Copilot</strong>
+        <span>Knowledge work, chat, Cowork, and the flow of work where employees already operate.</span>
+      </div>
+      <div class="ecosystem-core">
+        <div class="ecosystem-row two">
+          <div class="ecosystem-node accent">Copilot Studio</div>
+          <div class="ecosystem-node accent">GitHub Copilot</div>
+        </div>
+        <div class="ecosystem-row">
+          <div class="ecosystem-node iq">Microsoft IQ</div>
+        </div>
+        <div class="ecosystem-row three">
+          <div class="ecosystem-node">Work IQ</div>
+          <div class="ecosystem-node">Foundry IQ</div>
+          <div class="ecosystem-node">Fabric IQ</div>
+        </div>
+        <div class="ecosystem-row">
+          <div class="ecosystem-node foundation">Microsoft Azure</div>
+        </div>
+        <div class="ecosystem-row">
+          <div class="ecosystem-node foundation">Microsoft Security</div>
+        </div>
+      </div>
+      <div class="ecosystem-rail">
+        <strong>Agent 365</strong>
+        <span>The control plane to observe, govern, manage, secure, and increasingly track agent spend.</span>
+      </div>
+    </div>
+
+    <div class="ecosystem-insights">
+      <div class="ecosystem-insight reveal">
+        <h4>Build your own IQ</h4>
+        <p>Agents struggle with raw data. Microsoft IQ turns organizational context into usable intelligence so agents do less reconstruction and more business-specific work.</p>
+      </div>
+      <div class="ecosystem-insight reveal">
+        <h4>Own the learning loop</h4>
+        <p>Human capital and token capital compound together when private evals, production traces, and reinforcement-learning environments improve workflows against your own outcomes.</p>
+      </div>
+      <div class="ecosystem-insight reveal">
+        <h4>Design for FinOps</h4>
+        <p>Model diversity, Agent Factory consumption, and Agent 365 cost visibility make economics part of architecture instead of a surprise after adoption scales.</p>
+      </div>
+    </div>
+  </div>
+</section>
 
 <!-- ═══════════ THE 3 STAGES ═══════════ -->
 <section id="stages">
@@ -638,8 +752,8 @@
   <div class="container">
     <div class="reveal">
       <span class="section-label">The Operating Model</span>
-      <h2 class="section-title">The 4 Pillars of Practice at Microsoft Digital</h2>
-      <p class="section-sub">Microsoft's internal IT organization rebuilt itself around four commitments. Every Frontier Firm will need its own version of these.</p>
+      <h2 class="section-title">The 5 Pillars of Practice at Microsoft Digital</h2>
+      <p class="section-sub">Microsoft’s internal IT organization rebuilt itself around five commitments. Every Frontier Firm will need its own version of these.</p>
     </div>
     <div class="pillar-grid">
 
@@ -668,7 +782,14 @@
         <div class="pillar-num">04</div>
         <div class="pillar-icon">&#x1F4E2;</div>
         <h4>Voice of Transformation</h4>
-        <p>We're Customer Zero. We publish our playbook so our customers can shortcut the hardest parts of their own AI journey.</p>
+        <p>We&rsquo;re Customer Zero. We publish our playbook so our customers can shortcut the hardest parts of their own AI journey.</p>
+      </div>
+
+      <div class="pillar-card reveal">
+        <div class="pillar-num">05</div>
+        <div class="pillar-icon">&#x26F0;</div>
+        <h4>Frontier Tuning <span style="display:inline-block;background:rgba(80,230,255,.15);color:#50e6ff;border:1px solid rgba(80,230,255,.4);padding:.05rem .45rem;border-radius:6px;font-size:.62rem;font-weight:800;letter-spacing:.06em;margin-left:.4rem;vertical-align:middle;">BUILD 2026</span></h4>
+        <p>Treat the agent itself as a continuously-improving asset. With Microsoft&rsquo;s new <strong>Frontier Tuning</strong> and reinforcement-learning environments (RLEs) &mdash; the &ldquo;hill-climbing machine&rdquo; behind the MAI model family &mdash; we close the loop: capture production traces, grade them with custom evaluators, and fine-tune until the agent reliably climbs the metric that matters.</p>
       </div>
 
     </div>
@@ -713,7 +834,7 @@
         <div class="wheel-item w6">
           <div class="wheel-tag">Workstream 06</div>
           <h4>Measure</h4>
-          <p>Telemetry, observability, and impact metrics so the business can see what's working.</p>
+          <p>Telemetry, observability, FinOps, and impact metrics so the business can see what's working and what it costs.</p>
         </div>
       </div>
     </div>
@@ -726,7 +847,7 @@
     <div class="reveal">
       <span class="section-label">Right-Sized Oversight</span>
       <h2 class="section-title">The Matrixed Governance Model</h2>
-      <p class="section-sub">One size fits nothing. Microsoft tiers agent governance by risk and complexity &mdash; letting employees move fast on low-risk agents while applying full SDLC rigor where it matters.</p>
+      <p class="section-sub">One size fits nothing. Microsoft tiers agent governance by risk and complexity, then uses Agent 365 as the control plane to observe, govern, manage, secure, and track agents across the enterprise.</p>
     </div>
 
     <div class="matrix-wrap reveal">
@@ -767,14 +888,14 @@
           <div class="matrix-content">
             <div class="matrix-level">Tier 3 &mdash; Enterprise</div>
             <h4>Enterprise-Grade Agents</h4>
-            <div class="matrix-tool">Pro-code + custom <a href="https://learn.microsoft.com/en-us/azure/foundry/" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;">Microsoft Foundry</a></div>
+            <div class="matrix-tool">Pro-code + custom <a href="https://learn.microsoft.com/en-us/azure/ai-foundry/" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;">Microsoft Foundry</a></div>
             <ul>
               <li>Custom connectors &amp; orchestration</li>
               <li>Writes &amp; transforms data</li>
               <li>Ships as Teams apps or catalog listings</li>
               <li>Can affect many users</li>
             </ul>
-            <div class="matrix-review">Full SDLC: security, privacy, accessibility, RAI, maker stack</div>
+            <div class="matrix-review">Full SDLC + Agent 365 visibility: security, privacy, accessibility, RAI, maker stack</div>
           </div>
         </div>
 
@@ -856,8 +977,8 @@
     <div class="tk-grid">
 
       <div class="tk-card reveal">
-        <h4>A strong data foundation is crucial</h4>
-        <p>Labels, hygiene, and governance policies must be baked in before agents go live. No shortcut here.</p>
+        <h4>Build your own IQ first</h4>
+        <p>Labels, hygiene, business context, and governance policies must be baked in before agents go live. Raw data forces agents to spend compute rediscovering what the enterprise should already know.</p>
       </div>
 
       <div class="tk-card reveal">
@@ -866,8 +987,8 @@
       </div>
 
       <div class="tk-card reveal">
-        <h4>Agents aren't applications</h4>
-        <p>Your SDLC doesn't scale to agents. Build a risk-based assessment model &mdash; not another approvals queue.</p>
+        <h4>The learning loop is the IP</h4>
+        <p>Private evals, production traces, and business-specific success metrics become the hill-climbing machine that makes agents better at your work, not generic benchmarks.</p>
       </div>
 
       <div class="tk-card reveal">
@@ -877,7 +998,7 @@
 
       <div class="tk-card reveal">
         <h4>Governance is employee value</h4>
-        <p>Good governance isn't a drag on adoption &mdash; it's what makes agents usable at scale. Measure value, not just compliance.</p>
+        <p>Good governance isn't a drag on adoption &mdash; it's what makes agents usable at scale. Measure value, cost, risk, and compliance together.</p>
       </div>
 
       <div class="tk-card reveal">
@@ -976,6 +1097,7 @@
         <p>Microsoft spent three years getting here. You don't have to. Take our playbook, skip our mistakes, and start leading the Frontier Firm of your industry.</p>
         <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
           <a href="https://www.microsoft.com/insidetrack/blog/becoming-a-frontier-firm-a-guide-for-deploying-ai-agents-based-on-our-experience-at-microsoft/" class="btn btn-primary" target="_blank">Read the Full Playbook &rarr;</a>
+          <a href="https://www.microsoft.com/en-us/frontier-company" class="btn btn-outline" target="_blank">Explore Frontier Company</a>
           <a href="https://www.microsoft.com/en-us/microsoft-copilot/microsoft-copilot-studio" class="btn btn-outline" target="_blank">Start Building in Copilot Studio</a>
         </div>
       </div>
@@ -1014,7 +1136,7 @@
 </section>
 
 <footer class="footer">
-  <p>Frontier Firm Playbook &bull; Adapted from <a href="https://www.microsoft.com/insidetrack/blog/becoming-a-frontier-firm-a-guide-for-deploying-ai-agents-based-on-our-experience-at-microsoft/" target="_blank">Microsoft Inside Track (April 2026)</a> &bull; A guide for deploying AI agents based on Microsoft's own experience as Customer Zero.</p>
+  <p>Frontier Firm Playbook &bull; Adapted from <a href="https://www.microsoft.com/insidetrack/blog/becoming-a-frontier-firm-a-guide-for-deploying-ai-agents-based-on-our-experience-at-microsoft/" target="_blank">Microsoft Inside Track</a> &bull; Refreshed with <a href="https://blogs.microsoft.com/blog/2026/06/16/achieving-success-with-ai/" target="_blank">Achieving success with AI</a>, <a href="https://snscratchpad.com/posts/frontier-ecosystem/" target="_blank">A frontier without an ecosystem is not stable</a>, <a href="https://www.microsoft.com/en-us/frontier-company" target="_blank">Microsoft Frontier Company</a>, <a href="https://microsoft.ai/news/building-a-hillclimbing-machine-launching-seven-new-mai-models/" target="_blank">Microsoft&rsquo;s MAI hill-climbing machine</a>, and <a href="https://devblogs.microsoft.com/foundry/whats-new-in-microsoft-foundry-build-2026/" target="_blank">What&rsquo;s New in Microsoft Foundry</a>.</p>
 </footer>
 
 <script>

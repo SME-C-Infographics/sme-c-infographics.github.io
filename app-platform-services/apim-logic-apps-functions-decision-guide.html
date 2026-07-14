@@ -11,7 +11,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>App Platform Services Decision Guide — APIM, Logic Apps, Functions | SME&amp;C</title>
+  <title>App Platform Services Decision Guide — APIM, Logic Apps, Functions</title>
   <style>
     /* === RESET & BASE === */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -611,18 +611,18 @@
   </style>
   <script defer src="https://a.ndme.sh/script.js" data-website-id="9478c1a0-93c6-4c21-855a-69e50e15cbc4"></script>
 <!-- smec-meta v1 -->
-<meta name="description" content="App Platform Services Decision Guide — APIM, Logic Apps, Functions | SME&amp;C — an interactive infographic from the SME&amp;C Infographic Hub.">
-<meta property="og:title" content="App Platform Services Decision Guide — APIM, Logic Apps, Functions | SME&amp;C">
-<meta property="og:description" content="App Platform Services Decision Guide — APIM, Logic Apps, Functions | SME&amp;C — an interactive infographic from the SME&amp;C Infographic Hub.">
+<meta name="description" content="App Platform Services Decision Guide — APIM, Logic Apps, Functions — an interactive infographic from the SME&amp;C Infographic Hub.">
+<meta property="og:title" content="App Platform Services Decision Guide — APIM, Logic Apps, Functions">
+<meta property="og:description" content="App Platform Services Decision Guide — APIM, Logic Apps, Functions — an interactive infographic from the SME&amp;C Infographic Hub.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://sme-c-infographics.github.io/app-platform-services/apim-logic-apps-functions-decision-guide.html">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="App Platform Services Decision Guide — APIM, Logic Apps, Functions | SME&amp;C">
-<meta name="twitter:description" content="App Platform Services Decision Guide — APIM, Logic Apps, Functions | SME&amp;C — an interactive infographic from the SME&amp;C Infographic Hub.">
+<meta name="twitter:title" content="App Platform Services Decision Guide — APIM, Logic Apps, Functions">
+<meta name="twitter:description" content="App Platform Services Decision Guide — APIM, Logic Apps, Functions — an interactive infographic from the SME&amp;C Infographic Hub.">
 <!-- smec-favicon v1 -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <!-- smec-accuracy v1 -->
-<meta name="smec:last-accuracy-check" content="2026-05-28">
+<meta name="smec:last-accuracy-check" content="2026-06-27">
 <style>/* smec-back-btn v2 */
 .smec-back-btn { position: fixed; bottom: 16px; left: 16px; z-index: 9999;
   box-sizing: border-box;
@@ -775,7 +775,7 @@
             <li><strong>Premium v2 does not support multi-region deployment</strong> — only classic Premium does (12 units/region). Do not position v2 for geo-redundant gateway scenarios.</li>
             <li>No automated migration path from classic tiers to v2; must redeploy.</li>
             <li>Basic v2 has no private endpoint support; Standard v2 is outbound VNet integration only (gateway public-facing). Full injection requires Premium v2.</li>
-            <li><strong>Trusted service connectivity retires March 15, 2026</strong> — replace with Private Link or VNet line-of-sight now.</li>
+            <li><strong>Trusted service connectivity was retired March 15, 2026.</strong> Private Link or VNet line-of-sight is now required — audit any flows still relying on the old shortcut.</li>
           </ul>
 
           <div class="card-section-title">SKU / Networking Summary</div>
@@ -946,7 +946,8 @@
           <ul class="bullet-list warn" aria-label="Functions watch-outs">
             <li><strong>.NET in-process model support ends November 10, 2026.</strong> .NET 10 is isolated-worker only. Flex Consumption requires isolated-worker. Migrate now.</li>
             <li>Consumption plan has no VNet integration and classic cold-start behavior. Flex Consumption is the recommended replacement for new serverless builds.</li>
-            <li>Plan selection materially changes cost, cold-start, VNet, and AZ behavior — "Functions" alone is not a sufficient architecture spec.</li>
+            <li>Plan selection materially changes cost, cold-start, VNet, and AZ behavior — “Functions” alone is not a sufficient architecture spec.</li>
+            <li><strong>Build 2026 — Cobalt 200 Arm VMs:</strong> Microsoft’s next-gen Arm processor (~50% perf gain over Cobalt 100, fully optimized for agentic workloads) is launching in preview. Track Functions plan availability for cost/perf rebalancing.</li>
           </ul>
 
           <div class="card-section-title">Hosting Plan Summary</div>
@@ -1191,7 +1192,7 @@
             <div class="arch-arrow" aria-hidden="true">↓</div>
             <div class="arch-node arch-node-green">
               Data Services
-              <span class="arch-node-sub">Azure SQL · Cosmos DB · Blob · Key Vault</span>
+              <span class="arch-node-sub">Azure SQL · Cosmos DB / HorizonDB · Blob · Key Vault</span>
             </div>
           </div>
           <div class="arch-key">
@@ -1786,11 +1787,16 @@
     <div>Contributed by <strong>Toni Montez</strong>, Digital Solution Engineer — SME&amp;C Corporate (US SME&amp;C East-Azure)</div>
     <div>
       Repo: <a href="https://github.com/SME-C-Infographics/sme-c-infographics.github.io" target="_blank" rel="noopener">SME-C-Infographics/sme-c-infographics.github.io</a>
-      &nbsp;·&nbsp; Version 1.1 &nbsp;·&nbsp; Last updated: 2026-04-16
+      &nbsp;·&nbsp; Version 1.2 &nbsp;·&nbsp; Last updated: 2026-06-27
     </div>
-    <div>This asset has a <strong>3-month refresh cadence</strong>. Next review: <strong>2026-07-16</strong></div>
+    <div>This asset has a <strong>3-month refresh cadence</strong>. Next review: <strong>2026-09-27</strong></div>
     <div style="color:var(--divider);font-size:10px;margin-top:4px">
-      All claims grounded against Microsoft Learn documentation, April 2026. Internal use only — SME&amp;C field enablement.
+      All claims grounded against Microsoft Learn documentation, June 2026 (Build 2026 refresh — trusted-service retirement past-tensed, Cobalt 200 / HorizonDB callouts added). Internal use only — SME&amp;C field enablement.
+      <br><a href="https://azure.microsoft.com/en-us/blog/new-azure-cobalt-200-vms-deliver-50-performance-improvement-fully-optimized-for-modern-agentic-ai-workloads/" target="_blank" rel="noopener">Cobalt 200 announcement</a>
+      &nbsp;·&nbsp;
+      <a href="https://techcommunity.microsoft.com/blog/adforpostgresql/azure-horizondb-postgres-reimagined-for-the-era-of-agents/4470040" target="_blank" rel="noopener">Azure HorizonDB (Postgres for agents)</a>
+      &nbsp;·&nbsp;
+      <a href="https://devblogs.microsoft.com/foundry/whats-new-in-microsoft-foundry-build-2026/" target="_blank" rel="noopener">Foundry @ Build 2026</a>
     </div>
   </div>
 </footer>

@@ -517,7 +517,7 @@ section{padding:80px 20px}
 <!-- smec-favicon v1 -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <!-- smec-accuracy v1 -->
-<meta name="smec:last-accuracy-check" content="2026-06-11">
+<meta name="smec:last-accuracy-check" content="2026-06-27">
 <style>/* smec-back-btn v2 */
 .smec-back-btn { position: fixed; bottom: 16px; left: 16px; z-index: 9999;
   box-sizing: border-box;
@@ -1045,7 +1045,7 @@ curl https://demo-apim-injected.azure-api.net/echo/resource</pre>
           <tr><td>Inbound NSG enforcement (integration)</td><td><span class="cross">✕</span></td><td><span class="cross">✕</span></td></tr>
           <tr><td>Inbound NSG enforcement (injection)</td><td>N/A</td><td><span class="check">✓</span></td></tr>
           <tr><td>Min subnet / recommended</td><td>/27 min · /24 recommended</td><td>/27 min · /24 recommended</td></tr>
-          <tr><td>Max scale-out units</td><td><strong>10</strong></td><td><strong>30</strong></td></tr>
+          <tr><td>Max scale-out units</td><td>Lower</td><td><strong>30</strong></td></tr>
           <tr><td>Dedicated subnet required</td><td><span class="check">✓</span></td><td><span class="check">✓</span></td></tr>
           <tr><td>Best for</td><td>Cost-efficient public or semi-private APIs</td><td>Full isolation, high scale, premium features</td></tr>
         </tbody>
@@ -1159,9 +1159,15 @@ curl https://demo-apim-injected.azure-api.net/echo/resource</pre>
 
 <!-- FOOTER -->
 <footer class="footer">
-  <h3>You've got this 🎉</h3>
+  <h3>You’ve got this 🎉</h3>
   <div class="footer-divider"></div>
-  <p>Pick the scenario that matches your security posture today, but plan for where you'll be in 12 months — VNet injection is a creation-time-only decision, and you can't switch between injection and integration. When in doubt, start with Standard v2 Public and evolve.</p>
+  <p>Pick the scenario that matches your security posture today, but plan for where you’ll be in 12 months — VNet injection is a creation-time-only decision, and you can’t switch between injection and integration. When in doubt, start with Standard v2 Public and evolve.</p>
+  <div style="max-width:760px;margin:24px auto 0;padding:16px 18px;border:1px solid rgba(255,255,255,.18);border-radius:10px;background:rgba(255,255,255,.04);font-size:.92rem;line-height:1.55;text-align:left;">
+    <strong style="display:block;margin-bottom:6px;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;opacity:.75;">Build 2026 — AI Gateway pairings</strong>
+    When this APIM v2 instance is also acting as an <strong>AI Gateway</strong>, two new patterns are worth wiring into the same private-network design: (1) <strong>Foundry hosted agents</strong> publishing through APIM as their front door for both inbound MCP traffic and outbound model calls, and (2) <strong>Web IQ</strong> connecting as an MCP-native upstream through the same private-network paths. See the <a href="../foundry/ai-gateway-apim.html" style="color:#9bd1ff;">AI Gateway for Foundry</a> companion for routing details.
+    <br><br>
+    <span style="font-size:.78rem;opacity:.7;">Maximum-units (Premium v2 = 30) and the injection-vs-integration irreversibility claims above are based on Microsoft Learn as of June 2026 — re-verify with <a href="https://learn.microsoft.com/en-us/azure/api-management/v2-service-tiers-overview" style="color:#9bd1ff;">v2 service tiers</a> and <a href="https://learn.microsoft.com/en-us/azure/api-management/api-management-using-with-vnet" style="color:#9bd1ff;">VNet integration</a> before quoting in customer-facing decks.</span>
+  </div>
 </footer>
 
 <script>

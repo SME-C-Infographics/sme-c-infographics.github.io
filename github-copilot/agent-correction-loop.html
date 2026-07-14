@@ -133,7 +133,7 @@
 <!-- smec-favicon v1 -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <!-- smec-accuracy v1 -->
-<meta name="smec:last-accuracy-check" content="2026-06-04">
+<meta name="smec:last-accuracy-check" content="2026-06-27">
 <style>/* smec-back-btn v2 */
 .smec-back-btn { position: fixed; bottom: 16px; left: 16px; z-index: 9999;
   box-sizing: border-box;
@@ -203,7 +203,7 @@
   </div>
   <h1>When the agent's PR is wrong</h1>
   <p>Every async coding agent ships broken first drafts sometimes. The question is how you tell it to try again, which control plane owns the next round, and whether the review trail stays easy to reconstruct.</p>
-  <div class="hero-meta">Accurate as of June 4, 2026 · Focus: comment-driven iteration, not one-shot quality</div>
+  <div class="hero-meta">Accurate as of June 27, 2026 · Focus: comment-driven iteration, not one-shot quality</div>
 </header>
 
 <div class="container">
@@ -294,8 +294,8 @@
 <section class="section-flush-top">
   <div class="container">
     <span class="section-label">The loop</span>
-    <h2 class="section-title">Four tools, four correction shapes</h2>
-    <p class="section-sub">What a reviewer has to do to get a v2. The cheaper and more inspectable this loop is, the more viable the "assign it to the agent" pattern becomes for real work.</p>
+    <h2 class="section-title">Five tools, five correction shapes</h2>
+    <p class="section-sub">What a reviewer has to do to get a v2. The cheaper and more inspectable this loop is, the more viable the “assign it to the agent” pattern becomes for real work.</p>
 
     <div class="loop-grid">
 
@@ -336,6 +336,16 @@
           <div class="loop-step"><div class="n">2</div><div class="t"><strong>Agent works in a vendor-hosted environment.</strong> The product owns much of the run orchestration and task state.</div></div>
           <div class="loop-step"><div class="n">3</div><div class="t"><strong>Outputs come back to GitHub.</strong> Commits or review results can still land on the PR.</div></div>
           <div class="loop-step pain"><div class="n">!</div><div class="t"><strong>Reviewers may need a second surface.</strong> Detailed task history or continuation can live in ChatGPT Codex, Cursor web, Cursor Desktop, Slack, Linear, or API-driven flows.</div></div>
+        </div>
+      </div>
+
+      <div class="loop-card">
+        <header><h3>GitHub Copilot desktop app</h3><div class="sub">Agent-native desktop wrapper · Public preview</div></header>
+        <div class="loop-steps">
+          <div class="loop-step"><div class="n">1</div><div class="t"><strong>Comment from the desktop surface.</strong> Same <code>@copilot</code> trigger, but the loop is wrapped by parallel worktrees and Canvases for visual planning.</div></div>
+          <div class="loop-step"><div class="n">2</div><div class="t"><strong>Agent Merge babysits CI/review/merge.</strong> Watches checks, queues retries, and merges when conditions clear so you stop hand-shepherding green PRs.</div></div>
+          <div class="loop-step"><div class="n">3</div><div class="t"><strong>Rubber Duck review adds a second opinion.</strong> Pre-merge critique pass before the human reviewer — catches obvious mistakes without burning a teammate’s time.</div></div>
+          <div class="loop-step pain"><div class="n">!</div><div class="t"><strong>Preview surface, GitHub identity.</strong> Behavior, policy controls, and billing are still landing. Pair with existing repo policies (rulesets, content exclusion) until enterprise controls catch up.</div></div>
         </div>
       </div>
 
@@ -411,6 +421,8 @@ as the fallback and add a test for the anonymous case.
         <li><a href="https://code.claude.com/docs/en/github-actions">Claude Code GitHub Actions</a></li>
         <li><a href="https://developers.openai.com/codex/integrations/github">Codex GitHub integration</a></li>
         <li><a href="https://cursor.com/docs/cloud-agent">Cursor Cloud Agents</a></li>
+        <li><a href="https://github.blog/news-insights/product-news/github-copilot-app-the-agent-native-desktop-experience/">GitHub Copilot desktop app (Agent Merge, Rubber Duck)</a></li>
+        <li><a href="https://github.com/github/app">github/app repo</a></li>
       </ul>
     </div>
   </div>

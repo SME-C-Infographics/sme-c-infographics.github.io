@@ -103,7 +103,7 @@
 <!-- smec-favicon v1 -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <!-- smec-accuracy v1 -->
-<meta name="smec:last-accuracy-check" content="2026-06-04">
+<meta name="smec:last-accuracy-check" content="2026-06-27">
 <style>/* smec-back-btn v2 */
 .smec-back-btn { position: fixed; bottom: 16px; left: 16px; z-index: 9999;
   box-sizing: border-box;
@@ -172,8 +172,8 @@
     Platform engineering · Agent control planes
   </div>
   <h1>Which AI coding agent fits which team?</h1>
-  <p>Not a ranking. A decision tree for choosing the control plane first: GitHub-native, GitHub-hosted third-party, standalone vendor workflow, or Cursor's cloud surface.</p>
-  <div class="hero-meta">Accurate as of June 4, 2026 · Async GitHub-connected agents, not local IDE copilots</div>
+  <p>Not a ranking. A decision tree for choosing the control plane first: GitHub-native (web or new desktop app), GitHub-hosted third-party, standalone vendor workflow, or Cursor’s cloud surface.</p>
+  <div class="hero-meta">Accurate as of June 27, 2026 · Async GitHub-connected agents, not local IDE copilots</div>
 </header>
 
 <section>
@@ -258,12 +258,26 @@
         <header><h3>Cursor Cloud Agents</h3><div class="sub">External SaaS · Cursor team plan</div></header>
         <div class="body">
           <div class="fit"><strong>Best fit:</strong> Cursor IDE shop wanting one agent experience across editor, web, Slack, Linear, and GitHub.</div>
-          <div class="not-fit"><strong>Watch-outs:</strong> Cursor's value is strongest when the team is already bought into Cursor; regulated teams should review repo access, billing, privacy, and audit requirements.</div>
+          <div class="not-fit"><strong>Watch-outs:</strong> Cursor’s value is strongest when the team is already bought into Cursor; regulated teams should review repo access, billing, privacy, and audit requirements.</div>
           <ul>
             <li>Triggered from Cursor web, Desktop, Slack, Linear, GitHub, API</li>
             <li>Cloud agents run away from the local laptop</li>
             <li>MCP + hooks support (<code>.cursor/hooks.json</code>)</li>
             <li>Team/Enterprise plans add admin and governance controls</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="tool-card">
+        <header><h3>GitHub Copilot desktop app <span style="display:inline-block;background:#dafbe1;color:#0a3622;border:1px solid #6fdd8b;padding:.05rem .4rem;border-radius:6px;font-size:.62rem;font-weight:800;letter-spacing:.06em;margin-left:.4rem;vertical-align:middle;">NEW</span></h3><div class="sub">GitHub-native · macOS/Windows desktop · Public preview</div></header>
+        <div class="body">
+          <div class="fit"><strong>Best fit:</strong> developers who want an agent-native desktop surface for parallel work — Agent Merge for CI/review babysitting, worktrees for multi-task isolation, Rubber Duck review for second-opinion critique, Canvases for visual planning — with multi-model choice (OpenAI, Anthropic, Google) on a GitHub identity.</div>
+          <div class="not-fit"><strong>Watch-outs:</strong> public preview; behavior, policy surface, and billing details are still evolving. Pair with existing repo policies (rulesets, content exclusion) until enterprise controls catch up.</div>
+          <ul>
+            <li>Agent Merge, worktrees, Rubber Duck review, Canvases</li>
+            <li>Multi-model: OpenAI, Anthropic, Google</li>
+            <li>Source: <a href="https://github.com/github/app" target="_blank" rel="noopener">github/app</a></li>
+            <li>Reuses Copilot subscription + GitHub identity</li>
           </ul>
         </div>
       </div>
@@ -300,6 +314,8 @@
         <li><a href="https://developers.openai.com/codex/integrations/github">Codex GitHub integration</a></li>
         <li><a href="https://cursor.com/blog/cloud-agents">Cursor Cloud Agents</a></li>
         <li><a href="https://cursor.com/pricing">Cursor pricing and plans</a></li>
+        <li><a href="https://github.blog/news-insights/product-news/github-copilot-app-the-agent-native-desktop-experience/">GitHub Copilot desktop app announcement</a></li>
+        <li><a href="https://github.com/github/app">github/app repo</a></li>
       </ul>
     </div>
   </div>

@@ -646,7 +646,7 @@
 <!-- smec-favicon v1 -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <!-- smec-accuracy v1 -->
-<meta name="smec:last-accuracy-check" content="2026-06-18">
+<meta name="smec:last-accuracy-check" content="2026-06-27">
 <style>/* smec-back-btn v2 */
 .smec-back-btn { position: fixed; bottom: 16px; left: 16px; z-index: 9999;
   box-sizing: border-box;
@@ -975,7 +975,8 @@
         <div class="row-content">
           <div class="tile"><strong>Chat &amp; Copilots</strong><span>Foundry-grounded conversational</span></div>
           <div class="tile"><strong>AI Agents</strong><span>Foundry Agent Service</span></div>
-          <div class="tile"><strong>RAG Apps</strong><span>AI Search + Cosmos</span></div>
+          <div class="tile"><strong>Agent Runtime</strong><span>Hosted agents on MXC sandboxes</span></div>
+          <div class="tile"><strong>RAG Apps</strong><span>AI Search + Cosmos / HorizonDB</span></div>
           <div class="tile"><strong>Content Processing</strong><span>Document &amp; knowledge mining</span></div>
         </div>
       </div>
@@ -985,7 +986,7 @@
         <div class="row-content">
           <div class="tile"><strong>Microsoft Foundry</strong><span>Account · Projects · Agent Service</span></div>
           <div class="tile"><strong>AI Search</strong><span>Vector + keyword retrieval</span></div>
-          <div class="tile"><strong>Cosmos DB</strong><span>Agent state &amp; memory</span></div>
+          <div class="tile"><strong>Cosmos DB / HorizonDB</strong><span>Agent state, memory &amp; Postgres for agents</span></div>
           <div class="tile"><strong>Storage Account</strong><span>Blobs · grounding sources</span></div>
         </div>
       </div>
@@ -1117,8 +1118,9 @@
         <ul>
           <li>Foundry Account + Projects + Agent Service</li>
           <li>Azure AI Search for RAG retrieval</li>
-          <li>Cosmos DB for agent state &amp; memory</li>
+          <li>Cosmos DB for agent state &amp; memory — or <strong>Azure HorizonDB</strong> (Postgres reimagined for agents) <span style="background:#f0f7ff;border:1px solid #cfe1ff;color:#0d4a8a;padding:.1rem .4rem;border-radius:6px;font-size:.7rem;font-weight:700;">Build 2026</span></li>
           <li>Storage Account for blobs &amp; grounding sources</li>
+          <li>Optional compute targets: <strong>Maia 200</strong> AI accelerators for inference, and <strong>Cobalt 200</strong> Arm VMs (preview, ~50% performance gain on Microsoft's fastest Arm processor yet, optimized for agentic workloads) <span style="background:#f0f7ff;border:1px solid #cfe1ff;color:#0d4a8a;padding:.1rem .4rem;border-radius:6px;font-size:.7rem;font-weight:700;">Build 2026</span></li>
         </ul>
       </div>
 
@@ -1206,7 +1208,7 @@
           <ul>
             <li>Key Vault</li>
             <li>Storage Account</li>
-            <li>Cosmos DB</li>
+            <li>Cosmos DB <em>or</em> <a href="https://techcommunity.microsoft.com/blog/adforpostgresql/azure-horizondb-postgres-reimagined-for-the-era-of-agents/4470040" target="_blank" rel="noopener">Azure HorizonDB</a> (Postgres for agents)</li>
             <li>Azure AI Search</li>
             <li>Existing or new — your choice</li>
           </ul>
@@ -1458,7 +1460,7 @@
   <div class="container">
     <div class="brand-mark">Azure AI Landing Zones</div>
     <p>The runway before takeoff. Build it once, fly many.</p>
-    <p class="small">Based on the official <a href="https://github.com/Azure/AI-Landing-Zones" target="_blank" rel="noopener">Azure/AI-Landing-Zones</a> reference architecture, the <a href="https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ai/" target="_blank" rel="noopener">Cloud Adoption Framework for AI</a>, and the <a href="https://learn.microsoft.com/en-us/azure/well-architected/ai/" target="_blank" rel="noopener">Well-Architected Framework AI workload</a> guidance. GA: November 17, 2025 · Updated April 2026.</p>
+    <p class="small">Based on the official <a href="https://github.com/Azure/AI-Landing-Zones" target="_blank" rel="noopener">Azure/AI-Landing-Zones</a> reference architecture, the <a href="https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ai/" target="_blank" rel="noopener">Cloud Adoption Framework for AI</a>, and the <a href="https://learn.microsoft.com/en-us/azure/well-architected/ai/" target="_blank" rel="noopener">Well-Architected Framework AI workload</a> guidance. GA: November 17, 2025 · Updated June 2026 (Build 2026). New compute &amp; data primitives: <a href="https://azure.microsoft.com/en-us/blog/new-azure-cobalt-200-vms-deliver-50-performance-improvement-fully-optimized-for-modern-agentic-ai-workloads/" target="_blank" rel="noopener">Cobalt 200 VMs</a> · <a href="https://techcommunity.microsoft.com/blog/adforpostgresql/azure-horizondb-postgres-reimagined-for-the-era-of-agents/4470040" target="_blank" rel="noopener">Azure HorizonDB</a>.</p>
   </div>
 </footer>
 

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Microsoft IQ Platforms — Foundry IQ, Fabric IQ, Work IQ: The Knowledge Layer for Smarter Agents</title>
+<title>Microsoft IQ Platforms — Foundry IQ, Fabric IQ, Work IQ, Web IQ: The Knowledge Layer for Smarter Agents</title>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; font-size: 16px; }
@@ -129,6 +129,7 @@
     --work: #0078d4;     --work-light: #e8f4fd;     --work-mid: #b4d6f4;     --work-dark: #004578;
     --fabric: #c19a00;   --fabric-light: #fff8e1;   --fabric-mid: #ffe082;   --fabric-dark: #7a6000;
     --foundry: #5C2D91;  --foundry-light: #f3effa;  --foundry-mid: #d8cce8;  --foundry-dark: #3b1a63;
+    --web: #008575;      --web-light: #e3f5f1;      --web-mid: #99d4c8;      --web-dark: #005a4f;
   }
 
   /* ── WHY IQ SECTION ── */
@@ -215,6 +216,7 @@
   }
   .arch-source.work-bg { background: linear-gradient(135deg, var(--work-dark), var(--work)); }
   .arch-source.fabric-bg { background: linear-gradient(135deg, var(--fabric-dark), var(--fabric)); }
+  .arch-source.web-bg { background: linear-gradient(135deg, var(--web-dark), var(--web)); }
   .arch-source.other-bg { background: linear-gradient(135deg, #4b5563, #6b7280); }
   .arch-source h5 { font-size: .95rem; font-weight: 700; margin-bottom: .2rem; }
   .arch-source p { font-size: .76rem; opacity: .88; line-height: 1.45; }
@@ -242,6 +244,7 @@
   .iq-hdr.work-bg { background: linear-gradient(135deg, #003d6f, #0062AD, #0078d4); }
   .iq-hdr.fabric-bg { background: linear-gradient(135deg, #6b5400, #9a7600, #c19a00); }
   .iq-hdr.foundry-bg { background: linear-gradient(135deg, #2d1554, #4B1A84, #5C2D91); }
+  .iq-hdr.web-bg { background: linear-gradient(135deg, #003d36, #006B5E, #008575); }
 
   .iq-icon-box {
     width: 64px; height: 64px; border-radius: 16px;
@@ -285,6 +288,8 @@
   .fabric-card li::before { background: var(--fabric); }
   .foundry-card h4 { color: var(--foundry); border-color: var(--foundry-mid); }
   .foundry-card li::before { background: var(--foundry); }
+  .web-card h4 { color: var(--web); border-color: var(--web-mid); }
+  .web-card li::before { background: var(--web); }
 
   .preview-inline {
     display: inline-block; font-size: .58rem; font-weight: 800;
@@ -300,6 +305,7 @@
   .tag.work-t { background: var(--work-light); color: var(--work); }
   .tag.fabric-t { background: var(--fabric-light); color: var(--fabric-dark); }
   .tag.foundry-t { background: var(--foundry-light); color: var(--foundry); }
+  .tag.web-t { background: var(--web-light); color: var(--web-dark); }
 
   /* ── LEARN LINKS IN CARD ── */
   .iq-links {
@@ -325,6 +331,8 @@
   .fabric-card .iq-link-btn:hover { background: var(--fabric); color: #fff; border-color: var(--fabric); }
   .foundry-card .iq-link-btn { color: var(--foundry); border-color: var(--foundry-mid); background: var(--foundry-light); }
   .foundry-card .iq-link-btn:hover { background: var(--foundry); color: #fff; border-color: var(--foundry); }
+  .web-card .iq-link-btn { color: var(--web-dark); border-color: var(--web-mid); background: var(--web-light); }
+  .web-card .iq-link-btn:hover { background: var(--web); color: #fff; border-color: var(--web); }
 
   /* ── COMPARISON TABLE ── */
   .cmp-wrap {
@@ -340,6 +348,7 @@
   .cmp-tbl th:nth-child(2) { color: var(--work); }
   .cmp-tbl th:nth-child(3) { color: var(--fabric-dark); }
   .cmp-tbl th:nth-child(4) { color: var(--foundry); }
+  .cmp-tbl th:nth-child(5) { color: var(--web-dark); }
   .cmp-tbl td {
     padding: .85rem .9rem; border-bottom: 1px solid #eee; font-size: .86rem;
     vertical-align: top;
@@ -349,6 +358,7 @@
   .cmp-tbl td:nth-child(2) { background: rgba(232,244,253,.3); }
   .cmp-tbl td:nth-child(3) { background: rgba(255,248,225,.4); }
   .cmp-tbl td:nth-child(4) { background: rgba(243,239,250,.4); }
+  .cmp-tbl td:nth-child(5) { background: rgba(227,245,241,.45); }
 
   /* ── DECISION TREE ── */
   .dt-wrap { max-width: 760px; margin: 0 auto; }
@@ -381,6 +391,7 @@
   .dt-result.work-r { background: var(--work-light); border: 2px solid var(--work-mid); color: #003a6a; }
   .dt-result.fabric-r { background: var(--fabric-light); border: 2px solid var(--fabric-mid); color: #4a3800; }
   .dt-result.foundry-r { background: var(--foundry-light); border: 2px solid var(--foundry-mid); color: #3b1662; }
+  .dt-result.web-r { background: var(--web-light); border: 2px solid var(--web-mid); color: var(--web-dark); }
   .dt-result.all-r { background: #eef2ff; border: 2px solid #c7d2fe; color: #312e81; }
   .dt-hidden { display: none; }
   .dt-restart {
@@ -432,6 +443,7 @@
   .lic-card.work-b { border-color: var(--work); }
   .lic-card.fabric-b { border-color: var(--fabric); }
   .lic-card.foundry-b { border-color: var(--foundry); }
+  .lic-card.web-b { border-color: var(--web); }
   .lic-card h4 { font-size: .95rem; color: #002050; margin-bottom: .5rem; }
   .lic-card p { font-size: .84rem; color: #555; line-height: 1.55; }
   .lic-card .lic-price {
@@ -441,6 +453,7 @@
   .work-b .lic-price { background: var(--work-light); color: var(--work); }
   .fabric-b .lic-price { background: var(--fabric-light); color: var(--fabric-dark); }
   .foundry-b .lic-price { background: var(--foundry-light); color: var(--foundry); }
+  .web-b .lic-price { background: var(--web-light); color: var(--web-dark); }
 
   /* ── RESOURCE LINKS SECTION ── */
   .res-grid {
@@ -455,6 +468,7 @@
   .res-card.work-b { border-color: var(--work); }
   .res-card.fabric-b { border-color: var(--fabric); }
   .res-card.foundry-b { border-color: var(--foundry); }
+  .res-card.web-b { border-color: var(--web); }
   .res-card h4 {
     font-size: 1.05rem; margin-bottom: 1rem; color: #002050;
     display: flex; align-items: center; gap: .5rem;
@@ -465,6 +479,7 @@
   .res-card.work-b .res-dot { background: var(--work); }
   .res-card.fabric-b .res-dot { background: var(--fabric); }
   .res-card.foundry-b .res-dot { background: var(--foundry); }
+  .res-card.web-b .res-dot { background: var(--web); }
   .res-list { list-style: none; display: flex; flex-direction: column; gap: .5rem; }
   .res-list li { font-size: .85rem; line-height: 1.4; }
   .res-list a {
@@ -517,18 +532,18 @@
 </style>
 <script defer src="https://a.ndme.sh/script.js" data-website-id="9478c1a0-93c6-4c21-855a-69e50e15cbc4"></script>
 <!-- smec-meta v1 -->
-<meta name="description" content="Microsoft IQ Platforms — Foundry IQ, Fabric IQ, Work IQ: The Knowledge Layer for Smarter Agents — an interactive infographic from the SME&amp;C Infographic Hub.">
-<meta property="og:title" content="Microsoft IQ Platforms — Foundry IQ, Fabric IQ, Work IQ: The Knowledge Layer for Smarter Agents">
-<meta property="og:description" content="Microsoft IQ Platforms — Foundry IQ, Fabric IQ, Work IQ: The Knowledge Layer for Smarter Agents — an interactive infographic from the SME&amp;C Infographic Hub.">
+<meta name="description" content="Microsoft IQ Platforms — Foundry IQ, Fabric IQ, Work IQ, Web IQ: The Knowledge Layer for Smarter Agents — an interactive infographic from the SME&amp;C Infographic Hub.">
+<meta property="og:title" content="Microsoft IQ Platforms — Foundry IQ, Fabric IQ, Work IQ, Web IQ: The Knowledge Layer for Smarter Agents">
+<meta property="og:description" content="Microsoft IQ Platforms — Foundry IQ, Fabric IQ, Work IQ, Web IQ: The Knowledge Layer for Smarter Agents — an interactive infographic from the SME&amp;C Infographic Hub.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://sme-c-infographics.github.io/foundry/microsoft-iq-platforms-guide.html">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Microsoft IQ Platforms — Foundry IQ, Fabric IQ, Work IQ: The Knowledge Layer for Smarter Agents">
-<meta name="twitter:description" content="Microsoft IQ Platforms — Foundry IQ, Fabric IQ, Work IQ: The Knowledge Layer for Smarter Agents — an interactive infographic from the SME&amp;C Infographic Hub.">
+<meta name="twitter:title" content="Microsoft IQ Platforms — Foundry IQ, Fabric IQ, Work IQ, Web IQ: The Knowledge Layer for Smarter Agents">
+<meta name="twitter:description" content="Microsoft IQ Platforms — Foundry IQ, Fabric IQ, Work IQ, Web IQ: The Knowledge Layer for Smarter Agents — an interactive infographic from the SME&amp;C Infographic Hub.">
 <!-- smec-favicon v1 -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <!-- smec-accuracy v1 -->
-<meta name="smec:last-accuracy-check" content="2026-06-18">
+<meta name="smec:last-accuracy-check" content="2026-06-27">
 <style>/* smec-back-btn v2 */
 .smec-back-btn { position: fixed; bottom: 16px; left: 16px; z-index: 9999;
   box-sizing: border-box;
@@ -601,7 +616,7 @@
     <a href="#overview">Overview</a>
     <a href="#why">Why IQ</a>
     <a href="#architecture">Architecture</a>
-    <a href="#platforms">The 3 IQs</a>
+    <a href="#platforms">The 4 IQs</a>
     <a href="#compare">Compare</a>
     <a href="#pattern">Build Pattern</a>
     <a href="#decide">Which IQ?</a>
@@ -617,16 +632,16 @@
     The Knowledge Layer for Smarter Agents
   </div>
   <h1>Your Agents Are Only as Smart as What They Know</h1>
-  <p>Without context, agents hallucinate. With context, they transform. Microsoft's three IQ platforms &mdash; <strong>Foundry IQ</strong>, <strong>Fabric IQ</strong>, and <strong>Work IQ</strong> &mdash; give your agents governed, real-time understanding of your business, your data, and your people. Every answer grounded. Every action scoped. Every insight earned.</p>
-  <div class="preview-pill">Foundry IQ core features now GA &middot; Fabric IQ &amp; Work IQ in Public Preview</div>
+  <p>Without context, agents hallucinate. With context, they transform. Microsoft’s four IQ platforms &mdash; <strong>Foundry IQ</strong>, <strong>Fabric IQ</strong>, <strong>Work IQ</strong>, and the new <strong>Web IQ</strong> &mdash; give your agents governed, real-time understanding of your business, your data, your people, and the open web. Every answer grounded. Every action scoped. Every insight earned.</p>
+  <div class="preview-pill">All four platforms are in Public Preview &middot; Web IQ launched at Build 2026</div>
   <div class="hero-cta">
-    <a href="#platforms" class="btn btn-primary">Explore the 3 IQs</a>
+    <a href="#platforms" class="btn btn-primary">Explore the 4 IQs</a>
     <a href="#decide" class="btn btn-outline">Which IQ Do I Need?</a>
   </div>
   <div class="hero-stat">
-    <div><div class="stat-num">3</div><div class="stat-label">IQ Platforms</div></div>
+    <div><div class="stat-num">4</div><div class="stat-label">IQ Platforms</div></div>
     <div><div class="stat-num">1</div><div class="stat-label">Unified Agent Endpoint</div></div>
-    <div><div class="stat-num">12+</div><div class="stat-label">Work IQ MCP Servers</div></div>
+    <div><div class="stat-num">9+</div><div class="stat-label">Work IQ MCP Servers</div></div>
     <div><div class="stat-num">6</div><div class="stat-label">Fabric IQ Items</div></div>
   </div>
 </header>
@@ -670,7 +685,7 @@
     <div class="reveal">
       <span class="section-label">How They Fit Together</span>
       <h2 class="section-title">The IQ Architecture at a Glance</h2>
-      <p class="section-sub">Foundry IQ sits at the center &mdash; the single retrieval endpoint your agents call. It aggregates, plans, and routes queries across Work IQ, Fabric IQ, and any other governed source, so your agent gets one answer from many places.</p>
+      <p class="section-sub">Foundry IQ sits at the center &mdash; the single retrieval endpoint your agents call. It aggregates, plans, and routes queries across Work IQ, Fabric IQ, Web IQ, and any other governed source, so your agent gets one answer from many places.</p>
     </div>
 
     <div class="arch-wrap reveal">
@@ -690,7 +705,7 @@
 
       <!-- Foundry IQ Aggregator -->
       <div class="arch-foundry-box">
-        <span class="arch-prev">Partially GA</span>
+        <span class="arch-prev">Public Preview</span>
         <h4>&#x2728; Foundry IQ</h4>
         <div class="arch-sub">Unified retrieval, agentic planning, permission-aware answers</div>
       </div>
@@ -711,9 +726,14 @@
           <h5>Fabric IQ</h5>
           <p>Business data + ontology: OneLake, semantic models, Data Agents, Graph</p>
         </div>
+        <div class="arch-source web-bg">
+          <span class="arch-prev">Preview</span>
+          <h5>Web IQ</h5>
+          <p>Model-agnostic, MCP-native grounding from the open web &mdash; built on Microsoft’s search infrastructure</p>
+        </div>
         <div class="arch-source other-bg">
           <h5>Your Sources</h5>
-          <p>Azure AI Search indexes, Blob Storage, web, SaaS APIs via MCP connectors</p>
+          <p>Azure AI Search indexes, Blob Storage, SaaS APIs via MCP connectors</p>
         </div>
       </div>
     </div>
@@ -725,8 +745,8 @@
   <div class="container">
     <div class="reveal">
       <span class="section-label">Deep Dive</span>
-      <h2 class="section-title">The Three IQ Platforms</h2>
-      <p class="section-sub">Each IQ occupies a distinct layer in the knowledge stack. Together, they give your agents the full picture &mdash; from personal work signals to enterprise business logic to unified cross-source retrieval.</p>
+      <h2 class="section-title">The Four IQ Platforms</h2>
+      <p class="section-sub">Each IQ occupies a distinct layer in the knowledge stack. Together, they give your agents the full picture &mdash; from personal work signals to enterprise business logic to unified cross-source retrieval and the open web.</p>
     </div>
 
     <!-- WORK IQ -->
@@ -750,7 +770,7 @@
           <ul>
             <li>The intelligence layer that grounds M365 Copilot and your agents in real-time organizational context</li>
             <li>Three layers: <strong>Data</strong> (who, what, where), <strong>Memory</strong> (persistent personal context), <strong>Inference</strong> (reasoning + action over work signals)</li>
-            <li>12+ MCP servers: <strong>Copilot, Calendar, Mail, SharePoint, OneDrive, Teams, User, Word, Windows 365</strong>, Fabric IQ Ontology, plus Dataverse &amp; Dynamics 365</li>
+            <li>9+ MCP servers: <strong>Copilot, Calendar, Mail, SharePoint, OneDrive, Teams, User, Word</strong>, plus Dataverse &amp; Dynamics 365</li>
             <li>Available via Copilot Studio, Agent 365, Microsoft Foundry, VS Code, or standalone CLI / GitHub Copilot plugin</li>
           </ul>
         </div>
@@ -840,7 +860,7 @@
     <!-- FOUNDRY IQ -->
     <div class="iq-card foundry-card reveal">
       <div class="iq-hdr foundry-bg">
-        <span class="iq-preview">Partially GA</span>
+        <span class="iq-preview">Public Preview</span>
         <div class="iq-icon-box">&#x2728;</div>
         <div>
           <h3>Foundry IQ</h3>
@@ -866,7 +886,7 @@
           <h4>How it works</h4>
           <ul>
             <li>Agent makes <strong>one call</strong> to a Foundry IQ knowledge base &mdash; no hand-written retrieval orchestration</li>
-            <li>A <strong>query-planning LLM</strong> (GPT-4.1, GPT-5, or GPT-5.4) decomposes the question into targeted sub-queries</li>
+            <li>A <strong>query-planning LLM</strong> (GPT-4.1, GPT-5, GPT-5.4, or GPT-5.5) decomposes the question into targeted sub-queries</li>
             <li>Sub-queries fan out in parallel across indexed content, Fabric IQ, Work IQ, web, and custom remote sources</li>
             <li>Results are ranked, deduplicated, and consolidated with full citations &mdash; ready for the agent to reason over</li>
             <li>Entra ID, Purview, and data-source ACLs enforced on every hop &mdash; zero-trust retrieval by design</li>
@@ -891,6 +911,57 @@
       </div>
     </div>
 
+    <!-- WEB IQ -->
+    <div class="iq-card web-card reveal">
+      <div class="iq-hdr web-bg">
+        <span class="iq-preview">Public Preview — New at Build 2026</span>
+        <div class="iq-icon-box">&#x1F310;</div>
+        <div>
+          <h3>Web IQ</h3>
+          <div class="iq-tag">Search built for the AI era &mdash; model-agnostic, MCP-native grounding from the open web for every agent</div>
+        </div>
+      </div>
+      <div class="iq-body">
+        <div class="iq-col">
+          <h4>What it is</h4>
+          <div class="tag-row">
+            <span class="tag web-t">Web Grounding</span>
+            <span class="tag web-t">MCP-Native</span>
+            <span class="tag web-t">Model-Agnostic</span>
+          </div>
+          <ul>
+            <li>A new web-grounding service announced at <strong>Build 2026</strong> that lets agents query the open web through a governed, MCP-native interface</li>
+            <li>Built on the same large-scale web infrastructure Microsoft uses to serve search to over a billion users</li>
+            <li><strong>Model-agnostic</strong> &mdash; works with any model in Microsoft Foundry, on Azure, or from third-party providers</li>
+            <li>Designed for the agent era: structured, citation-ready results instead of HTML pages meant for humans</li>
+          </ul>
+        </div>
+        <div class="iq-col">
+          <h4>How it works</h4>
+          <ul>
+            <li>Exposed as an <strong>MCP server</strong> &mdash; any MCP-aware agent (Foundry, Copilot Studio, Agent Framework, third-party) can call it natively</li>
+            <li>Plugs in as a knowledge source behind <strong>Foundry IQ</strong>, joining Work IQ and Fabric IQ in the unified retrieval plane</li>
+            <li>Returns ranked, deduplicated web results with source attribution so the agent can cite back to a primary URL</li>
+            <li>Centralized governance and audit through the same Entra ID + Purview surface that covers the rest of Microsoft IQ</li>
+          </ul>
+        </div>
+        <div class="iq-col">
+          <h4>When to use it</h4>
+          <ul>
+            <li>Any agent that needs <strong>current, public information</strong> &mdash; news, prices, regulations, product specs</li>
+            <li>Research, competitive intelligence, market scanning, and customer-due-diligence flows</li>
+            <li>Customer-facing assistants that must answer beyond what’s in your enterprise corpus</li>
+            <li>To replace ad-hoc third-party web-search APIs with a single, governed Microsoft surface</li>
+          </ul>
+        </div>
+      </div>
+      <div class="iq-links">
+        <span class="iq-links-label">Learn:</span>
+        <a href="https://webiq.microsoft.ai/" target="_blank" class="iq-link-btn">Web IQ Home &rarr;</a>
+        <a href="https://devblogs.microsoft.com/foundry/whats-new-in-microsoft-foundry-build-2026/" target="_blank" class="iq-link-btn">Build 2026 Foundry Recap &rarr;</a>
+      </div>
+    </div>
+
   </div>
 </section>
 
@@ -910,6 +981,7 @@
             <th>Work IQ</th>
             <th>Fabric IQ</th>
             <th>Foundry IQ</th>
+            <th>Web IQ</th>
           </tr>
         </thead>
         <tbody>
@@ -918,54 +990,63 @@
             <td>Microsoft 365 context provider</td>
             <td>Business-data intelligence layer</td>
             <td>Unified retrieval aggregator</td>
+            <td>Open-web grounding for agents</td>
           </tr>
           <tr>
             <td>Primary data</td>
             <td>Mail, Teams, SharePoint, OneDrive, Calendar, Word</td>
             <td>OneLake, semantic models, business ontology</td>
             <td>Any source: above + Azure AI Search + web + SaaS</td>
+            <td>The open web, via Microsoft’s search infrastructure</td>
           </tr>
           <tr>
             <td>Interface</td>
             <td>MCP servers + CLI</td>
             <td>Fabric items (Ontology, Plan, Graph, Data Agent, Operations Agent)</td>
             <td>Knowledge base REST API + SDK</td>
+            <td>MCP server (model-agnostic)</td>
           </tr>
           <tr>
             <td>Where it lives</td>
             <td>Microsoft 365 platform</td>
             <td>Microsoft Fabric</td>
             <td>Microsoft Foundry</td>
+            <td>Standalone service; pluggable into Foundry IQ</td>
           </tr>
           <tr>
             <td>Best at</td>
-            <td>Personal/work context &mdash; "what's happening with me"</td>
-            <td>Structured business reasoning &mdash; "what's happening with the business"</td>
+            <td>Personal/work context &mdash; “what’s happening with me”</td>
+            <td>Structured business reasoning &mdash; “what’s happening with the business”</td>
             <td>Orchestrating answers across many sources</td>
+            <td>Current, public information &mdash; “what’s happening in the world”</td>
           </tr>
           <tr>
             <td>Access control</td>
             <td>Entra ID delegated &mdash; user sees only their data</td>
             <td>Fabric workspace + row/column-level security</td>
-            <td>Entra ID + Purview + honors each source's ACLs</td>
+            <td>Entra ID + Purview + honors each source’s ACLs</td>
+            <td>Public web content; governed via Entra ID + Purview at the call site</td>
           </tr>
           <tr>
             <td>Typical builder</td>
             <td>M365 / Copilot Studio developer</td>
             <td>Fabric data engineer / analytics team</td>
             <td>AI / agent platform team</td>
+            <td>Any agent builder needing public-web grounding</td>
           </tr>
           <tr>
             <td>Licensing</td>
             <td>M365 Copilot license or consumption billing</td>
             <td>Included in Microsoft Fabric SKU</td>
             <td>Token-based + underlying Azure AI Search capacity</td>
+            <td>Consumption-based &mdash; pricing in preview</td>
           </tr>
           <tr>
             <td>Status</td>
             <td><span class="preview-inline">Public Preview</span></td>
             <td><span class="preview-inline">Public Preview</span></td>
-            <td><span class="preview-inline">Partially GA</span></td>
+            <td><span class="preview-inline">Public Preview</span></td>
+            <td><span class="preview-inline">Public Preview</span></td>
           </tr>
         </tbody>
       </table>
@@ -1029,6 +1110,7 @@
         <div class="dt-choices">
           <button class="dt-choice" onclick="dtAnswer('q1','work')">Personal work context &mdash; email, chats, meetings, docs</button>
           <button class="dt-choice" onclick="dtAnswer('q1','biz')">Business data &mdash; KPIs, customers, operations, analytics</button>
+          <button class="dt-choice" onclick="dtAnswer('q1','web')">Public information from the open web &mdash; news, prices, specs</button>
           <button class="dt-choice" onclick="dtAnswer('q1','mixed')">A bit of everything &mdash; multiple sources</button>
           <button class="dt-choice" onclick="dtAnswer('q1','docs')">Just documents &amp; wikis for Q&amp;A</button>
         </div>
@@ -1098,9 +1180,15 @@
         <p style="margin-top:.75rem;"><a href="https://azure.microsoft.com/en-us/products/ai-foundry/iq/" target="_blank" style="font-weight:600;">Foundry IQ Product Page &rarr;</a></p>
         <button class="dt-restart" onclick="dtReset()">&#x21bb; Start Over</button>
       </div>
+      <div class="dt-result web-r dt-hidden" id="r-web">
+        <h4>&#x2192; Start with Web IQ</h4>
+        <p>Your agent needs <strong>current, public information</strong>. Use <strong>Web IQ</strong> through its MCP interface &mdash; either directly from the agent or behind a <strong>Foundry IQ knowledge base</strong> so you can blend web results with your enterprise sources later. Model-agnostic, MCP-native, governed by design.</p>
+        <p style="margin-top:.75rem;"><a href="https://webiq.microsoft.ai/" target="_blank" style="font-weight:600;">Visit Web IQ &rarr;</a></p>
+        <button class="dt-restart" onclick="dtReset()">&#x21bb; Start Over</button>
+      </div>
       <div class="dt-result all-r dt-hidden" id="r-all">
-        <h4>&#x2192; Use All Three (Foundry IQ-First)</h4>
-        <p>This is the <strong>recommended enterprise pattern</strong>. Front your agent with a <strong>Foundry IQ knowledge base</strong>. Attach <strong>Work IQ</strong> for M365 context, <strong>Fabric IQ</strong> for business data, plus any other sources you need. One endpoint, governed end-to-end, easy to evolve.</p>
+        <h4>&#x2192; Use All Four (Foundry IQ-First)</h4>
+        <p>This is the <strong>recommended enterprise pattern</strong>. Front your agent with a <strong>Foundry IQ knowledge base</strong>. Attach <strong>Work IQ</strong> for M365 context, <strong>Fabric IQ</strong> for business data, <strong>Web IQ</strong> for open-web grounding, plus any other sources you need. One endpoint, governed end-to-end, easy to evolve.</p>
         <p style="margin-top:.75rem;"><a href="https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/foundry-iq-unlocking-ubiquitous-knowledge-for-agents/4470812" target="_blank" style="font-weight:600;">Read the Foundry IQ Launch Post &rarr;</a></p>
         <button class="dt-restart" onclick="dtReset()">&#x21bb; Start Over</button>
       </div>
@@ -1115,12 +1203,12 @@
     <div class="reveal">
       <span class="section-label">Commercial</span>
       <h2 class="section-title">Licensing &amp; Availability</h2>
-      <p class="section-sub">A quick commercial snapshot. Foundry IQ core knowledge base features are now generally available; Fabric IQ and Work IQ remain in public preview &mdash; pricing and terms may evolve at general availability.</p>
+      <p class="section-sub">A quick commercial snapshot. All three IQs are in public preview today &mdash; pricing and terms may evolve at general availability.</p>
     </div>
     <div class="lic-grid reveal">
       <div class="lic-card work-b">
         <h4>Work IQ</h4>
-        <p>Available through <strong>Microsoft 365 Copilot</strong> licenses and as a standalone consumption option. CLI lets developers experiment locally.</p>
+        <p>Available through <strong>Microsoft 365 Copilot</strong> licenses and as a standalone consumption option. CLI lets developers experiment locally. <strong>Work IQ APIs</strong> for programmable access announced at Build 2026.</p>
         <span class="lic-price">M365 Copilot + consumption</span>
       </div>
       <div class="lic-card fabric-b">
@@ -1132,6 +1220,11 @@
         <h4>Foundry IQ</h4>
         <p>Billed on <strong>tokens</strong> for the query-planning model plus the underlying <strong>Azure AI Search</strong> capacity. Pay as you go.</p>
         <span class="lic-price">Tokens + Azure AI Search</span>
+      </div>
+      <div class="lic-card web-b">
+        <h4>Web IQ</h4>
+        <p>Consumption-based grounding service. Pricing is preview-tier today &mdash; confirm details at <a href="https://webiq.microsoft.ai/" target="_blank">webiq.microsoft.ai</a> before committing to a long-running workload.</p>
+        <span class="lic-price">Consumption (preview)</span>
       </div>
     </div>
   </div>
@@ -1153,6 +1246,7 @@
           <li><a href="https://learn.microsoft.com/en-us/microsoft-365/copilot/extensibility/workiq-overview" target="_blank">Work IQ Overview &amp; CLI (Microsoft Learn)</a></li>
           <li><a href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/use-work-iq" target="_blank">Use Work IQ in Copilot Studio</a></li>
           <li><a href="https://learn.microsoft.com/en-us/microsoft-agent-365/tooling-servers-overview" target="_blank">Agent 365 Tooling &amp; MCP Servers</a></li>
+          <li><a href="https://www.microsoft.com/en-us/microsoft-365/blog/2026/06/02/announcing-the-new-work-iq-apis/" target="_blank">Work IQ APIs (Build 2026)</a></li>
           <li><a href="https://www.microsoft.com/en-us/microsoft-365/blog/2025/11/18/microsoft-ignite-2025-copilot-and-agents-built-to-power-the-frontier-firm/" target="_blank">Ignite 2025 Announcement</a></li>
         </ul>
       </div>
@@ -1173,7 +1267,16 @@
           <li><a href="https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/what-is-foundry-iq" target="_blank">What is Foundry IQ (Microsoft Learn)</a></li>
           <li><a href="https://azure.microsoft.com/en-us/products/ai-foundry/iq/" target="_blank">Foundry IQ Product Page</a></li>
           <li><a href="https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/foundry-iq-unlocking-ubiquitous-knowledge-for-agents/4470812" target="_blank">Foundry IQ Launch Blog</a></li>
+          <li><a href="https://devblogs.microsoft.com/foundry/build-smarter-agents-faster-with-foundry-iq/" target="_blank">Build Smarter Agents Faster with Foundry IQ</a></li>
           <li><a href="https://azure.microsoft.com/en-us/products/ai-foundry/" target="_blank">Microsoft Foundry Platform</a></li>
+        </ul>
+      </div>
+
+      <div class="res-card web-b">
+        <h4><span class="res-dot"></span> Web IQ Resources</h4>
+        <ul class="res-list">
+          <li><a href="https://webiq.microsoft.ai/" target="_blank">Web IQ Home</a></li>
+          <li><a href="https://devblogs.microsoft.com/foundry/whats-new-in-microsoft-foundry-build-2026/" target="_blank">What’s New in Microsoft Foundry (Build 2026)</a></li>
         </ul>
       </div>
 
@@ -1181,7 +1284,7 @@
 
     <div class="cta-banner reveal">
       <h3>Ready to Build Agents That Actually Know Your Business?</h3>
-      <p>Start with Foundry IQ as your unified knowledge layer. Wire in Work IQ for organizational context and Fabric IQ for business intelligence. Foundry IQ core features are now generally available; Fabric IQ and Work IQ remain in public preview &mdash; start building today.</p>
+      <p>Start with Foundry IQ as your unified knowledge layer. Wire in Work IQ for organizational context, Fabric IQ for business intelligence, and Web IQ for the open web. All four platforms are in public preview &mdash; start building today.</p>
       <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
         <a href="https://azure.microsoft.com/en-us/products/ai-foundry/iq/" class="btn btn-primary" target="_blank">Get Started with Foundry IQ</a>
         <a href="https://www.microsoft.com/en-us/microsoft-copilot/microsoft-copilot-studio" class="btn btn-outline" target="_blank">Build in Copilot Studio</a>
@@ -1221,7 +1324,7 @@
 </section>
 
 <footer class="footer">
-  <p>Microsoft IQ Platforms Guide &bull; Updated June 2026 &bull; Foundry IQ core features are generally available; Fabric IQ and Work IQ are in Public Preview &mdash; validate capabilities against the latest <a href="https://learn.microsoft.com/en-us/azure/foundry/" target="_blank">Microsoft Foundry</a>, <a href="https://learn.microsoft.com/en-us/fabric/" target="_blank">Microsoft Fabric</a>, and <a href="https://learn.microsoft.com/en-us/microsoft-365/copilot/" target="_blank">Microsoft 365 Copilot</a> documentation.</p>
+  <p>Microsoft IQ Platforms Guide &bull; Updated June 2026 (Build 2026) &bull; Foundry IQ, Fabric IQ, Work IQ, and Web IQ are all in Public Preview &mdash; validate capabilities against the latest <a href="https://learn.microsoft.com/en-us/azure/foundry/" target="_blank">Microsoft Foundry</a>, <a href="https://learn.microsoft.com/en-us/fabric/" target="_blank">Microsoft Fabric</a>, <a href="https://learn.microsoft.com/en-us/microsoft-365/copilot/" target="_blank">Microsoft 365 Copilot</a>, and <a href="https://webiq.microsoft.ai/" target="_blank">Web IQ</a> documentation.</p>
 </footer>
 
 <script>
@@ -1273,6 +1376,7 @@ function dtAnswer(qId, answer) {
   if (qId === 'q1') {
     if (answer === 'work') showNode('q2-work');
     else if (answer === 'biz') showNode('q2-biz');
+    else if (answer === 'web') showResult('r-web');
     else if (answer === 'mixed') showResult('r-all');
     else if (answer === 'docs') showNode('q2-docs');
   }
