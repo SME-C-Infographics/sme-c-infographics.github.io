@@ -944,7 +944,7 @@
 <!-- smec-favicon v1 -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <!-- smec-accuracy v1 -->
-<meta name="smec:last-accuracy-check" content="2026-06-04">
+<meta name="smec:last-accuracy-check" content="2026-07-23">
 <style>/* smec-back-btn v2 */
 .smec-back-btn { position: fixed; bottom: 16px; left: 16px; z-index: 9999;
   box-sizing: border-box;
@@ -1186,7 +1186,7 @@
                   <li>Apply data quality rules here</li>
                   <li>Resolve heavy logic before Gold</li>
                   <li>Use MERGE for upserts</li>
-                  <li>Target ~1 GB file sizes</li>
+                  <li>Target 128-256 MB file sizes</li>
                   <li>Enforce conformed dimensions</li>
                 </ul>
               </div>
@@ -1243,7 +1243,7 @@
                   <li>Delta tables (optimized)</li>
                   <li>Warehouse tables for SQL</li>
                   <li>V-Order for fast reads</li>
-                  <li>Large file sizes (~1 GB)</li>
+                  <li>Large file sizes (400 MB–1 GB)</li>
                 </ul>
               </div>
               <div class="detail-item">
@@ -1512,7 +1512,7 @@
         <div class="practice-number">01</div>
         <div class="practice-icon">&#128230;</div>
         <h3>Optimize File Sizes</h3>
-        <p>Target ~1 GB files in Silver/Gold layers. Smaller files are fine in Bronze. Use OPTIMIZE command to compact small files.</p>
+        <p>Target 128-256 MB files in the Silver layer, 400 MB–1 GB in the Gold layer. Smaller files are fine in Bronze. Use OPTIMIZE command to compact small files.</p>
       </div>
       <div class="practice-card">
         <div class="practice-number">02</div>
