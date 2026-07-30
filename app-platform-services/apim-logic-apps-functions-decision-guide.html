@@ -622,7 +622,7 @@
 <!-- smec-favicon v1 -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <!-- smec-accuracy v1 -->
-<meta name="smec:last-accuracy-check" content="2026-06-27">
+<meta name="smec:last-accuracy-check" content="2026-07-30">
 <style>/* smec-back-btn v2 */
 .smec-back-btn { position: fixed; bottom: 16px; left: 16px; z-index: 9999;
   box-sizing: border-box;
@@ -774,7 +774,7 @@
           <ul class="bullet-list warn" aria-label="APIM watch-outs">
             <li><strong>Premium v2 does not support multi-region deployment</strong> — only classic Premium does (12 units/region). Do not position v2 for geo-redundant gateway scenarios.</li>
             <li>No automated migration path from classic tiers to v2; must redeploy.</li>
-            <li>Basic v2 has no private endpoint support; Standard v2 is outbound VNet integration only (gateway public-facing). Full injection requires Premium v2.</li>
+            <li>Basic v2 has no VNet support (no outbound integration, no private endpoint). Standard v2 adds outbound VNet integration and inbound private endpoints, but the gateway remains publicly accessible — full VNet injection requires Premium v2.</li>
             <li><strong>Trusted service connectivity was retired March 15, 2026.</strong> Private Link or VNet line-of-sight is now required — audit any flows still relying on the old shortcut.</li>
           </ul>
 
@@ -815,7 +815,7 @@
           </div>
           <div class="agent-feature">
             <span class="badge badge-ga">GA</span>
-            <span class="agent-feature-text"><span class="agent-feature-name">Workspaces:</span> Federated API governance — teams own their API namespace within a shared APIM instance. Classic Premium and Premium v2 only.</span>
+            <span class="agent-feature-text"><span class="agent-feature-name">Workspaces:</span> Federated API governance — teams own their API namespace within a shared APIM instance. Available in Basic v2, Standard v2, Classic Premium, and Premium v2.</span>
           </div>
           <div class="agent-feature">
             <span class="badge badge-ga">GA</span>
@@ -896,7 +896,7 @@
           </div>
           <div class="agent-feature">
             <span class="badge badge-ga">GA</span>
-            <span class="agent-feature-text"><span class="agent-feature-name">Agent Loop — Standard:</span> Autonomous and conversational agentic workflows using LLMs. Supports multi-agent handoff patterns. Stateful workflows only.</span>
+            <span class="agent-feature-text"><span class="agent-feature-name">Agent Loop — Standard:</span> Autonomous and conversational agentic workflows using LLMs. Stateful workflows only. (Multi-agent handoff patterns are a separate Preview capability — see below.)</span>
           </div>
           <div class="agent-feature">
             <span class="badge badge-prev">Preview</span>
@@ -904,7 +904,7 @@
           </div>
           <div class="agent-feature">
             <span class="badge badge-prev">Preview</span>
-            <span class="agent-feature-text"><span class="agent-feature-name">Remote MCP Servers (Standard):</span> Expose Standard logic app workflows as MCP tool endpoints. OAuth 2.0 via Easy Auth. Registered in API Center. 1,400+ connectors as MCP tools.</span>
+            <span class="agent-feature-text"><span class="agent-feature-name">Remote MCP Servers (Standard):</span> Expose Standard logic app workflows as MCP tool endpoints. OAuth 2.0 via Easy Auth. 1,400+ connectors as MCP tools.</span>
           </div>
           <div class="agent-feature">
             <span class="badge badge-prev">Preview</span>
@@ -991,7 +991,7 @@
           </div>
           <div class="agent-feature">
             <span class="badge badge-ga">GA</span>
-            <span class="agent-feature-text"><span class="agent-feature-name">Durable Task Scheduler (Dedicated SKU):</span> Managed backend for Durable Functions orchestrations — improved throughput and distributed tracing. Consumption SKU scheduler is in preview.</span>
+            <span class="agent-feature-text"><span class="agent-feature-name">Durable Task Scheduler:</span> Managed backend for Durable Functions orchestrations — improved throughput and distributed tracing. Both Dedicated and Consumption SKUs are GA.</span>
           </div>
           <div class="agent-feature">
             <span class="badge badge-ga">GA</span>
@@ -1287,7 +1287,7 @@
         <div class="comp-item"><strong>Cold Start Mitigation</strong>Flex Consumption Always Ready instances mitigate cold starts for critical paths. Use Premium plan only when sub-50ms p99 latency is required.</div>
         <div class="comp-item"><strong>Agent Loop Model Access</strong>Always route Logic Apps Agent Loop model calls through APIM AI Gateway — required for token governance, monitoring, model portability, and BYOM. Direct wiring to endpoints loses visibility.</div>
         <div class="comp-item"><strong>Managed Identity Throughout</strong>Every service-to-service hop in a composition should use managed identity. Keys and secrets in connection strings are an architecture review failure point.</div>
-        <div class="comp-item"><strong>Trusted Service Connectivity Deadline</strong>March 15, 2026: Any APIM instance using trusted connectivity to Storage, Key Vault, Service Bus, or Event Hubs must migrate to Private Link or VNet line-of-sight before that date.</div>
+        <div class="comp-item"><strong>Trusted Service Connectivity — Retired</strong>March 15, 2026 (past): Trusted connectivity from the APIM gateway to Storage, Key Vault, Service Bus, and Event Hubs is retired. If not yet migrated to Private Link or VNet line-of-sight, connectivity is already failing — act immediately.</div>
       </div>
     </div>
   </section>
@@ -1563,7 +1563,7 @@
         <div class="anti-icon" aria-hidden="true">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--error)" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
         </div>
-        <div class="anti-text"><strong>Ignoring Trusted service connectivity retirement (Mar 15, 2026).</strong> APIM instances created before Dec 1, 2025, that use trusted connectivity to Storage, Key Vault, Service Bus, or Event Hubs will fail after March 15, 2026, unless migrated.</div>
+        <div class="anti-text"><strong>Ignoring Trusted service connectivity retirement (Mar 15, 2026 — passed).</strong> APIM instances created before Dec 1, 2025 that still use trusted connectivity to Storage, Key Vault, Service Bus, or Event Hubs are failing since March 15, 2026. Migrate to Private Link or VNet line-of-sight immediately.</div>
       </div>
       <div class="anti-item" role="listitem">
         <div class="anti-icon" aria-hidden="true">
@@ -1675,17 +1675,17 @@
     <div class="timeline" role="list" aria-label="Timeline of breaking changes and milestones">
 
       <div class="tl-item" role="listitem">
-        <div class="tl-dot tl-dot-red" aria-hidden="true"></div>
-        <div class="tl-date">March 15, 2026</div>
+        <div class="tl-dot tl-dot-gray" aria-hidden="true"></div>
+        <div class="tl-date" style="color:var(--text-sec)">March 15, 2026 — Passed</div>
         <div class="tl-title">APIM — Trusted Service Connectivity Retirement</div>
-        <div class="tl-desc">Trusted connectivity from the APIM gateway to Azure Storage, Key Vault, Key Vault Managed HSM, Service Bus, Event Hubs, and Container Registry is retired. Instances created on or after Dec 1, 2025 already don't support it. Replace with Private Link, VNet line-of-sight, or subnet allowlisting before this date. Check Azure Advisor for impact assessment. <strong>Note:</strong> APIs in APIM Workspaces are not affected by this retirement, as workspace APIs do not support managed identity for backend connectivity.</div>
+        <div class="tl-desc">Trusted connectivity from the APIM gateway to Azure Storage, Key Vault, Key Vault Managed HSM, Service Bus, Event Hubs, and Container Registry is retired. Instances created on or after Dec 1, 2025 already don't support it. This retirement took effect March 15, 2026 — if not yet migrated to Private Link, VNet line-of-sight, or subnet allowlisting, connectivity is already failing. Check Azure Advisor for impact assessment. <strong>Note:</strong> APIs in APIM Workspaces are not affected by this retirement, as workspace APIs do not support managed identity for backend connectivity.</div>
       </div>
 
       <div class="tl-item" role="listitem">
-        <div class="tl-dot tl-dot-red" aria-hidden="true"></div>
-        <div class="tl-date">March 15, 2026</div>
+        <div class="tl-dot tl-dot-gray" aria-hidden="true"></div>
+        <div class="tl-date" style="color:var(--text-sec)">March 15, 2026 — Passed</div>
         <div class="tl-title">APIM — New Resource Limits Enforced</div>
-        <div class="tl-desc">Updated resource limits for API Management take effect. Verify current resource consumption against the new limits before this date. Refer to the APIM limits documentation for specific thresholds.</div>
+        <div class="tl-desc">Updated resource limits for API Management took effect March 15, 2026. Verify current resource consumption against the new limits. Refer to the APIM limits documentation for specific thresholds.</div>
       </div>
 
       <div class="tl-item" role="listitem">
