@@ -543,7 +543,7 @@
 <!-- smec-favicon v1 -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <!-- smec-accuracy v1 -->
-<meta name="smec:last-accuracy-check" content="2026-06-27">
+<meta name="smec:last-accuracy-check" content="2026-07-30">
 <style>/* smec-back-btn v2 */
 .smec-back-btn { position: fixed; bottom: 16px; left: 16px; z-index: 9999;
   box-sizing: border-box;
@@ -797,7 +797,7 @@
       </div>
       <div class="iq-links">
         <span class="iq-links-label">Learn:</span>
-        <a href="https://learn.microsoft.com/en-us/microsoft-365/copilot/extensibility/workiq-overview" target="_blank" class="iq-link-btn">Work IQ CLI &amp; Overview &rarr;</a>
+        <a href="https://learn.microsoft.com/en-us/microsoft-365/copilot/extensibility/work-iq/" target="_blank" class="iq-link-btn">Work IQ CLI &amp; Overview &rarr;</a>
         <a href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/use-work-iq" target="_blank" class="iq-link-btn">Use in Copilot Studio &rarr;</a>
         <a href="https://learn.microsoft.com/en-us/microsoft-agent-365/tooling-servers-overview" target="_blank" class="iq-link-btn">Agent 365 MCP Servers &rarr;</a>
       </div>
@@ -886,7 +886,7 @@
           <h4>How it works</h4>
           <ul>
             <li>Agent makes <strong>one call</strong> to a Foundry IQ knowledge base &mdash; no hand-written retrieval orchestration</li>
-            <li>A <strong>query-planning LLM</strong> (GPT-4.1, GPT-5, GPT-5.4, or GPT-5.5) decomposes the question into targeted sub-queries</li>
+            <li>A <strong>query-planning LLM</strong> (GPT-4.1, GPT-5, or GPT-5.4) decomposes the question into targeted sub-queries</li>
             <li>Sub-queries fan out in parallel across indexed content, Fabric IQ, Work IQ, web, and custom remote sources</li>
             <li>Results are ranked, deduplicated, and consolidated with full citations &mdash; ready for the agent to reason over</li>
             <li>Entra ID, Purview, and data-source ACLs enforced on every hop &mdash; zero-trust retrieval by design</li>
@@ -1153,7 +1153,7 @@
       <div class="dt-result work-r dt-hidden" id="r-work-custom">
         <h4>&#x2192; Work IQ via Foundry IQ</h4>
         <p>For a custom surface, call <strong>Work IQ through a Foundry IQ knowledge base</strong>. You get one endpoint, full governance, and the ability to mix in other sources later. Use the Work IQ MCP servers + Microsoft Graph delegated auth.</p>
-        <p style="margin-top:.75rem;"><a href="https://learn.microsoft.com/en-us/microsoft-365/copilot/extensibility/workiq-overview" target="_blank" style="font-weight:600;">Work IQ Overview &rarr;</a></p>
+        <p style="margin-top:.75rem;"><a href="https://learn.microsoft.com/en-us/microsoft-365/copilot/extensibility/work-iq/" target="_blank" style="font-weight:600;">Work IQ Overview &rarr;</a></p>
         <button class="dt-restart" onclick="dtReset()">&#x21bb; Start Over</button>
       </div>
       <div class="dt-result fabric-r dt-hidden" id="r-fabric">
@@ -1243,7 +1243,7 @@
       <div class="res-card work-b">
         <h4><span class="res-dot"></span> Work IQ Resources</h4>
         <ul class="res-list">
-          <li><a href="https://learn.microsoft.com/en-us/microsoft-365/copilot/extensibility/workiq-overview" target="_blank">Work IQ Overview &amp; CLI (Microsoft Learn)</a></li>
+          <li><a href="https://learn.microsoft.com/en-us/microsoft-365/copilot/extensibility/work-iq/" target="_blank">Work IQ Overview &amp; CLI (Microsoft Learn)</a></li>
           <li><a href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/use-work-iq" target="_blank">Use Work IQ in Copilot Studio</a></li>
           <li><a href="https://learn.microsoft.com/en-us/microsoft-agent-365/tooling-servers-overview" target="_blank">Agent 365 Tooling &amp; MCP Servers</a></li>
           <li><a href="https://www.microsoft.com/en-us/microsoft-365/blog/2026/06/02/announcing-the-new-work-iq-apis/" target="_blank">Work IQ APIs (Build 2026)</a></li>
