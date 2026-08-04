@@ -542,7 +542,7 @@
 <!-- smec-favicon v1 -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <!-- smec-accuracy v1 -->
-<meta name="smec:last-accuracy-check" content="2026-05-28">
+<meta name="smec:last-accuracy-check" content="2026-07-16">
 <style>/* smec-back-btn v2 */
 .smec-back-btn { position: fixed; bottom: 16px; left: 16px; z-index: 9999;
   box-sizing: border-box;
@@ -806,7 +806,7 @@
           <tr>
             <td>Linked Servers</td>
             <td><span class="check">✔ Any provider</span></td>
-            <td><span class="partial">◐ SQL sources only</span></td>
+            <td><span class="partial">◐ SQL Server, SQL DB &amp; Synapse only</span></td>
             <td><span class="no">✘ No</span></td>
           </tr>
           <tr>
@@ -831,7 +831,7 @@
             <td>VNet Integration</td>
             <td><span class="check">✔ Yes</span></td>
             <td><span class="check">✔ Native</span></td>
-            <td><span class="partial">◐ Private endpoints</span></td>
+            <td><span class="partial">◐ Service endpoints &amp; private links</span></td>
           </tr>
           <tr>
             <td>Automated Backups</td>
@@ -848,8 +848,8 @@
           <tr>
             <td>High Availability</td>
             <td><span class="partial">◐ You build (FCI / AG)</span></td>
-            <td><span class="check">✔ Built-in (99.99% SLA)</span></td>
-            <td><span class="check">✔ Built-in (99.995% SLA)</span></td>
+            <td><span class="check">✔ Built-in (99.99% / 99.995% zone-redundant)</span></td>
+            <td><span class="check">✔ Built-in (99.99% / 99.995% zone-redundant)</span></td>
           </tr>
           <tr>
             <td>Serverless Tier</td>
@@ -861,12 +861,12 @@
             <td>Geo-Replication</td>
             <td><span class="partial">◐ Manual (AG across regions)</span></td>
             <td><span class="check">✔ Failover groups</span></td>
-            <td><span class="check">✔ Active geo-replication</span></td>
+            <td><span class="check">✔ Active geo-replication &amp; failover groups</span></td>
           </tr>
           <tr>
             <td>Max Database Size</td>
             <td>256 TB (disk dependent)</td>
-            <td>16 TB</td>
+            <td>up to 32 TB (Next-gen GP)</td>
             <td>128 TB (Hyperscale)</td>
           </tr>
         </tbody>

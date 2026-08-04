@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>The Analytics Factory — Scaling ISV Apps to Thousands of Tenants with Fabric &amp; Power BI MCP Servers, Skills &amp; REST APIs</title>
+<style>
+/* ════════════ Tokens ════════════ */
+:root{
+  --bg:#f5f6f8; --panel:#ffffff; --ink:#13110f; --ink-soft:#43413d; --ink-faint:#6d6b67;
+  --line:#e4e4e8; --line-soft:#eef0f2;
+  --pbi:#f2c811; --pbi-deep:#b88f00; --pbi-soft:#fdf6da;
+  --fab:#117865; --fab-bright:#0fa386; --fab-soft:#e3f3ef;
+  --azure:#0a66c2; --azure-bright:#2b88d8; --azure-glow:#50e6ff; --azure-soft:#e6f1fb;
+  --agent:#6264a7; --agent-bright:#8b8dd6; --agent-soft:#ecedf6;
+  --rest:#a64dbf; --rest-soft:#f3e8f7;
+  --ok:#0f7a37; --ok-soft:#e4f1e9;
+  --warn:#b26a00; --warn-soft:#fbf0dd;
+  --hero1:#06121a; --hero2:#0a2a2a; --hero3:#0d1b2e;
+  --maxw:1100px;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#0c0d10; --panel:#16181d; --ink:#f3f3f1; --ink-soft:#c5c5c1; --ink-faint:#8d8d89;
+    --line:#2a2d34; --line-soft:#23252b;
+    --pbi-soft:#2a2410; --fab-soft:#0d2b25; --azure-soft:#0c2236; --agent-soft:#1d1e30; --rest-soft:#2a1530;
+    --ok-soft:#11301d; --warn-soft:#2c2008;
+  }
+}
+*,*::before,*::after{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  background:var(--bg); color:var(--ink);
+  font-family:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
+  -webkit-font-smoothing:antialiased; line-height:1.6;
+}
+.wrap{max-inline-size:var(--maxw); margin-inline:auto; padding-inline:24px;}
+code{font-family:"Cascadia Code",ui-monospace,Menlo,Consolas,monospace;}
+
+/* ════════════ Section scaffold ════════════ */
+section{padding-block:54px;}
+.sec-tag{
+  display:inline-flex; align-items:center; gap:9px;
+  font-size:12px; font-weight:800; letter-spacing:.16em; text-transform:uppercase;
+  color:var(--fab); margin-block-end:14px;
+}
+.sec-tag .n{
+  inline-size:26px; block-size:26px; border-radius:7px; display:grid; place-items:center;
+  background:var(--fab-soft); color:var(--fab); font-size:12px; font-weight:800;
+}
+h2.sec-title{font-size:30px; font-weight:850; letter-spacing:-.02em; line-height:1.15; margin:0 0 12px;}
+.sec-lede{font-size:16px; color:var(--ink-soft); max-inline-size:74ch; margin:0 0 30px;}
+
+/* ════════════ HERO ════════════ */
+.hero{
+  position:relative; overflow:hidden;
+  background:
+    radial-gradient(1100px 540px at 84% -8%, rgba(80,230,255,.20), transparent 58%),
+    radial-gradient(900px 620px at -6% 110%, rgba(15,163,134,.28), transparent 55%),
+    radial-gradient(700px 420px at 50% 120%, rgba(242,200,17,.14), transparent 60%),
+    linear-gradient(155deg, var(--hero1), var(--hero2) 55%, var(--hero3));
+  color:#eef4f4; padding-block:74px 64px;
+}
+.hero::before{
+  content:""; position:absolute; inset:0; opacity:.5;
+  background-image:
+    linear-gradient(rgba(255,255,255,.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.045) 1px, transparent 1px);
+  background-size:46px 46px;
+  mask-image:radial-gradient(80% 70% at 50% 30%, #000, transparent 90%);
+}
+.hero .wrap{position:relative;}
+.hero-badge{
+  display:inline-flex; align-items:center; gap:8px;
+  font-size:12px; font-weight:700; letter-spacing:.1em; text-transform:uppercase;
+  color:#bdeee4; background:rgba(15,163,134,.18); border:1px solid rgba(80,230,255,.3);
+  padding:6px 14px; border-radius:999px; margin-block-end:22px;
+}
+.hero-badge .pulse{inline-size:8px; block-size:8px; border-radius:999px; background:var(--azure-glow); animation:pulse 2.4s infinite;}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(80,230,255,.55);}70%{box-shadow:0 0 0 9px rgba(80,230,255,0);}100%{box-shadow:0 0 0 0 rgba(80,230,255,0);}}
+.hero h1{font-size:45px; line-height:1.07; font-weight:850; letter-spacing:-.025em; margin:0 0 16px; max-inline-size:21ch;}
+.hero h1 .g1{color:var(--pbi);}
+.hero h1 .g2{background:linear-gradient(90deg,var(--azure-glow),var(--fab-bright)); -webkit-background-clip:text; background-clip:text; color:transparent;}
+.hero p.sub{font-size:18px; color:#cfe0dd; max-inline-size:80ch; margin:0 0 34px;}
+.hero-stats{display:grid; grid-template-columns:repeat(4,1fr); gap:16px;}
+.hstat{background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.12); border-radius:14px; padding:18px;}
+.hstat .v{font-size:29px; font-weight:850; letter-spacing:-.02em; line-height:1; color:#fff;}
+.hstat .v small{font-size:16px; font-weight:800; color:var(--azure-glow);}
+.hstat .l{font-size:12.5px; color:#a9c2bd; margin-block-start:7px; line-height:1.35;}
+.hstat.s-pbi .v small{color:var(--pbi);}
+.hstat.s-fab .v small{color:var(--fab-bright);}
+
+/* ════════════ Challenge ════════════ */
+.challenge{background:var(--panel); border-block:1px solid var(--line);}
+.problem-grid{display:grid; grid-template-columns:1.05fr .95fr; gap:30px; align-items:center;}
+.fanout{position:relative; background:var(--bg); border:1px solid var(--line); border-radius:18px; padding:26px 22px; min-block-size:230px;}
+.fanout .src{
+  display:inline-flex; align-items:center; gap:10px;
+  background:linear-gradient(135deg,var(--azure),var(--fab)); color:#fff;
+  padding:11px 16px; border-radius:12px; font-weight:800; font-size:14px;
+  box-shadow:0 8px 22px rgba(10,102,194,.28);
+}
+.fan-rows{margin-block-start:20px; display:flex; flex-direction:column; gap:9px;}
+.fan-row{display:flex; align-items:center; gap:9px;}
+.fan-conn{inline-size:26px; block-size:2px; background:linear-gradient(90deg,var(--fab-bright),transparent); flex:none; border-radius:2px;}
+.tcard{flex:1; display:flex; align-items:center; gap:10px; background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:8px 12px; font-size:12.5px; font-weight:600; color:var(--ink-soft);}
+.tcard .dot{inline-size:8px; block-size:8px; border-radius:999px; flex:none;}
+.tcard .meta{margin-inline-start:auto; font-size:11px; color:var(--ink-faint); font-weight:600;}
+.fan-more{font-size:12.5px; color:var(--ink-faint); font-weight:700; margin-block-start:12px; text-align:center; letter-spacing:.04em;}
+.pain-list{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:14px;}
+.pain-list li{display:flex; gap:13px; align-items:flex-start;}
+.pain-ic{flex:none; inline-size:34px; block-size:34px; border-radius:9px; display:grid; place-items:center; background:var(--warn-soft); color:var(--warn); font-size:17px;}
+.pain-list li b{display:block; font-size:14.5px; margin-block-end:1px;}
+.pain-list li span{font-size:13.5px; color:var(--ink-soft);}
+
+/* ════════════ Component cards ════════════ */
+.blocks{display:grid; grid-template-columns:repeat(2,1fr); gap:18px;}
+.block{position:relative; background:var(--panel); border:1px solid var(--line); border-radius:16px; padding:22px 22px 20px; overflow:hidden;}
+.block::before{content:""; position:absolute; inset-block-start:0; inset-inline:0; block-size:4px;}
+.block.b-mcp::before{background:var(--pbi);}
+.block.b-core::before{background:var(--fab-bright);}
+.block.b-skill::before{background:var(--agent);}
+.block.b-rest::before{background:var(--rest);}
+.block.b-embed::before{background:var(--azure-bright);}
+.block.b-custom::before{background:linear-gradient(90deg,var(--azure),var(--fab-bright),var(--pbi));}
+.block .bk-head{display:flex; align-items:flex-start; gap:13px; margin-block-end:12px;}
+.bk-ic{inline-size:46px; block-size:46px; border-radius:12px; display:grid; place-items:center; font-size:22px; flex:none;}
+.b-mcp .bk-ic{background:var(--pbi-soft); color:var(--pbi-deep);}
+.b-core .bk-ic{background:var(--fab-soft); color:var(--fab);}
+.b-skill .bk-ic{background:var(--agent-soft); color:var(--agent);}
+.b-rest .bk-ic{background:var(--rest-soft); color:var(--rest);}
+.b-embed .bk-ic{background:var(--azure-soft); color:var(--azure);}
+.b-custom .bk-ic{background:linear-gradient(135deg,var(--azure-soft),var(--fab-soft)); color:var(--fab);}
+.bk-head h3{font-size:16.5px; font-weight:800; margin:0; letter-spacing:-.01em; line-height:1.2;}
+.bk-head .kx{font-size:11px; font-weight:700; letter-spacing:.04em; color:var(--ink-faint); text-transform:uppercase; display:block; margin-block-end:2px;}
+.block p{font-size:13.5px; color:var(--ink-soft); margin:0 0 11px;}
+.block p code{background:var(--line-soft); padding:1px 6px; border-radius:5px; font-size:12px;}
+.meta-row{display:flex; flex-wrap:wrap; gap:7px; margin-block-end:11px;}
+.mtag{font-size:10.5px; font-weight:700; padding:3px 9px; border-radius:7px; border:1px solid var(--line); color:var(--ink-faint); display:inline-flex; align-items:center; gap:5px;}
+.mtag b{color:var(--ink-soft); font-weight:800;}
+.tags{display:flex; flex-wrap:wrap; gap:6px;}
+.tag{font-size:11px; font-weight:600; padding:3px 9px; border-radius:999px; border:1px solid var(--line);}
+.b-mcp .tag{background:rgba(242,200,17,.12); border-color:rgba(184,143,0,.35); color:var(--pbi-deep);}
+.b-core .tag{background:rgba(15,163,134,.10); border-color:rgba(17,120,101,.3); color:var(--fab);}
+.b-skill .tag{background:rgba(98,100,167,.10); border-color:rgba(98,100,167,.3); color:var(--agent);}
+.b-rest .tag{background:rgba(166,77,191,.10); border-color:rgba(166,77,191,.3); color:var(--rest);}
+.b-embed .tag{background:rgba(43,136,216,.10); border-color:rgba(10,102,194,.3); color:var(--azure);}
+.b-custom .tag{background:var(--fab-soft); border-color:rgba(17,120,101,.3); color:var(--fab);}
+.flag{font-size:9.5px; font-weight:800; letter-spacing:.05em; padding:2px 7px; border-radius:999px; margin-inline-start:7px; vertical-align:middle; white-space:nowrap;}
+.flag.prev{color:var(--warn); background:var(--warn-soft);}
+.flag.local{color:var(--azure); background:var(--azure-soft);}
+.flag.remote{color:var(--fab); background:var(--fab-soft);}
+
+/* ════════════ Skills vs MCP ════════════ */
+.svm{background:var(--panel); border-block:1px solid var(--line);}
+.svm-grid{display:grid; grid-template-columns:1fr auto 1fr; gap:0; align-items:stretch; margin-block-end:24px;}
+.svm-card{padding:24px 26px; border-radius:16px; border:1px solid var(--line);}
+.svm-card.skills{background:linear-gradient(180deg,var(--agent-soft),transparent 72%);}
+.svm-card.mcp{background:linear-gradient(180deg,var(--fab-soft),transparent 72%);}
+.svm-card .sh{display:flex; align-items:center; gap:11px; margin-block-end:8px;}
+.svm-card .sh .ic{inline-size:40px; block-size:40px; border-radius:11px; display:grid; place-items:center; font-size:20px; flex:none; background:#fff;}
+.skills .sh .ic{color:var(--agent); border:1px solid var(--agent-bright);}
+.mcp .sh .ic{color:var(--fab); border:1px solid var(--fab-bright);}
+.svm-card .sh h3{margin:0; font-size:18px; font-weight:850;}
+.svm-card .tagline{font-size:13px; font-weight:700; margin:0 0 12px;}
+.skills .tagline{color:var(--agent);}
+.mcp .tagline{color:var(--fab);}
+.svm-card ul{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:8px;}
+.svm-card ul li{font-size:13px; color:var(--ink-soft); display:flex; gap:8px;}
+.svm-card ul li::before{content:"•"; font-weight:900;}
+.skills ul li::before{color:var(--agent);}
+.mcp ul li::before{color:var(--fab);}
+.svm-mid{display:flex; flex-direction:column; align-items:center; justify-content:center; padding-inline:18px;}
+.svm-mid .plus{inline-size:48px; block-size:48px; border-radius:999px; display:grid; place-items:center; background:var(--bg); border:1px solid var(--line); font-weight:850; font-size:20px; color:var(--ink-faint);}
+.svm-quote{text-align:center; font-size:16px; font-weight:700; color:var(--ink); background:var(--bg); border:1px dashed var(--line); border-radius:14px; padding:16px 22px;}
+.svm-quote b{color:var(--fab);}
+.svm-quote .src-cite{display:block; margin-block-start:6px; font-size:11.5px; font-weight:600; color:var(--ink-faint);}
+
+/* ════════════ Layer map ════════════ */
+.lmap{display:flex; flex-direction:column; gap:9px;}
+.lrow{display:grid; grid-template-columns:200px 1fr; gap:14px; align-items:center; background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:13px 16px;}
+.lrow .ltool{display:flex; align-items:center; gap:10px;}
+.lrow .ltool .lic{inline-size:34px; block-size:34px; border-radius:9px; display:grid; place-items:center; font-size:16px; flex:none;}
+.lrow .ltool .lname{font-size:13px; font-weight:800; line-height:1.2;}
+.lrow .lresp{font-size:13px; color:var(--ink-soft);}
+.lrow.l-model .lic{background:var(--pbi-soft); color:var(--pbi-deep);}
+.lrow.l-query .lic{background:var(--azure-soft); color:var(--azure);}
+.lrow.l-report .lic{background:var(--agent-soft); color:var(--agent);}
+.lrow.l-items .lic{background:var(--fab-soft); color:var(--fab);}
+.lrow.l-rest .lic{background:var(--rest-soft); color:var(--rest);}
+
+/* ════════════ Spectrum of control ════════════ */
+.spectrum{background:var(--panel); border-block:1px solid var(--line);}
+.spec-bar{position:relative; height:14px; border-radius:999px; margin:30px 0 6px; background:linear-gradient(90deg,var(--agent) 0%, var(--fab-bright) 38%, var(--rest) 74%, var(--azure) 100%);}
+.spec-axis{display:flex; justify-content:space-between; font-size:12px; font-weight:700; color:var(--ink-faint); margin-block-end:26px;}
+.spec-axis .l{color:var(--agent);}
+.spec-axis .r{color:var(--azure);}
+.spec-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:14px;}
+.scol{position:relative; background:var(--bg); border:1px solid var(--line); border-radius:14px; padding:18px 16px; padding-block-start:30px;}
+.scol::before{content:""; position:absolute; inset-block-start:-9px; inset-inline-start:18px; inline-size:18px; block-size:18px; border-radius:6px; transform:rotate(45deg);}
+.scol.s1::before{background:var(--agent);}
+.scol.s2::before{background:var(--fab-bright);}
+.scol.s3::before{background:var(--rest);}
+.scol.s4::before{background:var(--azure);}
+.scol .snum{font-size:11px; font-weight:800; letter-spacing:.08em; color:var(--ink-faint);}
+.scol h4{font-size:15px; font-weight:850; margin:4px 0 4px; letter-spacing:-.01em;}
+.scol .swho{font-size:11.5px; font-weight:700; margin:0 0 9px;}
+.scol.s1 .swho{color:var(--agent);}
+.scol.s2 .swho{color:var(--fab);}
+.scol.s3 .swho{color:var(--rest);}
+.scol.s4 .swho{color:var(--azure);}
+.scol p{font-size:12.5px; color:var(--ink-soft); margin:0 0 10px;}
+.scol .best{font-size:11.5px; color:var(--ink-soft); border-block-start:1px solid var(--line); padding-block-start:9px;}
+.scol .best b{color:var(--ink); display:block; font-size:10.5px; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-faint); margin-block-end:2px;}
+
+/* ════════════ Custom MCP deep-dive ════════════ */
+.custom{}
+.custom-wrap{background:linear-gradient(160deg,var(--hero2),var(--hero3)); color:#eef4f4; border-radius:22px; padding:38px 38px 34px; position:relative; overflow:hidden;}
+.custom-wrap::after{content:""; position:absolute; inset-block-start:-40%; inset-inline-end:-10%; inline-size:340px; block-size:340px; border-radius:50%; background:radial-gradient(circle,rgba(80,230,255,.16),transparent 70%);}
+.custom-grid{display:grid; grid-template-columns:1fr 1fr; gap:30px; position:relative;}
+.custom-wrap .sec-tag{color:var(--azure-glow);}
+.custom-wrap .sec-tag .n{background:rgba(80,230,255,.16); color:var(--azure-glow);}
+.custom-wrap h2{font-size:27px; font-weight:850; letter-spacing:-.02em; margin:0 0 12px; color:#fff;}
+.custom-wrap p.cl{font-size:15px; color:#cfe0dd; margin:0 0 18px;}
+.cwhy{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:13px;}
+.cwhy li{display:flex; gap:12px; align-items:flex-start;}
+.cwhy .ci{flex:none; inline-size:34px; block-size:34px; border-radius:9px; display:grid; place-items:center; font-size:16px; background:rgba(255,255,255,.08); color:var(--azure-glow);}
+.cwhy b{display:block; font-size:14px; color:#fff; margin-block-end:1px;}
+.cwhy span{font-size:13px; color:#bcd2ce;}
+.cstack{background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.12); border-radius:16px; padding:20px;}
+.cstack .ct{font-size:12px; font-weight:800; letter-spacing:.06em; text-transform:uppercase; color:#a9c2bd; margin-block-end:14px;}
+.cnode{display:flex; align-items:center; gap:11px; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.12); border-radius:11px; padding:11px 14px; margin-block-end:0;}
+.cnode .cni{inline-size:30px; block-size:30px; border-radius:8px; display:grid; place-items:center; font-size:15px; flex:none;}
+.cnode .cnt{font-size:13px; font-weight:700; color:#eef4f4;}
+.cnode .cns{font-size:11px; color:#9fb8b4;}
+.cnode.agent .cni{background:rgba(139,141,214,.2); color:var(--agent-bright);}
+.cnode.custom .cni{background:rgba(80,230,255,.18); color:var(--azure-glow);}
+.cnode.rest .cni{background:rgba(166,77,191,.2); color:#d9a8e8;}
+.cnode.fab .cni{background:rgba(15,163,134,.2); color:var(--fab-bright);}
+.cdown{text-align:center; color:rgba(255,255,255,.35); font-size:15px; line-height:1; padding:5px 0;}
+.cnode .cbadge{margin-inline-start:auto; font-size:10px; font-weight:800; color:var(--azure-glow); background:rgba(80,230,255,.12); padding:2px 8px; border-radius:999px;}
+
+/* ════════════ Factory pipeline ════════════ */
+.pipe{display:grid; grid-template-columns:repeat(6,1fr); gap:10px; counter-reset:step;}
+.pstep{position:relative; background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:34px 12px 14px; text-align:center;}
+.pstep::before{counter-increment:step; content:counter(step); position:absolute; inset-block-start:-13px; inset-inline-start:50%; transform:translateX(-50%); inline-size:28px; block-size:28px; border-radius:999px; display:grid; place-items:center; font-size:13px; font-weight:850; color:#fff; background:linear-gradient(135deg,var(--azure),var(--fab)); box-shadow:0 4px 12px rgba(10,102,194,.3);}
+.pstep .pic{font-size:23px; margin-block-end:7px; line-height:1;}
+.pstep h4{font-size:12.5px; font-weight:800; margin:0 0 5px; letter-spacing:-.01em;}
+.pstep p{font-size:11px; color:var(--ink-soft); margin:0 0 7px; line-height:1.4;}
+.pstep .by{font-size:9.5px; font-weight:800; letter-spacing:.02em; color:var(--fab); background:var(--fab-soft); padding:2px 6px; border-radius:6px; display:inline-block; line-height:1.3;}
+.pstep .by.pbi{color:var(--pbi-deep); background:var(--pbi-soft);}
+.pstep .by.az{color:var(--azure); background:var(--azure-soft);}
+.pstep .by.ag{color:var(--agent); background:var(--agent-soft);}
+.pipe-flow-note{margin-block-start:22px; display:flex; align-items:center; gap:12px; flex-wrap:wrap; background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:14px 18px;}
+.pipe-flow-note .chip{font-size:12.5px; font-weight:800; padding:5px 13px; border-radius:999px; background:var(--fab-soft); color:var(--fab);}
+.pipe-flow-note .arrow{color:var(--ink-faint); font-weight:900;}
+.pipe-flow-note .desc{font-size:13px; color:var(--ink-soft); margin-inline-start:auto;}
+
+/* ════════════ Multiplier ════════════ */
+.mult{background:var(--panel); border-block:1px solid var(--line);}
+.mult-grid{display:grid; grid-template-columns:1fr 1.1fr; gap:34px; align-items:center;}
+.mult-visual{background:radial-gradient(500px 300px at 80% 10%, rgba(80,230,255,.12), transparent 60%),linear-gradient(160deg,var(--hero2),var(--hero3)); border-radius:20px; padding:34px; color:#eef4f4; text-align:center;}
+.mult-eq{display:flex; align-items:center; justify-content:center; gap:13px; flex-wrap:wrap;}
+.meq{display:flex; flex-direction:column; align-items:center; gap:6px;}
+.meq .box{inline-size:98px; block-size:74px; border-radius:14px; display:grid; place-items:center; font-weight:850; font-size:14px; line-height:1.15; text-align:center; padding:6px;}
+.meq.one .box{background:rgba(242,200,17,.16); border:1px solid var(--pbi); color:var(--pbi);}
+.meq.eng .box{background:rgba(15,163,134,.18); border:1px solid var(--fab-bright); color:var(--fab-bright);}
+.meq.many .box{background:rgba(80,230,255,.14); border:1px solid var(--azure-glow); color:var(--azure-glow); font-size:21px;}
+.meq .cap{font-size:11px; color:#a9c2bd; font-weight:600;}
+.mult-op{font-size:25px; font-weight:850; color:#dfeae8;}
+.mult-foot{margin-block-start:20px; font-size:13px; color:#bcd2ce;}
+.mult-points{display:flex; flex-direction:column; gap:15px;}
+.mpoint{display:flex; gap:14px; align-items:flex-start;}
+.mpoint .mic{flex:none; inline-size:42px; block-size:42px; border-radius:11px; display:grid; place-items:center; font-size:19px; background:var(--azure-soft); color:var(--azure);}
+.mpoint.g .mic{background:var(--fab-soft); color:var(--fab);}
+.mpoint.y .mic{background:var(--pbi-soft); color:var(--pbi-deep);}
+.mpoint b{display:block; font-size:15px; margin-block-end:2px;}
+.mpoint span{font-size:13.5px; color:var(--ink-soft);}
+
+/* ════════════ Takeaways ════════════ */
+.takeaways{background:linear-gradient(160deg,var(--hero2),var(--hero3)); color:#eef4f4;}
+.takeaways .sec-tag{color:var(--azure-glow);}
+.takeaways .sec-tag .n{background:rgba(80,230,255,.16); color:var(--azure-glow);}
+.takeaways h2.sec-title{color:#fff;}
+.tk-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:16px;}
+.tk{background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.12); border-radius:14px; padding:20px;}
+.tk .num{font-size:13px; font-weight:850; color:var(--azure-glow); letter-spacing:.1em;}
+.tk h4{font-size:16px; font-weight:800; margin:8px 0 6px; color:#fff;}
+.tk p{font-size:13.5px; color:#c7d8d5; margin:0;}
+
+/* ════════════ Resources ════════════ */
+.resources{background:var(--panel); border-block-start:1px solid var(--line);}
+.res-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:12px;}
+.res{display:flex; gap:13px; align-items:flex-start; background:var(--bg); border:1px solid var(--line); border-radius:12px; padding:15px 16px; text-decoration:none; color:inherit; transition:border-color .15s, transform .1s;}
+.res:hover{border-color:var(--fab-bright); transform:translateY(-1px);}
+.res .ric{flex:none; inline-size:38px; block-size:38px; border-radius:10px; display:grid; place-items:center; font-size:17px; background:var(--fab-soft); color:var(--fab);}
+.res .rt{font-size:14px; font-weight:800; margin:0 0 2px;}
+.res .ru{font-size:11.5px; color:var(--azure); word-break:break-all;}
+.res .rd{font-size:12px; color:var(--ink-faint); margin-block-start:3px;}
+.foot{padding-block:26px; text-align:center; font-size:12px; color:var(--ink-faint);}
+.foot .disc{max-inline-size:84ch; margin-inline:auto; margin-block-end:8px;}
+
+/* ════════════ Responsive ════════════ */
+@media (max-width:900px){
+  .hero h1{font-size:33px;}
+  .hero-stats{grid-template-columns:repeat(2,1fr);}
+  .problem-grid,.mult-grid,.custom-grid{grid-template-columns:1fr;}
+  .blocks,.res-grid{grid-template-columns:1fr;}
+  .svm-grid{grid-template-columns:1fr;}
+  .svm-mid{padding-block:14px;}
+  .spec-grid{grid-template-columns:repeat(2,1fr);}
+  .pipe{grid-template-columns:repeat(2,1fr); row-gap:26px;}
+  .tk-grid{grid-template-columns:1fr;}
+  .lrow{grid-template-columns:1fr;}
+  h2.sec-title{font-size:24px;}
+}
+@media print{
+  body{background:#fff;}
+  .hero,.takeaways,.mult-visual,.custom-wrap{-webkit-print-color-adjust:exact; print-color-adjust:exact;}
+  section{break-inside:avoid;}
+}
+</style>
+<script defer src="https://a.ndme.sh/script.js" data-website-id="9478c1a0-93c6-4c21-855a-69e50e15cbc4"></script>
+<style>/* smec-back-btn v2 */
+.smec-back-btn { position: fixed; bottom: 16px; left: 16px; z-index: 9999;
+  box-sizing: border-box;
+  display: inline-flex; align-items: center; justify-content: flex-start;
+  gap: 8px; height: 40px; padding: 0 16px 0 12px; border-radius: 20px;
+  background: rgba(0, 120, 212, 0.92) !important; color: #fff !important;
+  text-decoration: none !important;
+  font: 600 14px/1 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif !important;
+  letter-spacing: 0.01em;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18); backdrop-filter: blur(6px);
+  opacity: 0;
+  animation: smec-back-btn-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.4s forwards;
+  transition:
+    padding 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    background 0.3s ease,
+    box-shadow 0.3s ease;
+  overflow: hidden; white-space: nowrap; }
+.smec-back-btn__icon { flex: 0 0 auto; display: inline-block;
+  width: 18px; height: 18px; }
+.smec-back-btn__label { display: inline-block; flex: 0 0 auto;
+  font: inherit; color: inherit; }
+.smec-back-btn__more { display: inline-block; max-width: 0; opacity: 0;
+  overflow: hidden; vertical-align: bottom;
+  font: inherit; color: inherit;
+  transition:
+    opacity 0.18s ease 0s,
+    max-width 0.45s cubic-bezier(0.22, 1, 0.36, 1) 0.05s; }
+
+.smec-back-btn:hover, .smec-back-btn:focus-visible {
+  background: rgba(0, 90, 158, 0.96) !important; color: #fff !important;
+  text-decoration: none !important;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.22); }
+.smec-back-btn:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+.smec-back-btn:hover .smec-back-btn__more,
+.smec-back-btn:focus-visible .smec-back-btn__more {
+  max-width: 260px; opacity: 1;
+  transition:
+    max-width 0.45s cubic-bezier(0.22, 1, 0.36, 1) 0s,
+    opacity 0.25s ease 0.2s; }
+
+@keyframes smec-back-btn-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@media (hover: none) {
+  .smec-back-btn__more { max-width: 260px; opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .smec-back-btn, .smec-back-btn__more,
+  .smec-back-btn:hover .smec-back-btn__more,
+  .smec-back-btn:focus-visible .smec-back-btn__more {
+    transition: background 0.2s ease, color 0.2s ease;
+    animation: none; opacity: 1; }
+}
+@media (max-width: 600px) { .smec-back-btn { bottom: 12px; left: 12px; } }
+</style>
+<!-- smec-meta v1 -->
+<meta name="description" content="The Analytics Factory — Scaling ISV Apps to Thousands of Tenants with Fabric &amp; Power BI MCP Servers, Skills &amp; REST APIs — an interactive infographic from the SME&amp;C Infographic Hub.">
+<meta property="og:title" content="The Analytics Factory — Scaling ISV Apps to Thousands of Tenants with Fabric &amp; Power BI MCP Servers, Skills &amp; REST APIs">
+<meta property="og:description" content="The Analytics Factory — Scaling ISV Apps to Thousands of Tenants with Fabric &amp; Power BI MCP Servers, Skills &amp; REST APIs — an interactive infographic from the SME&amp;C Infographic Hub.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://sme-c-infographics.github.io/fabric/fabric-mcp-isv-scale-infographic.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The Analytics Factory — Scaling ISV Apps to Thousands of Tenants with Fabric &amp; Power BI MCP Servers, Skills &amp; REST APIs">
+<meta name="twitter:description" content="The Analytics Factory — Scaling ISV Apps to Thousands of Tenants with Fabric &amp; Power BI MCP Servers, Skills &amp; REST APIs — an interactive infographic from the SME&amp;C Infographic Hub.">
+<!-- smec-favicon v1 -->
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<!-- smec-accuracy v1 -->
+<meta name="smec:last-accuracy-check" content="2026-07-16">
+</head>
+<body>
+<a href="/" class="smec-back-btn" data-smec-back-button="v2" aria-label="Back to SME&amp;C Infographics"><svg class="smec-back-btn__icon" aria-hidden="true" viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg><span class="smec-back-btn__label">Back<span class="smec-back-btn__more">&nbsp;to SME&amp;C Infographics</span></span></a>
+
+
+<!-- ══════════════ HERO ══════════════ -->
+<header class="hero">
+  <div class="wrap">
+    <span class="hero-badge"><span class="pulse"></span> Microsoft Fabric &middot; Power BI &middot; Agentic Automation</span>
+    <h1>The Analytics Factory: scale one app to <span class="g1">thousands</span> of <span class="g2">customer tenants</span></h1>
+    <p class="sub">The ISV operating model for Fabric at scale: turn a single hand-built analytics template into an AI-driven assembly line — powered by the <strong>Power BI Modeling MCP Server</strong>, the <strong>Fabric Core MCP Server</strong>, <strong>Skills for Fabric</strong>, the <strong>Fabric REST APIs</strong>, and — for maximum control — your own <strong>custom MCP server</strong>.</p>
+    <div class="hero-stats">
+      <div class="hstat s-fab"><div class="v">10<small>,000s</small></div><div class="l">customer tenants manageable from one codebase</div></div>
+      <div class="hstat"><div class="v">100k<small>+</small></div><div class="l">end users served via embedded analytics</div></div>
+      <div class="hstat s-pbi"><div class="v">3<small> layers</small></div><div class="l">Skills · MCP servers · REST API + custom MCP</div></div>
+      <div class="hstat s-fab"><div class="v">1<small> &rarr; N</small></div><div class="l">author once, parameterize &amp; replicate per tenant</div></div>
+    </div>
+  </div>
+</header>
+
+<!-- ══════════════ 1 · CHALLENGE ══════════════ -->
+<section class="challenge">
+  <div class="wrap">
+    <span class="sec-tag"><span class="n">1</span> The challenge</span>
+    <h2 class="sec-title">Per-tenant analytics doesn't scale by hand</h2>
+    <p class="sec-lede">An ISV embedding analytics must give <em>every</em> customer their own semantic model, reports, refresh schedule, security boundary, and branding. Multiply that by thousands of tenants and the manual approach collapses under its own weight.</p>
+    <div class="problem-grid">
+      <div class="fanout">
+        <span class="src">◆ One ISV analytics product</span>
+        <div class="fan-rows">
+          <div class="fan-row"><span class="fan-conn"></span><div class="tcard"><span class="dot" style="background:var(--fab-bright)"></span> Tenant A — Contoso<span class="meta">model · report · refresh</span></div></div>
+          <div class="fan-row"><span class="fan-conn"></span><div class="tcard"><span class="dot" style="background:var(--azure-bright)"></span> Tenant B — Fabrikam<span class="meta">model · report · refresh</span></div></div>
+          <div class="fan-row"><span class="fan-conn"></span><div class="tcard"><span class="dot" style="background:var(--pbi)"></span> Tenant C — Northwind<span class="meta">model · report · refresh</span></div></div>
+          <div class="fan-row"><span class="fan-conn"></span><div class="tcard"><span class="dot" style="background:var(--agent)"></span> Tenant D — Tailwind<span class="meta">model · report · refresh</span></div></div>
+        </div>
+        <div class="fan-more">+ 9,996 more tenants &middot; each a full lifecycle to manage</div>
+      </div>
+      <ul class="pain-list">
+        <li><span class="pain-ic">⧉</span><div><b>Duplication explosion</b><span>Cloning and hand-editing models &amp; reports for every customer is slow, error-prone, and impossible to keep consistent.</span></div></li>
+        <li><span class="pain-ic">↻</span><div><b>Drift &amp; inconsistency</b><span>A measure fix or schema change must reach every tenant — manually, that guarantees version drift.</span></div></li>
+        <li><span class="pain-ic">⚙</span><div><b>Operational load</b><span>Deploys, refreshes, permissions, and governance multiply linearly with tenant count.</span></div></li>
+        <li><span class="pain-ic">⚇</span><div><b>Isolation &amp; capacity</b><span>Each tenant needs its own security boundary while sharing capacity efficiently — hard to do safely by hand.</span></div></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ 2 · THE TOOLKIT (exact names) ══════════════ -->
+<section>
+  <div class="wrap">
+    <span class="sec-tag"><span class="n">2</span> The platform stack</span>
+    <h2 class="sec-title">Six first-party capabilities, each precisely scoped</h2>
+    <p class="sec-lede">Generic talk of "Power BI &amp; Fabric MCP" hides important distinctions. Each component below is a distinct, documented Microsoft capability with its own scope, transport, and auth model — and they compose.</p>
+
+    <div class="blocks">
+
+      <!-- Power BI Modeling MCP Server -->
+      <div class="block b-mcp">
+        <div class="bk-head"><span class="bk-ic">⬡</span>
+          <div><span class="kx">The semantic-model engine</span><h3>Power BI Modeling MCP Server<span class="flag prev">PREVIEW</span><span class="flag local">LOCAL · STDIO</span></h3></div>
+        </div>
+        <p>A local MCP server (<code>@microsoft/powerbi-modeling-mcp</code>) that connects AI agents to Power BI semantic models in Desktop, a Fabric workspace, or PBIP files. Executes <strong>modeling operations only</strong> — tables, columns, measures, DAX, relationships, RLS, calculation groups, translations — with <strong>bulk, transactional</strong> edits across hundreds of objects. It cannot author report pages or visuals.</p>
+        <div class="meta-row">
+          <span class="mtag">Auth: <b>interactive · service principal</b></span>
+          <span class="mtag">Modes: <b>readwrite · readonly</b></span>
+        </div>
+        <div class="tags"><span class="tag">Create / edit models</span><span class="tag">DAX measures</span><span class="tag">Bulk + transactions</span><span class="tag">Deploy &amp; refresh</span></div>
+      </div>
+
+      <!-- Fabric Core MCP Server -->
+      <div class="block b-core">
+        <div class="bk-head"><span class="bk-ic">◎</span>
+          <div><span class="kx">The platform-control plane</span><h3>Fabric Core MCP Server<span class="flag prev">PREVIEW</span><span class="flag remote">REMOTE</span></h3></div>
+        </div>
+        <p>A <strong>remote endpoint</strong> at <code>api.fabric.microsoft.com/v1/mcp/core</code> that turns prompts into Fabric REST API calls — respecting your RBAC and writing audit logs. Tools cover <strong>catalog search, workspace CRUD, item management</strong> (lakehouses, semantic models, notebooks, pipelines), <strong>permission &amp; folder</strong> management, and <strong>capacity</strong> info.</p>
+        <div class="meta-row">
+          <span class="mtag">Auth: <b>OAuth 2.0 · Entra ID</b></span>
+          <span class="mtag">Respects: <b>Fabric RBAC + audit</b></span>
+        </div>
+        <div class="tags"><span class="tag">Workspaces</span><span class="tag">Item CRUD</span><span class="tag">Permissions</span><span class="tag">Capacities</span></div>
+      </div>
+
+      <!-- Power BI authoring plugin skills -->
+      <div class="block b-skill">
+        <div class="bk-head"><span class="bk-ic">◈</span>
+          <div><span class="kx">Skills for Fabric — PowerBI authoring plugin</span><h3>Semantic Model &amp; Report Authoring skills<span class="flag prev">PREVIEW</span></h3></div>
+        </div>
+        <p>Reusable, open-source agent instructions (<code>microsoft/skills-for-fabric</code>, MIT). The <strong>Power BI Semantic Model Authoring skill</strong> routes model work to the Modeling MCP Server first. The <strong>Power BI Report Authoring skill</strong> (<code>powerbi-report-authoring</code>) authors the report layer — pages, visuals, slicers, themes — in <strong>PBIR/PBIP</strong>, paired with the Report Design &amp; Report Planner skills.</p>
+        <div class="meta-row">
+          <span class="mtag">Tools: <b>Copilot CLI · VS Code · Claude · Cursor</b></span>
+        </div>
+        <div class="tags"><span class="tag">semantic-model-authoring</span><span class="tag">powerbi-report-authoring</span><span class="tag">report-design · planner</span></div>
+      </div>
+
+      <!-- Fabric REST APIs -->
+      <div class="block b-rest">
+        <div class="bk-head"><span class="bk-ic">{ }</span>
+          <div><span class="kx">The foundational surface</span><h3>Fabric REST APIs</h3></div>
+        </div>
+        <p>The programmable foundation <em>every</em> layer above ultimately calls. Direct REST gives you <strong>maximum control</strong>: item-definition CRUD, <strong>deployment pipelines</strong>, <strong>Git integration</strong>, capacities, and long-running operations — drivable by the <strong>Fabric CLI</strong>, the <strong>fabric-cicd</strong> Python library, or the <strong>Terraform provider for Fabric</strong> in your own CI/CD.</p>
+        <div class="meta-row">
+          <span class="mtag">CI/CD: <b>fabric-cicd · Terraform · CLI</b></span>
+        </div>
+        <div class="tags"><span class="tag">Item definitions</span><span class="tag">Deployment pipelines</span><span class="tag">Git integration</span><span class="tag">Long-running ops</span></div>
+      </div>
+
+      <!-- Custom MCP Server -->
+      <div class="block b-custom">
+        <div class="bk-head"><span class="bk-ic">⚒</span>
+          <div><span class="kx">Maximum control + reusability</span><h3>Your own custom MCP Server</h3></div>
+        </div>
+        <p>Because MCP is an <strong>open specification</strong>, an ISV can build a bespoke MCP server that wraps the Fabric REST APIs <em>plus</em> your own provisioning logic — exposing tenant-shaped tools like <code>provision_tenant</code> or <code>rotate_tenant_keys</code>. You get REST-level control packaged as <strong>reusable, governable tools</strong> any agent can call.</p>
+        <div class="meta-row">
+          <span class="mtag">You own: <b>tools · guardrails · naming</b></span>
+        </div>
+        <div class="tags"><span class="tag">Tailored tools</span><span class="tag">Built-in guardrails</span><span class="tag">Multi-agent reuse</span></div>
+      </div>
+
+      <!-- Service principal profiles -->
+      <div class="block b-embed">
+        <div class="bk-head"><span class="bk-ic">⌘</span>
+          <div><span class="kx">Multi-tenant delivery</span><h3>Service principal profiles</h3></div>
+        </div>
+        <p>Power BI embedding's scale feature: one app identity spins up isolated <strong>per-tenant profiles</strong>, giving each customer a clean security boundary while sharing capacity. Microsoft's guidance: profiles support solutions of <strong>tens of thousands of tenants</strong> serving <strong>100,000+ users</strong>.</p>
+        <div class="meta-row">
+          <span class="mtag">Recommended above: <b>1,000+ app users</b></span>
+        </div>
+        <div class="tags"><span class="tag">Tenant isolation</span><span class="tag">Capacity efficiency</span><span class="tag">Embedded</span></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ 3 · SKILLS vs MCP + LAYER MAP ══════════════ -->
+<section class="svm">
+  <div class="wrap">
+    <span class="sec-tag"><span class="n">3</span> Architecture &amp; ownership</span>
+    <h2 class="sec-title">Skills teach. MCP servers do. REST is the floor.</h2>
+    <p class="sec-lede">Straight from Microsoft's documentation: skills supply the expertise; MCP servers supply the live data connection; the REST APIs are what both ultimately drive.</p>
+
+    <div class="svm-grid">
+      <div class="svm-card skills">
+        <div class="sh"><span class="ic">◈</span><h3>Skills for Fabric</h3></div>
+        <p class="tagline">Knowledge &amp; patterns — markdown loaded into the agent's context</p>
+        <ul>
+          <li>Teach the agent <em>what</em> to do &amp; which APIs to call</li>
+          <li>Static instructions (<code>SKILL.md</code>) — they don't execute</li>
+          <li>Encode best practices &amp; operational patterns</li>
+          <li>Open source, MIT — extend or fork them</li>
+        </ul>
+      </div>
+      <div class="svm-mid"><span class="plus">+</span></div>
+      <div class="svm-card mcp">
+        <div class="sh"><span class="ic">⬡</span><h3>MCP servers</h3></div>
+        <p class="tagline">Live data access — executable servers run as separate processes</p>
+        <ul>
+          <li>Actually <em>do</em> the operation against your model/tenant</li>
+          <li>Strongly typed, deterministic, mapped 1:1 to Fabric concepts</li>
+          <li>Respect your existing RBAC &amp; permissions</li>
+          <li>Modeling MCP (local) &amp; Core MCP (remote) are complementary</li>
+        </ul>
+      </div>
+    </div>
+    <div class="svm-quote">&ldquo;Skills provide the expertise and MCP servers provide the data connection. They both work best together.&rdquo;<span class="src-cite">— Skills for Fabric overview, Microsoft Learn</span></div>
+
+    <h3 style="font-size:18px;font-weight:850;margin:34px 0 16px;">The layer map — which tool owns which job</h3>
+    <div class="lmap">
+      <div class="lrow l-model"><div class="ltool"><span class="lic">⬡</span><span class="lname">Power BI Modeling MCP Server</span></div><div class="lresp">Semantic model — create &amp; update tables, columns, measures, DAX, RLS</div></div>
+      <div class="lrow l-query"><div class="ltool"><span class="lic">⌕</span><span class="lname">Remote Power BI MCP Server</span></div><div class="lresp">Data queries &amp; insights — generate and execute DAX against the model</div></div>
+      <div class="lrow l-report"><div class="ltool"><span class="lic">◈</span><span class="lname">Power BI Report Authoring skill</span></div><div class="lresp">Report layer (PBIR/PBIP) — pages, visuals, filters, formatting, themes</div></div>
+      <div class="lrow l-items"><div class="ltool"><span class="lic">◎</span><span class="lname">Fabric Core MCP Server</span></div><div class="lresp">Workspaces, items, permissions, folders &amp; capacities across the platform</div></div>
+      <div class="lrow l-rest"><div class="ltool"><span class="lic">{ }</span><span class="lname">Fabric REST APIs</span></div><div class="lresp">The foundation — item definitions, deployment pipelines, Git, CI/CD automation</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ 4 · SPECTRUM OF CONTROL ══════════════ -->
+<section class="spectrum">
+  <div class="wrap">
+    <span class="sec-tag"><span class="n">4</span> The spectrum of control</span>
+    <h2 class="sec-title">Abstraction where you want speed, control where you need it</h2>
+    <p class="sec-lede">Higher layers ship faster with opinionated best practices; lower layers deliver total control and customization. ISVs running Fabric at scale operate all four — and wrap the bottom in a custom MCP server to capture both.</p>
+
+    <div class="spec-bar"></div>
+    <div class="spec-axis"><span class="l">◀ More guidance &amp; speed &middot; higher abstraction</span><span class="r">More control &amp; customization &middot; lower level ▶</span></div>
+
+    <div class="spec-grid">
+      <div class="scol s1">
+        <div class="snum">LAYER 1</div><h4>Skills for Fabric</h4><p class="swho">Agent-guided · opinionated</p>
+        <p>Natural language in, governed Fabric objects out — with best practices baked in. Fastest path to a working result.</p>
+        <div class="best"><b>Best for</b>Common authoring &amp; lifecycle tasks where Microsoft's patterns fit.</div>
+      </div>
+      <div class="scol s2">
+        <div class="snum">LAYER 2</div><h4>Prebuilt MCP servers</h4><p class="swho">Deterministic · governed</p>
+        <p>Modeling MCP &amp; Core MCP expose typed, safe tools that map 1:1 to Fabric concepts and honor RBAC.</p>
+        <div class="best"><b>Best for</b>Precise, auditable model &amp; platform operations at scale.</div>
+      </div>
+      <div class="scol s3">
+        <div class="snum">LAYER 3</div><h4>Fabric REST APIs</h4><p class="swho">Full surface · you orchestrate</p>
+        <p>Call any endpoint directly — item definitions, deployment pipelines, Git — from fabric-cicd, Terraform, or your own code.</p>
+        <div class="best"><b>Best for</b>Edge cases, CI/CD, and anything the higher layers don't cover yet.</div>
+      </div>
+      <div class="scol s4">
+        <div class="snum">LAYER 4</div><h4>Custom MCP server</h4><p class="swho">Your tools · your guardrails</p>
+        <p>Wrap REST + your provisioning logic into reusable, tenant-shaped tools — REST-level control, MCP-level safety &amp; reuse.</p>
+        <div class="best"><b>Best for</b>Productizing a repeatable, governed multi-tenant factory.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ 5 · CUSTOM MCP DEEP-DIVE ══════════════ -->
+<section class="custom">
+  <div class="wrap">
+    <div class="custom-wrap">
+      <div class="custom-grid">
+        <div>
+          <span class="sec-tag"><span class="n">5</span> Build your own</span>
+          <h2>A custom MCP server is your scaling moat</h2>
+          <p class="cl">The Fabric Core MCP Server already proves the pattern: an MCP server that "calls the Fabric REST API on your behalf." An ISV can build the same kind of server — tuned to <em>their</em> product, their tenant model, and their guardrails.</p>
+          <ul class="cwhy">
+            <li><span class="ci">▤</span><div><b>Domain-shaped tools</b><span>Expose <code>onboard_tenant</code>, <code>apply_branding</code>, <code>rotate_keys</code> — not raw endpoints.</span></div></li>
+            <li><span class="ci">⛨</span><div><b>Guardrails by construction</b><span>Bake in least-privilege auth, naming rules, and destructive-action blocks the agent can't bypass.</span></div></li>
+            <li><span class="ci">♻</span><div><b>Write once, reuse everywhere</b><span>The same tools serve every agent, CLI, and pipeline across your org.</span></div></li>
+            <li><span class="ci">⚖</span><div><b>Composable</b><span>Run it alongside the Modeling &amp; Core MCP servers — agents pick the right tool per job.</span></div></li>
+          </ul>
+        </div>
+        <div class="cstack">
+          <div class="ct">Reference architecture</div>
+          <div class="cnode agent"><span class="cni">◇</span><div><div class="cnt">AI agent / Copilot</div><div class="cns">Natural-language intent per tenant</div></div></div>
+          <div class="cdown">▼</div>
+          <div class="cnode custom"><span class="cni">⚒</span><div><div class="cnt">Your custom MCP Server</div><div class="cns">Tenant-shaped tools + guardrails</div></div><span class="cbadge">YOU BUILD</span></div>
+          <div class="cdown">▼</div>
+          <div class="cnode rest"><span class="cni">{ }</span><div><div class="cnt">Fabric REST APIs</div><div class="cns">Items · pipelines · Git · capacities</div></div></div>
+          <div class="cdown">▼</div>
+          <div class="cnode fab"><span class="cni">◎</span><div><div class="cnt">Microsoft Fabric</div><div class="cns">Per-tenant workspaces &amp; objects</div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ 6 · FACTORY PIPELINE ══════════════ -->
+<section>
+  <div class="wrap">
+    <span class="sec-tag"><span class="n">6</span> The factory pattern</span>
+    <h2 class="sec-title">An automated lifecycle, repeated per tenant</h2>
+    <p class="sec-lede">Wrap the layers in an agent + CI/CD loop and onboarding a customer becomes a parameterized pipeline run, not a project. Each step names the tool that owns it.</p>
+
+    <div class="pipe">
+      <div class="pstep"><div class="pic">📐</div><h4>Template</h4><p>Author one golden PBIP model &amp; report</p><span class="by pbi">Modeling MCP + Report skill</span></div>
+      <div class="pstep"><div class="pic">🏗️</div><h4>Provision</h4><p>Create the tenant's workspace &amp; items</p><span class="by">Core MCP / REST</span></div>
+      <div class="pstep"><div class="pic">🎛️</div><h4>Parameterize</h4><p>Inject tenant data source &amp; branding</p><span class="by ag">Agent + Skills</span></div>
+      <div class="pstep"><div class="pic">⬡</div><h4>Author</h4><p>Build model, measures &amp; DAX in bulk</p><span class="by pbi">Modeling MCP Server</span></div>
+      <div class="pstep"><div class="pic">🚀</div><h4>Deploy &amp; refresh</h4><p>Publish &amp; bind sources per tenant</p><span class="by az">REST / pipelines</span></div>
+      <div class="pstep"><div class="pic">🛡️</div><h4>Govern</h4><p>Validate best practices &amp; isolation</p><span class="by ag">Skills + RBAC</span></div>
+    </div>
+
+    <div class="pipe-flow-note">
+      <span class="chip">New tenant signs up</span><span class="arrow">→</span>
+      <span class="chip">Pipeline runs</span><span class="arrow">→</span>
+      <span class="chip">Tenant analytics live</span>
+      <span class="desc">Onboarding measured in minutes, not weeks — every object created the same governed way.</span>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ 7 · WHY IT SCALES ══════════════ -->
+<section class="mult">
+  <div class="wrap">
+    <span class="sec-tag"><span class="n">7</span> Why it scales</span>
+    <h2 class="sec-title">Define once, multiply infinitely</h2>
+    <p class="sec-lede">The economics flip: instead of effort growing linearly with every customer, cost concentrates in <strong>one template and one pipeline</strong> — then machines replicate it, and service principal profiles isolate it.</p>
+    <div class="mult-grid">
+      <div class="mult-visual">
+        <div class="mult-eq">
+          <div class="meq one"><div class="box">1 golden template</div><div class="cap">human-authored</div></div>
+          <span class="mult-op">×</span>
+          <div class="meq eng"><div class="box">MCP + Skills + REST pipeline</div><div class="cap">AI-driven</div></div>
+          <span class="mult-op">=</span>
+          <div class="meq many"><div class="box">N tenants</div><div class="cap">auto-generated</div></div>
+        </div>
+        <div class="mult-foot">Effort no longer scales with customer count — the pipeline absorbs it.</div>
+      </div>
+      <div class="mult-points">
+        <div class="mpoint y"><span class="mic">∑</span><div><b>Consistency for free</b><span>One fix to the template propagates to every tenant on the next pipeline run — drift becomes structurally impossible.</span></div></div>
+        <div class="mpoint g"><span class="mic">⚡</span><div><b>Minutes to onboard</b><span>A new customer is a parameter set, not a project. Provision a full analytics stack on demand.</span></div></div>
+        <div class="mpoint"><span class="mic">⌘</span><div><b>Isolated yet efficient</b><span>Service principal profiles keep each tenant's data separate while sharing capacity — tens of thousands of tenants, 100k+ users.</span></div></div>
+        <div class="mpoint g"><span class="mic">✓</span><div><b>Governed &amp; auditable</b><span>Core MCP honors RBAC and writes audit logs; service-principal auth enables unattended, least-privilege automation.</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ 8 · TAKEAWAYS ══════════════ -->
+<section class="takeaways">
+  <div class="wrap">
+    <span class="sec-tag"><span class="n">8</span> Executive summary</span>
+    <h2 class="sec-title">Six decisions that define a Fabric-scale ISV</h2>
+    <div class="tk-grid">
+      <div class="tk"><div class="num">01</div><h4>Name the layers precisely</h4><p>Modeling MCP Server (model), Core MCP Server (platform), Report Authoring skill (visuals), REST APIs (foundation) — each has a distinct job.</p></div>
+      <div class="tk"><div class="num">02</div><h4>Skills teach, MCP does</h4><p>Skills carry the expertise; MCP servers execute against your data. Use them together, not interchangeably.</p></div>
+      <div class="tk"><div class="num">03</div><h4>Drop to REST for control</h4><p>When higher layers don't fit, the Fabric REST APIs — via fabric-cicd, Terraform, or the CLI — give you the full surface.</p></div>
+      <div class="tk"><div class="num">04</div><h4>Wrap it in a custom MCP</h4><p>Package REST + your provisioning logic into tenant-shaped tools for REST-level control with MCP-level safety and reuse.</p></div>
+      <div class="tk"><div class="num">05</div><h4>Profiles do the scaling</h4><p>Service principal profiles isolate each tenant while sharing capacity — reaching tens of thousands of tenants.</p></div>
+      <div class="tk"><div class="num">06</div><h4>The pipeline absorbs growth</h4><p>One template × one pipeline = N tenants. Consistency and governance become structural, not heroic.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ RESOURCES ══════════════ -->
+<section class="resources">
+  <div class="wrap">
+    <span class="sec-tag"><span class="n">★</span> Go deeper</span>
+    <h2 class="sec-title">Authoritative references</h2>
+    <div class="res-grid">
+      <a class="res" href="https://github.com/microsoft/powerbi-modeling-mcp/blob/main/README.md">
+        <span class="ric">⬡</span><div><p class="rt">Power BI Modeling MCP Server (README)</p><div class="ru">github.com/microsoft/powerbi-modeling-mcp</div><div class="rd">Tools, install, transports, service-principal auth, and limitations.</div></div>
+      </a>
+      <a class="res" href="https://learn.microsoft.com/en-us/rest/api/fabric/articles/mcp-servers/core-remote/overview-core-mcp-server">
+        <span class="ric">◎</span><div><p class="rt">Fabric Core MCP Server overview</p><div class="ru">learn.microsoft.com/rest/api/fabric/articles/mcp-servers</div><div class="rd">Remote endpoint, OAuth, supported workspace &amp; item operations.</div></div>
+      </a>
+      <a class="res" href="https://learn.microsoft.com/en-us/fabric/fundamentals/skills-for-fabric-overview">
+        <span class="ric">◈</span><div><p class="rt">Skills for Fabric overview</p><div class="ru">learn.microsoft.com/fabric/fundamentals/skills-for-fabric-overview</div><div class="rd">What skills are, how they differ from MCP servers, compatible tools.</div></div>
+      </a>
+      <a class="res" href="https://learn.microsoft.com/en-us/power-bi/developer/agentic/semantic-model-authoring-skill-overview">
+        <span class="ric">⊞</span><div><p class="rt">Power BI Semantic Model Authoring skill</p><div class="ru">learn.microsoft.com/power-bi/developer/agentic</div><div class="rd">How the skill routes to the Modeling MCP Server, end-to-end examples.</div></div>
+      </a>
+      <a class="res" href="https://learn.microsoft.com/en-us/power-bi/developer/agentic/power-bi-report-authoring-skill-overview">
+        <span class="ric">▦</span><div><p class="rt">Power BI Report Authoring skill</p><div class="ru">learn.microsoft.com/power-bi/developer/agentic</div><div class="rd">Authoring report visuals, pages &amp; themes in PBIR/PBIP; the layer map.</div></div>
+      </a>
+      <a class="res" href="https://learn.microsoft.com/en-us/rest/api/fabric/articles/">
+        <span class="ric">{ }</span><div><p class="rt">Microsoft Fabric REST API references</p><div class="ru">learn.microsoft.com/rest/api/fabric/articles</div><div class="rd">Automate item management, deployment pipelines, Git, capacities; CLI &amp; fabric-cicd.</div></div>
+      </a>
+      <a class="res" href="https://learn.microsoft.com/en-us/power-bi/developer/mcp/">
+        <span class="ric">⌕</span><div><p class="rt">Power BI MCP servers documentation</p><div class="ru">learn.microsoft.com/power-bi/developer/mcp</div><div class="rd">Local &amp; remote Power BI MCP servers, tool reference, getting started.</div></div>
+      </a>
+      <a class="res" href="https://learn.microsoft.com/en-us/power-bi/guidance/develop-scalable-multitenancy-apps-with-powerbi-embedding">
+        <span class="ric">⌘</span><div><p class="rt">Scalable multitenancy with Power BI embedding</p><div class="ru">learn.microsoft.com/power-bi/guidance</div><div class="rd">Service principal profiles for tens of thousands of tenants &amp; 100k+ users.</div></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="wrap">
+    <p class="disc">Capabilities reflect Microsoft Fabric &amp; Power BI documentation as of mid-2026. The Power BI Modeling MCP Server, Fabric Core MCP Server, and the Power BI authoring skills are in Public Preview and may change before general availability. The custom-MCP-server pattern is an architectural recommendation built on the open Model Context Protocol specification and the Fabric REST APIs. Tenant and user figures reflect Microsoft's published multitenancy embedding guidance.</p>
+    <p>ISV reference architecture &middot; Modeling MCP Server &middot; Fabric Core MCP Server &middot; Skills for Fabric &middot; Fabric REST APIs</p>
+  </div>
+</footer>
+
+</body>
+</html>

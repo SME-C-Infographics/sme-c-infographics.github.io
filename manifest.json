@@ -28,6 +28,10 @@
         "title": "Microsoft Fabric Governance Framework"
       },
       {
+        "file": "fabric-mcp-isv-scale-infographic.html",
+        "title": "The Analytics Factory — Scaling ISV Apps to Thousands of Tenants with Fabric & Power BI MCP Servers, Skills & REST APIs"
+      },
+      {
         "file": "medallion-architecture-infographic.html",
         "title": "Medallion Lakehouse Architecture in Microsoft Fabric"
       },
