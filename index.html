@@ -70,6 +70,34 @@
       letter-spacing: 0.01em;
     }
 
+    .header-action {
+      margin-left: auto;
+      display: inline-flex;
+      align-items: center;
+      min-height: 36px;
+      padding: 8px 16px;
+      border: 1px solid rgba(255, 255, 255, 0.7);
+      border-radius: var(--radius);
+      background: #fff;
+      color: var(--ms-blue-dark);
+      font-size: 0.875rem;
+      font-weight: 600;
+      line-height: 1;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: background 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .header-action:hover {
+      background: var(--ms-canvas);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    .header-action:focus-visible {
+      outline: 2px solid #fff;
+      outline-offset: 2px;
+    }
+
     /* ─── Hero ──────────────────────────────────────────────── */
     .hero {
       background: var(--ms-surface);
@@ -397,7 +425,9 @@
 
     /* ─── Responsive tweaks ─────────────────────────────────── */
     @media (max-width: 640px) {
-      header { padding: 0 20px; }
+      header { padding: 0 20px; gap: 10px; }
+      .header-title { font-size: 0.875rem; }
+      .header-action { padding: 8px 10px; font-size: 0.75rem; }
       .hero  { padding: 36px 20px 32px; }
       main   { padding: 24px 20px 48px; }
       .cta   { padding: 40px 20px; }
@@ -418,6 +448,7 @@
       <rect x="12" y="12" width="11" height="11" fill="#FFBA08"/>
     </svg>
     <span class="header-title">SME&amp;C Infographics</span>
+    <a class="header-action" href="https://aka.ms/upcoming-events">Customer Events</a>
   </header>
 
   <!-- ── Hero ────────────────────────────────────────────────── -->
