@@ -566,7 +566,7 @@
 <!-- smec-favicon v1 -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <!-- smec-accuracy v1 -->
-<meta name="smec:last-accuracy-check" content="2026-06-27">
+<meta name="smec:last-accuracy-check" content="2026-07-30">
 <style>/* smec-back-btn v2 */
 .smec-back-btn { position: fixed; bottom: 16px; left: 16px; z-index: 9999;
   box-sizing: border-box;
@@ -1016,7 +1016,7 @@
         <ul>
           <li><strong>MCP server hosting</strong> — REST API → MCP tools at <code>/mcp</code></li>
           <li><strong>External MCP pass-through</strong> for Logic Apps, Functions, custom</li>
-          <li><strong>A2A (Agent2Agent)</strong> communication for multi-agent workflows <span class="pv">Preview</span></li>
+          <li><strong>A2A (Agent2Agent)</strong> communication for multi-agent workflows</li>
           <li>Rate-limit-by-key on <code>Mcp-Session-Id</code></li>
           <li><strong>AI Gateway in Microsoft Foundry</strong> control plane <span class="pv">Preview</span></li>
         </ul>
@@ -1154,7 +1154,7 @@
         <ul>
           <li><strong>Remote MCP servers</strong> — auto-generates SSE &amp; Streamable definitions</li>
           <li><strong>Local MCP servers</strong> — npm / pypi packages, runtime hint, runtime args</li>
-          <li><strong>Partner MCP servers</strong> — curated list incl. Azure Logic Apps and GitHub <span class="pv" style="background: var(--amber-light); color: var(--amber); padding: 0.08rem 0.4rem; border-radius: 4px; font-size: 0.6rem; font-weight: 800;">Preview</span></li>
+          <li><strong>Partner MCP servers</strong> — curated list incl. Azure Logic Apps and GitHub</li>
           <li>Built-in <strong>MCP Inspector</strong> for testing tool definitions</li>
           <li><strong>One-click install into VS Code</strong> from the discovery portal</li>
           <li>Optional surfacing into <strong>Microsoft Foundry tool catalogs</strong></li>
@@ -1198,7 +1198,7 @@
         <li>For <strong>REST-derived MCP servers</strong> in APIM, only <strong>MCP tools</strong> are supported — <strong>resources and prompts are not supported today</strong>, and MCP capabilities are <strong>not supported in workspaces</strong>.</li>
         <li>MCP support in <strong>v2 SKUs</strong> (Basic v2 / Standard v2 / Premium v2) is now <strong>generally available</strong> across all classic and v2 APIM tiers.</li>
         <li>The <strong>MCP tool limit per server</strong> was previously hardcoded at 20 — removed in the March 2026 release. Now bounded by the APIM SKU operation limit.</li>
-        <li><strong>A2A</strong> support and <strong>AI Gateway in Microsoft Foundry</strong> are <strong>preview</strong>. Show a "Preview" badge wherever your design depends on them.</li>
+        <li><strong>AI Gateway in Microsoft Foundry</strong> is <strong>preview</strong> — show a "Preview" badge wherever your design depends on it. A2A import and management in API Management is now generally available.</li>
       </ul>
     </div>
   </div>
