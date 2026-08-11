@@ -111,6 +111,8 @@ def check_url(url: str, timeout: float) -> dict[str, Any]:
                 "error": f"HTTPError {exc.code}: {exc.reason}",
             }
         except urllib.error.URLError as exc:
+            if method == "HEAD":
+                continue
             return {
                 "url": url,
                 "status": None,
@@ -120,6 +122,8 @@ def check_url(url: str, timeout: float) -> dict[str, Any]:
                 "error": f"URLError: {exc.reason}",
             }
         except Exception as exc:  # noqa: BLE001 - we want a structured row
+            if method == "HEAD":
+                continue
             return {
                 "url": url,
                 "status": None,

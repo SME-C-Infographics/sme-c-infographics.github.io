@@ -61,6 +61,10 @@
         "title": "Azure AI Landing Zones — The Runway Before Takeoff"
       },
       {
+        "file": "azure-ai-billing-models.html",
+        "title": "Azure AI Billing Models — From Consumption to Commitment"
+      },
+      {
         "file": "frontier-firm-playbook.html",
         "title": "Become a Frontier Firm — Microsoft's Playbook for the Agentic Enterprise"
       },
