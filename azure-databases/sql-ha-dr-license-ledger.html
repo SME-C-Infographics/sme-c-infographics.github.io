@@ -478,8 +478,78 @@ footer p + p{margin-top:8px}
   .panel{box-shadow:none;border:1px solid var(--rule)}
 }
 </style>
+<script defer src="https://a.ndme.sh/script.js" data-website-id="9478c1a0-93c6-4c21-855a-69e50e15cbc4"></script>
+<style>/* smec-back-btn v2 */
+.smec-back-btn { position: fixed; bottom: 16px; left: 16px; z-index: 9999;
+  box-sizing: border-box;
+  display: inline-flex; align-items: center; justify-content: flex-start;
+  gap: 8px; height: 40px; padding: 0 16px 0 12px; border-radius: 20px;
+  background: rgba(0, 120, 212, 0.92) !important; color: #fff !important;
+  text-decoration: none !important;
+  font: 600 14px/1 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif !important;
+  letter-spacing: 0.01em;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18); backdrop-filter: blur(6px);
+  opacity: 0;
+  animation: smec-back-btn-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.4s forwards;
+  transition:
+    padding 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    background 0.3s ease,
+    box-shadow 0.3s ease;
+  overflow: hidden; white-space: nowrap; }
+.smec-back-btn__icon { flex: 0 0 auto; display: inline-block;
+  width: 18px; height: 18px; }
+.smec-back-btn__label { display: inline-block; flex: 0 0 auto;
+  font: inherit; color: inherit; }
+.smec-back-btn__more { display: inline-block; max-width: 0; opacity: 0;
+  overflow: hidden; vertical-align: bottom;
+  font: inherit; color: inherit;
+  transition:
+    opacity 0.18s ease 0s,
+    max-width 0.45s cubic-bezier(0.22, 1, 0.36, 1) 0.05s; }
+
+.smec-back-btn:hover, .smec-back-btn:focus-visible {
+  background: rgba(0, 90, 158, 0.96) !important; color: #fff !important;
+  text-decoration: none !important;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.22); }
+.smec-back-btn:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+.smec-back-btn:hover .smec-back-btn__more,
+.smec-back-btn:focus-visible .smec-back-btn__more {
+  max-width: 260px; opacity: 1;
+  transition:
+    max-width 0.45s cubic-bezier(0.22, 1, 0.36, 1) 0s,
+    opacity 0.25s ease 0.2s; }
+
+@keyframes smec-back-btn-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@media (hover: none) {
+  .smec-back-btn__more { max-width: 260px; opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .smec-back-btn, .smec-back-btn__more,
+  .smec-back-btn:hover .smec-back-btn__more,
+  .smec-back-btn:focus-visible .smec-back-btn__more {
+    transition: background 0.2s ease, color 0.2s ease;
+    animation: none; opacity: 1; }
+}
+@media (max-width: 600px) { .smec-back-btn { bottom: 12px; left: 12px; } }
+</style>
+<!-- smec-meta v1 -->
+<meta name="description" content="SQL Server HA/DR and Azure Hybrid Benefit: The License Ledger — an interactive infographic from the SME&amp;C Infographic Hub.">
+<meta property="og:title" content="SQL Server HA/DR and Azure Hybrid Benefit: The License Ledger">
+<meta property="og:description" content="SQL Server HA/DR and Azure Hybrid Benefit: The License Ledger — an interactive infographic from the SME&amp;C Infographic Hub.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://sme-c-infographics.github.io/azure-databases/sql-ha-dr-license-ledger.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="SQL Server HA/DR and Azure Hybrid Benefit: The License Ledger">
+<meta name="twitter:description" content="SQL Server HA/DR and Azure Hybrid Benefit: The License Ledger — an interactive infographic from the SME&amp;C Infographic Hub.">
+<!-- smec-favicon v1 -->
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
 </head>
 <body>
+<a href="/" class="smec-back-btn" data-smec-back-button="v2" aria-label="Back to SME&amp;C Infographics"><svg class="smec-back-btn__icon" aria-hidden="true" viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg><span class="smec-back-btn__label">Back<span class="smec-back-btn__more">&nbsp;to SME&amp;C Infographics</span></span></a>
+
 
 <header class="mast">
   <div class="wrap">

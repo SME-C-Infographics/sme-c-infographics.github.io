@@ -13,6 +13,10 @@
       {
         "file": "sql-2016-eol-customer-guide.html",
         "title": "SQL Server 2016 End of Support — Your Complete Guide"
+      },
+      {
+        "file": "sql-ha-dr-license-ledger.html",
+        "title": "SQL Server HA/DR and Azure Hybrid Benefit: The License Ledger"
       }
     ]
   },
