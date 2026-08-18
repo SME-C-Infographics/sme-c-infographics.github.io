@@ -1,0 +1,1551 @@
+<!DOCTYPE html>
+<!--
+  DIRECTION CONTRACT  (impeccable · seed 88b0ed0c · assigned index 5)
+
+  THESIS         Every HA/DR choice is simultaneously an architecture decision and a
+                 licensing decision. Nobody draws both at once. This page does.
+  OWN-WORLD      A ledger, not a brochure. Paper-white ground for a shared screen,
+                 one dark instrument panel that holds the running state. Cores are
+                 physical square blocks you can count; licenses are a balance that
+                 moves. Per-platform accents inherited from the Azure SQL family.
+  STORY          Start with one licensed server. Walk eight deployment steps. The same
+                 estate of cores is re-spent each time. Watch nodes, running cores,
+                 licenses consumed, and queryable capacity diverge from each other.
+  FIRST VIEWPORT The mechanism, proven immediately: two clusters, identical license
+                 count, wildly different usable capacity.
+  FORM           A persistent state trace. One input, eight states, diffed each step,
+                 plus a static table so the page reads cold without touching anything.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SQL Server HA/DR and Azure Hybrid Benefit: The License Ledger</title>
+<style>
+/* ============================================================
+   GROUND
+   ============================================================ */
+:root{
+  --ink:#10151c;
+  --ink-2:#3d4a5a;
+  --ink-3:#63707f;
+  --rule:#dfe4ea;
+  --rule-soft:#edf0f4;
+  --paper:#fbfcfd;
+  --paper-2:#ffffff;
+
+  --panel:#0d1b2a;
+  --panel-2:#152a3f;
+  --panel-rule:#264259;
+  --panel-ink:#e8eef4;
+  --panel-ink-2:#9db2c6;
+
+  --vm:#5C2D91;
+  --vm-soft:#f2ecf8;
+  --mi:#0078D4;
+  --mi-soft:#e8f3fc;
+  --db:#008272;
+  --db-soft:#e4f4f1;
+
+  --free:#7a8899;
+  --good:#0f7b4f;
+  --good-soft:#e6f4ec;
+  --warn:#8a5a00;
+  --warn-soft:#fdf3e0;
+  --stop:#a4262c;
+  --stop-soft:#fbeaeb;
+
+  --f:"Segoe UI",-apple-system,BlinkMacSystemFont,system-ui,Roboto,"Helvetica Neue",Arial,sans-serif;
+  --fd:ui-serif,"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,"Times New Roman",serif;
+  --ease:cubic-bezier(.16,1,.3,1);
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  font-family:var(--f);
+  color:var(--ink);
+  background:var(--paper);
+  font-size:17px;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4{margin:0;line-height:1.12;letter-spacing:-.022em;font-weight:700}
+h1,h2{font-family:var(--fd);font-weight:600;letter-spacing:-.014em}
+p{margin:0}
+a{color:#0a5ca8}
+a:focus-visible,button:focus-visible,input:focus-visible,[tabindex]:focus-visible{
+  outline:2.5px solid #0a5ca8;outline-offset:3px;border-radius:3px;
+}
+.wrap{max-width:1220px;margin:0 auto;padding:0 28px}
+.measure{max-width:68ch}
+.num{font-variant-numeric:tabular-nums}
+
+/* ============================================================
+   MASTHEAD
+   ============================================================ */
+.mast{padding:76px 0 0;border-bottom:1px solid var(--rule);background:var(--paper-2)}
+.mast h1{
+  font-size:clamp(2.5rem,6.2vw,4.6rem);
+  letter-spacing:-.028em;
+  max-width:17ch;
+}
+.mast h1 em{font-style:normal;color:var(--mi)}
+.mast .sub{
+  margin-top:26px;max-width:60ch;font-size:1.18rem;color:var(--ink-2);line-height:1.55;
+}
+.mast .meta{
+  margin-top:30px;font-size:.83rem;color:var(--ink-3);
+  display:flex;flex-wrap:wrap;gap:8px 20px;
+}
+
+/* proof strip */
+.proof{
+  margin-top:56px;display:grid;grid-template-columns:1fr auto 1fr;gap:0;
+  border-top:1px solid var(--rule);
+}
+.proof-col{padding:34px 34px 40px}
+.proof-col:first-child{border-right:1px solid var(--rule)}
+.proof-col:last-child{border-left:1px solid var(--rule)}
+.proof-mid{
+  display:flex;align-items:center;justify-content:center;
+  padding:0 22px;background:var(--paper);
+}
+.proof-mid span{
+  font-size:.72rem;font-weight:700;letter-spacing:.14em;color:var(--ink-3);
+  writing-mode:vertical-rl;text-orientation:mixed;
+}
+.proof-col h3{font-size:1.06rem}
+.proof-col .plat{
+  font-size:.73rem;font-weight:700;letter-spacing:.1em;margin-bottom:9px;
+}
+.proof-col .plat.a{color:var(--vm)}
+.proof-col .plat.b{color:var(--db)}
+.proof-figures{
+  margin-top:20px;display:flex;gap:26px;flex-wrap:wrap;
+}
+.pf{min-width:0}
+.pf b{display:block;font-size:1.85rem;letter-spacing:-.03em;line-height:1}
+.pf span{display:block;font-size:.79rem;color:var(--ink-3);margin-top:5px;max-width:15ch}
+.pf.hi b{color:var(--good)}
+.pf.lo b{color:var(--ink-3)}
+.proof-note{
+  margin-top:22px;font-size:.86rem;color:var(--ink-2);border-top:1px solid var(--rule-soft);
+  padding-top:14px;
+}
+.mini{display:flex;gap:14px;flex-wrap:wrap;margin-top:6px}
+.mini-node{
+  border:1px solid var(--rule);border-radius:5px;padding:8px 9px 9px;background:var(--paper);
+}
+.mini-node .mn-cap{font-size:.62rem;color:var(--ink-3);margin-bottom:6px;letter-spacing:.03em}
+.mini-grid{display:grid;grid-template-columns:repeat(5,7px);gap:2.5px}
+.mini-grid i{display:block;width:7px;height:7px;border-radius:1px}
+.mini-grid i.pay{background:#2f7ec0}
+.mini-grid i.free{border:1px solid #b6c2cd;background-image:repeating-linear-gradient(45deg,#c7d1da 0 1.5px,transparent 1.5px 4px)}
+.mini-grid i.ro{background:var(--good)}
+.mini-grid i.idle{background:#cfd8e0}
+
+/* ============================================================
+   SECTION FURNITURE
+   ============================================================ */
+section{padding:78px 0}
+section + section{border-top:1px solid var(--rule)}
+.sec-head{margin-bottom:38px}
+.sec-head h2{font-size:clamp(1.6rem,3.2vw,2.3rem);max-width:22ch}
+.sec-head p{margin-top:14px;color:var(--ink-2);max-width:66ch;font-size:1.03rem}
+.lede{font-size:1.05rem;color:var(--ink-2)}
+
+/* ============================================================
+   CONTROLS
+   ============================================================ */
+.controls{
+  background:var(--paper-2);border:1px solid var(--rule);border-radius:10px;
+  padding:24px 26px;display:grid;grid-template-columns:1fr auto;gap:30px;align-items:end;
+}
+.ctl-label{font-size:.74rem;font-weight:700;letter-spacing:.11em;color:var(--ink-3);margin-bottom:10px}
+.ctl-value{font-size:2.1rem;letter-spacing:-.03em;font-weight:700;line-height:1}
+.ctl-value small{font-size:.9rem;font-weight:600;color:var(--ink-3);letter-spacing:0;margin-left:7px}
+input[type=range]{
+  -webkit-appearance:none;appearance:none;width:100%;height:26px;background:transparent;
+  margin-top:14px;cursor:pointer;
+}
+input[type=range]::-webkit-slider-runnable-track{height:5px;background:var(--rule);border-radius:3px}
+input[type=range]::-moz-range-track{height:5px;background:var(--rule);border-radius:3px}
+input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance:none;width:21px;height:21px;border-radius:50%;background:var(--mi);
+  border:3px solid #fff;box-shadow:0 1px 4px rgba(13,27,42,.32);margin-top:-8px;
+}
+input[type=range]::-moz-range-thumb{
+  width:21px;height:21px;border-radius:50%;background:var(--mi);border:3px solid #fff;
+  box-shadow:0 1px 4px rgba(13,27,42,.32);
+}
+.ticks{display:flex;justify-content:space-between;font-size:.7rem;color:var(--ink-3);margin-top:-2px}
+.seg{display:inline-flex;border:1px solid var(--rule);border-radius:7px;overflow:hidden;background:var(--paper-2)}
+.seg button{
+  font:inherit;font-size:.88rem;font-weight:600;padding:11px 18px;border:0;background:transparent;
+  color:var(--ink-2);cursor:pointer;transition:background .18s var(--ease),color .18s var(--ease);
+}
+.seg button + button{border-left:1px solid var(--rule)}
+.seg button:hover{background:var(--rule-soft)}
+.seg button[aria-pressed=true]{background:var(--panel);color:#fff}
+.seg button[aria-pressed=true]:hover{background:var(--panel-2)}
+
+/* ============================================================
+   STEP RAIL
+   ============================================================ */
+.rail{
+  margin-top:34px;display:flex;gap:0;border:1px solid var(--rule);border-radius:10px;
+  overflow:hidden;background:var(--paper-2);
+}
+.rail button{
+  flex:1;font:inherit;text-align:left;padding:13px 14px 15px;border:0;background:transparent;
+  cursor:pointer;border-right:1px solid var(--rule);min-width:0;position:relative;
+  transition:background .2s var(--ease);
+}
+.rail button:last-child{border-right:0}
+.rail button:hover{background:var(--rule-soft)}
+.rail .r-n{font-size:.68rem;font-weight:700;color:var(--ink-3);letter-spacing:.08em}
+.rail .r-t{
+  font-size:.82rem;font-weight:600;color:var(--ink-2);margin-top:5px;line-height:1.28;
+  display:block;
+}
+.rail button[aria-selected=true]{background:var(--panel)}
+.rail button[aria-selected=true] .r-n{color:var(--panel-ink-2)}
+.rail button[aria-selected=true] .r-t{color:#fff}
+.rail button[data-fam=iaas] .r-n::before{background:var(--vm)}
+.rail button[data-fam=mi] .r-n::before{background:var(--mi)}
+.rail button[data-fam=db] .r-n::before{background:var(--db)}
+.rail .r-n::before{
+  content:"";display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:7px;
+  vertical-align:1px;
+}
+
+/* ============================================================
+   INSTRUMENT PANEL
+   ============================================================ */
+.panel{
+  margin-top:26px;background:var(--panel);color:var(--panel-ink);border-radius:12px;
+  overflow:hidden;box-shadow:0 2px 3px rgba(13,27,42,.10),0 14px 34px -14px rgba(13,27,42,.34);
+}
+.p-head{padding:30px 32px 26px;border-bottom:1px solid var(--panel-rule)}
+.p-fam{
+  font-size:.71rem;font-weight:700;letter-spacing:.13em;display:inline-flex;align-items:center;gap:8px;
+}
+.p-fam::before{content:"";width:9px;height:9px;border-radius:50%;background:currentColor}
+.p-fam.iaas{color:#c9a9f0}
+.p-fam.mi{color:#6cc0f5}
+.p-fam.db{color:#5fd0bd}
+.p-head h3{margin-top:12px;font-family:var(--fd);font-weight:600;letter-spacing:-.014em;font-size:clamp(1.35rem,2.6vw,1.95rem);color:#fff;max-width:26ch}
+.p-head .p-desc{margin-top:12px;color:var(--panel-ink-2);max-width:68ch;font-size:.97rem;line-height:1.55}
+
+/* metrics */
+.metrics{
+  display:grid;grid-template-columns:repeat(5,1fr);border-bottom:1px solid var(--panel-rule);
+}
+.metric{padding:22px 20px 24px;border-right:1px solid var(--panel-rule);min-width:0}
+.metric:last-child{border-right:0}
+.m-k{font-size:.68rem;font-weight:700;letter-spacing:.09em;color:var(--panel-ink-2);line-height:1.35;min-height:2.6em}
+.m-v{font-size:2.35rem;letter-spacing:-.035em;font-weight:700;color:#fff;line-height:1;margin-top:11px}
+.m-v.zero{color:#5fd0bd}
+.m-d{
+  font-size:.75rem;margin-top:9px;font-weight:600;min-height:1.4em;color:var(--panel-ink-2);
+}
+.m-d.up{color:#ffb26b}
+.m-d.down{color:#5fd0bd}
+.m-sub{font-size:.72rem;color:var(--panel-ink-2);margin-top:3px;line-height:1.4}
+
+/* balance */
+.balance{padding:24px 32px 26px;border-bottom:1px solid var(--panel-rule)}
+.b-top{display:flex;justify-content:space-between;align-items:baseline;gap:20px;flex-wrap:wrap}
+.b-lab{font-size:.71rem;font-weight:700;letter-spacing:.11em;color:var(--panel-ink-2)}
+.b-verdict{font-size:.93rem;font-weight:600}
+.b-verdict.ok{color:#5fd0bd}
+.b-verdict.tight{color:#ffb26b}
+.b-verdict.over{color:#ff9aa0}
+.b-track{
+  margin-top:14px;height:26px;background:#08131e;border-radius:5px;overflow:hidden;
+  border:1px solid var(--panel-rule);position:relative;
+}
+.b-fill{
+  position:absolute;inset:0;transform-origin:left center;transform:scaleX(0);
+  transition:transform .55s var(--ease),background-color .3s var(--ease);
+  background:#4a9fe0;
+}
+.b-fill.over{background:#c9484f}
+.b-foot{margin-top:11px;font-size:.79rem;color:var(--panel-ink-2)}
+
+/* ============================================================
+   TOPOLOGY — nodes and core blocks
+   ============================================================ */
+.topo{padding:30px 32px 34px}
+.region + .region{margin-top:26px;padding-top:26px;border-top:1px dashed var(--panel-rule)}
+.region-name{
+  font-size:.71rem;font-weight:700;letter-spacing:.11em;color:var(--panel-ink-2);margin-bottom:16px;
+}
+.nodes{display:flex;flex-wrap:wrap;gap:16px;align-items:flex-start}
+.node{
+  background:var(--panel-2);border:1px solid var(--panel-rule);border-radius:9px;padding:14px 15px 15px;
+  min-width:0;position:relative;
+}
+.node.ghost{background:transparent;border-style:dashed;opacity:.72}
+.node.readable{border-color:#3f9e7a}
+.node.standby{border-color:#7a6a3f}
+.n-role{
+  font-size:.68rem;font-weight:700;letter-spacing:.09em;color:#fff;line-height:1.3;
+}
+.n-sub{font-size:.71rem;color:var(--panel-ink-2);margin-top:4px;line-height:1.35;max-width:22ch}
+.n-grid{display:grid;gap:3px;margin-top:12px}
+.n-grid i{
+  display:block;width:11px;height:11px;border-radius:2px;background:#4a9fe0;
+}
+.n-grid i.free{
+  background:transparent;
+  border:1px solid #5f7386;
+  background-image:repeating-linear-gradient(45deg,#4a5f72 0 1.5px,transparent 1.5px 4px);
+}
+.n-grid i.ro{background:#3fbd97}
+.n-grid i.idle{background:#2b4257;border:1px solid #35516b}
+.n-badge{
+  display:inline-block;margin-top:11px;font-size:.65rem;font-weight:700;letter-spacing:.05em;
+  padding:3px 7px;border-radius:4px;
+}
+.n-badge.pay{background:#1d3d5c;color:#a5d4ff}
+.n-badge.free{background:#2a2f38;color:#c2cdd8}
+.n-badge.read{background:#123d31;color:#7ce0be}
+.n-badge.sb{background:#3a3117;color:#ecc98a}
+.n-cores{font-size:.7rem;color:var(--panel-ink-2);margin-top:9px}
+
+.storage-row{
+  margin-top:18px;padding:13px 15px;border:1px dashed var(--panel-rule);border-radius:8px;
+  font-size:.8rem;color:var(--panel-ink-2);line-height:1.5;
+}
+.storage-row b{color:#fff;font-weight:600}
+
+/* legend */
+.legend{
+  display:flex;flex-wrap:wrap;gap:8px 22px;margin-top:22px;padding-top:18px;
+  border-top:1px solid var(--panel-rule);font-size:.75rem;color:var(--panel-ink-2);
+}
+.legend span{display:inline-flex;align-items:center;gap:7px}
+.legend i{display:block;width:11px;height:11px;border-radius:2px;flex:none}
+.legend i.pay{background:#4a9fe0}
+.legend i.free{border:1px solid #5f7386;background-image:repeating-linear-gradient(45deg,#4a5f72 0 1.5px,transparent 1.5px 4px)}
+.legend i.ro{background:#3fbd97}
+.legend i.idle{background:#2b4257;border:1px solid #35516b}
+
+/* resilience strip */
+.resil{
+  display:grid;grid-template-columns:repeat(3,1fr) 1.4fr;border-top:1px solid var(--panel-rule);
+}
+.rz{padding:20px 20px 22px;border-right:1px solid var(--panel-rule)}
+.rz:last-child{border-right:0}
+.rz-k{font-size:.68rem;font-weight:700;letter-spacing:.09em;color:var(--panel-ink-2)}
+.rz-v{margin-top:10px;font-size:.93rem;font-weight:600;display:flex;align-items:center;gap:8px}
+.rz-v.yes{color:#5fd0bd}
+.rz-v.no{color:#ff9aa0}
+.rz-v.part{color:#ffb26b}
+.rz-note{font-size:.75rem;color:var(--panel-ink-2);margin-top:7px;line-height:1.45}
+.rz-line{font-size:.79rem;color:var(--panel-ink-2);line-height:1.5}
+.rz-line b{color:#fff;font-weight:600}
+.rz-line + .rz-line{margin-top:6px}
+
+/* blocked state */
+.blocked{
+  padding:34px 32px 38px;background:#2a1416;border-top:1px solid #52272b;
+}
+.blocked h4{color:#ffb9bd;font-size:1.05rem}
+.blocked p{margin-top:11px;color:#e8c7c9;font-size:.94rem;max-width:64ch;line-height:1.55}
+
+/* ============================================================
+   CONVERSION / RULES / TABLES
+   ============================================================ */
+.conv{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+.conv-card{
+  border:1px solid var(--rule);border-radius:10px;background:var(--paper-2);padding:24px 26px 26px;
+}
+.conv-card .cc-ed{font-size:.72rem;font-weight:700;letter-spacing:.11em;color:var(--ink-3)}
+.conv-card h3{margin-top:9px;font-size:1.14rem}
+.conv-eq{
+  margin-top:20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+  padding:15px 0;border-top:1px solid var(--rule-soft);
+}
+.conv-eq:last-of-type{border-bottom:1px solid var(--rule-soft)}
+.ce-side{display:flex;align-items:center;gap:9px}
+.ce-blocks{display:flex;gap:2.5px}
+.ce-blocks i{display:block;width:10px;height:10px;border-radius:2px;background:var(--ink-3)}
+.ce-blocks.gp i{background:var(--mi)}
+.ce-blocks.bc i{background:var(--db)}
+.ce-txt{font-size:.85rem;color:var(--ink-2);line-height:1.35}
+.ce-txt b{color:var(--ink);font-weight:700}
+.ce-arrow{color:var(--ink-3);font-weight:700;font-size:1rem}
+.conv-note{margin-top:16px;font-size:.85rem;color:var(--ink-2);line-height:1.55}
+
+.rules{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:8px}
+.rule-card{border:1px solid var(--rule);border-radius:10px;background:var(--paper-2);padding:22px 24px 24px}
+.rule-card h3{font-size:1.02rem}
+.rule-card p{margin-top:11px;font-size:.9rem;color:var(--ink-2);line-height:1.6}
+.rule-card ul{margin:12px 0 0;padding-left:18px;font-size:.88rem;color:var(--ink-2);line-height:1.6}
+.rule-card li + li{margin-top:6px}
+.tag{
+  display:inline-block;font-size:.66rem;font-weight:700;letter-spacing:.07em;padding:3px 8px;
+  border-radius:4px;margin-bottom:11px;
+}
+.tag.free{background:var(--good-soft);color:var(--good)}
+.tag.paid{background:var(--mi-soft);color:#0a5ca8}
+.tag.care{background:var(--warn-soft);color:var(--warn)}
+
+.tbl-scroll{overflow-x:auto;border:1px solid var(--rule);border-radius:10px;background:var(--paper-2)}
+table{border-collapse:collapse;width:100%;font-size:.87rem;min-width:900px}
+caption{text-align:left;padding:18px 20px 0;font-size:.85rem;color:var(--ink-3)}
+th,td{padding:13px 15px;text-align:left;border-bottom:1px solid var(--rule-soft);vertical-align:top}
+thead th{
+  font-size:.7rem;letter-spacing:.08em;font-weight:700;color:var(--ink-3);
+  border-bottom:1px solid var(--rule);white-space:nowrap;background:var(--paper);
+}
+tbody tr:last-child td{border-bottom:0}
+tbody th{font-weight:600;font-size:.87rem;min-width:220px}
+td.n{font-variant-numeric:tabular-nums;white-space:nowrap}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:8px;vertical-align:1px}
+.dot.iaas{background:var(--vm)}
+.dot.mi{background:var(--mi)}
+.dot.db{background:var(--db)}
+.yes{color:var(--good);font-weight:600}
+.no{color:var(--ink-3)}
+.part{color:var(--warn);font-weight:600}
+
+/* stop-operating list */
+.stops{display:grid;grid-template-columns:repeat(2,1fr);gap:0;border:1px solid var(--rule);border-radius:10px;overflow:hidden;background:var(--paper-2)}
+.stop-item{padding:20px 24px;border-bottom:1px solid var(--rule-soft);border-right:1px solid var(--rule-soft)}
+.stop-item:nth-child(2n){border-right:0}
+.stop-item h4{font-size:.95rem}
+.stop-item p{margin-top:7px;font-size:.86rem;color:var(--ink-2);line-height:1.55}
+
+/* footnotes */
+.notes{font-size:.88rem;color:var(--ink-2);line-height:1.65}
+.notes ol{padding-left:20px;margin:0}
+.notes li + li{margin-top:11px}
+.src{display:grid;grid-template-columns:repeat(2,1fr);gap:10px 30px;margin-top:22px;font-size:.87rem}
+.src a{display:block;padding:9px 0;border-bottom:1px solid var(--rule-soft);text-decoration:none}
+.src a:hover{text-decoration:underline}
+footer{padding:44px 0 60px;border-top:1px solid var(--rule);font-size:.83rem;color:var(--ink-3)}
+footer p + p{margin-top:8px}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width:1080px){
+  .metrics{grid-template-columns:repeat(3,1fr)}
+  .metric:nth-child(3){border-right:0}
+  .metric:nth-child(n+4){border-top:1px solid var(--panel-rule)}
+  .resil{grid-template-columns:repeat(2,1fr)}
+  .rz:nth-child(2){border-right:0}
+  .rz:nth-child(n+3){border-top:1px solid var(--panel-rule)}
+  .rules{grid-template-columns:1fr}
+  .rail{flex-wrap:wrap}
+  .rail button{flex:1 1 25%;border-bottom:1px solid var(--rule)}
+}
+@media (max-width:820px){
+  body{font-size:16px}
+  .wrap{padding:0 20px}
+  section{padding:56px 0}
+  .mast{padding-top:52px}
+  .proof{grid-template-columns:1fr}
+  .proof-col:first-child{border-right:0;border-bottom:1px solid var(--rule)}
+  .proof-col:last-child{border-left:0}
+  .proof-mid{padding:14px 0}
+  .proof-mid span{writing-mode:horizontal-tb}
+  .controls{grid-template-columns:1fr;gap:24px}
+  .conv,.stops{grid-template-columns:1fr}
+  .stop-item{border-right:0}
+  .src{grid-template-columns:1fr}
+  .p-head,.balance,.topo{padding-left:20px;padding-right:20px}
+}
+@media (max-width:600px){
+  .metrics{grid-template-columns:repeat(2,1fr)}
+  .metric{border-right:1px solid var(--panel-rule)!important;border-top:1px solid var(--panel-rule)}
+  .metric:nth-child(2n){border-right:0!important}
+  .metric:nth-child(-n+2){border-top:0}
+  .rail button{flex:1 1 50%}
+  .m-v{font-size:1.9rem}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    animation-duration:.001ms!important;animation-iteration-count:1!important;
+    transition-duration:.001ms!important;scroll-behavior:auto!important;
+  }
+}
+@media print{
+  .panel{box-shadow:none;border:1px solid var(--rule)}
+}
+</style>
+</head>
+<body>
+
+<header class="mast">
+  <div class="wrap">
+    <h1>The same 40 core licenses buy you <em>very different</em> databases.</h1>
+    <p class="sub">
+      High availability, disaster recovery and licensing are usually drawn on separate
+      whiteboards. Draw them together and the picture changes: identical license counts
+      produce wildly different node counts, patch burdens, and usable capacity depending
+      on where the workload runs.
+    </p>
+    <p class="meta">
+      <span>Azure SQL Database &middot; Azure SQL Managed Instance &middot; SQL Server on Azure VMs</span>
+      <span>Azure Hybrid Benefit &middot; failover rights &middot; built-in HA</span>
+    </p>
+
+    <div class="proof">
+      <div class="proof-col">
+        <p class="plat a">SQL SERVER ON AZURE VMS</p>
+        <h3>Always On availability group, one HA replica and one DR replica</h3>
+        <div class="mini" aria-hidden="true">
+          <div class="mini-node"><div class="mn-cap">Primary</div><div class="mini-grid">
+            <i class="pay"></i><i class="pay"></i><i class="pay"></i><i class="pay"></i><i class="pay"></i>
+            <i class="pay"></i><i class="pay"></i><i class="pay"></i><i class="pay"></i><i class="pay"></i>
+          </div></div>
+          <div class="mini-node"><div class="mn-cap">Passive HA</div><div class="mini-grid">
+            <i class="free"></i><i class="free"></i><i class="free"></i><i class="free"></i><i class="free"></i>
+            <i class="free"></i><i class="free"></i><i class="free"></i><i class="free"></i><i class="free"></i>
+          </div></div>
+          <div class="mini-node"><div class="mn-cap">Passive DR</div><div class="mini-grid">
+            <i class="free"></i><i class="free"></i><i class="free"></i><i class="free"></i><i class="free"></i>
+            <i class="free"></i><i class="free"></i><i class="free"></i><i class="free"></i><i class="free"></i>
+          </div></div>
+        </div>
+        <div class="proof-figures">
+          <div class="pf"><b class="num">120</b><span>cores running</span></div>
+          <div class="pf lo"><b class="num">40</b><span>cores you can query</span></div>
+          <div class="pf"><b class="num">3</b><span>machines you patch</span></div>
+        </div>
+        <p class="proof-note">
+          Both replicas are passive, so they cost no SQL Server licenses. They also
+          serve no queries. Two thirds of the running cores do nothing but wait.
+        </p>
+      </div>
+
+      <div class="proof-mid" aria-hidden="true"><span>SAME 40 LICENSES</span></div>
+
+      <div class="proof-col">
+        <p class="plat b">AZURE SQL DATABASE OR MANAGED INSTANCE</p>
+        <h3>Business Critical, a four-node cluster with read scale-out</h3>
+        <div class="mini" aria-hidden="true">
+          <div class="mini-node"><div class="mn-cap">Primary</div><div class="mini-grid">
+            <i class="pay"></i><i class="pay"></i><i class="pay"></i><i class="pay"></i><i class="pay"></i>
+            <i class="pay"></i><i class="pay"></i><i class="pay"></i><i class="pay"></i><i class="pay"></i>
+          </div></div>
+          <div class="mini-node"><div class="mn-cap">Readable secondary</div><div class="mini-grid">
+            <i class="ro"></i><i class="ro"></i><i class="ro"></i><i class="ro"></i><i class="ro"></i>
+            <i class="ro"></i><i class="ro"></i><i class="ro"></i><i class="ro"></i><i class="ro"></i>
+          </div></div>
+          <div class="mini-node"><div class="mn-cap">Secondary</div><div class="mini-grid">
+            <i class="idle"></i><i class="idle"></i><i class="idle"></i><i class="idle"></i><i class="idle"></i>
+            <i class="idle"></i><i class="idle"></i><i class="idle"></i><i class="idle"></i><i class="idle"></i>
+          </div></div>
+          <div class="mini-node"><div class="mn-cap">Secondary</div><div class="mini-grid">
+            <i class="idle"></i><i class="idle"></i><i class="idle"></i><i class="idle"></i><i class="idle"></i>
+            <i class="idle"></i><i class="idle"></i><i class="idle"></i><i class="idle"></i><i class="idle"></i>
+          </div></div>
+        </div>
+        <div class="proof-figures">
+          <div class="pf"><b class="num">160</b><span>cores running</span></div>
+          <div class="pf hi"><b class="num">80</b><span>cores you can query</span></div>
+          <div class="pf hi"><b class="num">0</b><span>machines you patch</span></div>
+        </div>
+        <p class="proof-note">
+          Forty Enterprise cores with Software Assurance convert to 40 Business Critical
+          vCores. One secondary is readable at no extra charge, so the same licenses now
+          answer twice the queries &mdash; and Microsoft operates all four nodes.
+        </p>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<section id="ledger">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>The license ledger</h2>
+      <p>
+        Set the size of the workload, then walk the eight deployment steps. The estate stays
+        the same &mdash; what changes is how many nodes run, how many of those cores you can
+        actually query, and how much of your license pool the design consumes.
+      </p>
+    </div>
+
+    <div class="controls">
+      <div>
+        <p class="ctl-label" id="sizeLabel">WORKLOAD SIZE</p>
+        <p class="ctl-value"><span class="num" id="sizeOut">40</span><small>cores</small></p>
+        <input type="range" id="sizeRange" min="0" max="7" step="1" value="5"
+               aria-labelledby="sizeLabel" aria-valuetext="40 cores">
+        <div class="ticks" aria-hidden="true">
+          <span>4</span><span>8</span><span>16</span><span>24</span>
+          <span>32</span><span>40</span><span>64</span><span>80</span>
+        </div>
+      </div>
+      <div>
+        <p class="ctl-label" id="edLabel">SQL SERVER EDITION YOU OWN</p>
+        <div class="seg" role="group" aria-labelledby="edLabel">
+          <button type="button" id="edEnt" aria-pressed="true">Enterprise</button>
+          <button type="button" id="edStd" aria-pressed="false">Standard</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="rail" role="tablist" aria-label="Deployment steps" id="rail"></div>
+
+    <div class="panel">
+      <div class="p-head">
+        <p class="p-fam" id="pFam"></p>
+        <h3 id="pTitle"></h3>
+        <p class="p-desc" id="pDesc"></p>
+      </div>
+
+      <div class="metrics" id="metrics"></div>
+
+      <div class="balance">
+        <div class="b-top">
+          <p class="b-lab">LICENSE POOL &mdash; <span class="num" id="bOwned">40</span> CORES OWNED</p>
+          <p class="b-verdict" id="bVerdict"></p>
+        </div>
+        <div class="b-track" aria-hidden="true"><span class="b-fill" id="bFill"></span></div>
+        <p class="b-foot" id="bFoot"></p>
+      </div>
+
+      <div id="stage"></div>
+
+      <div class="resil" id="resil"></div>
+    </div>
+
+    <p class="notes" style="margin-top:18px;font-size:.82rem;color:var(--ink-3)">
+      Core blocks are drawn one per core. Slider values follow real provisionable vCore
+      sizes; see note 5.
+    </p>
+  </div>
+</section>
+
+<section id="conversion">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>What a core license becomes in Azure</h2>
+      <p>
+        Azure Hybrid Benefit exchanges SQL Server core licenses with Software Assurance or a
+        qualifying subscription for vCores of Azure SQL Database or Azure SQL Managed Instance.
+        The exchange rate is the whole story, and it is not one to one.
+      </p>
+    </div>
+
+    <div class="conv">
+      <div class="conv-card">
+        <p class="cc-ed">SQL SERVER ENTERPRISE EDITION</p>
+        <h3>One core, four General Purpose vCores</h3>
+
+        <div class="conv-eq">
+          <span class="ce-side">
+            <span class="ce-blocks" aria-hidden="true"><i></i></span>
+            <span class="ce-txt"><b>1</b> Enterprise core</span>
+          </span>
+          <span class="ce-arrow" aria-hidden="true">&rarr;</span>
+          <span class="ce-side">
+            <span class="ce-blocks gp" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+            <span class="ce-txt"><b>4</b> vCores of General Purpose</span>
+          </span>
+        </div>
+
+        <div class="conv-eq">
+          <span class="ce-side">
+            <span class="ce-blocks" aria-hidden="true"><i></i></span>
+            <span class="ce-txt"><b>1</b> Enterprise core</span>
+          </span>
+          <span class="ce-arrow" aria-hidden="true">&rarr;</span>
+          <span class="ce-side">
+            <span class="ce-blocks bc" aria-hidden="true"><i></i></span>
+            <span class="ce-txt"><b>1</b> vCore of Business Critical</span>
+          </span>
+        </div>
+
+        <p class="conv-note">
+          General Purpose is where the four-to-one ratio lives. A 40&#8209;core Enterprise
+          estate covers 160 General Purpose vCores &mdash; or 40 Business Critical vCores
+          with a readable secondary included.
+        </p>
+      </div>
+
+      <div class="conv-card">
+        <p class="cc-ed">SQL SERVER STANDARD EDITION</p>
+        <h3>One core, one General Purpose vCore</h3>
+
+        <div class="conv-eq">
+          <span class="ce-side">
+            <span class="ce-blocks" aria-hidden="true"><i></i></span>
+            <span class="ce-txt"><b>1</b> Standard core</span>
+          </span>
+          <span class="ce-arrow" aria-hidden="true">&rarr;</span>
+          <span class="ce-side">
+            <span class="ce-blocks gp" aria-hidden="true"><i></i></span>
+            <span class="ce-txt"><b>1</b> vCore of General Purpose</span>
+          </span>
+        </div>
+
+        <div class="conv-eq">
+          <span class="ce-side">
+            <span class="ce-blocks" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+            <span class="ce-txt"><b>4</b> Standard cores</span>
+          </span>
+          <span class="ce-arrow" aria-hidden="true">&rarr;</span>
+          <span class="ce-side">
+            <span class="ce-blocks bc" aria-hidden="true"><i></i></span>
+            <span class="ce-txt"><b>1</b> vCore of Business Critical</span>
+          </span>
+        </div>
+
+        <p class="conv-note">
+          Standard runs the ratio in reverse for Business Critical: four cores in, one vCore
+          out. A Standard estate stretches a long way in General Purpose and a short way in
+          Business Critical.
+        </p>
+      </div>
+    </div>
+
+    <div class="rules" style="margin-top:24px">
+      <div class="rule-card">
+        <span class="tag paid">WHERE IT APPLIES</span>
+        <h3>vCore purchasing model, provisioned compute</h3>
+        <ul>
+          <li>Azure SQL Database and Azure SQL Managed Instance, vCore model</li>
+          <li>SQL Server on Azure Virtual Machines</li>
+          <li>Azure Data Factory SSIS integration runtime</li>
+          <li>SQL Server enabled by Azure Arc, through a license-type setting rather than this conversion table</li>
+        </ul>
+      </div>
+      <div class="rule-card">
+        <span class="tag care">WHERE IT DOES NOT</span>
+        <h3>Three exclusions worth checking early</h3>
+        <ul>
+          <li>The DTU purchasing model</li>
+          <li>Serverless compute</li>
+          <li><b>New Hyperscale databases as of December 2023.</b> Databases that already had the benefit keep it until December 2026</li>
+        </ul>
+      </div>
+      <div class="rule-card">
+        <span class="tag free">WHAT MICROSOFT PUBLISHES</span>
+        <h3>Up to 30 percent or more</h3>
+        <p>
+          That is the published figure for Azure SQL Database and Azure SQL Managed Instance
+          with Azure Hybrid Benefit. The larger headline percentages you may have seen are
+          Windows Server and SQL Server combined on virtual machines, which is a different
+          calculation. Both Software Assurance and qualifying subscription licenses are eligible.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="passive">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>The replica you do not pay for</h2>
+      <p>
+        Failover rights are the oldest idea in this deck and the one most often left on the
+        table. They exist on hardware, on Azure virtual machines, and &mdash; since the benefit
+        was extended &mdash; inside the platform services too.
+      </p>
+    </div>
+
+    <div class="rules">
+      <div class="rule-card">
+        <span class="tag free">SQL SERVER, ANYWHERE YOU RUN IT</span>
+        <h3>One free passive for HA, one for DR</h3>
+        <p>
+          With Software Assurance or a qualifying subscription, each licensed SQL Server
+          gets one passive secondary for high availability and one passive secondary for
+          disaster recovery at no SQL Server license cost. Since November 2022 those same
+          two free passives also apply to pay&#8209;as&#8209;you&#8209;go SQL Server on Azure
+          Virtual Machines, regardless of the regions involved.
+        </p>
+      </div>
+      <div class="rule-card">
+        <span class="tag care">THE WORD PASSIVE IS LOAD-BEARING</span>
+        <h3>No reads, no reports, no backups</h3>
+        <p>
+          A passive replica serves no user connections outside of failover and limited
+          testing. The moment it answers a read query, runs a report, or takes the backup
+          workload off the primary, it becomes an active replica and must be fully licensed.
+          This is the single most common finding in a SQL licensing review.
+        </p>
+      </div>
+      <div class="rule-card">
+        <span class="tag free">AZURE SQL DATABASE AND MANAGED INSTANCE</span>
+        <h3>The standby replica designation</h3>
+        <p>
+          A geo&#8209;secondary used only for disaster recovery can be designated a standby
+          replica. Microsoft then provides the vCores licensed to the primary at no extra
+          charge under the failover rights benefit. <b>You are still billed for the compute
+          and storage the secondary uses.</b> It is generally available, works with both
+          pay&#8209;as&#8209;you&#8209;go and Azure Hybrid Benefit, and needs no Software
+          Assurance.
+        </p>
+      </div>
+    </div>
+
+    <div class="rule-card" style="margin-top:18px">
+      <span class="tag care">STANDBY REPLICA, THE FINE PRINT</span>
+      <h3>What a standby is allowed to do</h3>
+      <p>
+        Permitted: maintenance operations such as <span class="num">DBCC CHECKDB</span>,
+        monitoring applications, disaster recovery drills, dynamic management views and
+        backups. Not permitted: production application connections or regular read
+        workloads. Only one secondary replica may be designated standby. Supported on
+        provisioned General Purpose and Business Critical single databases and on Managed
+        Instance failover groups &mdash; not on Hyperscale, not on serverless, not on elastic
+        pools, and not in the DTU model.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section id="table">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>All eight steps at once</h2>
+      <p>
+        The same walk, held still. Figures assume a 40&#8209;core workload licensed with 40
+        SQL Server Enterprise cores with Software Assurance.
+      </p>
+    </div>
+
+    <div class="tbl-scroll">
+      <table>
+        <caption>Node counts, running cores and license consumption by deployment, 40 Enterprise cores owned</caption>
+        <thead>
+          <tr>
+            <th scope="col">Deployment</th>
+            <th scope="col">Nodes running</th>
+            <th scope="col">Cores running</th>
+            <th scope="col">Licenses consumed</th>
+            <th scope="col">Cores you can query</th>
+            <th scope="col">Machines you patch</th>
+            <th scope="col">Availability target</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row"><span class="dot iaas"></span>One server, no replica</th>
+            <td class="n">1</td><td class="n">40</td><td class="n">40</td><td class="n">40</td><td class="n">1</td>
+            <td>99.9% single VM, premium SSD</td>
+          </tr>
+          <tr>
+            <th scope="row"><span class="dot iaas"></span>Availability group, passive HA and passive DR</th>
+            <td class="n">3</td><td class="n">120</td><td class="n yes">40</td><td class="n">40</td><td class="n">3</td>
+            <td>99.99% VMs across availability zones</td>
+          </tr>
+          <tr>
+            <th scope="row"><span class="dot iaas"></span>Same, but the HA secondary is readable</th>
+            <td class="n">3</td><td class="n">120</td><td class="n part">80</td><td class="n">80</td><td class="n">3</td>
+            <td>99.99% VMs across availability zones</td>
+          </tr>
+          <tr>
+            <th scope="row"><span class="dot mi"></span>Managed Instance, General Purpose</th>
+            <td class="n">1</td><td class="n">40</td><td class="n yes">10</td><td class="n">40</td><td class="n yes">0</td>
+            <td>99.99%</td>
+          </tr>
+          <tr>
+            <th scope="row"><span class="dot mi"></span>Managed Instance, Business Critical</th>
+            <td class="n">4</td><td class="n">160</td><td class="n">40</td><td class="n yes">80</td><td class="n yes">0</td>
+            <td>99.99%, 99.995% zone redundant</td>
+          </tr>
+          <tr>
+            <th scope="row"><span class="dot db"></span>SQL Database, General Purpose, zone redundant</th>
+            <td class="n">1</td><td class="n">40</td><td class="n yes">10</td><td class="n">40</td><td class="n yes">0</td>
+            <td>99.99%</td>
+          </tr>
+          <tr>
+            <th scope="row"><span class="dot db"></span>SQL Database, Business Critical, zone redundant</th>
+            <td class="n">4</td><td class="n">160</td><td class="n">40</td><td class="n yes">80</td><td class="n yes">0</td>
+            <td>99.995%</td>
+          </tr>
+          <tr>
+            <th scope="row"><span class="dot db"></span>Add a second region, failover group with standby replica</th>
+            <td class="n">8</td><td class="n">320</td><td class="n yes">40</td><td class="n">80</td><td class="n yes">0</td>
+            <td>99.995% in region, RTO under 60 seconds on failover</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section id="capability">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>What each platform can actually do</h2>
+      <p>
+        Licensing decides the price of a design. Capability decides whether the design is
+        available at all.
+      </p>
+    </div>
+
+    <div class="tbl-scroll">
+      <table>
+        <caption>Business continuity capabilities by platform</caption>
+        <thead>
+          <tr>
+            <th scope="col">Capability</th>
+            <th scope="col">SQL Server, hardware or Azure VM</th>
+            <th scope="col">Azure SQL Managed Instance</th>
+            <th scope="col">Azure SQL Database</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">High availability inside a region</th>
+            <td>You build it: failover cluster instances or availability groups</td>
+            <td class="yes">Built in, included in the price</td>
+            <td class="yes">Built in, included in the price</td>
+          </tr>
+          <tr>
+            <th scope="row">Nodes in the high availability tier</th>
+            <td>You choose, up to 8 secondaries on Enterprise, 5 synchronous</td>
+            <td>1 node General Purpose, 4 nodes Business Critical</td>
+            <td>1 node General Purpose, 4 nodes Business Critical, 0 to 4 configurable on Hyperscale</td>
+          </tr>
+          <tr>
+            <th scope="row">Zone redundancy</th>
+            <td class="part">Availability zones, you place and license the VMs</td>
+            <td class="part">Available; Next-gen General Purpose is in preview</td>
+            <td class="yes">Available on General Purpose and Business Critical</td>
+          </tr>
+          <tr>
+            <th scope="row">Readable secondary</th>
+            <td class="part">Yes, but it must be fully licensed</td>
+            <td class="yes">One included on Business Critical, no extra charge</td>
+            <td class="yes">One included on Business Critical, no extra charge</td>
+          </tr>
+          <tr>
+            <th scope="row">Per-database geo-replication</th>
+            <td class="part">Availability groups and distributed availability groups</td>
+            <td class="no">Not available &mdash; failover groups operate at instance scope</td>
+            <td class="yes">Active geo-replication, up to 4 readable geo-secondaries</td>
+          </tr>
+          <tr>
+            <th scope="row">Cross-region failover group</th>
+            <td class="part">You build it with distributed availability groups</td>
+            <td class="yes">Yes, instance scope</td>
+            <td class="yes">Yes, database and elastic pool scope</td>
+          </tr>
+          <tr>
+            <th scope="row">Point-in-time restore</th>
+            <td>You own the backup chain</td>
+            <td class="yes">7 days default, 1 to 35 configurable</td>
+            <td class="yes">7 days default, 1 to 35 configurable</td>
+          </tr>
+          <tr>
+            <th scope="row">Long-term retention</th>
+            <td>You own it</td>
+            <td class="yes">Up to 10 years</td>
+            <td class="yes">Up to 10 years</td>
+          </tr>
+          <tr>
+            <th scope="row">Link to Azure from SQL Server</th>
+            <td class="yes">Managed Instance link, generally available for SQL Server 2016 through 2025</td>
+            <td class="yes">Bidirectional failback generally available for SQL Server 2022 RTM and SQL Server 2025</td>
+            <td class="no">Not applicable</td>
+          </tr>
+          <tr>
+            <th scope="row">Patching and cluster operations</th>
+            <td class="part">Yours: guest OS, SQL binaries, cluster, quorum, witness</td>
+            <td class="yes">Microsoft's</td>
+            <td class="yes">Microsoft's</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section id="stop">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>What you stop operating</h2>
+      <p>
+        The license ledger only measures cores. The other column in the business case is the
+        work that leaves the building when the high availability tier becomes someone else's
+        responsibility.
+      </p>
+    </div>
+
+    <div class="stops">
+      <div class="stop-item">
+        <h4>Quorum and witness design</h4>
+        <p>No cloud witness, no file share witness, no node vote arithmetic to re-check every time the topology changes.</p>
+      </div>
+      <div class="stop-item">
+        <h4>Rolling patch orchestration</h4>
+        <p>No maintenance windows sequenced across replicas, no manual failover to patch the primary, no drift between node builds.</p>
+      </div>
+      <div class="stop-item">
+        <h4>Failover testing as a project</h4>
+        <p>Built-in high availability failover is automatic and continuous. Your drills move up the stack to the application's reconnection behaviour.</p>
+      </div>
+      <div class="stop-item">
+        <h4>Backup infrastructure</h4>
+        <p>Backups, retention and point-in-time restore are part of the service. Long-term retention is a policy, not a job schedule.</p>
+      </div>
+      <div class="stop-item">
+        <h4>Storage replication plumbing</h4>
+        <p>General Purpose keeps data and log files in Azure Storage with three replicas, or spread across availability zones when zone redundant.</p>
+      </div>
+      <div class="stop-item">
+        <h4>Capacity held in reserve</h4>
+        <p>On General Purpose, replacement compute comes from Azure spare capacity when a node fails. You do not run it, and you do not license it.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<section id="notes" style="background:var(--paper-2)">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>Notes and caveats</h2>
+      <p>
+        Licensing terms and service limits change. Confirm anything that carries commercial
+        weight against the Product Terms and the current documentation before you rely on it.
+      </p>
+    </div>
+
+    <div class="notes measure">
+      <ol>
+        <li>
+          <b>No prices here, on purpose.</b> This page counts license units, cores and nodes.
+          It does not model cost. Actual pricing depends on region, hardware series, reserved
+          capacity, agreement and currency.
+        </li>
+        <li>
+          <b>Passive means passive.</b> The two free passive secondaries assume no user
+          connections outside failover and limited testing. A readable secondary, a reporting
+          secondary, or a secondary that carries the backup workload is an active replica and
+          must be fully licensed. Only these two free passives are shown; nothing beyond them
+          is claimed.
+        </li>
+        <li>
+          <b>Standby replicas are billed for compute and storage.</b> The failover rights
+          benefit removes the SQL Server license component for the standby, not the Azure
+          consumption. Only one secondary may be designated standby.
+        </li>
+        <li>
+          <b>General Purpose replacement compute is not a running node.</b> When the compute
+          node fails, Azure brings replacement compute from spare capacity and reattaches the
+          database files. It is drawn on this page as a dashed outline and deliberately
+          excluded from running core counts.
+        </li>
+        <li>
+          <b>vCore sizes.</b> The slider follows real provisionable sizes, but the exact set
+          differs by service and hardware series. Azure SQL Database standard&#8209;series
+          steps 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 24, 32, 40, 80, 128. Managed Instance
+          standard&#8209;series offers 4, 8, 16, 24, 32, 40, 64, 80; premium&#8209;series
+          extends to 128. Check the resource limits tables for your target service.
+        </li>
+        <li>
+          <b>Availability targets are for orientation.</b> Virtual machine service level
+          agreements cover the infrastructure, not SQL Server itself. The authoritative
+          figures live in the Service Level Agreements for Microsoft Online Services document.
+        </li>
+        <li>
+          <b>Recovery objectives.</b> Built-in high availability and zone redundancy target a
+          recovery time under 30 seconds with no data loss. Failover groups and active
+          geo-replication target a recovery time under 60 seconds, with a recovery point that
+          depends on replication lag. Managed Instance publishes a geo-restore recovery time
+          of 12 hours and a recovery point of 1 hour.
+        </li>
+        <li>
+          <b>Azure Hybrid Benefit and Hyperscale.</b> The benefit has not been available for
+          new Hyperscale databases since December 2023. Databases that already had it retain
+          it until December 2026.
+        </li>
+      </ol>
+
+      <h3 style="margin-top:34px;font-size:1.05rem">Sources</h3>
+      <div class="src">
+        <a href="https://azure.microsoft.com/en-us/pricing/hybrid-benefit/" target="_blank" rel="noopener">Azure Hybrid Benefit overview</a>
+        <a href="https://learn.microsoft.com/azure/azure-sql/azure-hybrid-benefit" target="_blank" rel="noopener">Azure Hybrid Benefit for Azure SQL</a>
+        <a href="https://learn.microsoft.com/azure/azure-sql/database/standby-replica-how-to-configure" target="_blank" rel="noopener">Configure a standby replica, Azure SQL Database</a>
+        <a href="https://learn.microsoft.com/azure/azure-sql/managed-instance/failover-group-standby-replica-how-to-configure" target="_blank" rel="noopener">Configure a standby replica, Managed Instance</a>
+        <a href="https://learn.microsoft.com/azure/azure-sql/database/high-availability-sla-local-zone-redundancy" target="_blank" rel="noopener">Availability and redundancy, Azure SQL Database</a>
+        <a href="https://learn.microsoft.com/azure/azure-sql/managed-instance/high-availability-sla-local-zone-redundancy" target="_blank" rel="noopener">Availability and redundancy, Managed Instance</a>
+        <a href="https://learn.microsoft.com/azure/azure-sql/database/resource-limits-vcore-single-databases" target="_blank" rel="noopener">Resource limits, single databases</a>
+        <a href="https://learn.microsoft.com/azure/azure-sql/managed-instance/resource-limits" target="_blank" rel="noopener">Resource limits, Managed Instance</a>
+        <a href="https://learn.microsoft.com/azure/azure-sql/database/business-continuity-high-availability-disaster-recover-hadr-overview" target="_blank" rel="noopener">Business continuity overview, Azure SQL Database</a>
+        <a href="https://learn.microsoft.com/azure/azure-sql/managed-instance/managed-instance-link-feature-overview" target="_blank" rel="noopener">Managed Instance link overview</a>
+        <a href="https://learn.microsoft.com/azure/azure-sql/virtual-machines/windows/licensing-model-azure-hybrid-benefit-ahb-change" target="_blank" rel="noopener">Licensing model for SQL Server on Azure VMs</a>
+        <a href="https://www.microsoft.com/licensing/terms/" target="_blank" rel="noopener">Microsoft Product Terms</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>
+      Built for SME&amp;C conversations about SQL Server modernisation. Figures are license
+      units and node counts, not prices.
+    </p>
+    <p>
+      Always confirm licensing entitlements against the Microsoft Product Terms and your
+      agreement before making a commercial commitment.
+    </p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+
+  var SIZES = [4, 8, 16, 24, 32, 40, 64, 80];
+  var state = { idx: 5, ent: true, step: 0 };
+
+  function nodesOf(list){ return list; }
+
+  /* ---------- the eight steps ---------- */
+  function model(v, ent){
+    var gpLic = ent ? v / 4 : v;
+    var bcLic = ent ? v : v * 4;
+
+    function n(role, sub, cores, cls, q, badge, ghost){
+      return { role:role, sub:sub, cores:cores, cls:cls, q:q, badge:badge, ghost:!!ghost };
+    }
+
+    var paasSecondary = n("Secondary replica", "Synchronous copy, no client connections", v,
+                          "idle", null, {c:"free", t:"INCLUDED"});
+
+    var steps = [];
+
+    steps.push({
+      fam:"iaas", famLabel:"SQL SERVER ON HARDWARE OR AN AZURE VM",
+      short:"One server",
+      title:"One server. No replica.",
+      desc:"The baseline. Every core is licensed, every core answers queries, and every "+
+           "component is a single point of failure. Recovery means restoring a backup.",
+      regions:[{ name:"YOUR DATACENTRE OR ONE AZURE REGION", nodes:[
+        n("Primary instance", "Read-write, licensed by you", v, "pay", "rw", {c:"pay", t:"YOU LICENSE THIS"})
+      ]}],
+      storage:null,
+      licenses:v, patch:1,
+      survive:{ node:["no","A node loss is an outage"], zone:["no","Nothing to fail over to"], region:["no","Restore from backup only"] },
+      sla:"99.9% for a single Azure VM with premium SSD",
+      rto:"Hours &mdash; restore and recover",
+      rpo:"Back to your last log backup"
+    });
+
+    steps.push({
+      fam:"iaas", famLabel:"SQL SERVER ON HARDWARE OR AN AZURE VM",
+      short:"Availability group",
+      title:"Always On availability group with two passive replicas.",
+      desc:ent
+        ? "One synchronous replica for high availability, one asynchronous replica in a second "+
+          "region for disaster recovery. Under failover rights, both are free of SQL Server "+
+          "license cost as long as they stay passive. Your license consumption does not move."
+        : "Standard edition gives you basic availability groups: two replicas, one database per "+
+          "group, and a non-readable secondary. A second passive copy for disaster recovery is "+
+          "still covered by failover rights. Neither secondary consumes SQL Server licenses.",
+      regions:[
+        { name:"PRIMARY REGION", nodes:[
+          n("Primary instance", "Read-write, licensed by you", v, "pay", "rw", {c:"pay", t:"YOU LICENSE THIS"}),
+          n("Passive HA replica", "Synchronous, no user connections", v, "free", null, {c:"free", t:"FREE UNDER FAILOVER RIGHTS"})
+        ]},
+        { name:"SECONDARY REGION", nodes:[
+          n("Passive DR replica", "Asynchronous, no user connections", v, "free", null, {c:"free", t:"FREE UNDER FAILOVER RIGHTS"})
+        ]}
+      ],
+      storage:null,
+      licenses:v, patch:3,
+      survive:{ node:["yes","Automatic failover to the synchronous replica"], zone:["yes","If you place the VMs in separate availability zones"], region:["yes","Manual failover to the disaster recovery replica"] },
+      sla:"99.99% for two or more VMs across availability zones, infrastructure only",
+      rto:"Seconds on automatic failover",
+      rpo:"Zero on the synchronous replica"
+    });
+
+    steps.push({
+      fam:"iaas", famLabel:"SQL SERVER ON HARDWARE OR AN AZURE VM",
+      short:"Readable secondary",
+      title:"Let the business read the secondary.",
+      desc:"Reporting asks for the standby. The moment the replica answers a query it stops "+
+           "being passive, and failover rights no longer cover it. The topology has not changed "+
+           "at all &mdash; only the licensing has.",
+      blocked: ent ? null : {
+        title:"Not available on Standard edition.",
+        body:"Basic availability groups do not permit read access to the secondary replica. To "+
+             "offload reads on hardware you need Enterprise edition, and then you must fully "+
+             "license the replica. This is the point where the platform services start to look "+
+             "very different: on Business Critical, a readable secondary is included in the price."
+      },
+      regions:[
+        { name:"PRIMARY REGION", nodes:[
+          n("Primary instance", "Read-write, licensed by you", v, "pay", "rw", {c:"pay", t:"YOU LICENSE THIS"}),
+          n("Readable secondary", "Serving reports, so no longer passive", v, "ro", "ro", {c:"pay", t:"NOW FULLY LICENSED"})
+        ]},
+        { name:"SECONDARY REGION", nodes:[
+          n("Passive DR replica", "Asynchronous, no user connections", v, "free", null, {c:"free", t:"FREE UNDER FAILOVER RIGHTS"})
+        ]}
+      ],
+      storage:null,
+      licenses:v * 2, patch:3,
+      survive:{ node:["yes","Automatic failover to the synchronous replica"], zone:["yes","If you place the VMs in separate availability zones"], region:["yes","Manual failover to the disaster recovery replica"] },
+      sla:"99.99% for two or more VMs across availability zones, infrastructure only",
+      rto:"Seconds on automatic failover",
+      rpo:"Zero on the synchronous replica"
+    });
+
+    steps.push({
+      fam:"mi", famLabel:"AZURE SQL MANAGED INSTANCE",
+      short:"Managed Instance, General Purpose",
+      title:"Managed Instance, General Purpose.",
+      desc:"Compute and storage separate. One stateless compute node runs your instance; the "+
+           "data and log files live in Azure Storage. If the node fails, Azure brings "+
+           "replacement compute from spare capacity and reattaches the files. "+
+           (ent ? "At four General Purpose vCores per Enterprise core, this is the deepest "+
+                  "discount Azure Hybrid Benefit offers."
+                : "On Standard edition the exchange is one for one, so consumption matches the "+
+                  "workload exactly."),
+      regions:[{ name:"ONE AZURE REGION", nodes:[
+        n("Compute node", "Read-write, stateless", v, "pay", "rw", {c:"pay", t:"THE vCORES YOU LICENSE"}),
+        n("Replacement compute", "From Azure spare capacity, only on failure", v, "idle", null, {c:"free", t:"NOT RUNNING"}, true)
+      ]}],
+      storage:"Data and log files in Azure Storage, kept as <b>three replicas</b> when locally "+
+              "redundant, or spread <b>across three availability zones</b> when zone redundant.",
+      licenses:gpLic, patch:0,
+      survive:{ node:["yes","Replacement compute reattaches the files"], zone:["part","Only when the instance is zone redundant"], region:["no","Add a failover group, see step 8"] },
+      sla:"99.99%",
+      rto:"Typically under 30 seconds",
+      rpo:"Zero"
+    });
+
+    steps.push({
+      fam:"mi", famLabel:"AZURE SQL MANAGED INSTANCE",
+      short:"Managed Instance, Business Critical",
+      title:"Managed Instance, Business Critical.",
+      desc:"A four-node cluster: one primary and three secondary replicas, each with local SSD, "+
+           "all at the vCore size you provision. One secondary is available as a read-only "+
+           "endpoint at no additional charge. Twice the vCores and memory for the same price, "+
+           "as the documentation puts it.",
+      regions:[{ name:"ONE AZURE REGION", nodes:[
+        n("Primary replica", "Read-write, local SSD", v, "pay", "rw", {c:"pay", t:"THE vCORES YOU LICENSE"}),
+        n("Readable secondary", "Read scale-out endpoint", v, "ro", "ro", {c:"read", t:"INCLUDED, NO EXTRA CHARGE"}),
+        paasSecondary,
+        paasSecondary
+      ]}],
+      storage:null,
+      licenses:bcLic, patch:0,
+      survive:{ node:["yes","Automatic failover inside the cluster"], zone:["part","Only when the instance is zone redundant"], region:["no","Add a failover group, see step 8"] },
+      sla:"99.99%, or 99.995% when zone redundant",
+      rto:"Typically under 30 seconds",
+      rpo:"Zero"
+    });
+
+    steps.push({
+      fam:"db", famLabel:"AZURE SQL DATABASE",
+      short:"SQL Database, General Purpose",
+      title:"Azure SQL Database, General Purpose, zone redundant.",
+      desc:"The same separated architecture at database scope. Zone redundancy spreads the file "+
+           "storage and the spare compute capacity across availability zones, so the loss of a "+
+           "whole datacentre is survivable without changing your license consumption.",
+      regions:[{ name:"ONE AZURE REGION, THREE AVAILABILITY ZONES", nodes:[
+        n("Compute node", "Read-write, stateless", v, "pay", "rw", {c:"pay", t:"THE vCORES YOU LICENSE"}),
+        n("Replacement compute", "From spare capacity in another zone", v, "idle", null, {c:"free", t:"NOT RUNNING"}, true)
+      ]}],
+      storage:"Data and log files in Azure Storage, spread <b>across three availability zones</b>.",
+      licenses:gpLic, patch:0,
+      survive:{ node:["yes","Replacement compute reattaches the files"], zone:["yes","Storage and spare capacity span three zones"], region:["no","Add a failover group, see step 8"] },
+      sla:"99.99%",
+      rto:"Typically under 30 seconds",
+      rpo:"Zero"
+    });
+
+    steps.push({
+      fam:"db", famLabel:"AZURE SQL DATABASE",
+      short:"SQL Database, Business Critical",
+      title:"Azure SQL Database, Business Critical, zone redundant.",
+      desc:"Four nodes with local SSD, placed across availability zones, with one secondary "+
+           "available for read scale-out at no extra charge. This is the highest availability "+
+           "target in a single region, and it is the same license count as one licensed server "+
+           "on Enterprise edition.",
+      regions:[{ name:"ONE AZURE REGION, THREE AVAILABILITY ZONES", nodes:[
+        n("Primary replica", "Read-write, local SSD", v, "pay", "rw", {c:"pay", t:"THE vCORES YOU LICENSE"}),
+        n("Readable secondary", "Read scale-out endpoint", v, "ro", "ro", {c:"read", t:"INCLUDED, NO EXTRA CHARGE"}),
+        paasSecondary,
+        paasSecondary
+      ]}],
+      storage:null,
+      licenses:bcLic, patch:0,
+      survive:{ node:["yes","Automatic failover inside the cluster"], zone:["yes","Replicas are placed in separate availability zones"], region:["no","Add a failover group, see step 8"] },
+      sla:"99.995% when zone redundant",
+      rto:"Typically under 30 seconds",
+      rpo:"Zero"
+    });
+
+    steps.push({
+      fam:"db", famLabel:"AZURE SQL DATABASE OR MANAGED INSTANCE",
+      short:"Second region, standby",
+      title:"Add the second region. Designate it standby.",
+      desc:"A failover group replicates to a second region. If that secondary is used only for "+
+           "disaster recovery, with no applications connected and no read workloads, you can "+
+           "designate it a standby replica. Microsoft then provides the vCores licensed to the "+
+           "primary at no extra charge under failover rights. You are still billed for the "+
+           "compute and storage it uses &mdash; but the license count does not move.",
+      regions:[
+        { name:"PRIMARY REGION", nodes:[
+          n("Primary replica", "Read-write, local SSD", v, "pay", "rw", {c:"pay", t:"THE vCORES YOU LICENSE"}),
+          n("Readable secondary", "Read scale-out endpoint", v, "ro", "ro", {c:"read", t:"INCLUDED, NO EXTRA CHARGE"}),
+          paasSecondary,
+          paasSecondary
+        ]},
+        { name:"SECONDARY REGION &mdash; STANDBY", nodes:[
+          n("Standby primary", "Disaster recovery only, no applications connected", v, "free", null, {c:"sb", t:"NO SQL LICENSE COST"}),
+          n("Secondary replica", "Part of the standby cluster", v, "idle", null, {c:"free", t:"INCLUDED"}),
+          n("Secondary replica", "Part of the standby cluster", v, "idle", null, {c:"free", t:"INCLUDED"}),
+          n("Secondary replica", "Part of the standby cluster", v, "idle", null, {c:"free", t:"INCLUDED"})
+        ]}
+      ],
+      storage:null,
+      licenses:bcLic, patch:0,
+      survive:{ node:["yes","Automatic failover inside the cluster"], zone:["yes","Replicas are placed in separate availability zones"], region:["yes","Failover group promotes the second region"] },
+      sla:"99.995% in region; no separate published figure for the failover group",
+      rto:"Typically under 60 seconds on failover group failover",
+      rpo:"Depends on replication lag"
+    });
+
+    return steps;
+  }
+  window.__ledgerModel = model;
+})();
+</script>
+<script>
+(function(){
+  "use strict";
+
+  var SIZES = [4, 8, 16, 24, 32, 40, 64, 80];
+  var state = { idx: 5, ent: true, step: 0 };
+
+  var $ = function(id){ return document.getElementById(id); };
+  var rail = $("rail"), metricsEl = $("metrics"), stage = $("stage"), resilEl = $("resil");
+
+  function esc(s){ return String(s); }
+
+  function cols(c){ return Math.max(2, Math.min(10, Math.ceil(Math.sqrt(c)))); }
+
+  function blocksHTML(node){
+    var out = [], i;
+    for(i = 0; i < node.cores; i++){ out.push('<i class="' + node.cls + '"></i>'); }
+    return '<div class="n-grid" style="grid-template-columns:repeat(' + cols(node.cores) + ',11px)">' +
+           out.join("") + '</div>';
+  }
+
+  function nodeHTML(node){
+    var cls = "node";
+    if(node.ghost) cls += " ghost";
+    if(node.q === "ro") cls += " readable";
+    if(node.badge && node.badge.c === "sb") cls += " standby";
+    return '<div class="' + cls + '">' +
+             '<p class="n-role">' + node.role + '</p>' +
+             '<p class="n-sub">' + node.sub + '</p>' +
+             blocksHTML(node) +
+             '<p class="n-cores"><span class="num">' + node.cores + '</span> cores</p>' +
+             (node.badge ? '<span class="n-badge ' + node.badge.c + '">' + node.badge.t + '</span>' : '') +
+           '</div>';
+  }
+
+  function derive(step){
+    var nodes = 0, running = 0, query = 0;
+    step.regions.forEach(function(r){
+      r.nodes.forEach(function(nd){
+        if(nd.ghost) return;
+        nodes += 1;
+        running += nd.cores;
+        if(nd.q === "rw" || nd.q === "ro") query += nd.cores;
+      });
+    });
+    return { nodes:nodes, running:running, query:query, licenses:step.licenses, patch:step.patch };
+  }
+
+  function diff(cur, prev, invert){
+    if(prev === null || prev === undefined || cur === prev) return "";
+    var d = cur - prev;
+    var cls = (d > 0) === !invert ? "up" : "down";
+    return '<p class="m-d ' + cls + '">' + (d > 0 ? "+" : "\u2212") + Math.abs(d) + ' vs. previous step</p>';
+  }
+
+  function metricHTML(k, v, sub, diffHTML, zero){
+    return '<div class="metric">' +
+             '<p class="m-k">' + k + '</p>' +
+             '<p class="m-v num' + (zero ? " zero" : "") + '">' + v + '</p>' +
+             (diffHTML || '<p class="m-d"></p>') +
+             (sub ? '<p class="m-sub">' + sub + '</p>' : '') +
+           '</div>';
+  }
+
+  function render(){
+    var v = SIZES[state.idx];
+    var steps = window.__ledgerModel(v, state.ent);
+    var step = steps[state.step];
+    var prevStep = state.step > 0 ? steps[state.step - 1] : null;
+    var prevBlocked = prevStep && prevStep.blocked;
+    var m = derive(step);
+    var pm = (prevStep && !prevBlocked) ? derive(prevStep) : null;
+    var blocked = step.blocked;
+
+    $("sizeOut").textContent = v;
+    $("sizeRange").setAttribute("aria-valuetext", v + " cores");
+    $("bOwned").textContent = v;
+
+    /* rail */
+    rail.innerHTML = steps.map(function(s, i){
+      return '<button type="button" role="tab" data-fam="' + s.fam + '" data-i="' + i + '" ' +
+             'aria-selected="' + (i === state.step ? "true" : "false") + '">' +
+             '<span class="r-n">STEP ' + (i + 1) + '</span>' +
+             '<span class="r-t">' + s.short + '</span></button>';
+    }).join("");
+
+    /* head */
+    $("pFam").className = "p-fam " + step.fam;
+    $("pFam").textContent = step.famLabel;
+    $("pTitle").innerHTML = step.title;
+    $("pDesc").innerHTML = blocked ? blocked.body : step.desc;
+
+    /* metrics */
+    if(blocked){
+      metricsEl.innerHTML = [
+        ["NODES RUNNING"], ["CORES RUNNING"], ["SQL SERVER CORE LICENSES CONSUMED"],
+        ["CORES YOU CAN QUERY"], ["MACHINES YOU PATCH"]
+      ].map(function(x){ return metricHTML(x[0], "\u2014", "Not available on this edition", "", false); }).join("");
+    } else {
+      metricsEl.innerHTML =
+        metricHTML("NODES RUNNING", m.nodes, null, diff(m.nodes, pm && pm.nodes, false), false) +
+        metricHTML("CORES RUNNING", m.running, null, diff(m.running, pm && pm.running, false), false) +
+        metricHTML("SQL SERVER CORE LICENSES CONSUMED", m.licenses, "of " + v + " owned",
+                   diff(m.licenses, pm && pm.licenses, true), false) +
+        metricHTML("CORES YOU CAN QUERY", m.query,
+                   m.query > m.running / 2 ? "Read-write plus read-only" : "Read-write only",
+                   diff(m.query, pm && pm.query, false), false) +
+        metricHTML("MACHINES YOU PATCH", m.patch, m.patch === 0 ? "Microsoft operates every node" : null,
+                   diff(m.patch, pm && pm.patch, true), m.patch === 0);
+    }
+
+    /* balance */
+    var fill = $("bFill"), verdict = $("bVerdict"), foot = $("bFoot");
+    if(blocked){
+      fill.style.transform = "scaleX(0)";
+      fill.className = "b-fill";
+      verdict.className = "b-verdict tight";
+      verdict.textContent = "Design not available";
+      foot.textContent = "Standard edition cannot serve reads from an availability group secondary.";
+    } else {
+      var ratio = Math.min(1, m.licenses / v);
+      fill.style.transform = "scaleX(" + ratio + ")";
+      fill.className = "b-fill" + (m.licenses > v ? " over" : "");
+      if(m.licenses < v){
+        verdict.className = "b-verdict ok";
+        verdict.textContent = (v - m.licenses) + " cores spare";
+        foot.textContent = "This design consumes " + m.licenses + " of your " + v +
+          " licensed cores, leaving " + (v - m.licenses) + " for other workloads.";
+      } else if(m.licenses === v){
+        verdict.className = "b-verdict tight";
+        verdict.textContent = "Fully consumed";
+        foot.textContent = "This design consumes your estate exactly, with nothing left over.";
+      } else {
+        verdict.className = "b-verdict over";
+        verdict.textContent = (m.licenses - v) + " cores short";
+        foot.textContent = "This design needs " + m.licenses + " cores, which is " +
+          (m.licenses - v) + " more than you own. The shortfall has to be bought.";
+      }
+    }
+
+    /* stage */
+    if(blocked){
+      stage.innerHTML = '<div class="blocked"><h4>' + blocked.title + '</h4>' +
+        '<p>Switch the edition control to Enterprise to see what this step costs, or move on to ' +
+        'the platform services where a readable secondary is part of the price.</p></div>';
+    } else {
+      var body = step.regions.map(function(r){
+        return '<div class="region"><p class="region-name">' + r.name + '</p>' +
+               '<div class="nodes">' + r.nodes.map(nodeHTML).join("") + '</div></div>';
+      }).join("");
+      if(step.storage){ body += '<div class="storage-row">' + step.storage + '</div>'; }
+      body += '<div class="legend">' +
+        '<span><i class="pay"></i>Cores you license</span>' +
+        '<span><i class="free"></i>Running, no SQL license cost</span>' +
+        '<span><i class="ro"></i>Readable</span>' +
+        '<span><i class="idle"></i>Running, not queryable</span>' +
+        '</div>';
+      stage.innerHTML = '<div class="topo">' + body + '</div>';
+    }
+
+    /* resilience */
+    if(blocked){
+      resilEl.innerHTML = '';
+    } else {
+      var s = step.survive;
+      var cell = function(label, val){
+        var map = { yes:"Survives", no:"Does not survive", part:"Conditional" };
+        return '<div class="rz"><p class="rz-k">' + label + '</p>' +
+               '<p class="rz-v ' + val[0] + '">' + map[val[0]] + '</p>' +
+               '<p class="rz-note">' + val[1] + '</p></div>';
+      };
+      resilEl.innerHTML =
+        cell("LOSS OF A NODE", s.node) +
+        cell("LOSS OF A ZONE", s.zone) +
+        cell("LOSS OF A REGION", s.region) +
+        '<div class="rz">' +
+          '<p class="rz-k">TARGETS</p>' +
+          '<p class="rz-line" style="margin-top:10px"><b>Availability</b> ' + step.sla + '</p>' +
+          '<p class="rz-line"><b>Recovery time</b> ' + step.rto + '</p>' +
+          '<p class="rz-line"><b>Recovery point</b> ' + step.rpo + '</p>' +
+        '</div>';
+    }
+  }
+
+  /* ---------- events ---------- */
+  rail.addEventListener("click", function(e){
+    var b = e.target.closest("button[data-i]");
+    if(!b) return;
+    state.step = parseInt(b.getAttribute("data-i"), 10);
+    render();
+  });
+
+  rail.addEventListener("keydown", function(e){
+    if(e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
+    var next = state.step + (e.key === "ArrowRight" ? 1 : -1);
+    if(next < 0 || next > 7) return;
+    e.preventDefault();
+    state.step = next;
+    render();
+    var btn = rail.querySelector('button[data-i="' + next + '"]');
+    if(btn) btn.focus();
+  });
+
+  $("sizeRange").addEventListener("input", function(e){
+    state.idx = parseInt(e.target.value, 10);
+    render();
+  });
+
+  $("edEnt").addEventListener("click", function(){
+    state.ent = true;
+    $("edEnt").setAttribute("aria-pressed", "true");
+    $("edStd").setAttribute("aria-pressed", "false");
+    render();
+  });
+  $("edStd").addEventListener("click", function(){
+    state.ent = false;
+    $("edEnt").setAttribute("aria-pressed", "false");
+    $("edStd").setAttribute("aria-pressed", "true");
+    render();
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>
