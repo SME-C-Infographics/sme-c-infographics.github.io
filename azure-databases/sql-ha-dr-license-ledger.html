@@ -555,7 +555,8 @@ footer p + p{margin-top:8px}
         <p class="proof-note">
           Forty Enterprise cores with Software Assurance convert to 40 Business Critical
           vCores. One secondary is readable at no extra charge, so the same licenses now
-          answer twice the queries &mdash; and Microsoft operates all four nodes.
+          answer twice the queries &mdash; and Microsoft operates all four nodes. Add a
+          standby region and it is <b>eight nodes on the same 40 licenses</b>.
         </p>
       </div>
     </div>
@@ -779,14 +780,16 @@ footer p + p{margin-top:8px}
       </div>
       <div class="rule-card">
         <span class="tag free">AZURE SQL DATABASE AND MANAGED INSTANCE</span>
-        <h3>The standby replica designation</h3>
+        <h3>The whole geo-secondary, not one node of it</h3>
         <p>
           A geo&#8209;secondary used only for disaster recovery can be designated a standby
           replica. Microsoft then provides the vCores licensed to the primary at no extra
-          charge under the failover rights benefit. <b>You are still billed for the compute
-          and storage the secondary uses.</b> It is generally available, works with both
-          pay&#8209;as&#8209;you&#8209;go and Azure Hybrid Benefit, and needs no Software
-          Assurance.
+          charge under the failover rights benefit. On Business Critical that secondary is a
+          four&#8209;node cluster, and <b>the entire instance carries no SQL license cost</b>
+          &mdash; Microsoft publishes savings of up to 55 percent per Managed Instance
+          secondary node. <b>You are still billed for the compute and storage the secondary
+          uses.</b> It is generally available, works with both pay&#8209;as&#8209;you&#8209;go
+          and Azure Hybrid Benefit, and needs no Software Assurance.
         </p>
       </div>
     </div>
@@ -868,7 +871,7 @@ footer p + p{margin-top:8px}
             <td>99.995%</td>
           </tr>
           <tr>
-            <th scope="row"><span class="dot db"></span>Add a second region, failover group with standby replica</th>
+            <th scope="row"><span class="dot db"></span>Add a second region, full geo-DR with standby designation</th>
             <td class="n">8</td><td class="n">320</td><td class="n yes">40</td><td class="n">80</td><td class="n yes">0</td>
             <td>99.995% in region, RTO under 60 seconds on failover</td>
           </tr>
@@ -1073,6 +1076,7 @@ footer p + p{margin-top:8px}
       <div class="src">
         <a href="https://azure.microsoft.com/en-us/pricing/hybrid-benefit/" target="_blank" rel="noopener">Azure Hybrid Benefit overview</a>
         <a href="https://learn.microsoft.com/azure/azure-sql/azure-hybrid-benefit" target="_blank" rel="noopener">Azure Hybrid Benefit for Azure SQL</a>
+        <a href="https://www.microsoft.com/en-us/sql-server/blog/2022/11/16/new-sql-server-on-azure-virtual-machines-and-azure-sql-managed-instance-dr-benefits/" target="_blank" rel="noopener">Announcing the SQL Server on Azure VM and Managed Instance DR benefits</a>
         <a href="https://learn.microsoft.com/azure/azure-sql/database/standby-replica-how-to-configure" target="_blank" rel="noopener">Configure a standby replica, Azure SQL Database</a>
         <a href="https://learn.microsoft.com/azure/azure-sql/managed-instance/failover-group-standby-replica-how-to-configure" target="_blank" rel="noopener">Configure a standby replica, Managed Instance</a>
         <a href="https://learn.microsoft.com/azure/azure-sql/database/high-availability-sla-local-zone-redundancy" target="_blank" rel="noopener">Availability and redundancy, Azure SQL Database</a>
@@ -1289,13 +1293,15 @@ footer p + p{margin-top:8px}
 
     steps.push({
       fam:"db", famLabel:"AZURE SQL DATABASE OR MANAGED INSTANCE",
-      short:"Second region, standby",
-      title:"Add the second region. Designate it standby.",
-      desc:"A failover group replicates to a second region. If that secondary is used only for "+
-           "disaster recovery, with no applications connected and no read workloads, you can "+
-           "designate it a standby replica. Microsoft then provides the vCores licensed to the "+
-           "primary at no extra charge under failover rights. You are still billed for the "+
-           "compute and storage it uses &mdash; but the license count does not move.",
+      short:"Second region, full geo-DR",
+      title:"The entire second region carries no SQL license cost.",
+      desc:"A failover group replicates the whole instance to a second region. If that secondary "+
+           "serves disaster recovery only, with no applications connected and no read workloads, "+
+           "you designate it a standby replica and Microsoft provides the vCores licensed to the "+
+           "primary at no extra charge under failover rights. Not one node of it &mdash; all of it. "+
+           "Business Critical runs four nodes per region, so this is eight running nodes across two "+
+           "regions on the same license count you started with on a single server. You are still "+
+           "billed for the compute and storage the secondary uses, but the ledger does not move.",
       regions:[
         { name:"PRIMARY REGION", nodes:[
           n("Primary replica", "Read-write, local SSD", v, "pay", "rw", {c:"pay", t:"THE vCORES YOU LICENSE"}),
@@ -1305,9 +1311,9 @@ footer p + p{margin-top:8px}
         ]},
         { name:"SECONDARY REGION &mdash; STANDBY", nodes:[
           n("Standby primary", "Disaster recovery only, no applications connected", v, "free", null, {c:"sb", t:"NO SQL LICENSE COST"}),
-          n("Secondary replica", "Part of the standby cluster", v, "idle", null, {c:"free", t:"INCLUDED"}),
-          n("Secondary replica", "Part of the standby cluster", v, "idle", null, {c:"free", t:"INCLUDED"}),
-          n("Secondary replica", "Part of the standby cluster", v, "idle", null, {c:"free", t:"INCLUDED"})
+          n("Secondary replica", "Part of the standby cluster", v, "idle", null, {c:"free", t:"NO SQL LICENSE COST"}),
+          n("Secondary replica", "Part of the standby cluster", v, "idle", null, {c:"free", t:"NO SQL LICENSE COST"}),
+          n("Secondary replica", "Part of the standby cluster", v, "idle", null, {c:"free", t:"NO SQL LICENSE COST"})
         ]}
       ],
       storage:null,
