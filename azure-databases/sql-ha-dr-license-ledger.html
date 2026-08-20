@@ -165,7 +165,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,[tabindex]:focus-visibl
 .mini-lab.run{border:1px solid #8496a6;color:var(--ink-3)}
 .mini-lab.pas{border:1px dashed #a8b6c2;color:var(--ink-3)}
 .mini-lab.qry{border:2px solid var(--good);color:var(--good)}
-.mini-lab.lic{border:2px dotted var(--mi);color:var(--mi)}
+.mini-lab.lic{border:2px dotted var(--mi);color:#0067b8}
 .mini-grp .mini-node{flex:1 1 0;min-width:0;display:flex;flex-direction:column}
 .mini-body > .mini-grp{flex:1 1 0}
 .mini-grp .mini-grid{justify-content:center;margin-top:auto}
@@ -175,6 +175,25 @@ a:focus-visible,button:focus-visible,input:focus-visible,[tabindex]:focus-visibl
 }
 .mini-patch b{font-size:1.3rem;font-weight:700;letter-spacing:-.03em;color:var(--ink);line-height:1}
 .mini-patch.hi b{color:var(--good)}
+
+/* Frame key. The set-boundary encoding carries every quantity on this page, so
+   it is taught once in words, immediately above the first place it is used. */
+.frame-key{
+  margin-top:30px;padding:14px 18px;
+  border:1px solid var(--rule);border-radius:10px;background:var(--paper-2);
+  display:flex;flex-wrap:wrap;align-items:center;gap:10px 26px;
+}
+.frame-key .fk-t{
+  margin:0;font-size:.62rem;font-weight:700;letter-spacing:.1em;color:var(--ink-3);
+}
+.frame-key ul{display:flex;flex-wrap:wrap;gap:10px 22px;list-style:none;margin:0;padding:0}
+.frame-key li{display:inline-flex;align-items:center;gap:8px;font-size:.76rem;color:var(--ink-2)}
+.frame-key i{display:block;width:26px;height:15px;border-radius:4px;flex:none}
+.frame-key i.run{border:1px solid #8496a6}
+.frame-key i.qry{border:2px solid var(--good)}
+.frame-key i.pas{border:1px dashed #a8b6c2}
+.frame-key i.lic{border:2px dotted #0067b8}
+.frame-key .fk-n{margin:0;flex:1 1 250px;font-size:.72rem;color:var(--ink-3);line-height:1.5}
 .proof-scale{
   grid-column:1 / -1;border-top:1px solid var(--rule);
   padding:14px 34px 0;font-size:.79rem;color:var(--ink-3);max-width:88ch;
@@ -408,6 +427,12 @@ input[type=range]::-moz-range-thumb{
 .legend i.free{border:1px solid #5f7386;background-image:repeating-linear-gradient(45deg,#4a5f72 0 1.5px,transparent 1.5px 4px)}
 .legend i.ro{background:#3fbd97}
 .legend i.idle{background:#2b4257;border:1px solid #35516b}
+.legend.frames{margin-top:11px;padding-top:0;border-top:0}
+.legend.frames i{width:24px;height:14px;border-radius:4px}
+.legend i.f-run{border:1px solid #3a5d78}
+.legend i.f-qry{border:2px solid #2f8468}
+.legend i.f-pas{border:1px dashed #5f7386}
+.legend i.f-lic{border:2px dotted #3f86c4}
 
 /* resilience strip */
 .resil{
@@ -507,7 +532,7 @@ td.n{font-variant-numeric:tabular-nums;white-space:nowrap}
 .cap-chip svg{width:11px;height:11px;flex:none}
 .cap-chip.yes{color:var(--good);background:var(--good-soft);border-color:#bfe0cf}
 .cap-chip.diy{color:var(--warn);background:var(--warn-soft);border-color:#e8d3a8}
-.cap-chip.no{color:var(--ink-3);background:var(--rule-soft);border-color:var(--rule);font-weight:600}
+.cap-chip.no{color:#576372;background:var(--rule-soft);border-color:var(--rule);font-weight:600}
 .cap-chip.num{
   color:var(--ink);background:var(--paper);border-color:var(--rule);
   font-variant-numeric:tabular-nums;letter-spacing:0;
@@ -604,6 +629,14 @@ footer p + p{margin-top:8px}
   .metric:nth-child(-n+2){border-top:0}
   .rail button{flex:1 1 50%}
   .m-v{font-size:1.9rem}
+}
+@media (max-width:560px){
+  /* A set boundary means the same thing on either axis, so below this width the
+     sibling frames stack instead of forcing the masthead wider than the screen. */
+  .mini-body{flex-direction:column;gap:7px}
+  .mini-body > *{flex:0 0 auto!important}
+  .mini-grp,.mini-node,.grp,.grp-body{min-width:0}
+  .frame-key{gap:10px 18px;padding:13px 15px}
 }
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{
@@ -702,6 +735,17 @@ footer p + p{margin-top:8px}
       <span>Azure Hybrid Benefit &middot; failover rights &middot; built-in HA</span>
     </p>
 
+    <div class="frame-key">
+      <p class="fk-t">HOW TO READ THE FRAMES</p>
+      <ul>
+        <li><i class="run"></i>Cores running</li>
+        <li><i class="qry"></i>Cores you can query</li>
+        <li><i class="pas"></i>Passive cores</li>
+        <li><i class="lic"></i>Cores your licenses pay for</li>
+      </ul>
+      <p class="fk-n">Every frame is drawn around exactly the machines it counts, so you can compare two estates by shape alone.</p>
+    </div>
+
     <div class="proof">
       <div class="proof-col">
         <p class="plat a">SQL SERVER ON AZURE VMS</p>
@@ -713,7 +757,7 @@ footer p + p{margin-top:8px}
             <span class="mini-lab qry"><b>40</b> QUERYABLE</span>
             <div class="mini-body">
             <div class="mini-grp mg-lic">
-              <span class="mini-lab lic"><b>40</b> LICENSED</span>
+              <span class="mini-lab lic"><b>40</b> CORES LICENSED</span>
               <div class="mini-body">
               <div class="mini-node"><div class="mn-cap">Primary</div><div class="mini-grid">
                 <i class="pay"></i><i class="pay"></i><i class="pay"></i><i class="pay"></i><i class="pay"></i>
@@ -760,7 +804,7 @@ footer p + p{margin-top:8px}
             <span class="mini-lab qry"><b>80</b> QUERYABLE</span>
             <div class="mini-body">
             <div class="mini-grp mg-lic">
-              <span class="mini-lab lic"><b>40</b> LICENSED</span>
+              <span class="mini-lab lic"><b>40</b> CORES LICENSED</span>
               <div class="mini-body">
               <div class="mini-node"><div class="mn-cap">Primary</div><div class="mini-grid">
                 <i class="pay"></i><i class="pay"></i><i class="pay"></i><i class="pay"></i><i class="pay"></i>
@@ -1724,16 +1768,18 @@ footer p + p{margin-top:8px}
   }
 
   function derive(step){
-    var nodes = 0, running = 0, query = 0;
+    var nodes = 0, running = 0, query = 0, readable = 0;
     step.regions.forEach(function(r){
       r.nodes.forEach(function(nd){
         if(nd.ghost) return;
         nodes += 1;
         running += nd.cores;
         if(nd.q === "rw" || nd.q === "ro") query += nd.cores;
+        if(nd.q === "ro") readable += 1;
       });
     });
-    return { nodes:nodes, running:running, query:query, licenses:step.licenses, patch:step.patch };
+    return { nodes:nodes, running:running, query:query, readable:readable,
+             licenses:step.licenses, patch:step.patch };
   }
 
   function diff(cur, prev, invert){
@@ -1793,7 +1839,7 @@ footer p + p{margin-top:8px}
         metricHTML("SQL SERVER CORE LICENSES CONSUMED", m.licenses, "of " + v + " owned",
                    diff(m.licenses, pm && pm.licenses, true), false) +
         metricHTML("CORES YOU CAN QUERY", m.query,
-                   m.query > m.running / 2 ? "Read-write plus read-only" : "Read-write only",
+                   m.readable > 0 ? "Read-write plus read-only" : "Read-write only",
                    diff(m.query, pm && pm.query, false), false) +
         metricHTML("MACHINES YOU PATCH", m.patch, m.patch === 0 ? "Microsoft operates every node" : null,
                    diff(m.patch, pm && pm.patch, true), m.patch === 0);
@@ -1867,9 +1913,11 @@ footer p + p{margin-top:8px}
           var qInner = "";
           if(lN.length){
             /* The license count is a whole-step figure, so it is only shown on
-               the first region that holds licensed nodes. */
+               the first region that holds licensed nodes. License units and
+               vCores are different quantities, so the label names both. */
             qInner += grp("lic", licDone ? sum(lN) : m.licenses,
-                          licDone ? "MORE LICENSED CORES" : "CORE LICENSES COVER THIS",
+                          licDone ? "MORE CORES COVERED"
+                                  : "LICENSES COVER THESE " + sum(lN) + " CORES",
                           lN.map(nodeHTML).join(""));
             licDone = true;
           }
@@ -1901,6 +1949,12 @@ footer p + p{margin-top:8px}
         '<span><i class="free"></i>Running, no SQL license cost</span>' +
         '<span><i class="ro"></i>Readable</span>' +
         '<span><i class="idle"></i>Running, not queryable</span>' +
+        '</div>' +
+        '<div class="legend frames">' +
+        '<span><i class="f-run"></i>Cores running</span>' +
+        '<span><i class="f-qry"></i>Cores you can query</span>' +
+        '<span><i class="f-pas"></i>Passive cores</span>' +
+        '<span><i class="f-lic"></i>Cores your licenses pay for</span>' +
         '</div>';
       stage.innerHTML = '<div class="topo">' + body + '</div>';
     }
