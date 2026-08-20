@@ -1183,7 +1183,7 @@ footer p { font-size: 14px; margin-bottom: 20px; max-width: 600px; margin-left: 
 <!-- smec-favicon v1 -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <!-- smec-accuracy v1 -->
-<meta name="smec:last-accuracy-check" content="2026-07-16">
+<meta name="smec:last-accuracy-check" content="2026-08-20">
 <style>/* smec-back-btn v2 */
 .smec-back-btn { position: fixed; bottom: 16px; left: 16px; z-index: 9999;
   box-sizing: border-box;
@@ -1272,7 +1272,7 @@ footer p { font-size: 14px; margin-bottom: 20px; max-width: 600px; margin-left: 
     <p>An interactive walkthrough of the mechanisms, policies, and features that keep your data available, recoverable, and resilient, from everyday hiccups to regional disasters.</p>
     <div class="hero-cta">
       <a href="#scenarios" class="btn btn-primary">Start Learning →</a>
-      <a href="https://learn.microsoft.com/en-us/azure/azure-sql/database/business-continuity-high-availability-disaster-recover-hadr-overview" target="_blank" class="btn btn-secondary">Official Docs</a>
+      <a href="https://learn.microsoft.com/en-us/azure/azure-sql/database/business-continuity-high-availability-disaster-recover-hadr-overview?view=azuresql" target="_blank" class="btn btn-secondary">Official Docs</a>
     </div>
     <div class="hero-stats">
       <div class="hero-stat">
@@ -1284,7 +1284,7 @@ footer p { font-size: 14px; margin-bottom: 20px; max-width: 600px; margin-left: 
         <div class="hero-stat-label">HA Data Loss (RPO)</div>
       </div>
       <div class="hero-stat">
-        <div class="hero-stat-value">35d / 10y</div>
+        <div class="hero-stat-value">Up to 35d / 10y</div>
         <div class="hero-stat-label">PITR / LTR Retention</div>
       </div>
     </div>
@@ -1500,7 +1500,7 @@ footer p { font-size: 14px; margin-bottom: 20px; max-width: 600px; margin-left: 
           <p>PITR creates a new database reflecting the state of your data at any chosen moment inside the retention window. LTR holds monthly/yearly full backups for compliance needs.</p>
           <div class="feature-metrics">
             <div class="metric-chip"><div class="m-label">PITR Default</div><div class="m-value">7 days</div></div>
-            <div class="metric-chip"><div class="m-label">PITR Max</div><div class="m-value">35 days</div></div>
+            <div class="metric-chip"><div class="m-label">PITR Max</div><div class="m-value">Up to 35 days</div></div>
             <div class="metric-chip"><div class="m-label">LTR Max</div><div class="m-value">10 years</div></div>
           </div>
           <ul class="feature-list">
@@ -1519,7 +1519,7 @@ footer p { font-size: 14px; margin-bottom: 20px; max-width: 600px; margin-left: 
               <div style="position: absolute; top: 30px; right: 0; font-size: 10px; color: var(--muted); font-weight: 600;">now</div>
               <div style="position: absolute; top: 20px; left: 60%; width: 50px; height: 50px; background: var(--grad-1); border-radius: 50%; box-shadow: 0 8px 20px rgba(0, 120, 212, 0.4); display: flex; align-items: center; justify-content: center; color: white; font-size: 22px; animation: bob 2s ease-in-out infinite;">⏱</div>
             </div>
-            <p style="text-align: center; font-size: 13px; color: var(--muted); margin-top: 30px;">Scrub to any point inside the retention window and restore instantly.</p>
+            <p style="text-align: center; font-size: 13px; color: var(--muted); margin-top: 30px;">Select a point inside the retention window to create a restored database.</p>
           </div>
           <style>@keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }</style>
         </div>
@@ -1855,7 +1855,7 @@ footer p { font-size: 14px; margin-bottom: 20px; max-width: 600px; margin-left: 
           <div class="wizard-q-num">5</div>
           <div class="wizard-q-title">Any long-term or compliance-driven retention needs?</div>
           <div class="wizard-options">
-            <label class="wizard-option"><input type="radio" name="retention" value="short"><span>Up to 35 days is fine</span></label>
+            <label class="wizard-option"><input type="radio" name="retention" value="short"><span>Up to 35 days is fine (7 days max for Basic)</span></label>
             <label class="wizard-option"><input type="radio" name="retention" value="long"><span>Need to keep backups for years</span></label>
           </div>
         </div>
@@ -1900,11 +1900,11 @@ footer p { font-size: 14px; margin-bottom: 20px; max-width: 600px; margin-left: 
   <h3>Keep going.</h3>
   <p>This page is a starting point. Microsoft Learn has the full technical reference, including checklists, configuration walkthroughs, and troubleshooting guides.</p>
   <div class="footer-links">
-    <a href="https://learn.microsoft.com/en-us/azure/azure-sql/database/business-continuity-high-availability-disaster-recover-hadr-overview" target="_blank">BCDR Overview</a>
-    <a href="https://learn.microsoft.com/en-us/azure/azure-sql/database/automated-backups-overview" target="_blank">Automated Backups</a>
-    <a href="https://learn.microsoft.com/en-us/azure/azure-sql/database/active-geo-replication-overview" target="_blank">Active Geo-Replication</a>
-    <a href="https://learn.microsoft.com/en-us/azure/azure-sql/database/failover-group-sql-db" target="_blank">Failover Groups</a>
-    <a href="https://learn.microsoft.com/en-us/azure/azure-sql/database/long-term-retention-overview" target="_blank">Long-Term Retention</a>
+    <a href="https://learn.microsoft.com/en-us/azure/azure-sql/database/business-continuity-high-availability-disaster-recover-hadr-overview?view=azuresql" target="_blank">BCDR Overview</a>
+    <a href="https://learn.microsoft.com/en-us/azure/azure-sql/database/automated-backups-overview?view=azuresql" target="_blank">Automated Backups</a>
+    <a href="https://learn.microsoft.com/en-us/azure/azure-sql/database/active-geo-replication-overview?view=azuresql" target="_blank">Active Geo-Replication</a>
+    <a href="https://learn.microsoft.com/en-us/azure/azure-sql/database/failover-group-sql-db?view=azuresql" target="_blank">Failover Groups</a>
+    <a href="https://learn.microsoft.com/en-us/azure/azure-sql/database/long-term-retention-overview?view=azuresql" target="_blank">Long-Term Retention</a>
   </div>
   <div class="footer-copy">
     Content adapted from official Microsoft Learn documentation. Not an official Microsoft publication. For reference only.
