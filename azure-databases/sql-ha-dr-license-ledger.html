@@ -115,20 +115,12 @@ a:focus-visible,button:focus-visible,input:focus-visible,[tabindex]:focus-visibl
   font-size:.72rem;font-weight:700;letter-spacing:.14em;color:var(--ink-3);
   writing-mode:vertical-rl;text-orientation:mixed;
 }
-.proof-col h3{font-size:1.06rem}
+.proof-col h3{font-size:1.06rem;min-height:3em}
 .proof-col .plat{
   font-size:.73rem;font-weight:700;letter-spacing:.1em;margin-bottom:9px;
 }
 .proof-col .plat.a{color:var(--vm)}
 .proof-col .plat.b{color:var(--db)}
-.proof-figures{
-  margin-top:20px;display:flex;gap:26px;flex-wrap:wrap;
-}
-.pf{min-width:0}
-.pf b{display:block;font-size:1.85rem;letter-spacing:-.03em;line-height:1}
-.pf span{display:block;font-size:.79rem;color:var(--ink-3);margin-top:5px;max-width:15ch}
-.pf.hi b{color:var(--good)}
-.pf.lo b{color:var(--ink-3)}
 .proof-note{
   margin-top:22px;font-size:.86rem;color:var(--ink-2);border-top:1px solid var(--rule-soft);
   padding-top:14px;
@@ -138,12 +130,74 @@ a:focus-visible,button:focus-visible,input:focus-visible,[tabindex]:focus-visibl
   border:1px solid var(--rule);border-radius:5px;padding:8px 9px 9px;background:var(--paper);
 }
 .mini-node .mn-cap{font-size:.62rem;color:var(--ink-3);margin-bottom:6px;letter-spacing:.03em}
-.mini-grid{display:grid;grid-template-columns:repeat(5,7px);gap:2.5px}
-.mini-grid i{display:block;width:7px;height:7px;border-radius:1px}
+.mini-grid{display:grid;grid-template-columns:repeat(5,var(--mb,7px));gap:2.5px}
+.mini-grid i{display:block;width:var(--mb,7px);height:var(--mb,7px);border-radius:1px}
 .mini-grid i.pay{background:#2f7ec0}
 .mini-grid i.free{border:1px solid #b6c2cd;background-image:repeating-linear-gradient(45deg,#c7d1da 0 1.5px,transparent 1.5px 4px)}
 .mini-grid i.ro{background:var(--good)}
 .mini-grid i.idle{background:#cfd8e0}
+
+/* Set boundaries, light variant. Each frame encloses exactly the machines it
+   counts, so the two columns can be compared by shape alone: both put a
+   licensed frame around a single node, but the estate around it differs. */
+.mini-wrap{margin-top:22px}
+.mini-grp{
+  --mg:10px;--lh:10px;
+  border-radius:7px;
+  display:flex;flex-direction:column;
+  padding:var(--mg);
+}
+.mini-body{display:flex;gap:9px;align-items:stretch;flex:1 1 auto}
+.mg-run{border:1px solid #8496a6}
+.mg-qry{border:2px solid var(--good)}
+.mg-pas{border:1px dashed #a8b6c2}
+.mg-lic{border:2px dotted var(--mi)}
+/* The label is a flow child, not an absolute one, so its width feeds the
+   frame's min-content size: a frame can never end up narrower than the number
+   printed on it, and labels cannot ride over a neighbouring frame's cards. */
+.mini-lab{
+  align-self:flex-start;margin:calc((var(--mg) + var(--lh)) * -1) 0 7px 3px;
+  display:inline-flex;align-items:baseline;gap:6px;
+  padding:2px 7px;border-radius:5px;background:var(--paper);
+  font-size:.6rem;font-weight:700;letter-spacing:.07em;white-space:nowrap;
+}
+.mini-lab b{font-size:.86rem;letter-spacing:0}
+.mini-lab.run{border:1px solid #8496a6;color:var(--ink-3)}
+.mini-lab.pas{border:1px dashed #a8b6c2;color:var(--ink-3)}
+.mini-lab.qry{border:2px solid var(--good);color:var(--good)}
+.mini-lab.lic{border:2px dotted var(--mi);color:#0067b8}
+.mini-grp .mini-node{flex:1 1 0;min-width:0;display:flex;flex-direction:column}
+.mini-body > .mini-grp{flex:1 1 0}
+.mini-grp .mini-grid{justify-content:center;margin-top:auto}
+.mini-patch{
+  margin-top:18px;display:flex;align-items:baseline;gap:8px;
+  font-size:.78rem;color:var(--ink-3);
+}
+.mini-patch b{font-size:1.3rem;font-weight:700;letter-spacing:-.03em;color:var(--ink);line-height:1}
+.mini-patch.hi b{color:var(--good)}
+
+/* Frame key. The set-boundary encoding carries every quantity on this page, so
+   it is taught once in words, immediately above the first place it is used. */
+.frame-key{
+  margin-top:30px;padding:14px 18px;
+  border:1px solid var(--rule);border-radius:10px;background:var(--paper-2);
+  display:flex;flex-wrap:wrap;align-items:center;gap:10px 26px;
+}
+.frame-key .fk-t{
+  margin:0;font-size:.62rem;font-weight:700;letter-spacing:.1em;color:var(--ink-3);
+}
+.frame-key ul{display:flex;flex-wrap:wrap;gap:10px 22px;list-style:none;margin:0;padding:0}
+.frame-key li{display:inline-flex;align-items:center;gap:8px;font-size:.76rem;color:var(--ink-2)}
+.frame-key i{display:block;width:26px;height:15px;border-radius:4px;flex:none}
+.frame-key i.run{border:1px solid #8496a6}
+.frame-key i.qry{border:2px solid var(--good)}
+.frame-key i.pas{border:1px dashed #a8b6c2}
+.frame-key i.lic{border:2px dotted #0067b8}
+.frame-key .fk-n{margin:0;flex:1 1 250px;font-size:.72rem;color:var(--ink-3);line-height:1.5}
+.proof-scale{
+  grid-column:1 / -1;border-top:1px solid var(--rule);
+  padding:14px 34px 0;font-size:.79rem;color:var(--ink-3);max-width:88ch;
+}
 
 /* ============================================================
    SECTION FURNITURE
@@ -315,6 +369,47 @@ input[type=range]::-moz-range-thumb{
 .n-badge.sb{background:#3a3117;color:#ecc98a}
 .n-cores{font-size:.7rem;color:var(--panel-ink-2);margin-top:9px}
 
+/* ============================================================
+   CORE GROUPS — set boundaries drawn around the nodes
+   Every frame encloses exactly the machines it counts:
+   licensed sits inside queryable, passive sits beside it, and
+   running wraps everything that is actually switched on. A
+   quantity that is zero simply has no frame.
+   ============================================================ */
+.vh{
+  position:absolute;width:1px;height:1px;padding:0;margin:-1px;
+  overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0;
+}
+.grp{
+  --gp:15px;--lh:11px;
+  border-radius:11px;
+  display:flex;flex-direction:column;
+  padding:var(--gp);
+}
+.grp-body{display:flex;flex-wrap:wrap;gap:14px;align-items:stretch;flex:1 1 auto}
+.g-run{border:1px solid #3a5d78}
+.g-qry{border:2px solid #2f8468}
+.g-pas{border:1px dashed #5f7386}
+.g-lic{border:2px dotted #3f86c4}
+.grp-lab{
+  align-self:flex-start;margin:calc((var(--gp) + var(--lh)) * -1) 0 9px 4px;
+  display:inline-flex;align-items:baseline;gap:7px;
+  padding:3px 9px;border-radius:6px;background:var(--panel);
+  font-size:.62rem;font-weight:700;letter-spacing:.08em;white-space:nowrap;
+}
+.grp-lab .ev{font-size:.92rem;font-weight:700;letter-spacing:0}
+.grp-lab.run{border:1px solid #3a5d78;color:#8ea6ba}
+.grp-lab.run .ev{color:#dce7f1}
+.grp-lab.pas{border:1px dashed #5f7386;color:#8ea6ba}
+.grp-lab.pas .ev{color:#c2cdd8}
+.grp-lab.qry{border:2px solid #2f8468;color:#5fbb9c}
+.grp-lab.qry .ev{color:#7ce0be}
+.grp-lab.lic{border:2px dotted #3f86c4;color:#7fb0dc}
+.grp-lab.lic .ev{color:#a5d4ff}
+.grp-note{
+  margin-top:20px;font-size:.77rem;color:var(--panel-ink-2);line-height:1.55;max-width:74ch;
+}
+
 .storage-row{
   margin-top:18px;padding:13px 15px;border:1px dashed var(--panel-rule);border-radius:8px;
   font-size:.8rem;color:var(--panel-ink-2);line-height:1.5;
@@ -332,6 +427,12 @@ input[type=range]::-moz-range-thumb{
 .legend i.free{border:1px solid #5f7386;background-image:repeating-linear-gradient(45deg,#4a5f72 0 1.5px,transparent 1.5px 4px)}
 .legend i.ro{background:#3fbd97}
 .legend i.idle{background:#2b4257;border:1px solid #35516b}
+.legend.frames{margin-top:11px;padding-top:0;border-top:0}
+.legend.frames i{width:24px;height:14px;border-radius:4px}
+.legend i.f-run{border:1px solid #3a5d78}
+.legend i.f-qry{border:2px solid #2f8468}
+.legend i.f-pas{border:1px dashed #5f7386}
+.legend i.f-lic{border:2px dotted #3f86c4}
 
 /* resilience strip */
 .resil{
@@ -413,6 +514,49 @@ td.n{font-variant-numeric:tabular-nums;white-space:nowrap}
 .no{color:var(--ink-3)}
 .part{color:var(--warn);font-weight:600}
 
+/* Capability matrix. Every cell leads with a verdict you can scan across a row,
+   then gives the detail underneath, so the table answers "can it?" at a glance
+   and "how exactly?" on a closer read. The verdict never rests on colour alone:
+   each chip carries a glyph and a word as well. */
+.cap-legend{
+  display:flex;flex-wrap:wrap;gap:10px 22px;
+  margin-bottom:15px;font-size:.8rem;color:var(--ink-2);
+}
+.cap-legend > span{display:inline-flex;align-items:center;gap:9px}
+.cap-chip{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:3px 10px 3px 8px;border-radius:20px;border:1px solid;
+  font-size:.71rem;font-weight:700;letter-spacing:.02em;line-height:1.4;
+  white-space:nowrap;
+}
+.cap-chip svg{width:11px;height:11px;flex:none}
+.cap-chip.yes{color:var(--good);background:var(--good-soft);border-color:#bfe0cf}
+.cap-chip.diy{color:var(--warn);background:var(--warn-soft);border-color:#e8d3a8}
+.cap-chip.no{color:#576372;background:var(--rule-soft);border-color:var(--rule);font-weight:600}
+.cap-chip.num{
+  color:var(--ink);background:var(--paper);border-color:var(--rule);
+  font-variant-numeric:tabular-nums;letter-spacing:0;
+}
+.cap-d{margin-top:7px;font-size:.83rem;color:var(--ink-2);line-height:1.5}
+/* The capability column stays put while the platform columns scroll under it.
+   Separate borders (spacing zero, so it looks identical) are required here:
+   Chromium leaks neighbouring cell text through a sticky cell when the table
+   uses the collapsed border model. */
+#capability table{border-collapse:separate;border-spacing:0}
+#capability tbody th{
+  position:sticky;left:0;z-index:5;
+  background:var(--paper-2);border-right:1px solid var(--rule);
+  box-shadow:6px 0 8px -8px rgba(16,21,28,.28);
+}
+#capability thead th:first-child{
+  position:sticky;left:0;z-index:6;border-right:1px solid var(--rule);
+  box-shadow:6px 0 8px -8px rgba(16,21,28,.28);
+}
+#capability tbody tr:last-child th{border-bottom:0}
+#capability caption > span{position:sticky;left:0;display:inline-block}
+#capability tbody tr:hover th,#capability tbody tr:hover td{background:var(--paper)}
+#capability thead th .dot{margin-right:7px}
+
 /* stop-operating list */
 .stops{display:grid;grid-template-columns:repeat(2,1fr);gap:0;border:1px solid var(--rule);border-radius:10px;overflow:hidden;background:var(--paper-2)}
 .stop-item{padding:20px 24px;border-bottom:1px solid var(--rule-soft);border-right:1px solid var(--rule-soft)}
@@ -443,6 +587,17 @@ footer p + p{margin-top:8px}
   .rules{grid-template-columns:1fr}
   .rail{flex-wrap:wrap}
   .rail button{flex:1 1 25%;border-bottom:1px solid var(--rule)}
+  .mini-grp{--mg:8px;--lh:10px}
+  .mini-body{gap:7px}
+  .mini-grid{--mb:6px}
+}
+@media (max-width:900px){
+  .grp{--gp:11px}
+  .grp-body{gap:11px}
+  .mini-grp{--mg:7px;--lh:9px}
+  .mini-body{gap:6px}
+  .mini-lab{padding:2px 5px;font-size:.56rem}
+  .mini-grid{--mb:5px}
 }
 @media (max-width:820px){
   body{font-size:16px}
@@ -454,6 +609,13 @@ footer p + p{margin-top:8px}
   .proof-col:last-child{border-left:0}
   .proof-mid{padding:14px 0}
   .proof-mid span{writing-mode:horizontal-tb}
+  .proof-col{padding:26px 22px 32px}
+  .proof-col h3{min-height:0}
+  .proof-scale{padding:14px 22px 0}
+  .mini-grp{--mg:9px;--lh:10px}
+  .mini-body{gap:8px}
+  .mini-lab{font-size:.58rem}
+  .mini-patch b{font-size:1.18rem}
   .controls{grid-template-columns:1fr;gap:24px}
   .conv,.stops{grid-template-columns:1fr}
   .stop-item{border-right:0}
@@ -467,6 +629,14 @@ footer p + p{margin-top:8px}
   .metric:nth-child(-n+2){border-top:0}
   .rail button{flex:1 1 50%}
   .m-v{font-size:1.9rem}
+}
+@media (max-width:560px){
+  /* A set boundary means the same thing on either axis, so below this width the
+     sibling frames stack instead of forcing the masthead wider than the screen. */
+  .mini-body{flex-direction:column;gap:7px}
+  .mini-body > *{flex:0 0 auto!important}
+  .mini-grp,.mini-node,.grp,.grp-body{min-width:0}
+  .frame-key{gap:10px 18px;padding:13px 15px}
 }
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{
@@ -546,8 +716,6 @@ footer p + p{margin-top:8px}
 <meta name="twitter:description" content="SQL Server HA/DR and Azure Hybrid Benefit: The License Ledger — an interactive infographic from the SME&amp;C Infographic Hub.">
 <!-- smec-favicon v1 -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-<!-- smec-submitter v1 -->
-<meta name="smec:submitter" content="cbattlegear">
 </head>
 <body>
 <a href="/" class="smec-back-btn" data-smec-back-button="v2" aria-label="Back to SME&amp;C Infographics"><svg class="smec-back-btn__icon" aria-hidden="true" viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg><span class="smec-back-btn__label">Back<span class="smec-back-btn__more">&nbsp;to SME&amp;C Infographics</span></span></a>
@@ -567,32 +735,60 @@ footer p + p{margin-top:8px}
       <span>Azure Hybrid Benefit &middot; failover rights &middot; built-in HA</span>
     </p>
 
+    <div class="frame-key">
+      <p class="fk-t">HOW TO READ THE FRAMES</p>
+      <ul>
+        <li><i class="run"></i>Cores running</li>
+        <li><i class="qry"></i>Cores you can query</li>
+        <li><i class="pas"></i>Passive cores</li>
+        <li><i class="lic"></i>Cores your licenses pay for</li>
+      </ul>
+      <p class="fk-n">Every frame is drawn around exactly the machines it counts, so you can compare two estates by shape alone.</p>
+    </div>
+
     <div class="proof">
       <div class="proof-col">
         <p class="plat a">SQL SERVER ON AZURE VMS</p>
         <h3>Always On availability group, one HA replica and one DR replica</h3>
-        <div class="mini" aria-hidden="true">
-          <div class="mini-node"><div class="mn-cap">Primary</div><div class="mini-grid">
-            <i class="pay"></i><i class="pay"></i><i class="pay"></i><i class="pay"></i><i class="pay"></i>
-            <i class="pay"></i><i class="pay"></i><i class="pay"></i><i class="pay"></i><i class="pay"></i>
-          </div></div>
-          <div class="mini-node"><div class="mn-cap">Passive HA</div><div class="mini-grid">
-            <i class="free"></i><i class="free"></i><i class="free"></i><i class="free"></i><i class="free"></i>
-            <i class="free"></i><i class="free"></i><i class="free"></i><i class="free"></i><i class="free"></i>
-          </div></div>
-          <div class="mini-node"><div class="mn-cap">Passive DR</div><div class="mini-grid">
-            <i class="free"></i><i class="free"></i><i class="free"></i><i class="free"></i><i class="free"></i>
-            <i class="free"></i><i class="free"></i><i class="free"></i><i class="free"></i><i class="free"></i>
-          </div></div>
+        <div class="mini-grp mg-run mini-wrap" aria-hidden="true">
+          <span class="mini-lab run"><b>120</b> CORES RUNNING</span>
+          <div class="mini-body">
+          <div class="mini-grp mg-qry">
+            <span class="mini-lab qry"><b>40</b> QUERYABLE</span>
+            <div class="mini-body">
+            <div class="mini-grp mg-lic">
+              <span class="mini-lab lic"><b>40</b> CORES LICENSED</span>
+              <div class="mini-body">
+              <div class="mini-node"><div class="mn-cap">Primary</div><div class="mini-grid">
+                <i class="pay"></i><i class="pay"></i><i class="pay"></i><i class="pay"></i><i class="pay"></i>
+                <i class="pay"></i><i class="pay"></i><i class="pay"></i><i class="pay"></i><i class="pay"></i>
+              </div></div>
+              </div>
+            </div>
+            </div>
+          </div>
+          <div class="mini-grp mg-pas" style="flex:2 1 0">
+            <span class="mini-lab pas"><b>80</b> PASSIVE</span>
+            <div class="mini-body">
+            <div class="mini-node"><div class="mn-cap">Passive HA</div><div class="mini-grid">
+              <i class="free"></i><i class="free"></i><i class="free"></i><i class="free"></i><i class="free"></i>
+              <i class="free"></i><i class="free"></i><i class="free"></i><i class="free"></i><i class="free"></i>
+            </div></div>
+            <div class="mini-node"><div class="mn-cap">Passive DR</div><div class="mini-grid">
+              <i class="free"></i><i class="free"></i><i class="free"></i><i class="free"></i><i class="free"></i>
+              <i class="free"></i><i class="free"></i><i class="free"></i><i class="free"></i><i class="free"></i>
+            </div></div>
+            </div>
+          </div>
+          </div>
         </div>
-        <div class="proof-figures">
-          <div class="pf"><b class="num">120</b><span>cores running</span></div>
-          <div class="pf lo"><b class="num">40</b><span>cores you can query</span></div>
-          <div class="pf"><b class="num">3</b><span>machines you patch</span></div>
-        </div>
+        <p class="mini-patch"><b>3</b> machines you patch</p>
         <p class="proof-note">
-          Both replicas are passive, so they cost no SQL Server licenses. They also
-          serve no queries. Two thirds of the running cores do nothing but wait.
+          The licensed frame wraps the only node that answers anything, and the
+          queryable frame sits directly on top of it: you pay for exactly what you
+          can query, and not one core more works for you. Both replicas are passive,
+          so they cost no SQL Server licenses &mdash; and they answer nothing. Two
+          thirds of the running cores do nothing but wait.
         </p>
       </div>
 
@@ -601,36 +797,63 @@ footer p + p{margin-top:8px}
       <div class="proof-col">
         <p class="plat b">AZURE SQL DATABASE OR MANAGED INSTANCE</p>
         <h3>Business Critical, a four-node cluster with read scale-out</h3>
-        <div class="mini" aria-hidden="true">
-          <div class="mini-node"><div class="mn-cap">Primary</div><div class="mini-grid">
-            <i class="pay"></i><i class="pay"></i><i class="pay"></i><i class="pay"></i><i class="pay"></i>
-            <i class="pay"></i><i class="pay"></i><i class="pay"></i><i class="pay"></i><i class="pay"></i>
-          </div></div>
-          <div class="mini-node"><div class="mn-cap">Readable secondary</div><div class="mini-grid">
-            <i class="ro"></i><i class="ro"></i><i class="ro"></i><i class="ro"></i><i class="ro"></i>
-            <i class="ro"></i><i class="ro"></i><i class="ro"></i><i class="ro"></i><i class="ro"></i>
-          </div></div>
-          <div class="mini-node"><div class="mn-cap">Secondary</div><div class="mini-grid">
-            <i class="idle"></i><i class="idle"></i><i class="idle"></i><i class="idle"></i><i class="idle"></i>
-            <i class="idle"></i><i class="idle"></i><i class="idle"></i><i class="idle"></i><i class="idle"></i>
-          </div></div>
-          <div class="mini-node"><div class="mn-cap">Secondary</div><div class="mini-grid">
-            <i class="idle"></i><i class="idle"></i><i class="idle"></i><i class="idle"></i><i class="idle"></i>
-            <i class="idle"></i><i class="idle"></i><i class="idle"></i><i class="idle"></i><i class="idle"></i>
-          </div></div>
+        <div class="mini-grp mg-run mini-wrap" aria-hidden="true">
+          <span class="mini-lab run"><b>160</b> CORES RUNNING</span>
+          <div class="mini-body">
+          <div class="mini-grp mg-qry" style="flex:2 1 0">
+            <span class="mini-lab qry"><b>80</b> QUERYABLE</span>
+            <div class="mini-body">
+            <div class="mini-grp mg-lic">
+              <span class="mini-lab lic"><b>40</b> CORES LICENSED</span>
+              <div class="mini-body">
+              <div class="mini-node"><div class="mn-cap">Primary</div><div class="mini-grid">
+                <i class="pay"></i><i class="pay"></i><i class="pay"></i><i class="pay"></i><i class="pay"></i>
+                <i class="pay"></i><i class="pay"></i><i class="pay"></i><i class="pay"></i><i class="pay"></i>
+              </div></div>
+              </div>
+            </div>
+            <div class="mini-node"><div class="mn-cap">Readable secondary</div><div class="mini-grid">
+              <i class="ro"></i><i class="ro"></i><i class="ro"></i><i class="ro"></i><i class="ro"></i>
+              <i class="ro"></i><i class="ro"></i><i class="ro"></i><i class="ro"></i><i class="ro"></i>
+            </div></div>
+            </div>
+          </div>
+          <div class="mini-grp mg-pas" style="flex:2 1 0">
+            <span class="mini-lab pas"><b>80</b> PASSIVE</span>
+            <div class="mini-body">
+            <div class="mini-node"><div class="mn-cap">Secondary</div><div class="mini-grid">
+              <i class="idle"></i><i class="idle"></i><i class="idle"></i><i class="idle"></i><i class="idle"></i>
+              <i class="idle"></i><i class="idle"></i><i class="idle"></i><i class="idle"></i><i class="idle"></i>
+            </div></div>
+            <div class="mini-node"><div class="mn-cap">Secondary</div><div class="mini-grid">
+              <i class="idle"></i><i class="idle"></i><i class="idle"></i><i class="idle"></i><i class="idle"></i>
+              <i class="idle"></i><i class="idle"></i><i class="idle"></i><i class="idle"></i><i class="idle"></i>
+            </div></div>
+            </div>
+          </div>
+          </div>
         </div>
-        <div class="proof-figures">
-          <div class="pf"><b class="num">160</b><span>cores running</span></div>
-          <div class="pf hi"><b class="num">80</b><span>cores you can query</span></div>
-          <div class="pf hi"><b class="num">0</b><span>machines you patch</span></div>
-        </div>
+        <p class="mini-patch hi"><b>0</b> machines you patch</p>
         <p class="proof-note">
-          Forty Enterprise cores with Software Assurance convert to 40 Business Critical
-          vCores. One secondary is readable at no extra charge, so the same licenses now
-          answer twice the queries &mdash; and Microsoft operates all four nodes. Add a
-          standby region and it is <b>eight nodes on the same 40 licenses</b>.
+          The licensed frame is the same shape and the same number &mdash; one node,
+          40 licenses &mdash; but the queryable frame has grown past it to take in a
+          second machine. Forty Enterprise cores with Software Assurance convert to
+          40 Business Critical vCores; one secondary is readable at no extra charge,
+          so the same licenses answer twice the queries and Microsoft operates all
+          four nodes. Add a standby region and it is
+          <b>eight nodes on the same 40 licenses</b>.
         </p>
       </div>
+
+      <p class="proof-scale">
+        Each frame is drawn around the machines it counts, in cores: <b>licensed</b>
+        are the cores you hold a SQL Server license for, <b>queryable</b> are the
+        cores that will answer a query, <b>passive</b> are the cores that only wait
+        for a failover, and <b>cores running</b> is everything switched on. The
+        dotted licensed frame encloses a single node on both sides &mdash; that is
+        the same 40 licenses. What differs is how much of the estate the queryable
+        frame manages to take in with it.
+      </p>
     </div>
   </div>
 </header>
@@ -963,77 +1186,185 @@ footer p + p{margin-top:8px}
       </p>
     </div>
 
+    <svg class="vh" aria-hidden="true" focusable="false"><defs>
+      <symbol id="g-yes" viewBox="0 0 12 12">
+        <path d="M1.6 6.3 4.6 9.3 10.4 2.9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </symbol>
+      <symbol id="g-diy" viewBox="0 0 12 12">
+        <circle cx="6" cy="6" r="4.7" fill="none" stroke="currentColor" stroke-width="1.7"/>
+        <path d="M6 1.3a4.7 4.7 0 0 0 0 9.4z" fill="currentColor"/>
+      </symbol>
+      <symbol id="g-no" viewBox="0 0 12 12">
+        <path d="M3.2 3.2 8.8 8.8M8.8 3.2 3.2 8.8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+      </symbol>
+    </defs></svg>
+
+    <div class="cap-legend">
+      <span><span class="cap-chip yes"><svg aria-hidden="true"><use href="#g-yes"/></svg>Built in</span> the platform does it for you</span>
+      <span><span class="cap-chip diy"><svg aria-hidden="true"><use href="#g-diy"/></svg>You build it</span> possible, but it is your work and your licenses</span>
+      <span><span class="cap-chip no"><svg aria-hidden="true"><use href="#g-no"/></svg>Not available</span> not offered on this platform</span>
+    </div>
+
     <div class="tbl-scroll">
       <table>
-        <caption>Business continuity capabilities by platform</caption>
+        <caption><span>Business continuity capabilities by platform</span></caption>
         <thead>
           <tr>
             <th scope="col">Capability</th>
-            <th scope="col">SQL Server, hardware or Azure VM</th>
-            <th scope="col">Azure SQL Managed Instance</th>
-            <th scope="col">Azure SQL Database</th>
+            <th scope="col"><span class="dot iaas"></span>SQL Server, hardware or Azure VM</th>
+            <th scope="col"><span class="dot mi"></span>Azure SQL Managed Instance</th>
+            <th scope="col"><span class="dot db"></span>Azure SQL Database</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <th scope="row">High availability inside a region</th>
-            <td>You build it: failover cluster instances or availability groups</td>
-            <td class="yes">Built in, included in the price</td>
-            <td class="yes">Built in, included in the price</td>
+            <td>
+              <span class="cap-chip diy"><svg aria-hidden="true"><use href="#g-diy"/></svg>You build it</span>
+              <p class="cap-d">Failover cluster instances or availability groups.</p>
+            </td>
+            <td>
+              <span class="cap-chip yes"><svg aria-hidden="true"><use href="#g-yes"/></svg>Built in</span>
+              <p class="cap-d">Included in the price.</p>
+            </td>
+            <td>
+              <span class="cap-chip yes"><svg aria-hidden="true"><use href="#g-yes"/></svg>Built in</span>
+              <p class="cap-d">Included in the price.</p>
+            </td>
           </tr>
           <tr>
             <th scope="row">Nodes in the high availability tier</th>
-            <td>You choose, up to 8 secondaries on Enterprise, 5 synchronous</td>
-            <td>1 node General Purpose, 4 nodes Business Critical</td>
-            <td>1 node General Purpose, 4 nodes Business Critical, 0 to 4 configurable on Hyperscale</td>
+            <td>
+              <span class="cap-chip num">Up to 8</span>
+              <p class="cap-d">Secondaries on Enterprise, 5 of them synchronous.</p>
+            </td>
+            <td>
+              <span class="cap-chip num">1 or 4</span>
+              <p class="cap-d">1 node on General Purpose, 4 on Business Critical.</p>
+            </td>
+            <td>
+              <span class="cap-chip num">1, 4 or 0&ndash;4</span>
+              <p class="cap-d">1 node on General Purpose, 4 on Business Critical, 0 to 4 configurable on Hyperscale.</p>
+            </td>
           </tr>
           <tr>
             <th scope="row">Zone redundancy</th>
-            <td class="part">Availability zones, you place and license the VMs</td>
-            <td class="part">Available; Next-gen General Purpose is in preview</td>
-            <td class="yes">Available on General Purpose and Business Critical</td>
+            <td>
+              <span class="cap-chip diy"><svg aria-hidden="true"><use href="#g-diy"/></svg>You build it</span>
+              <p class="cap-d">Availability zones, but you place and license the VMs.</p>
+            </td>
+            <td>
+              <span class="cap-chip yes"><svg aria-hidden="true"><use href="#g-yes"/></svg>Available</span>
+              <p class="cap-d">Next-gen General Purpose is in preview.</p>
+            </td>
+            <td>
+              <span class="cap-chip yes"><svg aria-hidden="true"><use href="#g-yes"/></svg>Available</span>
+              <p class="cap-d">On General Purpose and Business Critical.</p>
+            </td>
           </tr>
           <tr>
             <th scope="row">Readable secondary</th>
-            <td class="part">Yes, but it must be fully licensed</td>
-            <td class="yes">One included on Business Critical, no extra charge</td>
-            <td class="yes">One included on Business Critical, no extra charge</td>
+            <td>
+              <span class="cap-chip diy"><svg aria-hidden="true"><use href="#g-diy"/></svg>You license it</span>
+              <p class="cap-d">Supported, but the replica must be fully licensed.</p>
+            </td>
+            <td>
+              <span class="cap-chip yes"><svg aria-hidden="true"><use href="#g-yes"/></svg>Built in</span>
+              <p class="cap-d">One included on Business Critical, no extra charge.</p>
+            </td>
+            <td>
+              <span class="cap-chip yes"><svg aria-hidden="true"><use href="#g-yes"/></svg>Built in</span>
+              <p class="cap-d">One included on Business Critical, no extra charge.</p>
+            </td>
           </tr>
           <tr>
             <th scope="row">Per-database geo-replication</th>
-            <td class="part">Availability groups and distributed availability groups</td>
-            <td class="no">Not available &mdash; failover groups operate at instance scope</td>
-            <td class="yes">Active geo-replication, up to 4 readable geo-secondaries</td>
+            <td>
+              <span class="cap-chip diy"><svg aria-hidden="true"><use href="#g-diy"/></svg>You build it</span>
+              <p class="cap-d">Availability groups and distributed availability groups.</p>
+            </td>
+            <td>
+              <span class="cap-chip no"><svg aria-hidden="true"><use href="#g-no"/></svg>Not available</span>
+              <p class="cap-d">Failover groups operate at instance scope.</p>
+            </td>
+            <td>
+              <span class="cap-chip yes"><svg aria-hidden="true"><use href="#g-yes"/></svg>Available</span>
+              <p class="cap-d">Active geo-replication, up to 4 readable geo-secondaries.</p>
+            </td>
           </tr>
           <tr>
             <th scope="row">Cross-region failover group</th>
-            <td class="part">You build it with distributed availability groups</td>
-            <td class="yes">Yes, instance scope</td>
-            <td class="yes">Yes, database and elastic pool scope</td>
+            <td>
+              <span class="cap-chip diy"><svg aria-hidden="true"><use href="#g-diy"/></svg>You build it</span>
+              <p class="cap-d">Distributed availability groups.</p>
+            </td>
+            <td>
+              <span class="cap-chip yes"><svg aria-hidden="true"><use href="#g-yes"/></svg>Available</span>
+              <p class="cap-d">Instance scope.</p>
+            </td>
+            <td>
+              <span class="cap-chip yes"><svg aria-hidden="true"><use href="#g-yes"/></svg>Available</span>
+              <p class="cap-d">Database and elastic pool scope.</p>
+            </td>
           </tr>
           <tr>
             <th scope="row">Point-in-time restore</th>
-            <td>You own the backup chain</td>
-            <td class="yes">7 days default, 1 to 35 configurable</td>
-            <td class="yes">7 days default, 1 to 35 configurable</td>
+            <td>
+              <span class="cap-chip diy"><svg aria-hidden="true"><use href="#g-diy"/></svg>You own it</span>
+              <p class="cap-d">You own the backup chain.</p>
+            </td>
+            <td>
+              <span class="cap-chip yes"><svg aria-hidden="true"><use href="#g-yes"/></svg>Built in</span>
+              <p class="cap-d">7 days default, 1 to 35 configurable.</p>
+            </td>
+            <td>
+              <span class="cap-chip yes"><svg aria-hidden="true"><use href="#g-yes"/></svg>Built in</span>
+              <p class="cap-d">7 days default, 1 to 35 configurable.</p>
+            </td>
           </tr>
           <tr>
             <th scope="row">Long-term retention</th>
-            <td>You own it</td>
-            <td class="yes">Up to 10 years</td>
-            <td class="yes">Up to 10 years</td>
+            <td>
+              <span class="cap-chip diy"><svg aria-hidden="true"><use href="#g-diy"/></svg>You own it</span>
+              <p class="cap-d">Yours to schedule, store and prove.</p>
+            </td>
+            <td>
+              <span class="cap-chip yes"><svg aria-hidden="true"><use href="#g-yes"/></svg>Built in</span>
+              <p class="cap-d">Up to 10 years.</p>
+            </td>
+            <td>
+              <span class="cap-chip yes"><svg aria-hidden="true"><use href="#g-yes"/></svg>Built in</span>
+              <p class="cap-d">Up to 10 years.</p>
+            </td>
           </tr>
           <tr>
             <th scope="row">Link to Azure from SQL Server</th>
-            <td class="yes">Managed Instance link, generally available for SQL Server 2016 through 2025</td>
-            <td class="yes">Bidirectional failback generally available for SQL Server 2022 RTM and SQL Server 2025</td>
-            <td class="no">Not applicable</td>
+            <td>
+              <span class="cap-chip yes"><svg aria-hidden="true"><use href="#g-yes"/></svg>Available</span>
+              <p class="cap-d">Managed Instance link, generally available for SQL Server 2016 through 2025.</p>
+            </td>
+            <td>
+              <span class="cap-chip yes"><svg aria-hidden="true"><use href="#g-yes"/></svg>Available</span>
+              <p class="cap-d">Bidirectional failback generally available for SQL Server 2022 RTM and SQL Server 2025.</p>
+            </td>
+            <td>
+              <span class="cap-chip no"><svg aria-hidden="true"><use href="#g-no"/></svg>Not applicable</span>
+            </td>
           </tr>
           <tr>
             <th scope="row">Patching and cluster operations</th>
-            <td class="part">Yours: guest OS, SQL binaries, cluster, quorum, witness</td>
-            <td class="yes">Microsoft's</td>
-            <td class="yes">Microsoft's</td>
+            <td>
+              <span class="cap-chip diy"><svg aria-hidden="true"><use href="#g-diy"/></svg>Yours</span>
+              <p class="cap-d">Guest OS, SQL binaries, cluster, quorum, witness.</p>
+            </td>
+            <td>
+              <span class="cap-chip yes"><svg aria-hidden="true"><use href="#g-yes"/></svg>Microsoft&rsquo;s</span>
+              <p class="cap-d">Included in the service.</p>
+            </td>
+            <td>
+              <span class="cap-chip yes"><svg aria-hidden="true"><use href="#g-yes"/></svg>Microsoft&rsquo;s</span>
+              <p class="cap-d">Included in the service.</p>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -1437,16 +1768,18 @@ footer p + p{margin-top:8px}
   }
 
   function derive(step){
-    var nodes = 0, running = 0, query = 0;
+    var nodes = 0, running = 0, query = 0, readable = 0;
     step.regions.forEach(function(r){
       r.nodes.forEach(function(nd){
         if(nd.ghost) return;
         nodes += 1;
         running += nd.cores;
         if(nd.q === "rw" || nd.q === "ro") query += nd.cores;
+        if(nd.q === "ro") readable += 1;
       });
     });
-    return { nodes:nodes, running:running, query:query, licenses:step.licenses, patch:step.patch };
+    return { nodes:nodes, running:running, query:query, readable:readable,
+             licenses:step.licenses, patch:step.patch };
   }
 
   function diff(cur, prev, invert){
@@ -1506,7 +1839,7 @@ footer p + p{margin-top:8px}
         metricHTML("SQL SERVER CORE LICENSES CONSUMED", m.licenses, "of " + v + " owned",
                    diff(m.licenses, pm && pm.licenses, true), false) +
         metricHTML("CORES YOU CAN QUERY", m.query,
-                   m.query > m.running / 2 ? "Read-write plus read-only" : "Read-write only",
+                   m.readable > 0 ? "Read-write plus read-only" : "Read-write only",
                    diff(m.query, pm && pm.query, false), false) +
         metricHTML("MACHINES YOU PATCH", m.patch, m.patch === 0 ? "Microsoft operates every node" : null,
                    diff(m.patch, pm && pm.patch, true), m.patch === 0);
@@ -1547,16 +1880,81 @@ footer p + p{margin-top:8px}
         '<p>Switch the edition control to Enterprise to see what this step costs, or move on to ' +
         'the platform services where a readable secondary is part of the price.</p></div>';
     } else {
+      /* Set boundaries: each frame encloses exactly the nodes it counts.
+         Nodes are already ordered licensed -> queryable -> passive inside
+         every region, so each set is a contiguous run and the frames nest
+         without any absolute positioning. */
+      var passive = m.running - m.query;
+      var isQ = function(nd){ return nd.q === "rw" || nd.q === "ro"; };
+      var isL = function(nd){ return !!nd.badge && nd.badge.c === "pay"; };
+      var sum = function(a){
+        return a.reduce(function(t, nd){ return t + nd.cores; }, 0);
+      };
+      var grp = function(k, val, lab, inner){
+        return '<div class="grp g-' + k + '">' +
+                 '<span class="grp-lab ' + k + '" aria-hidden="true">' +
+                   '<b class="ev num">' + val + '</b>' + lab +
+                 '</span>' +
+                 '<div class="grp-body">' + inner + '</div>' +
+               '</div>';
+      };
+
+      var licDone = false;
       var body = step.regions.map(function(r){
+        var live   = r.nodes.filter(function(nd){ return !nd.ghost; });
+        var ghosts = r.nodes.filter(function(nd){ return nd.ghost; });
+        var qN = live.filter(isQ);
+        var pN = live.filter(function(nd){ return !isQ(nd); });
+        var lN = qN.filter(isL);
+        var qOnly = qN.filter(function(nd){ return !isL(nd); });
+        var inner = "";
+
+        if(qN.length){
+          var qInner = "";
+          if(lN.length){
+            /* The license count is a whole-step figure, so it is only shown on
+               the first region that holds licensed nodes. License units and
+               vCores are different quantities, so the label names both. */
+            qInner += grp("lic", licDone ? sum(lN) : m.licenses,
+                          licDone ? "MORE CORES COVERED"
+                                  : "LICENSES COVER THESE " + sum(lN) + " CORES",
+                          lN.map(nodeHTML).join(""));
+            licDone = true;
+          }
+          qInner += qOnly.map(nodeHTML).join("");
+          inner += grp("qry", sum(qN), "CORES YOU CAN QUERY", qInner);
+        }
+        if(pN.length){
+          inner += grp("pas", sum(pN), "PASSIVE CORES", pN.map(nodeHTML).join(""));
+        }
+
         return '<div class="region"><p class="region-name">' + r.name + '</p>' +
-               '<div class="nodes">' + r.nodes.map(nodeHTML).join("") + '</div></div>';
+               '<div class="nodes">' +
+                 (live.length ? grp("run", sum(live), "CORES RUNNING", inner) : "") +
+                 ghosts.map(nodeHTML).join("") +
+               '</div></div>';
       }).join("");
+
+      body =
+        '<p class="vh">Of ' + m.running + ' cores running, ' + m.query +
+        ' are queryable and ' + passive + ' are passive. ' + m.licenses +
+        ' consume a SQL Server core license.</p>' + body +
+        '<p class="grp-note">Every frame draws a boundary around the machines it counts, so ' +
+        'the licensed frame shows you exactly which nodes your SQL Server licenses pay for. ' +
+        'A quantity that is zero in a region has no frame there at all.</p>';
+
       if(step.storage){ body += '<div class="storage-row">' + step.storage + '</div>'; }
       body += '<div class="legend">' +
         '<span><i class="pay"></i>Cores you license</span>' +
         '<span><i class="free"></i>Running, no SQL license cost</span>' +
         '<span><i class="ro"></i>Readable</span>' +
         '<span><i class="idle"></i>Running, not queryable</span>' +
+        '</div>' +
+        '<div class="legend frames">' +
+        '<span><i class="f-run"></i>Cores running</span>' +
+        '<span><i class="f-qry"></i>Cores you can query</span>' +
+        '<span><i class="f-pas"></i>Passive cores</span>' +
+        '<span><i class="f-lic"></i>Cores your licenses pay for</span>' +
         '</div>';
       stage.innerHTML = '<div class="topo">' + body + '</div>';
     }
