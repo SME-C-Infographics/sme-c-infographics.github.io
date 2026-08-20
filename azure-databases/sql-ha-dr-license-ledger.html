@@ -489,6 +489,49 @@ td.n{font-variant-numeric:tabular-nums;white-space:nowrap}
 .no{color:var(--ink-3)}
 .part{color:var(--warn);font-weight:600}
 
+/* Capability matrix. Every cell leads with a verdict you can scan across a row,
+   then gives the detail underneath, so the table answers "can it?" at a glance
+   and "how exactly?" on a closer read. The verdict never rests on colour alone:
+   each chip carries a glyph and a word as well. */
+.cap-legend{
+  display:flex;flex-wrap:wrap;gap:10px 22px;
+  margin-bottom:15px;font-size:.8rem;color:var(--ink-2);
+}
+.cap-legend > span{display:inline-flex;align-items:center;gap:9px}
+.cap-chip{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:3px 10px 3px 8px;border-radius:20px;border:1px solid;
+  font-size:.71rem;font-weight:700;letter-spacing:.02em;line-height:1.4;
+  white-space:nowrap;
+}
+.cap-chip svg{width:11px;height:11px;flex:none}
+.cap-chip.yes{color:var(--good);background:var(--good-soft);border-color:#bfe0cf}
+.cap-chip.diy{color:var(--warn);background:var(--warn-soft);border-color:#e8d3a8}
+.cap-chip.no{color:var(--ink-3);background:var(--rule-soft);border-color:var(--rule);font-weight:600}
+.cap-chip.num{
+  color:var(--ink);background:var(--paper);border-color:var(--rule);
+  font-variant-numeric:tabular-nums;letter-spacing:0;
+}
+.cap-d{margin-top:7px;font-size:.83rem;color:var(--ink-2);line-height:1.5}
+/* The capability column stays put while the platform columns scroll under it.
+   Separate borders (spacing zero, so it looks identical) are required here:
+   Chromium leaks neighbouring cell text through a sticky cell when the table
+   uses the collapsed border model. */
+#capability table{border-collapse:separate;border-spacing:0}
+#capability tbody th{
+  position:sticky;left:0;z-index:5;
+  background:var(--paper-2);border-right:1px solid var(--rule);
+  box-shadow:6px 0 8px -8px rgba(16,21,28,.28);
+}
+#capability thead th:first-child{
+  position:sticky;left:0;z-index:6;border-right:1px solid var(--rule);
+  box-shadow:6px 0 8px -8px rgba(16,21,28,.28);
+}
+#capability tbody tr:last-child th{border-bottom:0}
+#capability caption > span{position:sticky;left:0;display:inline-block}
+#capability tbody tr:hover th,#capability tbody tr:hover td{background:var(--paper)}
+#capability thead th .dot{margin-right:7px}
+
 /* stop-operating list */
 .stops{display:grid;grid-template-columns:repeat(2,1fr);gap:0;border:1px solid var(--rule);border-radius:10px;overflow:hidden;background:var(--paper-2)}
 .stop-item{padding:20px 24px;border-bottom:1px solid var(--rule-soft);border-right:1px solid var(--rule-soft)}
@@ -1099,77 +1142,185 @@ footer p + p{margin-top:8px}
       </p>
     </div>
 
+    <svg class="vh" aria-hidden="true" focusable="false"><defs>
+      <symbol id="g-yes" viewBox="0 0 12 12">
+        <path d="M1.6 6.3 4.6 9.3 10.4 2.9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </symbol>
+      <symbol id="g-diy" viewBox="0 0 12 12">
+        <circle cx="6" cy="6" r="4.7" fill="none" stroke="currentColor" stroke-width="1.7"/>
+        <path d="M6 1.3a4.7 4.7 0 0 0 0 9.4z" fill="currentColor"/>
+      </symbol>
+      <symbol id="g-no" viewBox="0 0 12 12">
+        <path d="M3.2 3.2 8.8 8.8M8.8 3.2 3.2 8.8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+      </symbol>
+    </defs></svg>
+
+    <div class="cap-legend">
+      <span><span class="cap-chip yes"><svg aria-hidden="true"><use href="#g-yes"/></svg>Built in</span> the platform does it for you</span>
+      <span><span class="cap-chip diy"><svg aria-hidden="true"><use href="#g-diy"/></svg>You build it</span> possible, but it is your work and your licenses</span>
+      <span><span class="cap-chip no"><svg aria-hidden="true"><use href="#g-no"/></svg>Not available</span> not offered on this platform</span>
+    </div>
+
     <div class="tbl-scroll">
       <table>
-        <caption>Business continuity capabilities by platform</caption>
+        <caption><span>Business continuity capabilities by platform</span></caption>
         <thead>
           <tr>
             <th scope="col">Capability</th>
-            <th scope="col">SQL Server, hardware or Azure VM</th>
-            <th scope="col">Azure SQL Managed Instance</th>
-            <th scope="col">Azure SQL Database</th>
+            <th scope="col"><span class="dot iaas"></span>SQL Server, hardware or Azure VM</th>
+            <th scope="col"><span class="dot mi"></span>Azure SQL Managed Instance</th>
+            <th scope="col"><span class="dot db"></span>Azure SQL Database</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <th scope="row">High availability inside a region</th>
-            <td>You build it: failover cluster instances or availability groups</td>
-            <td class="yes">Built in, included in the price</td>
-            <td class="yes">Built in, included in the price</td>
+            <td>
+              <span class="cap-chip diy"><svg aria-hidden="true"><use href="#g-diy"/></svg>You build it</span>
+              <p class="cap-d">Failover cluster instances or availability groups.</p>
+            </td>
+            <td>
+              <span class="cap-chip yes"><svg aria-hidden="true"><use href="#g-yes"/></svg>Built in</span>
+              <p class="cap-d">Included in the price.</p>
+            </td>
+            <td>
+              <span class="cap-chip yes"><svg aria-hidden="true"><use href="#g-yes"/></svg>Built in</span>
+              <p class="cap-d">Included in the price.</p>
+            </td>
           </tr>
           <tr>
             <th scope="row">Nodes in the high availability tier</th>
-            <td>You choose, up to 8 secondaries on Enterprise, 5 synchronous</td>
-            <td>1 node General Purpose, 4 nodes Business Critical</td>
-            <td>1 node General Purpose, 4 nodes Business Critical, 0 to 4 configurable on Hyperscale</td>
+            <td>
+              <span class="cap-chip num">Up to 8</span>
+              <p class="cap-d">Secondaries on Enterprise, 5 of them synchronous.</p>
+            </td>
+            <td>
+              <span class="cap-chip num">1 or 4</span>
+              <p class="cap-d">1 node on General Purpose, 4 on Business Critical.</p>
+            </td>
+            <td>
+              <span class="cap-chip num">1, 4 or 0&ndash;4</span>
+              <p class="cap-d">1 node on General Purpose, 4 on Business Critical, 0 to 4 configurable on Hyperscale.</p>
+            </td>
           </tr>
           <tr>
             <th scope="row">Zone redundancy</th>
-            <td class="part">Availability zones, you place and license the VMs</td>
-            <td class="part">Available; Next-gen General Purpose is in preview</td>
-            <td class="yes">Available on General Purpose and Business Critical</td>
+            <td>
+              <span class="cap-chip diy"><svg aria-hidden="true"><use href="#g-diy"/></svg>You build it</span>
+              <p class="cap-d">Availability zones, but you place and license the VMs.</p>
+            </td>
+            <td>
+              <span class="cap-chip yes"><svg aria-hidden="true"><use href="#g-yes"/></svg>Available</span>
+              <p class="cap-d">Next-gen General Purpose is in preview.</p>
+            </td>
+            <td>
+              <span class="cap-chip yes"><svg aria-hidden="true"><use href="#g-yes"/></svg>Available</span>
+              <p class="cap-d">On General Purpose and Business Critical.</p>
+            </td>
           </tr>
           <tr>
             <th scope="row">Readable secondary</th>
-            <td class="part">Yes, but it must be fully licensed</td>
-            <td class="yes">One included on Business Critical, no extra charge</td>
-            <td class="yes">One included on Business Critical, no extra charge</td>
+            <td>
+              <span class="cap-chip diy"><svg aria-hidden="true"><use href="#g-diy"/></svg>You license it</span>
+              <p class="cap-d">Supported, but the replica must be fully licensed.</p>
+            </td>
+            <td>
+              <span class="cap-chip yes"><svg aria-hidden="true"><use href="#g-yes"/></svg>Built in</span>
+              <p class="cap-d">One included on Business Critical, no extra charge.</p>
+            </td>
+            <td>
+              <span class="cap-chip yes"><svg aria-hidden="true"><use href="#g-yes"/></svg>Built in</span>
+              <p class="cap-d">One included on Business Critical, no extra charge.</p>
+            </td>
           </tr>
           <tr>
             <th scope="row">Per-database geo-replication</th>
-            <td class="part">Availability groups and distributed availability groups</td>
-            <td class="no">Not available &mdash; failover groups operate at instance scope</td>
-            <td class="yes">Active geo-replication, up to 4 readable geo-secondaries</td>
+            <td>
+              <span class="cap-chip diy"><svg aria-hidden="true"><use href="#g-diy"/></svg>You build it</span>
+              <p class="cap-d">Availability groups and distributed availability groups.</p>
+            </td>
+            <td>
+              <span class="cap-chip no"><svg aria-hidden="true"><use href="#g-no"/></svg>Not available</span>
+              <p class="cap-d">Failover groups operate at instance scope.</p>
+            </td>
+            <td>
+              <span class="cap-chip yes"><svg aria-hidden="true"><use href="#g-yes"/></svg>Available</span>
+              <p class="cap-d">Active geo-replication, up to 4 readable geo-secondaries.</p>
+            </td>
           </tr>
           <tr>
             <th scope="row">Cross-region failover group</th>
-            <td class="part">You build it with distributed availability groups</td>
-            <td class="yes">Yes, instance scope</td>
-            <td class="yes">Yes, database and elastic pool scope</td>
+            <td>
+              <span class="cap-chip diy"><svg aria-hidden="true"><use href="#g-diy"/></svg>You build it</span>
+              <p class="cap-d">Distributed availability groups.</p>
+            </td>
+            <td>
+              <span class="cap-chip yes"><svg aria-hidden="true"><use href="#g-yes"/></svg>Available</span>
+              <p class="cap-d">Instance scope.</p>
+            </td>
+            <td>
+              <span class="cap-chip yes"><svg aria-hidden="true"><use href="#g-yes"/></svg>Available</span>
+              <p class="cap-d">Database and elastic pool scope.</p>
+            </td>
           </tr>
           <tr>
             <th scope="row">Point-in-time restore</th>
-            <td>You own the backup chain</td>
-            <td class="yes">7 days default, 1 to 35 configurable</td>
-            <td class="yes">7 days default, 1 to 35 configurable</td>
+            <td>
+              <span class="cap-chip diy"><svg aria-hidden="true"><use href="#g-diy"/></svg>You own it</span>
+              <p class="cap-d">You own the backup chain.</p>
+            </td>
+            <td>
+              <span class="cap-chip yes"><svg aria-hidden="true"><use href="#g-yes"/></svg>Built in</span>
+              <p class="cap-d">7 days default, 1 to 35 configurable.</p>
+            </td>
+            <td>
+              <span class="cap-chip yes"><svg aria-hidden="true"><use href="#g-yes"/></svg>Built in</span>
+              <p class="cap-d">7 days default, 1 to 35 configurable.</p>
+            </td>
           </tr>
           <tr>
             <th scope="row">Long-term retention</th>
-            <td>You own it</td>
-            <td class="yes">Up to 10 years</td>
-            <td class="yes">Up to 10 years</td>
+            <td>
+              <span class="cap-chip diy"><svg aria-hidden="true"><use href="#g-diy"/></svg>You own it</span>
+              <p class="cap-d">Yours to schedule, store and prove.</p>
+            </td>
+            <td>
+              <span class="cap-chip yes"><svg aria-hidden="true"><use href="#g-yes"/></svg>Built in</span>
+              <p class="cap-d">Up to 10 years.</p>
+            </td>
+            <td>
+              <span class="cap-chip yes"><svg aria-hidden="true"><use href="#g-yes"/></svg>Built in</span>
+              <p class="cap-d">Up to 10 years.</p>
+            </td>
           </tr>
           <tr>
             <th scope="row">Link to Azure from SQL Server</th>
-            <td class="yes">Managed Instance link, generally available for SQL Server 2016 through 2025</td>
-            <td class="yes">Bidirectional failback generally available for SQL Server 2022 RTM and SQL Server 2025</td>
-            <td class="no">Not applicable</td>
+            <td>
+              <span class="cap-chip yes"><svg aria-hidden="true"><use href="#g-yes"/></svg>Available</span>
+              <p class="cap-d">Managed Instance link, generally available for SQL Server 2016 through 2025.</p>
+            </td>
+            <td>
+              <span class="cap-chip yes"><svg aria-hidden="true"><use href="#g-yes"/></svg>Available</span>
+              <p class="cap-d">Bidirectional failback generally available for SQL Server 2022 RTM and SQL Server 2025.</p>
+            </td>
+            <td>
+              <span class="cap-chip no"><svg aria-hidden="true"><use href="#g-no"/></svg>Not applicable</span>
+            </td>
           </tr>
           <tr>
             <th scope="row">Patching and cluster operations</th>
-            <td class="part">Yours: guest OS, SQL binaries, cluster, quorum, witness</td>
-            <td class="yes">Microsoft's</td>
-            <td class="yes">Microsoft's</td>
+            <td>
+              <span class="cap-chip diy"><svg aria-hidden="true"><use href="#g-diy"/></svg>Yours</span>
+              <p class="cap-d">Guest OS, SQL binaries, cluster, quorum, witness.</p>
+            </td>
+            <td>
+              <span class="cap-chip yes"><svg aria-hidden="true"><use href="#g-yes"/></svg>Microsoft&rsquo;s</span>
+              <p class="cap-d">Included in the service.</p>
+            </td>
+            <td>
+              <span class="cap-chip yes"><svg aria-hidden="true"><use href="#g-yes"/></svg>Microsoft&rsquo;s</span>
+              <p class="cap-d">Included in the service.</p>
+            </td>
           </tr>
         </tbody>
       </table>
