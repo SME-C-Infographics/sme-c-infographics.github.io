@@ -351,7 +351,7 @@
     <div class="eol-banner reveal">
       <h3>End of Support Date</h3>
       <div class="date">July 14, 2026</div>
-      <p style="margin-top:.5rem;opacity:.9;">No more critical or important security patches after this date</p>
+      <p style="margin-top:.5rem;opacity:.9;">No more patches or security updates after this date without ESU coverage</p>
     </div>
     <div class="reveal" style="transition-delay:.15s">
       <h3 style="font-size:1.05rem;margin-bottom:1rem;">Security Updates You Will Lose</h3>
@@ -432,7 +432,7 @@
         <thead><tr><th>Metric</th><th>GP (Current)</th><th>GP Next-Gen</th></tr></thead>
         <tbody>
           <tr><td>Avg I/O Latency</td><td>5&ndash;10 ms</td><td>3&ndash;5 ms <span class="imp">~2x faster</span></td></tr>
-          <tr><td>Max Data IOPS</td><td>30&ndash;50k</td><td>80k <span class="imp">~2x</span></td></tr>
+          <tr><td>Data IOPS</td><td>500&ndash;7,500 per file</td><td>Up to 80k / instance <span class="imp">higher cap</span></td></tr>
           <tr><td>Max Log Rate</td><td>120 MB/s</td><td>192 MB/s <span class="imp">+60%</span></td></tr>
           <tr><td>Max Storage</td><td>16 TB</td><td>32 TB <span class="imp">2x</span></td></tr>
           <tr><td>Max DBs / Instance</td><td>100</td><td>500 <span class="imp">5x density</span></td></tr>
@@ -588,7 +588,7 @@
     </div>
     <div class="price-card reveal" style="transition-delay:.1s">
       <h3 style="font-size:1.1rem;margin-bottom:.75rem;">ESU Pricing</h3>
-      <p style="font-size:.88rem;color:#555;margin-bottom:1rem;">Consistent pricing at 100% of full annual license price. Per 2-core pack (minimum 4 cores). No price increase from SQL 2014 ESUs.</p>
+      <p style="font-size:.88rem;color:#555;margin-bottom:1rem;">SQL Server 2016 ESUs are available until July 17, 2029. Subscriptions are billed hourly and can be licensed by virtual cores or physical cores through Azure Arc where supported.</p>
       <table class="price-tbl">
         <thead><tr><th>Environment</th><th>SQL 2014 ESU</th><th>SQL 2016 ESU</th></tr></thead>
         <tbody>
@@ -601,7 +601,7 @@
       </table>
       <div style="margin-top:1rem;padding:.75rem;background:#fff4ce;border-radius:8px;font-size:.85rem;">
         <strong>Key change:</strong> SQL 2016 ESUs are now paid across all environments, including Azure VMs&mdash;creating consistent pricing.
-        <br>List price: <strong>Standard $3,353/yr</strong> &middot; <strong>Enterprise $12,854/yr</strong> &middot; Same price across all 3 years.
+        <br>Subscriptions can be canceled when you migrate to Azure SQL or upgrade to a supported SQL Server version.
       </div>
     </div>
   </div>
@@ -649,8 +649,8 @@
       <p class="section-sub">The most secure, performant, and AI-ready SQL Server ever.</p>
     </div>
     <div class="reasons-list">
-      <div class="reason-item reveal"><h4>Industry-Leading Security</h4><p>Fewest vulnerabilities of any major database&mdash;62 CVEs vs. 1,193 for MySQL, 198 for Oracle, 195 for PostgreSQL (NIST NVD 2016&ndash;2025).</p></div>
-      <div class="reason-item reveal" style="transition-delay:.04s"><h4>Built-In AI &amp; Vector Search</h4><p>Native vector capabilities for semantic search&mdash;no third-party tools required.</p></div>
+      <div class="reason-item reveal"><h4>Security Enhancements</h4><p>New security capabilities include PBKDF2 password hashes by default, OAEP padding support, and TLS 1.3 with TDS 8.0.</p></div>
+      <div class="reason-item reveal" style="transition-delay:.04s"><h4>Built-In AI &amp; Vector Search</h4><p>Native vector data type, vector functions, and preview vector search capabilities for semantic search.</p></div>
       <div class="reason-item reveal" style="transition-delay:.08s"><h4>Modern Developer Workflows</h4><p>Streamlined tooling to build modern data applications faster than ever.</p></div>
       <div class="reason-item reveal" style="transition-delay:.12s"><h4>Frictionless Analytics via Fabric</h4><p>Direct integration with Microsoft Fabric for unified analytics at any scale.</p></div>
       <div class="reason-item reveal" style="transition-delay:.16s"><h4>Flexible Deployment</h4><p>Run in Azure or on-premises&mdash;same capabilities, your choice of environment.</p></div>
@@ -700,7 +700,7 @@
       </div>
       <div class="acc-item">
         <div class="acc-hdr">What is Next-Gen General Purpose? <span class="chev">&#9660;</span></div>
-        <div class="acc-body"><div class="acc-inner">Next-Gen GP is a new Azure SQL Managed Instance tier that uses premium managed disks instead of page blobs. It delivers 3&ndash;5x better performance for OLTP and analytical workloads, 5x better database density, 2x storage scale, and 2x improved vCore flexibility&mdash;all at the General Purpose price point.</div></div>
+        <div class="acc-body"><div class="acc-inner">Next-Gen GP is an upgraded Azure SQL Managed Instance tier that uses Elastic SAN instead of page blobs. It improves storage latency, IOPS, and throughput, supports up to 500 databases per instance, 32 TB of storage, and up to 128 vCores&mdash;with the same baseline cost as General Purpose.</div></div>
       </div>
     </div>
   </div>
