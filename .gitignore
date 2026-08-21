@@ -2,6 +2,10 @@
 # not intended to be committed.
 reports/
 
+# Local design-critique snapshots written by the impeccable skill. Useful for
+# tracking a page's design history on one machine; not part of the site.
+.impeccable/
+
 # Python
 __pycache__/
 *.py[cod]
