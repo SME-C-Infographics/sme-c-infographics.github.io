@@ -944,7 +944,7 @@
 <!-- smec-favicon v1 -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <!-- smec-accuracy v1 -->
-<meta name="smec:last-accuracy-check" content="2026-07-23">
+<meta name="smec:last-accuracy-check" content="2026-08-27">
 <style>/* smec-back-btn v2 */
 .smec-back-btn { position: fixed; bottom: 16px; left: 16px; z-index: 9999;
   box-sizing: border-box;
@@ -1118,7 +1118,7 @@
                 <h4>Best Practices</h4>
                 <ul>
                   <li>Never delete bronze data</li>
-                  <li>Partition by ingestion date</li>
+                  <li>Avoid partitioning by default</li>
                   <li>Add audit columns (_ingestion_ts)</li>
                   <li>Use shortcuts instead of copying</li>
                   <li>Handle schema evolution</li>
@@ -1175,7 +1175,7 @@
                 <h4>Storage Format</h4>
                 <ul>
                   <li>Delta tables (recommended)</li>
-                  <li>V-Order for read-heavy SQL/BI tables</li>
+                  <li>V-Order only for Direct Lake tables</li>
                   <li>Liquid Clustering preferred</li>
                   <li>OPTIMIZE &amp; VACUUM maintenance</li>
                 </ul>
@@ -1186,7 +1186,7 @@
                   <li>Apply data quality rules here</li>
                   <li>Resolve heavy logic before Gold</li>
                   <li>Use MERGE for upserts</li>
-                  <li>Target 128-256 MB file sizes</li>
+                  <li>Keep adaptive target file size on</li>
                   <li>Enforce conformed dimensions</li>
                 </ul>
               </div>
@@ -1242,8 +1242,8 @@
                 <ul>
                   <li>Delta tables (optimized)</li>
                   <li>Warehouse tables for SQL</li>
-                  <li>V-Order for fast reads</li>
-                  <li>Large file sizes (400 MB–1 GB)</li>
+                  <li>V-Order on by default in Warehouse</li>
+                  <li>Larger files &amp; row groups for serving</li>
                 </ul>
               </div>
               <div class="detail-item">
@@ -1512,13 +1512,13 @@
         <div class="practice-number">01</div>
         <div class="practice-icon">&#128230;</div>
         <h3>Optimize File Sizes</h3>
-        <p>Target 128-256 MB files in the Silver layer, 400 MB–1 GB in the Gold layer. Smaller files are fine in Bronze. Use OPTIMIZE command to compact small files.</p>
+        <p>Keep Fabric Spark's adaptive target file size enabled — it selects a target between 128 MB and 1 GB per table. Use moderate sizes in Silver, larger files and row groups in Gold; smaller files are fine in Bronze. Prefer auto compaction, and run OPTIMIZE for existing small-file backlogs.</p>
       </div>
       <div class="practice-card">
         <div class="practice-number">02</div>
         <div class="practice-icon">&#128218;</div>
         <h3>Use Liquid Clustering</h3>
-        <p>Prefer Liquid Clustering over partitioning in Silver/Gold layers for better query performance. Partitioning works well in Bronze for ingestion patterns.</p>
+        <p>Prefer Liquid Clustering over partitioning in Silver/Gold layers for better file skipping. Avoid partitioning by default — in Bronze it's acceptable but discouraged for new implementations.</p>
       </div>
       <div class="practice-card">
         <div class="practice-number">03</div>
@@ -1542,7 +1542,7 @@
         <div class="practice-number">06</div>
         <div class="practice-icon">&#9889;</div>
         <h3>Use V-Order Selectively</h3>
-        <p>V-Order is disabled by default in new Fabric workspaces. Enable it on Silver and Gold tables — especially those serving Power BI Direct Lake and SQL analytics endpoints — for significantly faster reads.</p>
+        <p>V-Order is disabled by default in new Fabric workspaces. Enable it on Spark-written Silver and Gold tables when Power BI Direct Lake is a primary consumer — don't enable it solely for Spark or SQL analytics endpoint performance. In Fabric Data Warehouse, V-Order stays enabled by default.</p>
       </div>
     </div>
   </div>
