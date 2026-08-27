@@ -481,7 +481,7 @@
 <!-- smec-favicon v1 -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <!-- smec-accuracy v1 -->
-<meta name="smec:last-accuracy-check" content="2026-07-23">
+<meta name="smec:last-accuracy-check" content="2026-08-27">
 <style>/* smec-back-btn v2 */
 .smec-back-btn { position: fixed; bottom: 16px; left: 16px; z-index: 9999;
   box-sizing: border-box;
@@ -602,7 +602,7 @@
 <div class="container">
   <div class="stats-bar">
     <div class="stat-card" data-animate>
-      <div class="stat-number" data-count="7">0</div>
+      <div class="stat-number" data-count="9">0</div>
       <div class="stat-label">Core Workloads</div>
     </div>
     <div class="stat-card" data-animate>
@@ -647,6 +647,8 @@
         <div class="spoke-item" data-animate><span class="spoke-dot"></span>Data Warehouse</div>
         <div class="spoke-item" data-animate><span class="spoke-dot"></span>Data Factory</div>
         <div class="spoke-item" data-animate><span class="spoke-dot"></span>Databases</div>
+        <div class="spoke-item" data-animate><span class="spoke-dot"></span>Industry Solutions</div>
+        <div class="spoke-item" data-animate><span class="spoke-dot"></span>Fabric IQ (preview)</div>
         <div class="spoke-item" data-animate><span class="spoke-dot"></span>OneLake Storage</div>
         <div class="spoke-item" data-animate><span class="spoke-dot"></span>Governance</div>
       </div>
@@ -773,7 +775,7 @@
       <div class="feature-card theme-teal" data-animate>
         <div class="feature-icon">&#x26A1;</div>
         <h3>Elastic Compute</h3>
-        <p>Scale compute resources up or down in seconds. Only pay for what you use, with automatic pause and resume for idle workloads.</p>
+        <p>Storage and compute are separated, so the warehouse scales near instantaneously to meet demand. Compute is billed through your Fabric capacity, which you can pause when it isn't in use to save cost.</p>
       </div>
       <div class="feature-card theme-teal" data-animate>
         <div class="feature-icon">&#x1F4BE;</div>
@@ -824,7 +826,7 @@
       </div>
       <div class="tab-panel" id="tab-deployment">
         <h4>Seamless Model Deployment</h4>
-        <p>Deploy models directly to Power BI for real-time scoring, or publish REST endpoints for application integration. Built-in monitoring tracks model performance and detects drift automatically.</p>
+        <p>Operationalize registered MLflow models with the scalable PREDICT function for batch scoring &mdash; from a notebook or the model item page. Write predictions back to OneLake and surface them in Power BI reports through semantic link.</p>
       </div>
     </div>
 
@@ -844,7 +846,7 @@
       </div>
       <div class="timeline-item" data-animate>
         <h4>Production Deployment</h4>
-        <p>Register models in MLflow, deploy to endpoints, and integrate predictions directly into BI reports.</p>
+        <p>Register models with MLflow, generate batch predictions with PREDICT, and integrate those predictions directly into BI reports.</p>
       </div>
     </div>
   </div>
