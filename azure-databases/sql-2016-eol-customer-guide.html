@@ -239,7 +239,7 @@
 <!-- smec-favicon v1 -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <!-- smec-accuracy v1 -->
-<meta name="smec:last-accuracy-check" content="2026-07-16">
+<meta name="smec:last-accuracy-check" content="2026-08-27">
 <style>/* smec-back-btn v2 */
 .smec-back-btn { position: fixed; bottom: 16px; left: 16px; z-index: 9999;
   box-sizing: border-box;
@@ -326,14 +326,15 @@
 <!-- Hero -->
 <section class="hero">
   <div class="hero-badge">Microsoft Azure &bull; SQL Server</div>
-  <h1>SQL Server 2016 Is Reaching<br>End of Support</h1>
-  <p>Do you know your options? Security updates end <strong>July 14, 2026</strong>. Plan your path forward&mdash;modernize, upgrade, or extend.</p>
+  <h1>SQL Server 2016 Has Reached<br>End of Support</h1>
+  <p>Do you know your options? Security updates ended <strong>July 14, 2026</strong>. Plan your path forward&mdash;modernize, upgrade, or extend.</p>
   <div class="countdown" id="countdown">
     <div class="cd-item"><div class="cd-num" id="cd-d">--</div><div class="cd-lbl">Days</div></div>
     <div class="cd-item"><div class="cd-num" id="cd-h">--</div><div class="cd-lbl">Hours</div></div>
     <div class="cd-item"><div class="cd-num" id="cd-m">--</div><div class="cd-lbl">Minutes</div></div>
     <div class="cd-item"><div class="cd-num" id="cd-s">--</div><div class="cd-lbl">Seconds</div></div>
   </div>
+  <p style="margin-top:1rem;font-size:.8rem;letter-spacing:.08em;text-transform:uppercase;opacity:.8;">Time since end of support</p>
   <div class="hero-cta">
     <a href="#options" class="btn btn-primary">See Your Options</a>
     <a href="#decide" class="btn btn-outline">Interactive Decision Guide</a>
@@ -346,7 +347,7 @@
     <div class="reveal">
       <span class="section-label">End of Support</span>
       <h2 class="section-title">What Does End of Support Mean?</h2>
-      <p class="section-sub">After the end-of-support date, Microsoft will no longer provide security updates for SQL Server 2016&mdash;leaving your databases exposed to unpatched vulnerabilities.</p>
+      <p class="section-sub">Now that the end-of-support date has passed, Microsoft no longer provides security updates for SQL Server 2016&mdash;leaving your databases exposed to unpatched vulnerabilities.</p>
     </div>
     <div class="eol-banner reveal">
       <h3>End of Support Date</h3>
@@ -354,7 +355,7 @@
       <p style="margin-top:.5rem;opacity:.9;">No more patches or security updates after this date without ESU coverage</p>
     </div>
     <div class="reveal" style="transition-delay:.15s">
-      <h3 style="font-size:1.05rem;margin-bottom:1rem;">Security Updates You Will Lose</h3>
+      <h3 style="font-size:1.05rem;margin-bottom:1rem;">Security Updates You No Longer Receive</h3>
       <table class="sev-table">
         <thead><tr><th>Rating</th><th>What It Means</th></tr></thead>
         <tbody>
@@ -538,10 +539,10 @@
       <p class="section-sub">Multiple entry points for discovering, assessing, and migrating your SQL workloads to Azure.</p>
     </div>
     <div class="tools-grid">
-      <div class="tool-card reveal"><div class="tool-ico">&#128270;</div><h4>Azure Arc</h4><p>Discover and assess SQL workloads at scale. Free for all editions, SQL Server 2012+.</p></div>
+      <div class="tool-card reveal"><div class="tool-ico">&#128270;</div><h4>Azure Arc</h4><p>Discover and assess SQL workloads at scale. Free for all editions, SQL Server 2014+.</p></div>
       <div class="tool-card reveal" style="transition-delay:.05s"><div class="tool-ico">&#128506;</div><h4>Azure Migrate</h4><p>Central hub for datacenter migration with end-to-end tracking and insights.</p></div>
       <div class="tool-card reveal" style="transition-delay:.1s"><div class="tool-ico">&#128259;</div><h4>Azure DMS</h4><p>Database Migration Service for seamless, connected migration to Azure.</p></div>
-      <div class="tool-card reveal" style="transition-delay:.15s"><div class="tool-ico">&#128187;</div><h4>SSMS 21</h4><p>New extension to assess and migrate to Azure SQL VM directly from SSMS.</p></div>
+      <div class="tool-card reveal" style="transition-delay:.15s"><div class="tool-ico">&#128187;</div><h4>SSMS 22</h4><p>Built-in migration component to assess and migrate to Azure SQL directly from SSMS.</p></div>
     </div>
 
     <!-- Arc Assessment -->
@@ -554,7 +555,7 @@
         <div class="arc-feat"><strong>Best-Fit Recommendations</strong><p>Guidance on IaaS vs. PaaS, service tier, sizing, and migration tooling.</p></div>
         <div class="arc-feat"><strong>Continuous Reporting</strong><p>Discovery and readiness reports are instant, automatic, and ongoing.</p></div>
       </div>
-      <div class="arc-free">Free for all customers &bull; All SQL editions &bull; SQL Server 2012+</div>
+      <div class="arc-free">Free for all customers &bull; All SQL editions &bull; SQL Server 2014+</div>
     </div>
 
     <!-- Azure Migrate Hub -->
@@ -679,8 +680,8 @@
     </div>
     <div class="accordion reveal">
       <div class="acc-item">
-        <div class="acc-hdr">What happens after July 14, 2026? <span class="chev">&#9660;</span></div>
-        <div class="acc-body"><div class="acc-inner">Microsoft stops providing security updates for SQL Server 2016. No more critical or important patches, leaving databases vulnerable to newly discovered threats and potentially out of compliance.</div></div>
+        <div class="acc-hdr">What happened after July 14, 2026? <span class="chev">&#9660;</span></div>
+        <div class="acc-body"><div class="acc-inner">Microsoft stopped providing security updates for SQL Server 2016. No more critical or important patches, leaving databases vulnerable to newly discovered threats and potentially out of compliance.</div></div>
       </div>
       <div class="acc-item">
         <div class="acc-hdr">Are ESUs free on Azure VMs for SQL 2016? <span class="chev">&#9660;</span></div>
@@ -688,7 +689,7 @@
       </div>
       <div class="acc-item">
         <div class="acc-hdr">What is the Savings Plan for Databases? <span class="chev">&#9660;</span></div>
-        <div class="acc-body"><div class="acc-inner">A flexible way to save up to 35% by committing to a fixed hourly dollar amount on database services for 1 year. Savings apply globally across participating services. It's ideal for dynamic workloads where usage varies. For stable workloads, Azure Reservations can save up to 55%.</div></div>
+        <div class="acc-body"><div class="acc-inner">A flexible way to save up to 35% by committing to a fixed hourly dollar amount on database services for 1 year. Savings apply globally across participating services. It's ideal for dynamic workloads where usage varies. For stable workloads, Azure Reservations can save up to 33%.</div></div>
       </div>
       <div class="acc-item">
         <div class="acc-hdr">What is Azure Hybrid Benefit? <span class="chev">&#9660;</span></div>
@@ -712,10 +713,10 @@
 </footer>
 
 <script>
-// Countdown
+// Time since end of support
 (function(){
   const eol=new Date('2026-07-14T00:00:00').getTime();
-  function u(){const n=Date.now(),d=eol-n;if(d<=0){document.getElementById('cd-d').textContent='0';return;}
+  function u(){const n=Date.now(),d=Math.abs(n-eol);
   document.getElementById('cd-d').textContent=Math.floor(d/864e5);
   document.getElementById('cd-h').textContent=Math.floor((d%864e5)/36e5);
   document.getElementById('cd-m').textContent=Math.floor((d%36e5)/6e4);
@@ -754,8 +755,8 @@ const tree={id:'s',question:'Can your workload migrate to Azure?',choices:[
   {label:'No, staying on-premises',next:{id:'v',question:'Can you upgrade to SQL Server 2025 on-premises?',choices:[
     {label:'Yes',next:{id:'r4',result:{type:'green',title:'Upgrade to SQL Server 2025 On-Premises',desc:'Built-in AI, industry-leading security, Fabric integration. No ESU needed. Use Azure Arc for ongoing management.'}}},
     {label:'Not yet',next:{id:'w',question:'How would you like to purchase ESU?',choices:[
-      {label:'Azure Arc (monthly, flexible)',next:{id:'r5',result:{type:'blue',title:'ESU via Azure Arc',desc:'Pay monthly, no upfront commitment, stop anytime. Enroll in Azure Portal. Centralized management across all servers.'}}},
-      {label:'Volume Licensing',next:{id:'r6',result:{type:'yellow',title:'ESU via Volume Licensing',desc:'100% of full annual license price. Standard: $3,353/yr, Enterprise: $12,854/yr per 2-core pack. Contact your Microsoft account team.'}}}
+      {label:'Azure Arc (hourly, flexible)',next:{id:'r5',result:{type:'blue',title:'ESU via Azure Arc',desc:'Pay-as-you-go hourly billing, no upfront commitment, cancel anytime. Enroll in Azure Portal. Centralized management across all servers.'}}},
+      {label:'Volume Licensing',next:{id:'r6',result:{type:'yellow',title:'ESU via Volume Licensing',desc:'Approximately 75% of the on-premises license cost annually, and only available with Software Assurance or subscription licenses. Contact your Microsoft account team.'}}}
     ]}}
   ]}}
 ]};
