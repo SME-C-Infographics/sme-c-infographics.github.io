@@ -356,7 +356,7 @@
 <!-- smec-favicon v1 -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <!-- smec-accuracy v1 -->
-<meta name="smec:last-accuracy-check" content="2026-07-16">
+<meta name="smec:last-accuracy-check" content="2026-08-27">
 <style>/* smec-back-btn v2 */
 .smec-back-btn { position: fixed; bottom: 16px; left: 16px; z-index: 9999;
   box-sizing: border-box;
@@ -551,7 +551,7 @@
     <div class="cards">
       <div class="rec-card"><div class="card-accent" style="background:#A855F7"></div><div class="step-num" style="background:#A855F7">1</div><h4>Align to Business, Not Org Chart</h4><p class="desc">Domains should map to <strong>business functions</strong> (Finance, Sales, Operations) or value streams.<br>Not to reporting lines — <strong>org charts change; business functions are stable</strong>.</p></div>
       <div class="rec-card"><div class="card-accent" style="background:#A855F7"></div><div class="step-num" style="background:#A855F7">2</div><h4>Three-Tier Delegation</h4><p class="desc"><strong>Fabric Admin</strong> → sets tenant-level guardrails.<br><strong>Domain Admin</strong> → manages workspaces, access, and settings within their domain.<br><strong>Domain Contributor</strong> → self-service within boundaries.</p></div>
-      <div class="rec-card"><div class="card-accent" style="background:#A855F7"></div><div class="step-num" style="background:#A855F7">3</div><h4>Certification Framework</h4><p class="desc">Two levels:<br><strong>Promoted</strong> — owner recommends it.<br><strong>Certified</strong> — formally reviewed against quality criteria.<br>Certification should require <strong>documented lineage</strong>, refresh reliability, and owner accountability.</p></div>
+      <div class="rec-card"><div class="card-accent" style="background:#A855F7"></div><div class="step-num" style="background:#A855F7">3</div><h4>Certification Framework</h4><p class="desc">Three endorsement types:<br><strong>Promoted</strong> — owner recommends it.<br><strong>Certified</strong> — formally reviewed against quality criteria.<br><strong>Master data</strong> — the organization's single source of truth for core data.<br>Certification should require <strong>documented lineage</strong>, refresh reliability, and owner accountability.</p></div>
       <div class="rec-card"><div class="card-accent" style="background:#A855F7"></div><div class="step-num" style="background:#A855F7">4</div><h4>Default Domain</h4><p class="desc">Configure a <strong>default domain</strong> so new workspaces aren't orphaned.<br>Route them to a <strong>'Sandbox'</strong> or <strong>'Unassigned'</strong> domain for triage.</p></div>
     </div>
 
@@ -621,7 +621,7 @@
       <div class="compare-column pitfall-column">
         <h3 class="column-title pitfall-title">⚠️ Common Pitfalls</h3>
         <div class="pitfall-item"><h4>One shared capacity for everything</h4><p>A single capacity means one runaway notebook can throttle everyone's reports. Separate at least by environment.</p></div>
-        <div class="pitfall-item"><h4>Ignoring the smoothing window</h4><p>Fabric smooths CU consumption over 24 hours. Teams misread this as 'unlimited' until they hit rejection.</p></div>
+        <div class="pitfall-item"><h4>Ignoring the smoothing window</h4><p>Fabric smooths background job CU consumption over 24 hours (interactive jobs over a minimum of 5 minutes). Teams misread this as 'unlimited' until they hit rejection.</p></div>
         <div class="pitfall-item"><h4>No cost visibility</h4><p>Without showback, no one knows their workloads cost $8K/month.</p></div>
         <div class="pitfall-item"><h4>Over-provisioning 'just in case'</h4><p>Starting with F64 when F8 would suffice wastes thousands per month. Start small, monitor, right-size.</p></div>
       </div>
@@ -631,7 +631,7 @@
     <div class="cards">
       <div class="rec-card"><div class="card-accent" style="background:#F59E0B"></div><div class="step-num" style="background:#F59E0B">1</div><h4>Capacity Topology</h4><p class="desc"><strong>Pattern 1:</strong> Single shared (NOT for prod).<br><strong>Pattern 2 (Recommended):</strong> Per domain — enables cost attribution.<br><strong>Pattern 3:</strong> Per workload type (interactive vs background).<br><strong>Pattern 4:</strong> Per environment + domain (enterprise).</p></div>
       <div class="rec-card"><div class="card-accent" style="background:#F59E0B"></div><div class="step-num" style="background:#F59E0B">2</div><h4>Monitor Before You Scale</h4><p class="desc">Deploy the <strong>Capacity Metrics app</strong> on day one.<br>Review <strong>weekly</strong>. Scale based on data, not guesses.<br><strong>F2 handles more than you'd expect</strong> for BI-only workloads.</p></div>
-      <div class="rec-card"><div class="card-accent" style="background:#F59E0B"></div><div class="step-num" style="background:#F59E0B">3</div><h4>Smoothing vs Throttling</h4><p class="desc">Fabric's <strong>24h smoothing window</strong> absorbs burst usage.<br>But if your average exceeds capacity:<br><strong>1.</strong> Interactive operations delayed 20 sec (usage &gt; 10 min of capacity)<br><strong>2.</strong> Interactive operations rejected (usage &gt; 60 min of capacity)<br><strong>3.</strong> All requests rejected incl. background (usage &gt; 24 hr)</p></div>
+      <div class="rec-card"><div class="card-accent" style="background:#F59E0B"></div><div class="step-num" style="background:#F59E0B">3</div><h4>Smoothing vs Throttling</h4><p class="desc">Fabric's <strong>24h smoothing window</strong> for background jobs absorbs burst usage (interactive jobs smooth over at least 5 min).<br>But if your average exceeds capacity:<br><strong>1.</strong> Interactive operations delayed 20 sec (usage &gt; 10 min of capacity)<br><strong>2.</strong> Interactive operations rejected (usage &gt; 60 min of capacity)<br><strong>3.</strong> All requests rejected incl. background (usage &gt; 24 hr)</p></div>
       <div class="rec-card"><div class="card-accent" style="background:#F59E0B"></div><div class="step-num" style="background:#F59E0B">4</div><h4>Showback First</h4><p class="desc">Start with <strong>showback</strong>: give each domain visibility into their CU consumption.<br>After <strong>6–12 months</strong> of stable patterns, transition to <strong>chargeback</strong> for true cost accountability.</p></div>
     </div>
 
@@ -710,8 +710,8 @@
     <h3 class="recs-title">💡 Recommendations</h3>
     <div class="cards">
       <div class="rec-card"><div class="card-accent" style="background:#0EA5E9"></div><div class="step-num" style="background:#0EA5E9">1</div><h4>Start with Deployment Pipelines</h4><p class="desc">Fabric's built-in <strong>Deployment Pipelines</strong> are the easiest way to promote content.<br><strong>Dev → Test → Prod</strong> with no code required.<br>Great for BI teams getting started.</p></div>
-      <div class="rec-card"><div class="card-accent" style="background:#0EA5E9"></div><div class="step-num" style="background:#0EA5E9">2</div><h4>Graduate to fabric-cicd</h4><p class="desc">For engineering teams, the <strong>fabric-cicd Python library</strong> enables code-first deployments.<br>Use <strong>parameter.yml</strong> for environment configs.<br>Use <strong>lakehouse_id.yml</strong> for target mapping.</p></div>
-      <div class="rec-card"><div class="card-accent" style="background:#0EA5E9"></div><div class="step-num" style="background:#0EA5E9">3</div><h4>Git Integration</h4><p class="desc">Connect workspaces to <strong>Azure DevOps or GitHub</strong>.<br>Use <strong>feature branches</strong> for development, <strong>PRs</strong> for review, and <strong>main branch</strong> for production.<br>Sync is automatic.</p></div>
+      <div class="rec-card"><div class="card-accent" style="background:#0EA5E9"></div><div class="step-num" style="background:#0EA5E9">2</div><h4>Graduate to fabric-cicd</h4><p class="desc">For engineering teams, the <strong>fabric-cicd Python library</strong> enables code-first deployments.<br>Use <strong>parameter.yml</strong> for environment configs.<br>Use <strong>deploy.yml</strong> to map environments to target workspaces.</p></div>
+      <div class="rec-card"><div class="card-accent" style="background:#0EA5E9"></div><div class="step-num" style="background:#0EA5E9">3</div><h4>Git Integration</h4><p class="desc">Connect workspaces to <strong>Azure DevOps or GitHub</strong>.<br>Use <strong>feature branches</strong> for development, <strong>PRs</strong> for review, and <strong>main branch</strong> for production.<br>Sync is explicit — <strong>commit</strong> workspace changes and <strong>update</strong> from Git yourself, or automate it with the Git REST APIs.</p></div>
       <div class="rec-card"><div class="card-accent" style="background:#0EA5E9"></div><div class="step-num" style="background:#0EA5E9">4</div><h4>Monitor Proactively</h4><p class="desc">Deploy <strong>Capacity Metrics app</strong>. Set alerts for:<br><strong>CU utilization</strong> &gt; 80%<br><strong>Refresh failure rate</strong> &gt; 5%<br><strong>Query duration</strong> &gt; SLA threshold<br>Review weekly — don't wait for user complaints.</p></div>
     </div>
 
