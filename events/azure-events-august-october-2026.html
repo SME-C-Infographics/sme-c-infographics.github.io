@@ -75,6 +75,39 @@
   .group.open .group-body { display: block; }
   .group.open .group-head { border-bottom: 1px solid #f3f2f1; }
   .group .events { margin-top: 18px; }
+
+  /* Spotlight series (non-collapsible, above Microsoft-Led Training) */
+  .spotlight { padding: 48px 0 24px; background: linear-gradient(135deg, #f4f0fb 0%, #eef4fb 55%, #f3f9ff 100%); border-bottom: 1px solid #e6ddf2; }
+  .spotlight .section-header { margin-bottom: 28px; }
+  .spotlight-eyebrow { display: inline-block; text-transform: uppercase; letter-spacing: 2px; font-size: 12.5px; font-weight: 700; color: #5c2d91; background: #ece0f7; padding: 6px 15px; border-radius: 20px; margin-bottom: 15px; }
+  .spotlight .section-header h2 { font-size: 29px; color: #4a2378; margin-bottom: 12px; }
+  .spotlight .section-header p { max-width: 760px; }
+  .spotlight-note { margin-top: 16px; font-size: 14px; color: #605e5c; }
+  .spotlight-note strong { color: #5c2d91; }
+  .tag-spotlight { background: #e7d9f7; color: #5c2d91; }
+  .event-card--spotlight { border-top: 3px solid #5c2d91; }
+  .event-card--spotlight .btn { background: #5c2d91; }
+  .event-card--spotlight .btn:hover { background: #4a2378; }
+  /* Featured sessions gray out when past but are never hidden by "Hide past events" */
+  body.hide-past .event-card--spotlight.event-card--past { display: flex !important; }
+
+  /* Featured series 3D circular (coverflow) carousel */
+  .spotlight .carousel { position: relative; display: flex; align-items: center; gap: 8px; }
+  .spotlight .stage { position: relative; flex: 1 1 auto; height: 560px; perspective: 1700px; overflow: hidden; }
+  .spotlight .carousel-track { position: absolute; inset: 0; transform-style: preserve-3d; }
+  .spotlight .carousel-track .event-card {
+    position: absolute; top: 50%; left: 50%; width: 360px; max-width: 84%; margin: 0;
+    transform-origin: 50% 50%; backface-visibility: hidden;
+    transition: transform 0.6s cubic-bezier(0.22, 0.61, 0.36, 1), opacity 0.6s ease, box-shadow 0.3s ease;
+    will-change: transform, opacity;
+  }
+  .spotlight .carousel-track .event-card.is-active { box-shadow: 0 22px 48px rgba(74, 35, 120, 0.28); }
+  .spotlight .carousel-btn { flex: 0 0 auto; z-index: 200; width: 46px; height: 46px; border-radius: 50%; border: 1px solid #d9c9ef; background: #fff; color: #5c2d91; font-size: 25px; line-height: 1; cursor: pointer; box-shadow: 0 3px 12px rgba(0,0,0,0.12); transition: background 0.15s ease, transform 0.15s ease; }
+  .spotlight .carousel-btn:hover { background: #f3ebfb; transform: scale(1.08); }
+  .spotlight .carousel-dots { display: flex; justify-content: center; gap: 9px; margin-top: 8px; }
+  .spotlight .carousel-dots button { width: 9px; height: 9px; padding: 0; border-radius: 50%; border: none; background: #d3c4ea; cursor: pointer; transition: transform 0.15s ease, background 0.15s ease; }
+  .spotlight .carousel-dots button.active { background: #5c2d91; transform: scale(1.35); }
+  @media (max-width: 640px) { .spotlight .stage { height: 620px; } .spotlight .carousel-track .event-card { width: 300px; } .spotlight .carousel-btn { width: 40px; height: 40px; font-size: 21px; } }
 </style>
 <script defer src="https://a.ndme.sh/script.js" data-website-id="9478c1a0-93c6-4c21-855a-69e50e15cbc4"></script>
 <!-- smec-meta v1 -->
@@ -203,6 +236,72 @@
     <span class="count" id="f-count"></span>
   </div>
 </div>
+
+<section class="spotlight">
+  <div class="container">
+    <div class="section-header">
+      <span class="spotlight-eyebrow">✨ Featured Series</span>
+      <h2>Azure AI Foundry Webinar Series — Build “Remi”: From One Prompt to Production</h2>
+      <p>Five Thursdays, one solution that grows every week. Follow Nimbus, a mid-size insurer, as it builds “Remi,” an always-on claims assistant — starting from a single model call and ending with a governed, evaluated, multi-agent system with a live voice line, all on Azure AI Foundry. Every session is ~60% hands-on build and ~40% business value. Attend one or attend all five; the story compounds.</p>
+      <div class="spotlight-note">🕐 All sessions <strong>Thursdays, Sep 10 – Oct 8</strong> · 3:00 PM EDT / 2:00 PM CDT / 12:00 PM PDT · shown below in your local time zone.</div>
+    </div>
+    <div class="carousel">
+      <button type="button" class="carousel-btn carousel-prev" aria-label="Previous sessions">&#8249;</button>
+      <div class="stage">
+        <div class="carousel-track">
+
+      <div class="event-card event-card--spotlight" data-type="Training" data-modality="Virtual" data-month="9" data-search="azure ai foundry webinar series session 1 foundations and model selection remi nimbus pick the right model quality latency cost model router adjuster note structured claim remi nimbus virtual">
+        <span class="event-tag tag-spotlight">Session 1</span>
+        <h3>Session 1 — Foundations &amp; Model Selection</h3>
+        <div class="event-meta"><span class="icon">📅</span> <span class="event-time" data-start="2026-09-10T19:00:00Z" data-end="2026-09-10T20:30:00Z"></span></div>
+        <div class="event-meta event-meta-sub"><span class="icon">💻</span> Virtual · 90 min · No experience required</div>
+        <p>Cut through the jargon and learn to pick the right model by quality, latency, and cost — not the “best” one. Watch a messy adjuster note turn into a clean, structured claim in seconds, and see a model router send easy work to a cheap model and hard work to a strong one.</p>
+        <div class="card-actions"><a class="btn" href="https://msit.events.teams.microsoft.com/event/msit.a5da4a4d-6ade-4db5-be06-da6c46daa062@72f988bf-86f1-41af-91ab-2d7cd011db47?source=copyLinkOneEventsShareDialog" target="_blank" rel="noopener">Register</a></div>
+      </div>
+
+      <div class="event-card event-card--spotlight" data-type="Training" data-modality="Virtual" data-month="9" data-search="azure ai foundry webinar series session 2 enterprise data grounding and content understanding rag citations scanned packets photos video structured fields remi nimbus virtual">
+        <span class="event-tag tag-spotlight">Session 2</span>
+        <h3>Session 2 — Enterprise Data, Grounding &amp; Content Understanding</h3>
+        <div class="event-meta"><span class="icon">📅</span> <span class="event-time" data-start="2026-09-17T19:00:00Z" data-end="2026-09-17T20:30:00Z"></span></div>
+        <div class="event-meta event-meta-sub"><span class="icon">💻</span> Virtual · 90 min</div>
+        <p>Make AI answer from your own truth. Connect enterprise data, ground it with RAG, and turn scanned packets, photos, and video into structured fields with citations you can defend.</p>
+        <div class="card-actions"><a class="btn" href="https://msit.events.teams.microsoft.com/event/msit.e7db266b-cd24-492c-b4cf-d5baebb6ea22@72f988bf-86f1-41af-91ab-2d7cd011db47?source=copyLinkOneEventsShareDialog" target="_blank" rel="noopener">Register</a></div>
+      </div>
+
+      <div class="event-card event-card--spotlight" data-type="Training" data-modality="Virtual" data-month="9" data-search="azure ai foundry webinar series session 3 tools actions and the hosted agent verify policy live weather estimate payout file claim human approval gate remi nimbus virtual">
+        <span class="event-tag tag-spotlight">Session 3</span>
+        <h3>Session 3 — Tools, Actions &amp; the Hosted Agent</h3>
+        <div class="event-meta"><span class="icon">📅</span> <span class="event-time" data-start="2026-09-24T19:00:00Z" data-end="2026-09-24T20:30:00Z"></span></div>
+        <div class="event-meta event-meta-sub"><span class="icon">💻</span> Virtual · 90 min</div>
+        <p>Cross the line from answering to doing. Build a hosted agent that verifies a policy, checks live weather, estimates a payout, and files the claim — with a human approval gate.</p>
+        <div class="card-actions"><a class="btn" href="https://msit.events.teams.microsoft.com/event/msit.371d9252-482a-4a1e-b537-04aa964ece21@72f988bf-86f1-41af-91ab-2d7cd011db47?source=copyLinkOneEventsShareDialog" target="_blank" rel="noopener">Register</a></div>
+      </div>
+
+      <div class="event-card event-card--spotlight" data-type="Training" data-modality="Virtual" data-month="10" data-search="azure ai foundry webinar series session 4 multi-agent orchestration and voice coordinated team real phone call live spoken claim after hours remi nimbus virtual">
+        <span class="event-tag tag-spotlight">Session 4</span>
+        <h3>Session 4 — Multi-Agent Orchestration &amp; Voice</h3>
+        <div class="event-meta"><span class="icon">📅</span> <span class="event-time" data-start="2026-10-01T19:00:00Z" data-end="2026-10-01T20:30:00Z"></span></div>
+        <div class="event-meta event-meta-sub"><span class="icon">💻</span> Virtual · 90 min</div>
+        <p>Turn one overloaded agent into a coordinated team, then put a real phone call at the front door. See a live spoken claim handled end to end, after hours.</p>
+        <div class="card-actions"><a class="btn" href="https://msit.events.teams.microsoft.com/event/msit.87e18f12-1feb-4be4-9860-7e95af833034@72f988bf-86f1-41af-91ab-2d7cd011db47?source=copyLinkOneEventsShareDialog" target="_blank" rel="noopener">Register</a></div>
+      </div>
+
+      <div class="event-card event-card--spotlight" data-type="Training" data-modality="Virtual" data-month="10" data-search="azure ai foundry webinar series session 5 production-grade gateway security evaluation genaiops guardrails red-teaming ci cd remi nimbus virtual 120 minutes">
+        <span class="event-tag tag-spotlight">Session 5</span>
+        <h3>Session 5 — Production-Grade: Gateway, Security, Evaluation &amp; GenAIOps</h3>
+        <div class="event-meta"><span class="icon">📅</span> <span class="event-time" data-start="2026-10-08T19:00:00Z" data-end="2026-10-08T21:00:00Z"></span></div>
+        <div class="event-meta event-meta-sub"><span class="icon">💻</span> Virtual · 120 min</div>
+        <p>Everything between “it works in a demo” and “it runs the business.” AI gateway, security, guardrails, evaluations, red-teaming, and CI/CD. This is the session that gets you to production.</p>
+        <div class="card-actions"><a class="btn" href="https://msit.events.teams.microsoft.com/event/msit.c49a1635-6cc7-452d-bb79-77b949c50cc7@72f988bf-86f1-41af-91ab-2d7cd011db47?source=copyLinkOneEventsShareDialog" target="_blank" rel="noopener">Register</a></div>
+      </div>
+
+        </div>
+      </div>
+      <button type="button" class="carousel-btn carousel-next" aria-label="Next sessions">&#8250;</button>
+    </div>
+    <div class="carousel-dots" role="tablist" aria-label="Featured session slides"></div>
+  </div>
+</section>
 
 <section class="section">
   <div class="container">
@@ -1846,6 +1945,93 @@
   fHide.addEventListener('change', apply);
   fClear.addEventListener('click', function () { search.value=''; fType.value=''; fMod.value=''; fMonth.value=''; fHide.checked=true; apply(); });
   apply();
+})();
+</script>
+
+<script>
+/* Featured series 3D circular (coverflow) carousel */
+(function () {
+  var carousel = document.querySelector('.spotlight .carousel');
+  if (!carousel) return;
+  var stage = carousel.querySelector('.stage');
+  var track = carousel.querySelector('.carousel-track');
+  var prev = carousel.querySelector('.carousel-prev');
+  var next = carousel.querySelector('.carousel-next');
+  var dotsWrap = document.querySelector('.spotlight .carousel-dots');
+  var active = 0, timer = null;
+  var AUTO_MS = 4500;
+
+  /* Self-contained past marking (track is not a global .events grid) */
+  var now = new Date();
+  Array.from(track.querySelectorAll('.event-card')).forEach(function (card) {
+    var t = card.querySelector('.event-time[data-start]');
+    if (!t) return;
+    var c = t.dataset.end ? new Date(t.dataset.end) : new Date(t.dataset.start);
+    if (!isNaN(c.getTime()) && c < now) card.classList.add('event-card--past');
+  });
+
+  function cards() {
+    return Array.from(track.querySelectorAll('.event-card')).filter(function (c) { return !c.classList.contains('card-hidden'); });
+  }
+  function layout() {
+    var list = cards();
+    var n = list.length;
+    if (!n) return;
+    if (active >= n) active = 0;
+    var w = stage.clientWidth;
+    var spacing = Math.min(300, Math.max(150, w * 0.27));
+    var depth = spacing * 0.95;
+    list.forEach(function (card, i) {
+      var rel = ((i - active) % n + n) % n;
+      if (rel > n / 2) rel -= n;
+      var a = Math.abs(rel);
+      var visible = a <= 2;
+      card.style.transform =
+        'translateX(calc(-50% + ' + (rel * spacing) + 'px)) translateY(-50%) translateZ(' + (-a * depth) + 'px) rotateY(' + (-rel * 42) + 'deg) scale(' + (1 - a * 0.14) + ')';
+      card.style.opacity = visible ? String(1 - a * 0.32) : '0';
+      card.style.zIndex = String(100 - a);
+      card.style.visibility = visible ? 'visible' : 'hidden';
+      card.style.pointerEvents = visible ? 'auto' : 'none';
+      card.classList.toggle('is-active', a === 0);
+    });
+    if (dotsWrap) Array.from(dotsWrap.children).forEach(function (d, i) { d.classList.toggle('active', i === active); });
+  }
+  function buildDots() {
+    if (!dotsWrap) return;
+    var n = cards().length;
+    dotsWrap.innerHTML = '';
+    for (var i = 0; i < n; i++) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.setAttribute('aria-label', 'Go to session ' + (i + 1));
+      (function (idx) { b.addEventListener('click', function () { active = idx; layout(); restart(); }); })(i);
+      dotsWrap.appendChild(b);
+    }
+    dotsWrap.style.display = n > 1 ? 'flex' : 'none';
+  }
+  function go(dir) {
+    var n = cards().length;
+    if (n <= 1) return;
+    active = (active + dir % n + n) % n;
+    layout();
+  }
+  function restart() { if (timer) clearInterval(timer); timer = setInterval(function () { go(1); }, AUTO_MS); }
+
+  /* Clicking a side card brings it to the front instead of following its link */
+  cards().forEach(function (card, i) {
+    card.addEventListener('click', function (e) {
+      if (!card.classList.contains('is-active')) { e.preventDefault(); active = cards().indexOf(card); layout(); restart(); }
+    });
+  });
+
+  prev.addEventListener('click', function () { go(-1); restart(); });
+  next.addEventListener('click', function () { go(1); restart(); });
+  carousel.addEventListener('mouseenter', function () { if (timer) clearInterval(timer); });
+  carousel.addEventListener('mouseleave', restart);
+  window.addEventListener('resize', function () { layout(); });
+
+  function init() { buildDots(); layout(); restart(); }
+  if (document.readyState === 'complete') init(); else window.addEventListener('load', init);
 })();
 </script>
 
