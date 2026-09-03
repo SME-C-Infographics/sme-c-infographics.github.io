@@ -622,7 +622,7 @@
 <!-- smec-favicon v1 -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <!-- smec-accuracy v1 -->
-<meta name="smec:last-accuracy-check" content="2026-07-30">
+<meta name="smec:last-accuracy-check" content="2026-09-03">
 <style>/* smec-back-btn v2 */
 .smec-back-btn { position: fixed; bottom: 16px; left: 16px; z-index: 9999;
   box-sizing: border-box;
@@ -694,7 +694,7 @@
       <span class="hero-tag">Internal Use — SME&amp;C</span>
       <span class="hero-tag">L200–L400</span>
       <span class="hero-tag">Integration &amp; App Platform</span>
-      <span class="hero-tag">v1.1 — 2026-04-16</span>
+      <span class="hero-tag">v1.3 — 2026-09-03</span>
     </div>
     <h1 class="hero-title">App Platform Services Decision Guide</h1>
     <p class="hero-subtitle">When to use API Management, Logic Apps, and Azure Functions — Post-Ignite 2025 Edition</p>
@@ -706,7 +706,7 @@
     <div class="hero-meta">
       <span>For: Sellers · Digital Solution Engineers · Technical Specialists · Architects</span>
       <span>|</span>
-      <span>Grounded against Microsoft Learn, April 2026</span>
+      <span>Grounded against Microsoft Learn, September 2026</span>
     </div>
   </div>
 </header>
@@ -785,7 +785,7 @@
               <tr><td><span class="sku-name">Consumption</span></td><td>None</td><td>No</td><td>Pay-per-call; no v2 path</td></tr>
               <tr><td><span class="sku-name">Basic v2</span></td><td>None</td><td>No</td><td>Dev/test with SLA</td></tr>
               <tr><td><span class="sku-name">Standard v2</span></td><td>Outbound VNet + inbound PE</td><td>No</td><td>Prod; separate capabilities</td></tr>
-              <tr><td><span class="sku-name">Premium v2</span></td><td>Full injection</td><td>No</td><td>AZs + Workspaces</td></tr>
+              <tr><td><span class="sku-name">Premium v2</span></td><td>Full injection</td><td>No</td><td>AZs + 30 scale units</td></tr>
               <tr><td><span class="sku-name">Classic Premium</span></td><td>Full injection</td><td>Yes</td><td>Multi-region; self-hosted GW</td></tr>
             </tbody>
           </table>
@@ -936,7 +936,7 @@
         <div class="card-body">
           <div class="card-section-title">Strengths</div>
           <ul class="bullet-list" aria-label="Functions strengths">
-            <li>Full language support: C#, JavaScript, TypeScript, Python, Java, PowerShell, Go</li>
+            <li>Full language support: C#, JavaScript, TypeScript, Python, Java, PowerShell — plus other languages (Go, Rust) via custom handlers</li>
             <li>Rich trigger &amp; binding ecosystem: HTTP, Timer, Blob, Queue, Event Hubs, Cosmos DB, and more</li>
             <li>Flex Consumption: VNet-integrated serverless at consumption pricing — per-function scaling</li>
             <li>Durable Functions: stateful orchestration, fan-out/fan-in, external events, long-running workflows</li>
@@ -991,7 +991,7 @@
           </div>
           <div class="agent-feature">
             <span class="badge badge-ga">GA</span>
-            <span class="agent-feature-text"><span class="agent-feature-name">Durable Task Scheduler:</span> Managed backend for Durable Functions orchestrations — improved throughput and distributed tracing. Both Dedicated and Consumption SKUs are GA.</span>
+            <span class="agent-feature-text"><span class="agent-feature-name">Durable Task Scheduler:</span> Managed backend for Durable Functions orchestrations — improved throughput and distributed tracing. The Dedicated SKU is GA; the Consumption SKU is still in preview.</span>
           </div>
           <div class="agent-feature">
             <span class="badge badge-ga">GA</span>
@@ -1637,7 +1637,7 @@
           <tr>
             <td><span class="customer-says">"Our APIs are sprawling across teams."</span></td>
             <td><span class="lead-with">APIM Workspaces + API Center</span></td>
-            <td><span class="sku-note-small">Workspaces available in Classic Premium and Premium v2. API Center provides centralized discovery and MCP server registry.</span></td>
+            <td><span class="sku-note-small">Workspaces are available in Basic v2, Standard v2, Classic Premium, and Premium v2 — not in classic Developer, Basic, or Standard. API Center provides centralized discovery and MCP server registry.</span></td>
           </tr>
           <tr>
             <td><span class="customer-says">"We need to host MCP tools for agents."</span></td>
@@ -1683,9 +1683,9 @@
 
       <div class="tl-item" role="listitem">
         <div class="tl-dot tl-dot-gray" aria-hidden="true"></div>
-        <div class="tl-date" style="color:var(--text-sec)">March 15, 2026 — Passed</div>
+        <div class="tl-date" style="color:var(--text-sec)">March–May 2026 — Passed</div>
         <div class="tl-title">APIM — New Resource Limits Enforced</div>
-        <div class="tl-desc">Updated resource limits for API Management took effect March 15, 2026. Verify current resource consumption against the new limits. Refer to the APIM limits documentation for specific thresholds.</div>
+        <div class="tl-desc">Updated resource limits for API Management rolled out in phases by tier: Consumption, Developer, Basic, and Basic v2 on March 15, 2026; Standard and Standard v2 on April 15, 2026; Premium and Premium v2 on May 15, 2026. Existing classic-tier services already above the new limits were grandfathered at 10% above observed usage; all other services are subject to the new limits. Verify current resource consumption against the new limits — refer to the APIM limits documentation for specific thresholds.</div>
       </div>
 
       <div class="tl-item" role="listitem">
@@ -1720,7 +1720,8 @@
             <li><strong>Logic Apps multi-agent handoff (Standard):</strong> Preview. Watch for GA alongside broader Agent Loop feature graduation.</li>
             <li><strong>Durable Task for Microsoft Agent Framework:</strong> Preview. Multi-agent orchestration with OpenAI SDK. Watch for GA alongside Agent Framework GA.</li>
             <li><strong>Durable Task Scheduler — Consumption SKU:</strong> Preview. Dedicated SKU is GA. Consumption SKU follows.</li>
-            <li><strong>APIM v2 feature parity gaps:</strong> Multi-region, backup/restore, self-hosted gateway, and multiple custom domain names remain unavailable in v2 tiers. Monitor Azure updates for roadmap items.</li>
+            <li><strong>APIM AI Gateway tier:</strong> Public preview — a dedicated, fully managed APIM gateway resource for models and MCP tools (runtime access keys, self-service catalog, token/request limits, content safety). Preview regions: East US 2 and Sweden Central; pricing not yet announced.</li>
+            <li><strong>APIM v2 feature parity gaps:</strong> Multi-region deployment, backup/restore, self-hosted gateway, and static IP remain unavailable in the v2 tiers. Multiple custom domain names for the gateway are now supported in Premium v2 (still unavailable in Basic v2 and Standard v2). Monitor Azure updates for roadmap items.</li>
           </ul>
         </div>
       </div>
@@ -1787,11 +1788,11 @@
     <div>Contributed by <strong>Toni Montez</strong>, Digital Solution Engineer — SME&amp;C Corporate (US SME&amp;C East-Azure)</div>
     <div>
       Repo: <a href="https://github.com/SME-C-Infographics/sme-c-infographics.github.io" target="_blank" rel="noopener">SME-C-Infographics/sme-c-infographics.github.io</a>
-      &nbsp;·&nbsp; Version 1.2 &nbsp;·&nbsp; Last updated: 2026-06-27
+      &nbsp;·&nbsp; Version 1.3 &nbsp;·&nbsp; Last updated: 2026-09-03
     </div>
-    <div>This asset has a <strong>3-month refresh cadence</strong>. Next review: <strong>2026-09-27</strong></div>
+    <div>This asset has a <strong>3-month refresh cadence</strong>. Next review: <strong>2026-12-03</strong></div>
     <div style="color:var(--divider);font-size:10px;margin-top:4px">
-      All claims grounded against Microsoft Learn documentation, June 2026 (Build 2026 refresh — trusted-service retirement past-tensed, Cobalt 200 / HorizonDB callouts added). Internal use only — SME&amp;C field enablement.
+      All claims grounded against Microsoft Learn documentation, September 2026 (accuracy review — APIM workspace tier availability, v2 parity gaps, phased APIM limits rollout, Durable Task Scheduler SKU status, and Functions language support corrected; APIM AI Gateway tier preview added). Internal use only — SME&amp;C field enablement.
       <br><a href="https://azure.microsoft.com/en-us/blog/new-azure-cobalt-200-vms-deliver-50-performance-improvement-fully-optimized-for-modern-agentic-ai-workloads/" target="_blank" rel="noopener">Cobalt 200 announcement</a>
       &nbsp;·&nbsp;
       <a href="https://techcommunity.microsoft.com/blog/adforpostgresql/azure-horizondb-enterprise-ready-postgres-engineered-for-the-ai-era/4524094" target="_blank" rel="noopener">Azure HorizonDB (Postgres for agents)</a>
