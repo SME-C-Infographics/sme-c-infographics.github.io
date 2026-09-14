@@ -122,6 +122,32 @@
   .event-card--lite .btn:hover { background: #0a4a78; }
   .event-card--lite .lite-series { font-size: 13px; color: #605e5c; margin-bottom: 14px; }
   .event-card--lite .lite-series strong { color: #0a558c; font-weight: 600; }
+  .spotlight-lite .lite-layout { display: grid; grid-template-columns: 320px minmax(0, 560px); gap: 26px; justify-content: center; align-items: stretch; }
+  .spotlight-lite .lite-layout .events { grid-template-columns: minmax(0, 560px); margin-bottom: 0; order: 2; }
+  .lite-schedule { order: 1; display: flex; flex-direction: column; background: #fff; border: 1px solid #dbe6ef; border-top: 3px solid #0a558c; border-radius: 12px; padding: 22px 22px 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+  .lite-schedule h4 { font-size: 13px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #0a558c; margin-bottom: 4px; }
+  .lite-schedule .lite-schedule-sub { font-size: 13px; color: #605e5c; margin-bottom: 14px; }
+  .lite-schedule ol { list-style: none; }
+  .lite-schedule li { display: flex; gap: 12px; padding: 11px 0; border-top: 1px solid #eef2f6; }
+  .lite-schedule li:first-of-type { border-top: none; }
+  .lite-schedule .sch-num { flex: 0 0 24px; height: 24px; border-radius: 50%; background: #eaf2f8; color: #0a558c; font-size: 12.5px; font-weight: 700; display: flex; align-items: center; justify-content: center; margin-top: 1px; }
+  .lite-schedule .sch-body { flex: 1 1 auto; }
+  .lite-schedule .sch-date { font-size: 12px; font-weight: 700; color: #0a558c; letter-spacing: 0.3px; }
+  .lite-schedule .sch-title { font-size: 14px; color: #242424; line-height: 1.35; }
+  .lite-schedule li.sch-current { background: #eef6fc; margin: 0 -12px; padding-left: 12px; padding-right: 12px; border-radius: 8px; border-top-color: transparent; }
+  .lite-schedule li.sch-current .sch-num { background: #0a558c; color: #fff; }
+  .lite-schedule li.sch-current .sch-title { font-weight: 600; }
+  .lite-schedule .sch-badge { display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: #0a558c; background: #d7e9f7; border-radius: 4px; padding: 1px 6px; margin-left: 6px; vertical-align: middle; }
+  .lite-schedule li.sch-past { opacity: 0.5; }
+  .lite-schedule li.sch-past.sch-has-rec { opacity: 1; }
+  .lite-schedule li.sch-past.sch-has-rec .sch-num, .lite-schedule li.sch-past.sch-has-rec .sch-date, .lite-schedule li.sch-past.sch-has-rec .sch-title { opacity: 0.55; }
+  .lite-schedule .sch-rec { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 600; color: #0a558c; text-decoration: none; margin-top: 3px; }
+  .lite-schedule .sch-rec:hover { text-decoration: underline; }
+  .lite-schedule li.sch-past .sch-num { background: #eef2f6; color: #9aa5b1; }
+  .lite-schedule li.sch-past .sch-num::before { content: '✓'; }
+  .lite-schedule li.sch-past .sch-num span { display: none; }
+  .spotlight-lite .lite-layout.lite-layout--solo { grid-template-columns: minmax(0, 460px); }
+  @media (max-width: 900px) { .spotlight-lite .lite-layout { grid-template-columns: minmax(0, 620px); } .spotlight-lite .lite-layout .events { grid-template-columns: minmax(0, 620px); order: 1; } .lite-schedule { order: 2; } }
 </style>
 <script defer src="https://a.ndme.sh/script.js" data-website-id="9478c1a0-93c6-4c21-855a-69e50e15cbc4"></script>
 <!-- smec-meta v1 -->
@@ -324,7 +350,8 @@
       <h2>Controlling GitHub Copilot Spend</h2>
       <p>Usage-based billing has changed how teams manage GitHub Copilot. Join Insight and GitHub for a practical session on optimizing your Copilot investment — kicking off the six-part <em>GitHub AI in Practice</em> series on cost, governance, and scale.</p>
     </div>
-    <div class="events">
+    <div class="lite-layout">
+      <div class="events">
       <div class="event-card event-card--lite" data-type="Training" data-modality="Virtual" data-month="9" data-search="controlling github copilot spend insight github partner webinar usage-based billing ai credits model selection cost governance parker johnston tj corrigan github ai in practice strategies for cost governance and scale training virtual">
         <span class="event-tag tag-partner">Partner Webinar</span>
         <h3>Controlling GitHub Copilot Spend</h3>
@@ -334,9 +361,57 @@
         <p>Learn how usage-based billing and AI Credits work, model-selection strategies that balance capability and cost, and practical habits for reducing unnecessary consumption while keeping developers productive — plus cost controls, budgeting, and usage visibility.</p>
         <div class="card-actions"><a class="btn" href="https://www.insight.com/en_US/content-and-resources/webinars/controlling-github-copilot-spend.html" target="_blank" rel="noopener">Register</a></div>
       </div>
+      </div>
+      <aside class="lite-schedule" aria-label="Six-part webinar series schedule">
+        <h4>Six-Part Series Schedule</h4>
+        <div class="lite-schedule-sub">GitHub AI in Practice · Cost, Governance &amp; Scale</div>
+        <ol>
+          <li data-sch-date="2026-09-29" data-sch-link="https://www.insight.com/en_US/content-and-resources/webinars/controlling-github-copilot-spend.html"><span class="sch-num"><span>1</span></span><div class="sch-body"><div class="sch-date">Sept. 29, 2026</div><div class="sch-title">Controlling Copilot Spend</div></div></li>
+          <li data-sch-date="2026-11-05"><span class="sch-num"><span>2</span></span><div class="sch-body"><div class="sch-date">Nov. 5, 2026</div><div class="sch-title">Universe Recap: What to Do Next</div></div></li>
+          <li data-sch-date="2026-12-03"><span class="sch-num"><span>3</span></span><div class="sch-body"><div class="sch-date">Dec. 3, 2026</div><div class="sch-title">Putting Copilot Efficiency into Practice</div></div></li>
+          <li data-sch-date="2027-01-14"><span class="sch-num"><span>4</span></span><div class="sch-body"><div class="sch-date">Jan. 14, 2027</div><div class="sch-title">Agentic SDLC</div></div></li>
+          <li data-sch-date="2027-02-04"><span class="sch-num"><span>5</span></span><div class="sch-body"><div class="sch-date">Feb. 4, 2027</div><div class="sch-title">Governing Agents at Scale</div></div></li>
+          <li data-sch-date="2027-03-18"><span class="sch-num"><span>6</span></span><div class="sch-body"><div class="sch-date">Mar. 18, 2027</div><div class="sch-title">Securing an AI-Generated Codebase</div></div></li>
+        </ol>
+      </aside>
     </div>
   </div>
 </section>
+<script>
+/* Mark past series sessions (done) and flag the next upcoming one */
+(function () {
+  var now = new Date();
+  var items = Array.from(document.querySelectorAll('.lite-schedule li[data-sch-date]'));
+  var nextMarked = false;
+  items.forEach(function (li) {
+    var parts = li.dataset.schDate.split('-');
+    // End of session day (next-day midnight local) so it stays "current" through the event day
+    var endOfDay = new Date(+parts[0], +parts[1] - 1, +parts[2] + 1, 0, 0, 0);
+    if (now >= endOfDay) {
+      li.classList.add('sch-past');
+      var link = li.dataset.schLink;
+      if (link) {
+        li.classList.add('sch-has-rec');
+        var body = li.querySelector('.sch-body');
+        if (body && !body.querySelector('.sch-rec')) {
+          var a = document.createElement('a');
+          a.className = 'sch-rec';
+          a.href = link;
+          a.target = '_blank';
+          a.rel = 'noopener';
+          a.innerHTML = '▶ View recording';
+          body.appendChild(a);
+        }
+      }
+    } else if (!nextMarked) {
+      li.classList.add('sch-current');
+      var t = li.querySelector('.sch-title');
+      if (t) { var b = document.createElement('span'); b.className = 'sch-badge'; b.textContent = 'Coming soon'; t.appendChild(b); }
+      nextMarked = true;
+    }
+  });
+})();
+</script>
 
 <section class="section">
   <div class="container">
@@ -1928,6 +2003,21 @@
 </script>
 
 <script>
+/* 2b) Past spotlight sessions: gray out but keep the link active as "View recording" */
+(function () {
+  var now = new Date();
+  function isPast(s, e) { var c = e ? new Date(e) : new Date(s); return !isNaN(c.getTime()) && c < now; }
+  document.querySelectorAll('.event-card--spotlight, .event-card--lite').forEach(function (card) {
+    var t = card.querySelector('.event-time[data-start]');
+    if (!t || !isPast(t.dataset.start, t.dataset.end)) return;
+    card.classList.add('event-card--past');
+    var btn = card.querySelector('.card-actions .btn');
+    if (btn) { btn.textContent = 'View recording'; btn.setAttribute('aria-label', 'View recording for ' + (card.querySelector('h3') ? card.querySelector('h3').textContent : 'this session')); }
+  });
+})();
+</script>
+
+<script>
 (function () {
 
   var search = document.getElementById('f-search');
@@ -1961,6 +2051,14 @@
     document.body.classList.toggle('hide-past', fHide.checked);
     var shown = 0;
     cards.forEach(function (c) { var ok = cardMatches(c); c.classList.toggle('card-hidden', !ok); if (ok && isVisible(c)) shown++; });
+    var liteLayout = document.querySelector('.spotlight-lite .lite-layout');
+    if (liteLayout) {
+      var liteCard = liteLayout.querySelector('.event-card--lite');
+      var liteGrid = liteLayout.querySelector('.events');
+      var solo = !liteCard || !isVisible(liteCard);
+      liteLayout.classList.toggle('lite-layout--solo', solo);
+      if (liteGrid) liteGrid.style.display = solo ? 'none' : '';
+    }
     groups.forEach(function (g) {
       var vis = Array.from(g.querySelectorAll('.event-card')).filter(isVisible).length;
       var cnt = g.querySelector('.group-count');
