@@ -108,6 +108,20 @@
   .spotlight .carousel-dots button { width: 9px; height: 9px; padding: 0; border-radius: 50%; border: none; background: #d3c4ea; cursor: pointer; transition: transform 0.15s ease, background 0.15s ease; }
   .spotlight .carousel-dots button.active { background: #5c2d91; transform: scale(1.35); }
   @media (max-width: 640px) { .spotlight .stage { height: 620px; } .spotlight .carousel-track .event-card { width: 300px; } .spotlight .carousel-btn { width: 40px; height: 40px; font-size: 21px; } }
+
+  /* Lesser spotlight (single partner-featured webinar, below the Foundry series, above general events) */
+  .spotlight-lite { padding: 32px 0 26px; background: linear-gradient(135deg, #eef4fb 0%, #eaf2f8 55%, #eef6f4 100%); border-bottom: 1px solid #dbe6ef; }
+  .spotlight-lite .section-header { margin-bottom: 22px; }
+  .spotlight-lite-eyebrow { display: inline-block; text-transform: uppercase; letter-spacing: 2px; font-size: 11.5px; font-weight: 700; color: #0a558c; background: #d7e9f7; padding: 5px 13px; border-radius: 20px; margin-bottom: 13px; }
+  .spotlight-lite .section-header h2 { font-size: 24px; color: #0a4a78; margin-bottom: 9px; }
+  .spotlight-lite .section-header p { max-width: 700px; }
+  .spotlight-lite .events { grid-template-columns: minmax(0, 620px); justify-content: center; }
+  .tag-partner { background: #d7e9f7; color: #0a558c; }
+  .event-card--lite { border-top: 3px solid #0a558c; }
+  .event-card--lite .btn { background: #0a558c; }
+  .event-card--lite .btn:hover { background: #0a4a78; }
+  .event-card--lite .lite-series { font-size: 13px; color: #605e5c; margin-bottom: 14px; }
+  .event-card--lite .lite-series strong { color: #0a558c; font-weight: 600; }
 </style>
 <script defer src="https://a.ndme.sh/script.js" data-website-id="9478c1a0-93c6-4c21-855a-69e50e15cbc4"></script>
 <!-- smec-meta v1 -->
@@ -300,6 +314,27 @@
       <button type="button" class="carousel-btn carousel-next" aria-label="Next sessions">&#8250;</button>
     </div>
     <div class="carousel-dots" role="tablist" aria-label="Featured session slides"></div>
+  </div>
+</section>
+
+<section class="spotlight-lite">
+  <div class="container">
+    <div class="section-header">
+      <span class="spotlight-lite-eyebrow">⭐ Featured Partner Webinar</span>
+      <h2>Controlling GitHub Copilot Spend</h2>
+      <p>Usage-based billing has changed how teams manage GitHub Copilot. Join Insight and GitHub for a practical session on optimizing your Copilot investment — kicking off the six-part <em>GitHub AI in Practice</em> series on cost, governance, and scale.</p>
+    </div>
+    <div class="events">
+      <div class="event-card event-card--lite" data-type="Training" data-modality="Virtual" data-month="9" data-search="controlling github copilot spend insight github partner webinar usage-based billing ai credits model selection cost governance parker johnston tj corrigan github ai in practice strategies for cost governance and scale training virtual">
+        <span class="event-tag tag-partner">Partner Webinar</span>
+        <h3>Controlling GitHub Copilot Spend</h3>
+        <div class="lite-series">Session 1 of 6 · <strong>GitHub AI in Practice: Strategies for Cost, Governance &amp; Scale</strong></div>
+        <div class="event-meta"><span class="icon">📅</span> <span class="event-time" data-start="2026-09-29T16:00:00Z" data-end="2026-09-29T17:00:00Z"></span></div>
+        <div class="event-meta event-meta-sub"><span class="icon">💻</span> Virtual · Insight + GitHub · Parker Johnston &amp; T.J. Corrigan</div>
+        <p>Learn how usage-based billing and AI Credits work, model-selection strategies that balance capability and cost, and practical habits for reducing unnecessary consumption while keeping developers productive — plus cost controls, budgeting, and usage visibility.</p>
+        <div class="card-actions"><a class="btn" href="https://www.insight.com/en_US/content-and-resources/webinars/controlling-github-copilot-spend.html" target="_blank" rel="noopener">Register</a></div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -2030,7 +2065,19 @@
   carousel.addEventListener('mouseleave', restart);
   window.addEventListener('resize', function () { layout(); });
 
-  function init() { buildDots(); layout(); restart(); }
+  function init() {
+    buildDots();
+    var list = cards();
+    var idx = list.findIndex(function (c) {
+      var t = c.querySelector('.event-time[data-start]');
+      if (!t) return false;
+      var d = t.dataset.end ? new Date(t.dataset.end) : new Date(t.dataset.start);
+      return !isNaN(d.getTime()) && d >= now;
+    });
+    active = idx >= 0 ? idx : 0;
+    layout();
+    restart();
+  }
   if (document.readyState === 'complete') init(); else window.addEventListener('load', init);
 })();
 </script>
