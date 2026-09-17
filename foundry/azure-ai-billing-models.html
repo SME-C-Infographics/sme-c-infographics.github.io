@@ -788,7 +788,7 @@
         <span class="bill-badge bb5">&#x23F1; PTU Hourly</span>
         <h3>Provisioned Throughput (PTU) &mdash; Hourly</h3>
         <div class="bill-cost"><span class="cost-cap">&#x23F1; per PTU-hour</span><span class="cost-note">Capacity-based &middot; effective per-token falls as utilization rises</span></div>
-        <p class="bill-pays">Dedicated model-processing capacity measured in Provisioned Throughput Units. Billed hourly per deployed PTU count &mdash; whether or not requests are being handled. PTU quota is regional; confirm supported models and capacity requirements before deployment.</p>
+        <p class="bill-pays">Dedicated model-processing capacity measured in Provisioned Throughput Units. Billed hourly per deployed PTU count &mdash; whether or not requests are being handled. PTU quota is regional and model-independent; confirm supported models and capacity requirements before deployment.</p>
         <div class="bill-row"><strong>Use when:</strong> Predictable, latency-sensitive production traffic</div>
         <div class="bill-row"><strong>Forecast:</strong> PTUs deployed &times; hours deployed &times; PTU hourly rate</div>
         <div class="bill-row"><strong>Watch out:</strong> Billing stops only on deletion; validate utilization before committing</div>
@@ -906,7 +906,7 @@
         </div>
       </div>
       <div class="spectrum-note">
-        <strong>PTU key fact:</strong> PTU quota is granted to a subscription by region and sets the maximum PTUs assignable to deployments in that region. Confirm model support, minimum capacity, and availability before planning a deployment.
+        <strong>PTU key fact:</strong> PTU quota is model-independent &mdash; a single quota item per subscription and region caps the total PTUs deployable across all supported models and versions, so one allocation can flex across GPT-4o, DeepSeek, and other supported models. Confirm model support, minimum capacity, and regional availability before planning a deployment.
       </div>
     </div>
   </div>
