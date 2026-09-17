@@ -675,7 +675,7 @@
 <!-- smec-submitter v1 -->
 <meta name="smec:submitter" content="cbattlegear">
 <!-- smec-accuracy v1 -->
-<meta name="smec:last-accuracy-check" content="2026-08-13">
+<meta name="smec:last-accuracy-check" content="2026-09-17">
 </head>
 <body>
 <a href="/" class="smec-back-btn" data-smec-back-button="v2" aria-label="Back to SME&amp;C Infographics"><svg class="smec-back-btn__icon" aria-hidden="true" viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg><span class="smec-back-btn__label">Back<span class="smec-back-btn__more">&nbsp;to SME&amp;C Infographics</span></span></a>
@@ -722,7 +722,7 @@
       <div class="hero-stat"><div class="stat-num">7</div><div class="stat-label">Billing models</div></div>
       <div class="hero-stat"><div class="stat-num">4</div><div class="stat-label">Deployment types</div></div>
       <div class="hero-stat"><div class="stat-num">5</div><div class="stat-label">Maturity stages</div></div>
-      <div class="hero-stat"><div class="stat-num">4&ndash;8&times;</div><div class="stat-label">Output vs input token cost</div></div>
+      <div class="hero-stat"><div class="stat-num">Varies</div><div class="stat-label">Output vs input token cost</div></div>
     </div>
   </div>
 </header>
@@ -730,8 +730,8 @@
 <!-- PROVOCATION -->
 <div class="provoc">
   <div class="provoc-content">
-    <h2>Most Azure AI bills run<br><span class="hl">15&ndash;40% above the token estimate.</span></h2>
-    <p>The Azure Pricing Calculator covers tokens accurately. It does not cover Azure AI Search, fine-tuned model hosting, monitoring, storage, networking, or agent runtime. Forecasting responsibly means mapping every layer &mdash; not just the model call.</p>
+    <h2>AI costs include more<br><span class="hl">than model inference.</span></h2>
+    <p>The Azure Pricing Calculator estimates the Azure services you select. Include model inference and supporting services such as search, fine-tuned model hosting, monitoring, storage, networking, and agent runtime when applicable.</p>
   </div>
 </div>
 
@@ -752,7 +752,7 @@
         <p class="bill-pays">Billed per input token and output token actually consumed. No commitment, no minimum. Cost scales directly with usage &mdash; zero idle charge.</p>
         <div class="bill-row"><strong>Use when:</strong> Pilots, variable traffic, early-stage, unknown demand</div>
         <div class="bill-row"><strong>Forecast:</strong> Requests &times; avg (input + output) tokens per request</div>
-        <div class="bill-row"><strong>Watch out:</strong> Output tokens cost 4&ndash;8&times; input; rate limits at scale</div>
+        <div class="bill-row"><strong>Watch out:</strong> Input and output token rates vary by model and deployment type; rate limits can apply at scale</div>
       </div>
 
       <div class="billing-card bc2 reveal">
@@ -789,7 +789,7 @@
         <span class="bill-badge bb5">&#x23F1; PTU Hourly</span>
         <h3>Provisioned Throughput (PTU) &mdash; Hourly</h3>
         <div class="bill-cost"><span class="cost-cap">&#x23F1; per PTU-hour</span><span class="cost-note">Capacity-based &middot; effective per-token falls as utilization rises</span></div>
-        <p class="bill-pays">Dedicated model-processing capacity measured in Provisioned Throughput Units. Billed hourly per deployed PTU count &mdash; whether or not requests are being handled. PTUs are model-independent: the same pool deploys any supported model.</p>
+        <p class="bill-pays">Dedicated model-processing capacity measured in Provisioned Throughput Units. Billed hourly per deployed PTU count &mdash; whether or not requests are being handled. PTU quota is regional; confirm supported models and capacity requirements before deployment.</p>
         <div class="bill-row"><strong>Use when:</strong> Predictable, latency-sensitive production traffic</div>
         <div class="bill-row"><strong>Forecast:</strong> PTUs deployed &times; hours deployed &times; PTU hourly rate</div>
         <div class="bill-row"><strong>Watch out:</strong> Billing stops only on deletion; validate utilization before committing</div>
@@ -799,7 +799,7 @@
         <span class="bill-badge bb6">&#x1F4C5; PTU Reservation</span>
         <h3>PTU Azure Reservation</h3>
         <div class="bill-cost"><span class="cost-cap">&#x23F1; per PTU-hour &#x25BC;</span><span class="cost-note">Capacity-based &middot; discounted vs hourly; lowest effective at steady high use</span></div>
-        <p class="bill-pays">A commercial reservation that covers matching PTU hourly usage at a significantly discounted rate. Monthly and annual reservations available. Provides capacity assurance for sustained production workloads.</p>
+        <p class="bill-pays">A commercial reservation that covers matching PTU hourly usage at a discounted rate. One-month and one-year reservations are available for sustained production workloads. Reservations do not guarantee capacity.</p>
         <div class="bill-row"><strong>Use when:</strong> Steady PTU usage expected to run continuously; utilization proven via hourly</div>
         <div class="bill-row"><strong>Forecast:</strong> Reserved PTUs &times; expected coverage &times; reservation rate</div>
         <div class="bill-row"><strong>Watch out:</strong> Reserve only after hourly PTU utilization is proven stable; capacity risk on scale-down/up</div>
@@ -826,7 +826,7 @@
         <span class="cost-legend-item"><span class="cost-cap">&#x23F1; per hour</span> Capacity-based (not token-metered)</span>
         <span class="cost-legend-item"><span class="cost-com">&#x25C7;</span> Commercial commitment (not a meter)</span>
       </div>
-      <p class="cost-disclaimer"><strong>Directional only &mdash; validate before budgeting.</strong> The $ scale compares per-token rates across the token-metered models. As an illustrative reference (GPT-4o-class, Global deployment), Standard is roughly $2.50 / $10.00 per 1M input / output tokens and Global Batch roughly $1.25 / $5.00 &mdash; Batch is about 50% lower, and Priority Processing carries a premium above Standard. Output tokens typically cost 4&ndash;8&times; input tokens, so the blend depends on your workload. Capacity models (PTU, Managed Compute) bill per hour, so their effective per-token cost depends entirely on utilization and is not directly comparable. All figures are approximate, model- and region-specific, and change over time &mdash; always confirm current pricing on the <a href="https://azure.microsoft.com/en-us/pricing/calculator/" target="_blank" rel="noopener noreferrer">Azure Pricing Calculator</a> and your commercial agreement.</p>
+      <p class="cost-disclaimer"><strong>Directional only &mdash; validate before budgeting.</strong> The $ scale compares per-token rates across the token-metered models. Token billing units and rates vary by model, deployment type, and meter; Global Batch is priced at 50% less than Global Standard. Capacity models (PTU, Managed Compute) bill per hour, so their effective per-token cost depends on utilization and is not directly comparable. Always confirm current pricing on the <a href="https://azure.microsoft.com/en-us/pricing/calculator/" target="_blank" rel="noopener noreferrer">Azure Pricing Calculator</a> and your commercial agreement.</p>
     </div>
   </div>
 </section>
@@ -855,7 +855,7 @@
       <div class="decision-card dc-green">
         <div class="dc-tag">Provisioned Throughput (PTU)</div>
         <h3>&#x1F3AF; Reserve what you need</h3>
-        <p>Dedicated model-processing capacity billed hourly per deployed PTU &mdash; regardless of actual requests. Predictable performance, no rate limits, model-independent quota pool.</p>
+        <p>Dedicated model-processing capacity billed hourly per deployed PTU &mdash; regardless of actual requests. Predictable throughput, subject to the deployment's provisioned capacity and service limits.</p>
         <table class="traffic-table">
           <tr><th>Traffic pattern</th><th>Best fit</th></tr>
           <tr><td>Steady, high, latency-sensitive</td><td class="rec rec-ptu">PTU Hourly (validate first)</td></tr>
@@ -896,7 +896,7 @@
         <div class="spec-item s3">
           <div class="spec-tag">Batch</div>
           <h4>Global Batch</h4>
-          <p>~50% less than Global Standard. Asynchronous, 24-hour turnaround. Separate token quota so batch never disrupts online workloads. The most underused discount.</p>
+          <p>50% less than Global Standard. Asynchronous, with a 24-hour target turnaround. Separate enqueued-token quota helps keep batch work from disrupting online workloads.</p>
           <span class="spec-pill pill-green">&#x1F7E2; ~50% off Standard</span>
         </div>
         <div class="spec-item s4">
@@ -907,7 +907,7 @@
         </div>
       </div>
       <div class="spectrum-note">
-        <strong>PTU key fact:</strong> PTUs are model-independent. The same PTU pool deploys any supported model in the region &mdash; you do not buy PTUs for a specific model. Flex capacity across GPT-4o, DeepSeek, and other supported models from a single quota allocation.
+        <strong>PTU key fact:</strong> PTU quota is granted to a subscription by region and sets the maximum PTUs assignable to deployments in that region. Confirm model support, minimum capacity, and availability before planning a deployment.
       </div>
     </div>
   </div>
@@ -1079,7 +1079,7 @@
     <div class="reveal">
       <span class="section-label">What the Token Calculator Misses</span>
       <h2 class="section-title">Six Hidden Cost Categories That Inflate Bills</h2>
-      <p class="section-sub">Microsoft&rsquo;s official pricing calculator covers the token portion accurately. These six categories consistently push real deployment bills 15&ndash;40% above the token estimate &mdash; forecast each independently.</p>
+      <p class="section-sub">The Azure Pricing Calculator estimates the Azure services you select. Include these supporting cost categories where applicable instead of forecasting model inference alone.</p>
     </div>
 
     <div class="hidden-grid">
@@ -1115,15 +1115,15 @@
       <div class="hidden-card h5 reveal">
         <div class="hidden-tag">Networking</div>
         <h4>Networking &amp; Data Residency</h4>
-        <p>Data Zone and Regional deployments carry a premium over Global Standard for data-residency compliance. Cross-region egress charges apply when services are not co-located.</p>
+        <p>Deployment type and region can affect pricing and data-residency options. Review applicable data-transfer charges when services are not co-located.</p>
         <span class="hidden-stat hs-warning">&#x26A0; Co-locate AI Search + Foundry in same region</span>
       </div>
 
       <div class="hidden-card h6 reveal">
         <div class="hidden-tag">Infrastructure</div>
         <h4>Support &amp; Infrastructure Overhead</h4>
-        <p>Azure support plan costs, VNet integration, private endpoints, APIM gateway for multi-app PTU sharing, and managed identity overhead all contribute at production scale.</p>
-        <span class="hidden-stat hs-info">&#x1F4CA; Plan for ~5&ndash;10% infrastructure overhead</span>
+        <p>Azure support plans, VNet integration, private endpoints, and API Management can add costs at production scale, depending on the architecture.</p>
+        <span class="hidden-stat hs-info">&#x1F4CA; Include applicable infrastructure in estimates</span>
       </div>
 
     </div>
@@ -1183,7 +1183,7 @@
       <div class="hidden-card h6 reveal">
         <div class="hidden-tag">Prompt &amp; Context</div>
         <h4>Prompt &amp; Context Engineering</h4>
-        <p>Right-size RAG chunks, trim conversation history, cap <em>max_tokens</em>, and use structured outputs. The input side is controllable and output tokens cost 4&ndash;8&times; input &mdash; constrain both to shrink every request at the source.</p>
+        <p>Right-size RAG chunks, trim conversation history, cap <em>max_tokens</em>, and use structured outputs. Both input and output token rates vary by model and deployment type, so constrain both to shrink every request at the source.</p>
         <span class="hidden-stat hs-warning">&#x2193; Shrinks every request at the source</span>
       </div>
 
