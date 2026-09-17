@@ -184,7 +184,7 @@
 
     <div class="tree">
       <div class="tree-q">Q1 · Is GitHub.com your primary code host?</div>
-      <div class="tree-row"><div class="ans">No</div><div class="out">GitHub-hosted Copilot, Claude, Codex, and GitHub Actions workflows require GitHub repositories. The GitHub Copilot app can also work with local folders or repositories from other Git hosts such as Azure DevOps, while Cursor Cloud Agents support GitHub and Bitbucket.</div></div>
+      <div class="tree-row"><div class="ans">No</div><div class="out">GitHub-hosted Copilot, Claude, Codex, and GitHub Actions workflows require GitHub repositories. The GitHub Copilot app can also work with local folders or repositories from other Git hosts such as Azure DevOps, while Cursor Cloud Agents support GitHub and Bitbucket. Consider those options if they match your code host and workflow.</div></div>
       <div class="tree-row"><div class="ans">Yes</div><div class="out">Continue to Q2.</div></div>
     </div>
 
@@ -269,15 +269,16 @@
       </div>
 
       <div class="tool-card">
-        <header><h3>GitHub Copilot desktop app <span style="display:inline-block;background:#dafbe1;color:#0a3622;border:1px solid #6fdd8b;padding:.05rem .4rem;border-radius:6px;font-size:.62rem;font-weight:800;letter-spacing:.06em;margin-left:.4rem;vertical-align:middle;">NEW</span></h3><div class="sub">GitHub-native desktop app · macOS, Linux, and Windows · Available across Copilot plans</div></header>
+        <header><h3>GitHub Copilot desktop app <span style="display:inline-block;background:#dafbe1;color:#0a3622;border:1px solid #6fdd8b;padding:.05rem .4rem;border-radius:6px;font-size:.62rem;font-weight:800;letter-spacing:.06em;margin-left:.4rem;vertical-align:middle;">NEW</span></h3><div class="sub">GitHub-native desktop app · macOS, Linux, and Windows · Copilot plans or your own model provider</div></header>
         <div class="body">
           <div class="fit"><strong>Best fit:</strong> developers who want an agent-native desktop surface for parallel work — Agent Merge for CI/review babysitting, worktrees for multi-task isolation, Rubber Duck review for second-opinion critique, Canvases for visual planning — with multi-model choice (OpenAI, Anthropic, Google) on a GitHub identity.</div>
-          <div class="not-fit"><strong>Watch-outs:</strong> GitHub-hosted model use consumes AI credits. BYOK and cloud-based sandbox sessions are public-preview capabilities. Business and Enterprise administrators can control app access through a dedicated policy, and the app respects content exclusions.</div>
+          <div class="not-fit"><strong>Watch-outs:</strong> GitHub-hosted model use consumes AI credits. BYOK and cloud-based sandbox sessions are public-preview capabilities.</div>
           <ul>
             <li>Agent Merge, worktrees, Rubber Duck review, Canvases</li>
             <li>Select GitHub-hosted models or configure BYOK providers including OpenAI, Azure OpenAI, Microsoft Foundry, Anthropic, Ollama, Foundry Local, LM Studio, or an OpenAI-compatible endpoint</li>
             <li>Docs: <a href="https://docs.github.com/en/copilot/concepts/agents/github-copilot-app" target="_blank" rel="noopener">GitHub Copilot app documentation</a></li>
             <li>A GitHub account is required; a Copilot plan is not required when using your own model provider</li>
+            <li>Business and Enterprise administrators can control app access through a dedicated policy, and the app respects content exclusions</li>
           </ul>
         </div>
       </div>
