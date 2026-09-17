@@ -133,7 +133,7 @@
 <!-- smec-favicon v1 -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <!-- smec-accuracy v1 -->
-<meta name="smec:last-accuracy-check" content="2026-08-13">
+<meta name="smec:last-accuracy-check" content="2026-09-17">
 <style>/* smec-back-btn v2 */
 .smec-back-btn { position: fixed; bottom: 16px; left: 16px; z-index: 9999;
   box-sizing: border-box;
@@ -202,15 +202,15 @@
     Review ergonomics · Iteration surface
   </div>
   <h1>When the agent's PR is wrong</h1>
-  <p>Every async coding agent ships broken first drafts sometimes. The question is how you tell it to try again, which control plane owns the next round, and whether the review trail stays easy to reconstruct.</p>
-  <div class="hero-meta">Accurate as of August 13, 2026 · Focus: comment-driven iteration, not one-shot quality</div>
+  <p>Async coding agents can ship drafts that need correction. The question is how you tell one to try again, which control plane owns the next round, and whether the review trail stays easy to reconstruct.</p>
+  <div class="hero-meta">Accurate as of September 17, 2026 · Focus: comment-driven iteration, not one-shot quality</div>
 </header>
 
 <div class="container">
   <div class="big-stat">
     <div class="num">2–3</div>
-    <div class="num-sub">rounds before you should take it over manually</div>
-    <div class="num-caption">Past that, iteration cost often exceeds the cost of writing the fix yourself. Applies across hosted and standalone agents - their loop shape changes how much each round costs.</div>
+    <div class="num-sub">a practical limit before taking over manually</div>
+    <div class="num-caption">A team heuristic: past that, iteration cost can exceed the cost of writing the fix yourself. Hosted and standalone agents can make each round cost differently.</div>
   </div>
 </div>
 
@@ -218,11 +218,11 @@
   <div class="container">
     <span class="section-label">Shape of the loop</span>
     <h2 class="section-title">Four phases, same order</h2>
-    <p class="section-sub">Every async agent cycles through the same four phases. What differs is <strong>where state lives</strong> at each phase - in GitHub issues and PRs, in Actions logs, or in a vendor workspace.</p>
+    <p class="section-sub">This infographic uses four phases to map a correction loop. What differs is <strong>where state lives</strong> at each phase - in GitHub issues and PRs, in Actions logs, or in a vendor workspace.</p>
 
     <figure class="loop-diagram" role="group" aria-labelledby="loop-dia-title" aria-describedby="loop-dia-desc">
       <p id="loop-dia-title" class="sr-only">The four-phase correction loop</p>
-      <p id="loop-dia-desc" class="sr-only">A circular flow with four phases in order: Comment, Run, Commit, Review, then back to Comment. Arrows between phases are color-coded. Green arrows indicate the phase state primarily lives in GitHub issues or PRs. Amber arrows indicate added cost or state outside the normal PR review trail, such as Actions logs, vendor API usage, or a vendor workspace. GitHub-hosted Copilot, Claude, and Codex keep routine feedback in GitHub. Standalone integrations can add workflow logs, external run state, or product dashboards.</p>
+      <p id="loop-dia-desc" class="sr-only">A circular flow with four phases in order: Comment, Run, Commit, Review, then back to Comment. Arrows between phases are color-coded. Green arrows indicate the phase state primarily lives in GitHub issues or PRs. Amber arrows indicate added cost or state outside the normal PR review trail, such as Actions logs, vendor API usage, or a vendor workspace. GitHub-hosted Copilot and third-party coding agents keep routine feedback in GitHub. Standalone integrations can add workflow logs, external run state, or product dashboards.</p>
       <svg viewBox="0 0 760 360" role="img" aria-hidden="true" focusable="false">
         <defs>
           <marker id="arrow-green" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
@@ -305,12 +305,12 @@
           <div class="loop-step"><div class="n">1</div><div class="t"><strong>Comment in the PR.</strong> <code>@copilot address the null-check on line 42</code>.</div></div>
           <div class="loop-step"><div class="n">2</div><div class="t"><strong>Agent wakes on the same branch.</strong> New commit pushed, same PR.</div></div>
           <div class="loop-step"><div class="n">3</div><div class="t"><strong>Review comments resolve inline.</strong> Standard GitHub review UI.</div></div>
-          <div class="loop-step pain"><div class="n">!</div><div class="t"><strong>Watch the limits.</strong> Runs can consume Actions minutes and AI credits, and content exclusions are not honored by the cloud agent.</div></div>
+          <div class="loop-step pain"><div class="n">!</div><div class="t"><strong>Watch the limits.</strong> Runs can consume Actions minutes and AI credits. Content-exclusion policies apply where supported.</div></div>
         </div>
       </div>
 
       <div class="loop-card">
-        <header><h3>GitHub-hosted Claude / Codex</h3><div class="sub">Third-party agents in GitHub</div></header>
+        <header><h3>GitHub-hosted Claude / Codex</h3><div class="sub">Third-party coding agents in GitHub · Public preview</div></header>
         <div class="loop-steps">
           <div class="loop-step"><div class="n">1</div><div class="t"><strong>Use the GitHub agent surface.</strong> Ask from supported GitHub issues or PR workflows instead of switching to a vendor dashboard first.</div></div>
           <div class="loop-step"><div class="n">2</div><div class="t"><strong>GitHub-hosted run starts.</strong> The agent works in a GitHub-managed environment and posts results back through GitHub.</div></div>
@@ -340,12 +340,12 @@
       </div>
 
       <div class="loop-card">
-        <header><h3>GitHub Copilot desktop app</h3><div class="sub">Agent-native desktop wrapper · Generally available</div></header>
+        <header><h3>GitHub Copilot app</h3><div class="sub">Agent-driven desktop application</div></header>
         <div class="loop-steps">
-          <div class="loop-step"><div class="n">1</div><div class="t"><strong>Comment from the desktop surface.</strong> Same <code>@copilot</code> trigger, but the loop is wrapped by parallel worktrees and Canvases for visual planning.</div></div>
-          <div class="loop-step"><div class="n">2</div><div class="t"><strong>Agent Merge babysits CI/review/merge.</strong> Watches checks, queues retries, and merges when conditions clear so you stop hand-shepherding green PRs.</div></div>
-          <div class="loop-step"><div class="n">3</div><div class="t"><strong>Rubber Duck review adds a second opinion.</strong> Pre-merge critique pass before the human reviewer — catches obvious mistakes without burning a teammate’s time.</div></div>
-          <div class="loop-step pain"><div class="n">!</div><div class="t"><strong>Enterprise policy still applies.</strong> The app is generally available on Copilot Business and Enterprise plans, but admins must keep the GitHub Copilot app policy enabled; enterprise managed settings (content exclusion, plugin controls) now extend to it too.</div></div>
+          <div class="loop-step"><div class="n">1</div><div class="t"><strong>Start a session in the app.</strong> Direct an agent from a workspace, issue, or blank task; use parallel workspaces and Canvases when useful.</div></div>
+          <div class="loop-step"><div class="n">2</div><div class="t"><strong>Choose the working environment.</strong> Sessions can use a new worktree, a local repository, or a cloud sandbox (public preview).</div></div>
+          <div class="loop-step"><div class="n">3</div><div class="t"><strong>Review and iterate in the app.</strong> Review changes, provide feedback, check CI, and create or review pull requests from the GitHub-integrated workflow.</div></div>
+          <div class="loop-step pain"><div class="n">!</div><div class="t"><strong>Plan availability and policy.</strong> The app is available for all Copilot plans. Business and Enterprise users require the GitHub Copilot app policy to remain enabled; supported content-exclusion policies apply.</div></div>
         </div>
       </div>
 
@@ -357,7 +357,7 @@
   <div class="container">
     <span class="section-label">Practical pattern</span>
     <h2 class="section-title">What a good correction comment looks like</h2>
-    <p class="section-sub">All four respond better to concrete, diff-specific feedback than to "this is wrong, try again." Pattern below works on any of them.</p>
+    <p class="section-sub">Concrete, diff-specific feedback is generally more actionable than "this is wrong, try again." The pattern below is a practical example.</p>
 
     <div class="two-col">
       <div>
@@ -387,7 +387,7 @@ as the fallback and add a test for the anonymous case.
           <li><strong>One routine surface.</strong> Reviewers should be able to give normal correction feedback without leaving the issue or PR.</li>
           <li><strong>Visible iteration cost.</strong> Teams should know whether a "try again" consumes AI credits, Actions minutes, vendor tokens, or subscription quota.</li>
           <li><strong>State in the review trail.</strong> Future maintainers reading <code>git log</code> and PR comments should understand why the final patch looks the way it does.</li>
-          <li><strong>Stop after 2-3 rounds.</strong> If it's still wrong, take over manually; iteration cost exceeds writing the fix.</li>
+          <li><strong>Set a stopping point.</strong> If it is still wrong after the team's chosen number of rounds, take over manually.</li>
         </ul>
       </div>
       <div class="callout caveat">
@@ -397,9 +397,9 @@ as the fallback and add a test for the anonymous case.
         </h3>
         <ul>
           <li><strong>Not iteration quality.</strong> No claim about which tool's v2 is better than its v1.</li>
-          <li><strong>Not response latency.</strong> All four run async; seconds-to-response varies by load, not product.</li>
-          <li><strong>Not custom prompts.</strong> Each tool has fine-grained prompt-tuning features; this piece only covers the default review-driven loop.</li>
-          <li><strong>Not trigger-phrase overrides.</strong> Agent names and triggers can vary by configuration; this piece compares the default public workflow shapes.</li>
+          <li><strong>Not response latency.</strong> Response time varies by task, load, and product.</li>
+          <li><strong>Not custom prompts.</strong> This piece focuses on the review-driven loop rather than product-specific prompt customization.</li>
+          <li><strong>Not trigger-phrase overrides.</strong> This piece compares common workflow shapes, not every product configuration.</li>
         </ul>
       </div>
     </div>
@@ -410,19 +410,18 @@ as the fallback and add a test for the anonymous case.
   <div class="container">
     <div>
       <h4>About this infographic</h4>
-      <p>A review-ergonomics view of AI coding agents on GitHub. The claim is narrow: <strong>GitHub-hosted agents keep routine correction feedback closest to the issue or PR; standalone vendor integrations can add valuable control, but may also add Actions logs, API credentials, subscription quota, or vendor workspace state.</strong> This is a workflow-shape fact, not a capability claim.</p>
+      <p>A review-ergonomics view of AI coding agents on GitHub. The analysis is narrow: <strong>GitHub-hosted agents keep routine correction feedback closest to the issue or PR; standalone vendor integrations can add valuable control, but may also add Actions logs, API credentials, subscription quota, or vendor workspace state.</strong> This compares workflow shape, not capability.</p>
       <p class="disclosure">Produced by a Microsoft employee. Views are my own; not endorsed by GitHub, Anthropic, OpenAI, or Cursor.</p>
     </div>
     <div>
       <h4>Primary sources</h4>
       <ul class="sources-list">
         <li><a href="https://docs.github.com/en/copilot/how-tos/use-copilot-agents/cloud-agent/use-cloud-agent-on-github">Using Copilot cloud agent on GitHub</a></li>
-        <li><a href="https://docs.github.com/en/copilot/concepts/agents/about-third-party-agents">GitHub third-party agents</a></li>
+        <li><a href="https://docs.github.com/en/copilot/concepts/agents/about-third-party-coding-agents">GitHub third-party coding agents</a></li>
         <li><a href="https://code.claude.com/docs/en/github-actions">Claude Code GitHub Actions</a></li>
         <li><a href="https://developers.openai.com/codex/integrations/github">Codex GitHub integration</a></li>
         <li><a href="https://cursor.com/docs/cloud-agent">Cursor Cloud Agents</a></li>
-        <li><a href="https://docs.github.com/en/copilot/concepts/agents/github-copilot-app">About the GitHub Copilot app (Agent Merge, Rubber Duck)</a></li>
-        <li><a href="https://github.com/github/app">github/app repo</a></li>
+        <li><a href="https://docs.github.com/en/copilot/concepts/agents/github-copilot-app">About the GitHub Copilot app</a></li>
       </ul>
     </div>
   </div>
