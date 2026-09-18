@@ -150,6 +150,16 @@
   .lite-schedule li.sch-past .sch-num span { display: none; }
   .spotlight-lite .lite-layout.lite-layout--solo { grid-template-columns: minmax(0, 460px); }
   @media (max-width: 900px) { .spotlight-lite .lite-layout { grid-template-columns: minmax(0, 620px); } .spotlight-lite .lite-layout .events { grid-template-columns: minmax(0, 620px); order: 1; } .lite-schedule { order: 2; } }
+
+  /* Featured Fabric webinar band (Fabric-themed spotlight-lite variant) */
+  .spotlight-lite.spotlight-lite--fabric { background: linear-gradient(135deg, #e7f4f0 0%, #e3f2ef 55%, #eef7f3 100%); border-bottom: 1px solid #cfe4dd; }
+  .spotlight-lite--fabric .spotlight-lite-eyebrow { color: #0b6a5f; background: #cfe9e5; }
+  .spotlight-lite--fabric .section-header h2 { color: #0b544c; }
+  .spotlight-lite--fabric .tag-fabric { background: #cfe9e5; color: #0b6a5f; }
+  .spotlight-lite--fabric .event-card--lite { border-top-color: #0b6a5f; }
+  .spotlight-lite--fabric .event-card--lite .btn { background: #0b6a5f; }
+  .spotlight-lite--fabric .event-card--lite .btn:hover { background: #094e46; }
+  .spotlight-lite--fabric .event-card--lite .btn.btn--rec { background: #0b6a5f; }
 </style>
 <script defer src="https://a.ndme.sh/script.js" data-website-id="9478c1a0-93c6-4c21-855a-69e50e15cbc4"></script>
 <!-- smec-meta v1 -->
@@ -285,7 +295,7 @@
       <span class="spotlight-eyebrow">✨ Featured Series</span>
       <h2>Azure AI Foundry Webinar Series — Build “Remi”: From One Prompt to Production</h2>
       <p>Five Thursdays, one solution that grows every week. Follow Nimbus, a mid-size insurer, as it builds “Remi,” an always-on claims assistant — starting from a single model call and ending with a governed, evaluated, multi-agent system with a live voice line, all on Azure AI Foundry. Every session is ~60% hands-on build and ~40% business value. Attend one or attend all five; the story compounds.</p>
-      <div class="spotlight-note">🕐 All sessions <strong>Thursdays, Sep 10 – Oct 8</strong> · 3:00 PM EDT / 2:00 PM CDT / 12:00 PM PDT · shown below in your local time zone.</div>
+      <div class="spotlight-note">🕐 All sessions <strong>Thursdays, Sep 10 – Oct 8</strong> · shown below in your local time zone.</div>
     </div>
     <div class="carousel">
       <button type="button" class="carousel-btn carousel-prev" aria-label="Previous sessions">&#8249;</button>
@@ -412,6 +422,42 @@
       nextMarked = true;
     }
   });
+})();
+</script>
+
+<section class="spotlight-lite spotlight-lite--fabric">
+  <div class="container">
+    <div class="section-header">
+      <span class="spotlight-lite-eyebrow">✨ Featured Fabric Webinar</span>
+      <h2>Planning in Microsoft Fabric: From Insights to Action</h2>
+      <p>Move beyond siloed Excel and legacy planning tools. See how Planning in Microsoft Fabric brings enterprise planning, forecasting, and writeback together on your Power BI and Fabric data — with a live, hands-on demo and Q&amp;A.</p>
+    </div>
+    <div class="lite-layout lite-layout--solo">
+      <div class="events">
+      <div class="event-card event-card--lite" data-type="Briefing" data-modality="Virtual" data-month="10" data-search="planning in microsoft fabric from insights to action webinar supriya kashyap liran edelist lumel technologies power bi forecast planning sheets powertable writeback billing pricing briefing virtual">
+        <span class="event-tag tag-fabric">Fabric Webinar</span>
+        <h3>Planning in Microsoft Fabric: From Insights to Action</h3>
+        <div class="event-meta"><span class="icon">📅</span> <span class="event-time" data-start="2026-10-08T17:00:00Z" data-end="2026-10-08T18:00:00Z"></span></div>
+        <div class="event-meta event-meta-sub"><span class="icon">💻</span> Virtual · 60 min · Supriya Kashyap (Microsoft) &amp; Dr. Liran Edelist (Lumel)</div>
+        <p>A customer-focused look at Planning in Fabric: priority use cases, how the workload integrates with Power BI and Fabric data, and the pricing and billing model — followed by a practical demo of environment setup, building a forecast with Planning Sheets, collaboration and writeback, and PowerTable for reference data. Closes with live Q&amp;A.</p>
+        <div class="card-actions"><a class="btn" href="https://msit.events.teams.microsoft.com/event/msit.1bfe949c-8a23-4de3-b47e-d392ae2e0591@72f988bf-86f1-41af-91ab-2d7cd011db47?source=copyLinkOneEventsShareDialog" target="_blank" rel="noopener">Register</a></div>
+      </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+/* Auto-hide the Featured Fabric band once its session has passed */
+(function () {
+  var band = document.querySelector('.spotlight-lite--fabric');
+  if (!band) return;
+  var now = new Date();
+  var times = Array.from(band.querySelectorAll('.event-card--lite .event-time[data-start]'));
+  var allPast = times.length > 0 && times.every(function (t) {
+    var c = t.dataset.end ? new Date(t.dataset.end) : new Date(t.dataset.start);
+    return !isNaN(c.getTime()) && c < now;
+  });
+  if (allPast) band.style.display = 'none';
 })();
 </script>
 
