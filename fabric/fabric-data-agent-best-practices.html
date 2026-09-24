@@ -266,7 +266,7 @@
 <!-- smec-favicon v1 -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <!-- smec-accuracy v1 -->
-<meta name="smec:last-accuracy-check" content="2026-08-20">
+<meta name="smec:last-accuracy-check" content="2026-09-24">
 <style>/* smec-back-btn v2 */
 .smec-back-btn { position: fixed; bottom: 16px; left: 16px; z-index: 9999;
   box-sizing: border-box;
@@ -606,7 +606,7 @@
       <div class="acc-item">
         <div class="acc-header"><span>9 &nbsp; Use Example Queries for Complex Logic</span><span class="chevron">&#9660;</span></div>
         <div class="acc-body"><div class="acc-body-inner">
-          Example queries act as templates the agent generalizes from. For each user question, the agent performs a <strong>vector similarity search</strong> to retrieve the top 3 most relevant examples.<br><br>
+          Example queries act as templates the agent generalizes from. For each user question, the agent retrieves the most relevant examples — typically the top four — and feeds them into query generation.<br><br>
           Focus on queries involving:<br>
           <ul style="margin-top:8px;">
             <li>Filtering &amp; joins</li>
@@ -776,7 +776,7 @@ guidance (tone, formatting, routing).</code>
         <div class="wf-num" style="background:#D13438;">9</div>
         <div class="wf-content">
           <h4>Validate, Iterate &amp; Deploy</h4>
-          <p>Use the <strong>Fabric Data Agent Python SDK</strong> for automated evaluations. Involve stakeholders. Use <strong>Git integration &amp; deployment pipelines</strong> for ALM across dev → test → prod.</p>
+          <p>Use the preview <strong>Fabric data agent Python SDK</strong> for automated evaluations. Involve stakeholders. Use <strong>Git integration &amp; deployment pipelines</strong> for ALM across dev → test → prod; source control for data agents is currently in preview.</p>
         </div>
       </div>
     </div>
@@ -871,7 +871,7 @@ guidance (tone, formatting, routing).</code>
 
 <!-- ═══════════════════ FOOTER ═══════════════════ -->
 <footer>
-  <p>Sources: <a href="https://learn.microsoft.com/en-us/fabric/data-science/semantic-model-best-practices" target="_blank">Semantic Model Best Practices</a> &nbsp;|&nbsp; <a href="https://learn.microsoft.com/en-us/fabric/data-science/data-agent-configuration-best-practices" target="_blank">Data Agent Configuration Best Practices</a></p>
+  <p>Sources: <a href="https://learn.microsoft.com/en-us/fabric/data-science/semantic-model-best-practices" target="_blank">Semantic Model Best Practices</a> &nbsp;|&nbsp; <a href="https://learn.microsoft.com/en-us/fabric/data-science/data-agent-configuration-best-practices" target="_blank">Data Agent Configuration Best Practices</a> &nbsp;|&nbsp; <a href="https://learn.microsoft.com/en-us/fabric/data-science/data-agent-example-queries" target="_blank">Example Queries</a> &nbsp;|&nbsp; <a href="https://learn.microsoft.com/en-us/fabric/data-science/evaluate-data-agent" target="_blank">Evaluate Data Agent</a> &nbsp;|&nbsp; <a href="https://learn.microsoft.com/en-us/fabric/data-science/data-agent-source-control" target="_blank">Source Control &amp; CI/CD</a></p>
   <p style="margin-top:8px;">Microsoft Fabric &bull; Data Agents &bull; Best Practice Guide</p>
 </footer>
 
