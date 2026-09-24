@@ -178,6 +178,50 @@
   /* Featured Azure SRE Agent series band (two side-by-side lite cards) */
   .spotlight-lite .events.events--pair { grid-template-columns: repeat(2, minmax(0, 520px)); gap: 24px; justify-content: center; margin-bottom: 0; }
   @media (max-width: 980px) { .spotlight-lite .events.events--pair { grid-template-columns: minmax(0, 620px); } }
+
+  /* Microsoft Discovery Sessions: compact, scrollable list of wide tiles directly below the SRE band */
+  .section--discovery { padding: 46px 0 34px; background: linear-gradient(180deg, #ffffff 0%, #fbfaff 100%); }
+  .section--discovery .section-header { margin-bottom: 22px; }
+  .ds-panel { position: relative; max-width: 1060px; margin: 0 auto; background: #fff; border: 1px solid #e4def5; border-radius: 18px; box-shadow: 0 6px 24px rgba(70,54,104,0.08); overflow: hidden; }
+  .ds-bar { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 16px 22px; background: linear-gradient(100deg, #f4f0fd 0%, #eef3fc 100%); border-bottom: 1px solid #e4def5; }
+  .ds-bar-title { font-size: 16px; color: #463668; }
+  .ds-bar-title strong { font-weight: 700; }
+  .ds-bar-title .ds-range { font-weight: 600; }
+  .ds-sep { color: #b1a6d8; margin: 0 8px; }
+  .ds-bar-sub { display: flex; flex-direction: column; gap: 1px; margin-top: 3px; font-size: 12.5px; color: #605e5c; line-height: 1.45; }
+  .btn--discovery { flex: 0 0 auto; background: #463668; padding: 11px 22px; white-space: nowrap; box-shadow: 0 4px 14px rgba(70,54,104,0.28); }
+  .btn--discovery:hover { background: #35284f; }
+  .ds-list { max-height: min(440px, 58vh); overflow-y: auto; padding: 12px; display: flex; flex-direction: column; gap: 10px; background: #faf9fd; scrollbar-width: thin; scrollbar-color: #c9bfe8 transparent; }
+  .ds-list:focus-visible { outline: 2px solid #8d7ad6; outline-offset: -2px; }
+  .ds-panel::after { content: ''; position: absolute; left: 1px; right: 16px; bottom: 1px; height: 56px; border-radius: 0 0 0 17px; background: linear-gradient(rgba(250,249,253,0), #faf9fd 85%); pointer-events: none; opacity: 0; transition: opacity 0.2s ease; }
+  .ds-panel.ds-more::after { opacity: 1; }
+  /* Each wide tile: dates on the left, details on the right, Discovery-brand violet glow in the bottom-right corner */
+  .ds-list .event-card--discovery { display: grid; grid-template-columns: 216px minmax(0, 1fr); grid-template-areas: "when tags" "when title" "when desc" "when aud"; column-gap: 26px; align-content: start; align-items: start; flex: 0 0 auto; padding: 15px 22px 18px; border: 1px solid #ebe6f7; border-radius: 16px; box-shadow: 0 1px 3px rgba(70,54,104,0.06); background: linear-gradient(348.82deg, #9886da 2.35%, rgba(246,180,255,0) 19.39%), #fff; }
+  .ds-list .event-card--discovery:hover { transform: translateY(-2px); border-color: #d9cff3; box-shadow: 0 8px 22px rgba(70,54,104,0.13); }
+  .ds-list .event-card--discovery.card-hidden { display: none; }
+  .ds-times { grid-area: when; list-style: none; display: flex; flex-direction: column; gap: 8px; }
+  .ds-time { display: flex; align-items: center; gap: 12px; }
+  .ds-cal { flex: 0 0 48px; display: flex; flex-direction: column; overflow: hidden; text-align: center; background: #fff; border: 1px solid #ddd5f3; border-radius: 10px; box-shadow: 0 1px 2px rgba(70,54,104,0.08); }
+  .ds-cal-m { background: #463668; color: #fff; font-size: 10px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; line-height: 16px; }
+  .ds-cal-d { font-size: 18px; font-weight: 700; color: #242424; line-height: 27px; }
+  .ds-slot { display: flex; flex-direction: column; line-height: 1.3; }
+  .ds-slot-day { font-size: 14px; font-weight: 600; color: #242424; }
+  .ds-slot-hr { font-size: 12.5px; color: #605e5c; white-space: nowrap; }
+  .ds-tags { grid-area: tags; display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 6px; }
+  .ds-tags span { font-size: 11px; font-weight: 600; letter-spacing: 0.2px; color: #463668; background: #f1edfb; border: 1px solid #e3dcf6; border-radius: 999px; padding: 0 9px; line-height: 1.6; }
+  .ds-list .event-card--discovery h3 { grid-area: title; font-size: 17px; line-height: 1.3; margin: 0 0 3px; }
+  .ds-list .event-card--discovery p { grid-area: desc; font-size: 14px; line-height: 1.5; margin: 0 0 7px; }
+  .ds-audience { grid-area: aud; font-size: 12.5px; color: #3b3a39; line-height: 1.45; }
+  .ds-audience strong { color: #242424; font-weight: 600; }
+  .ds-empty { padding: 26px 20px; text-align: center; color: #605e5c; font-size: 15px; }
+  .section--discovery.ds-none .ds-list { display: none; }
+  @media (max-width: 720px) {
+    .ds-bar { flex-direction: column; align-items: stretch; }
+    .ds-bar .btn--discovery { text-align: center; }
+    .ds-list { max-height: 72vh; padding: 10px; }
+    .ds-list .event-card--discovery { grid-template-columns: minmax(0, 1fr); grid-template-areas: "tags" "title" "when" "desc" "aud"; padding: 16px 16px 24px; }
+    .ds-times { flex-direction: row; flex-wrap: wrap; gap: 10px 18px; margin: 6px 0 12px; }
+  }
 </style>
 <script defer src="https://a.ndme.sh/script.js" data-website-id="9478c1a0-93c6-4c21-855a-69e50e15cbc4"></script>
 <!-- smec-meta v1 -->
@@ -189,7 +233,7 @@
 <meta name="twitter:title" content="Azure Upcoming Events — Americas | August–October 2026">
 <meta name="twitter:description" content="Azure Upcoming Events — Americas | August–October 2026 — an interactive infographic from the SME&amp;C Infographic Hub.">
 <!-- smec-favicon v1 -->
-<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwIiB5MT0iMCIgeDI9IjEiIHkyPSIxIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzAwNzhENCIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiM1MEU2RkYiLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgPC9kZWZzPgogIDxyZWN0IHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgcng9IjYiIGZpbGw9InVybCgjZykiLz4KICA8dGV4dCB4PSIxNiIgeT0iMjIiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJTZWdvZSBVSSwgQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtd2VpZ2h0PSI3MDAiIGZvbnQtc2l6ZT0iMTgiIGZpbGw9IiNmZmZmZmYiPlM8L3RleHQ+Cjwvc3ZnPgo=">
 <!-- smec-accuracy v1 -->
 <meta name="smec:last-accuracy-check" content="2026-09-01">
 <style>/* smec-back-btn v2 */
@@ -344,6 +388,7 @@ document.addEventListener('DOMContentLoaded', function () {
     <select id="f-type" aria-label="Filter by event type">
         <option value="">All event types</option>
         <optgroup label="Microsoft-led">
+        <option value="Discovery Session">Discovery Session</option>
         <option value="Briefing">Briefing</option>
         <option value="Training">Training</option>
         <option value="Workshop">Workshop</option>
@@ -372,6 +417,7 @@ document.addEventListener('DOMContentLoaded', function () {
         <option value="8">August 2026</option>
         <option value="9">September 2026</option>
         <option value="10">October 2026</option>
+        <option value="11">November 2026</option>
     </select>
     <label class="check"><input type="checkbox" id="f-hidepast" checked> Hide past events</label>
     <button type="button" class="tbtn" id="t-expand">Expand all</button>
@@ -412,7 +458,7 @@ document.addEventListener('DOMContentLoaded', function () {
         <div class="card-actions"><a class="btn" href="https://msit.events.teams.microsoft.com/event/msit.e7db266b-cd24-492c-b4cf-d5baebb6ea22@72f988bf-86f1-41af-91ab-2d7cd011db47?source=copyLinkOneEventsShareDialog" target="_blank" rel="noopener">Register</a></div>
       </div>
 
-      <div class="event-card event-card--spotlight" data-type="Training" data-modality="Virtual" data-month="9" data-search="azure ai foundry webinar series session 3 tools actions and the hosted agent verify policy live weather estimate payout file claim human approval gate remi nimbus virtual">
+      <div class="event-card event-card--spotlight" data-type="Training" data-modality="Virtual" data-month="9" data-recording="https://aka.ms/RemiSession3" data-search="azure ai foundry webinar series session 3 tools actions and the hosted agent verify policy live weather estimate payout file claim human approval gate remi nimbus virtual">
         <span class="event-tag tag-spotlight">Session 3</span>
         <h3>Session 3 — Tools, Actions &amp; the Hosted Agent</h3>
         <div class="event-meta"><span class="icon">📅</span> <span class="event-time" data-start="2026-09-24T19:00:00Z" data-end="2026-09-24T20:30:00Z"></span></div>
@@ -553,6 +599,155 @@ document.addEventListener('DOMContentLoaded', function () {
         <p>A demonstration-driven deep dive into how Azure SRE Agent actually operates. Explore the architecture and guardrails that make it enterprise-ready — permissions, networking, data residency, and governance — then follow one incident through its full lifecycle. See how to extend the agent with MCP servers, APIs, and tools, and operationalize it day to day with human-in-the-loop review and Session Insights. Closes with live Q&amp;A.</p>
         <div class="card-actions"><a class="btn" href="https://msit.events.teams.microsoft.com/event/msit.9c9bc8ea-3cef-497e-b023-1c1153aec21b@72f988bf-86f1-41af-91ab-2d7cd011db47?source=copyLinkOneEventsShareDialog" target="_blank" rel="noopener">Register</a></div>
       </div>
+    </div>
+  </div>
+</section>
+
+<section class="section--discovery">
+  <div class="container">
+    <div class="section-header">
+      <h2>🧭 Microsoft Discovery Sessions</h2>
+      <p>Free, one-hour digital sessions led by Microsoft experts — practical demos, real-world scenarios, and live Q&amp;A on AI, agents, business process transformation, security, and modernization.</p>
+    </div>
+    <div class="ds-panel">
+      <div class="ds-bar">
+        <div class="ds-bar-info">
+          <div class="ds-bar-title"><strong class="ds-count">12 sessions</strong><span class="ds-sep">·</span><span class="ds-range">Oct 5 – Nov 5</span></div>
+          <div class="ds-bar-sub"><span>English, with captions in 9 languages · weekdays during US business hours · times shown in your time zone</span><span>Sessions don’t have individual links: register once on the Discovery hub, then pick the sessions you want.</span></div>
+        </div>
+        <a class="btn btn--discovery" href="https://events.microsoft.com/flow/microsoft/microsoftds/registration/page/landing" target="_blank" rel="noopener" data-umami-event="outbound:azure-events-august-october-2026-collapsible/PolePosition" data-umami-event-dest="https://events.microsoft.com/flow/microsoft/microsoftds/registration/page/landing" data-umami-event-source="azure-events-august-october-2026-collapsible" data-umami-event-medium="email" data-umami-event-campaign="PolePosition" data-umami-event-term="Discovery Session" data-umami-event-content="Microsoft-Discovery-Sessions-Hub">Register for Discovery Sessions</a>
+      </div>
+      <div class="ds-list" tabindex="0" role="region" aria-label="Microsoft Discovery Sessions">
+
+      <div class="event-card event-card--discovery" data-type="Discovery Session" data-modality="Digital" data-month="10" data-search="microsoft discovery session bring ai into the flow of work—and the flow of business move beyond ai experimentation and create human-agent teams that boost productivity, automate work, and accelerate business outcomes. learn how leading organizations are moving beyond ai experimentation to create human-agent teams that help employees work smarter, automate processes, and accelerate business outcomes. discover how microsoft 365 copilot and agents bring ai into the flow of work and the flow of business with the security, visibility, and control needed to scale. business applications ai cloud platform microsoft 365 copilot and agents business and technology leaders, it professionals, and ai transformation teams. discovery session digital live english">
+        <div class="ds-tags"><span>Microsoft 365</span><span>Copilot &amp; Agents</span></div>
+        <h3>Bring AI into the Flow of Work—and the Flow of Business</h3>
+        <ul class="ds-times" aria-label="Live session dates">
+          <li><span class="ds-time" data-start="2026-10-05T17:00:00Z" data-end="2026-10-05T18:00:00Z"></span></li>
+          <li><span class="ds-time" data-start="2026-10-27T17:00:00Z" data-end="2026-10-27T18:00:00Z"></span></li>
+        </ul>
+        <p>Move beyond AI experimentation and create human-agent teams that boost productivity, automate work, and accelerate business outcomes.</p>
+        <div class="ds-audience"><strong>Who should attend:</strong> Business and technology leaders, IT professionals, and AI transformation teams.</div>
+      </div>
+
+      <div class="event-card event-card--discovery" data-type="Discovery Session" data-modality="Digital" data-month="10" data-search="microsoft discovery session building a secure foundation for ai transformation establish the security, governance, and controls needed to adopt ai confidently and scale it across your organization. learn how leading organizations are building a secure foundation for ai adoption. explore strategies to empower employees with ai, protect data and resources, and scale ai with the visibility, governance, and controls needed to drive business value. see how organizations move from experimentation to enterprise-scale adoption. business applications ai productivity security microsoft 365 microsoft security windows security, it, compliance leaders and professionals, enterprise architects, and ai adoption teams. discovery session digital live english">
+        <div class="ds-tags"><span>Microsoft 365</span><span>Microsoft Security</span><span>Windows</span></div>
+        <h3>Building a Secure Foundation for AI Transformation</h3>
+        <ul class="ds-times" aria-label="Live session dates">
+          <li><span class="ds-time" data-start="2026-10-06T17:00:00Z" data-end="2026-10-06T18:00:00Z"></span></li>
+          <li><span class="ds-time" data-start="2026-10-28T17:00:00Z" data-end="2026-10-28T18:00:00Z"></span></li>
+        </ul>
+        <p>Establish the security, governance, and controls needed to adopt AI confidently and scale it across your organization.</p>
+        <div class="ds-audience"><strong>Who should attend:</strong> Security, IT, compliance leaders and professionals, enterprise architects, and AI adoption teams.</div>
+      </div>
+
+      <div class="event-card event-card--discovery" data-type="Discovery Session" data-modality="Digital" data-month="10" data-search="microsoft discovery session protecting the agentic enterprise: from discovery to defense secure and govern ai agents, manage access, protect data, and respond to emerging ai-threats with a unified ai-first end-to-end security platform. by 2028, idc predicts there will be 1.3 billion ai agents in enterprise workflows. most organizations aren&#x27;t ready to secure them. agents proliferate without clear ownership, identity, or access. to scale ai, responsibly, securely and with confidence, organizations need a new security operating model. learn how microsoft’s ai-first, end-to-end security platform helps organizations secure and govern ai across its lifecycle, manage access, protect data, disrupt threats, and use ai-driven capabilities to strengthen security operations and cyber resilience. security microsoft 365 microsoft security security leaders and practitioners, identity leaders and practitioners, compliance leaders and practitioners, it admins, security operations leaders and professionals, and ai security practitioners. discovery session digital live english">
+        <div class="ds-tags"><span>Microsoft 365</span><span>Microsoft Security</span></div>
+        <h3>Protecting the Agentic Enterprise: From Discovery to Defense</h3>
+        <ul class="ds-times" aria-label="Live session dates">
+          <li><span class="ds-time" data-start="2026-10-07T17:00:00Z" data-end="2026-10-07T18:00:00Z"></span></li>
+          <li><span class="ds-time" data-start="2026-10-29T17:00:00Z" data-end="2026-10-29T18:00:00Z"></span></li>
+        </ul>
+        <p>Secure and govern AI agents, manage access, protect data, and respond to emerging AI threats with a unified, AI-first, end-to-end security platform.</p>
+        <div class="ds-audience"><strong>Who should attend:</strong> Security leaders and practitioners, identity leaders and practitioners, compliance leaders and practitioners, IT admins, security operations leaders and professionals, and AI security practitioners.</div>
+      </div>
+
+      <div class="event-card event-card--discovery" data-type="Discovery Session" data-modality="Digital" data-month="10 11" data-search="microsoft discovery session modernize with ai for a new pace of innovation accelerate modernization across applications, data, and infrastructure to create an ai-ready foundation for future innovation. unlock a faster pace of innovation with a modern foundation for ai. learn how to modernize applications, data, and infrastructure to reduce technical debt, improve operational efficiency, and prepare your organization for future growth. see how ai-powered tools can help streamline modernization efforts, increase resilience, and enable your teams to deliver new solutions faster and with greater confidence. ai cloud platform productivity security developer tools azure it leaders, software developers, data and ai professionals, enterprise architects, and security professionals. discovery session digital live english">
+        <div class="ds-tags"><span>Azure</span></div>
+        <h3>Modernize with AI for a New Pace of Innovation</h3>
+        <ul class="ds-times" aria-label="Live session dates">
+          <li><span class="ds-time" data-start="2026-10-08T17:00:00Z" data-end="2026-10-08T18:00:00Z"></span></li>
+          <li><span class="ds-time" data-start="2026-11-03T18:00:00Z" data-end="2026-11-03T19:00:00Z"></span></li>
+        </ul>
+        <p>Accelerate modernization across applications, data, and infrastructure to create an AI-ready foundation for future innovation.</p>
+        <div class="ds-audience"><strong>Who should attend:</strong> IT leaders, software developers, data and AI professionals, enterprise architects, and security professionals.</div>
+      </div>
+
+      <div class="event-card event-card--discovery" data-type="Discovery Session" data-modality="Digital" data-month="10 11" data-search="microsoft discovery session build context-aware agents that drive real business decisions build a unified intelligence layer that connects business context, organizational knowledge, and your data to drive more accurate decisions. build ai agents that deliver more accurate insights and lead to more trusted business outcomes. learn how microsoft iq creates a unified intelligence layer that connects business context, organizational knowledge, and your data so agents can reason more effectively and scale across your organization. see how foundry iq and fabric iq help connect agents to business knowledge and data to drive more relevant decisions and consistent results. business applications ai cloud platform azure copilot and agents data and ai leaders, enterprise architects, data platform professionals, ai developers, and security professionals. discovery session digital live english">
+        <div class="ds-tags"><span>Azure</span><span>Copilot &amp; Agents</span></div>
+        <h3>Build Context-Aware Agents That Drive Real Business Decisions</h3>
+        <ul class="ds-times" aria-label="Live session dates">
+          <li><span class="ds-time" data-start="2026-10-12T17:00:00Z" data-end="2026-10-12T18:00:00Z"></span></li>
+          <li><span class="ds-time" data-start="2026-11-02T18:00:00Z" data-end="2026-11-02T19:00:00Z"></span></li>
+        </ul>
+        <p>Build a unified intelligence layer that connects business context, organizational knowledge, and your data to drive more accurate decisions.</p>
+        <div class="ds-audience"><strong>Who should attend:</strong> Data and AI leaders, enterprise architects, data platform professionals, AI developers, and security professionals.</div>
+      </div>
+
+      <div class="event-card event-card--discovery" data-type="Discovery Session" data-modality="Digital" data-month="10 11" data-search="microsoft discovery session rethinking business processes for the ai era transform business processes with ai-powered applications that connect data, workflows, and intelligence. rethink how work gets done in the ai era. learn how ai-powered business applications help teams move from insight to action faster by connecting data, processes, and workflows across the organization. discover how agents can help streamline operations, reduce manual effort, and support employees with intelligent assistance while keeping people in control of business decisions. business applications ai dynamics 365 copilot and agents power platform business and operations leaders, cios, enterprise architects, business applications professionals, and ai transformation teams. discovery session digital live english">
+        <div class="ds-tags"><span>Dynamics 365</span><span>Copilot &amp; Agents</span><span>Power Platform</span></div>
+        <h3>Rethinking Business Processes for the AI Era</h3>
+        <ul class="ds-times" aria-label="Live session dates">
+          <li><span class="ds-time" data-start="2026-10-13T17:00:00Z" data-end="2026-10-13T18:00:00Z"></span></li>
+          <li><span class="ds-time" data-start="2026-11-05T18:00:00Z" data-end="2026-11-05T19:00:00Z"></span></li>
+        </ul>
+        <p>Transform business processes with AI-powered applications that connect data, workflows, and intelligence.</p>
+        <div class="ds-audience"><strong>Who should attend:</strong> Business and operations leaders, CIOs, enterprise architects, business applications professionals, and AI transformation teams.</div>
+      </div>
+
+      <div class="event-card event-card--discovery" data-type="Discovery Session" data-modality="Digital" data-month="10 11" data-search="microsoft discovery session build agents and software faster with ai that knows your business build, deploy, and manage agents faster with ai-powered development tools that connect agents to your business data and processes. build and ship agents and software faster with ai that understands your business. learn how github copilot, microsoft foundry, copilot studio, agent 365, windows 365 for agents, and microsoft iq help development teams accelerate delivery, connect agents to the data, knowledge, and processes that power their business, and scale ai applications with confidence. see how to ground agents in business context, secure ai-generated code, and manage the full lifecycle from development through production with enterprise-grade governance and control. business applications ai cloud platform azure copilot and agents software engineering leaders, developers, enterprise architects, devsecops professionals, and ai platform teams. discovery session digital live english">
+        <div class="ds-tags"><span>Azure</span><span>Copilot &amp; Agents</span></div>
+        <h3>Build Agents and Software Faster with AI That Knows Your Business</h3>
+        <ul class="ds-times" aria-label="Live session dates">
+          <li><span class="ds-time" data-start="2026-10-14T17:00:00Z" data-end="2026-10-14T18:00:00Z"></span></li>
+          <li><span class="ds-time" data-start="2026-11-04T18:00:00Z" data-end="2026-11-04T19:00:00Z"></span></li>
+        </ul>
+        <p>Build, deploy, and manage agents faster with AI-powered development tools that connect agents to your business data and processes.</p>
+        <div class="ds-audience"><strong>Who should attend:</strong> Software engineering leaders, developers, enterprise architects, DevSecOps professionals, and AI platform teams.</div>
+      </div>
+
+      <div class="event-card event-card--discovery" data-type="Discovery Session" data-modality="Digital" data-month="10" data-search="microsoft discovery session building frontier finance and operations with agentic erp transform finance and operations with ai-powered business processes that help teams act faster, improve agility, and maintain governance. business leaders are expected to respond to change faster than ever while balancing growth, cost, risk, and operational complexity. learn how organizations are reimagining finance, supply chain, procurement, hr, project operations, and field service with ai-powered business processes. see how microsoft dynamics 365, microsoft 365 copilot, copilot studio, and agentic erp capabilities help employees access operational data, take action faster, and improve decision velocity while maintaining governance and business controls. business applications ai dynamics 365 copilot and agents finance leaders, operations leaders, supply chain professionals, erp professionals, it leaders, and business transformation teams. discovery session digital live english">
+        <div class="ds-tags"><span>Dynamics 365</span><span>Copilot &amp; Agents</span></div>
+        <h3>Building Frontier Finance and Operations with Agentic ERP</h3>
+        <ul class="ds-times" aria-label="Live session date">
+          <li><span class="ds-time" data-start="2026-10-15T17:00:00Z" data-end="2026-10-15T18:00:00Z"></span></li>
+        </ul>
+        <p>Transform finance and operations with AI-powered business processes that help teams act faster, improve agility, and maintain governance.</p>
+        <div class="ds-audience"><strong>Who should attend:</strong> Finance leaders, operations leaders, supply chain professionals, ERP professionals, IT leaders, and business transformation teams.</div>
+      </div>
+
+      <div class="event-card event-card--discovery" data-type="Discovery Session" data-modality="Digital" data-month="10" data-search="microsoft discovery session know what ai will cost before you scale gain visibility into ai costs, improve planning, and scale ai adoption with predictable spending and stronger governance. as organizations move from ai experimentation to broader deployment, one question comes up consistently: how can you keep ai investments predictable as adoption grows? learn how leading organizations are building ai cost confidence by understanding consumption drivers, estimating credit needs, monitoring usage, and applying finops practices to govern ai spending. explore practical approaches to planning, budgeting, and scaling ai investments with greater visibility and control. business applications ai data and analytics cloud platform copilot and agents cloud and ai architects, platform engineering professionals, finops practitioners, it leaders, and ai transformation teams. discovery session digital live english">
+        <div class="ds-tags"><span>Copilot &amp; Agents</span></div>
+        <h3>Know What AI Will Cost Before You Scale</h3>
+        <ul class="ds-times" aria-label="Live session date">
+          <li><span class="ds-time" data-start="2026-10-19T17:00:00Z" data-end="2026-10-19T18:00:00Z"></span></li>
+        </ul>
+        <p>Gain visibility into AI costs, improve planning, and scale AI adoption with predictable spending and stronger governance.</p>
+        <div class="ds-audience"><strong>Who should attend:</strong> Cloud and AI architects, platform engineering professionals, FinOps practitioners, IT leaders, and AI transformation teams.</div>
+      </div>
+
+      <div class="event-card event-card--discovery" data-type="Discovery Session" data-modality="Digital" data-month="10" data-search="microsoft discovery session the ai ready workspace: preparing a dynamic workforce enable secure, ai-ready workspaces that help every type of employee stay productive, connected, and protected from anywhere. prepare a dynamic workforce for the ai era. discover how organizations are empowering frontline, hybrid, contract, and specialized workers with secure access to the tools, data, and experiences they need to be productive. discover how microsoft helps provide secure access, device management, and governance across the workspace, enabling people and ai agents to do their best work virtually anywhere. business applications ai cloud platform productivity security microsoft 365 microsoft security windows it leaders, endpoint administrators, modern workplace professionals, and security and operations teams. discovery session digital live english">
+        <div class="ds-tags"><span>Microsoft 365</span><span>Microsoft Security</span><span>Windows</span></div>
+        <h3>The AI Ready Workspace: Preparing a Dynamic Workforce</h3>
+        <ul class="ds-times" aria-label="Live session date">
+          <li><span class="ds-time" data-start="2026-10-20T17:00:00Z" data-end="2026-10-20T18:00:00Z"></span></li>
+        </ul>
+        <p>Enable secure, AI-ready workspaces that help every type of employee stay productive, connected, and protected from anywhere.</p>
+        <div class="ds-audience"><strong>Who should attend:</strong> IT leaders, endpoint administrators, modern workplace professionals, and security and operations teams.</div>
+      </div>
+
+      <div class="event-card event-card--discovery" data-type="Discovery Session" data-modality="Digital" data-month="10" data-search="microsoft discovery session innovate with ai on a cloud native foundation transform operational data into intelligent experiences that help teams innovate faster and scale with confidence. organizations that can build and scale ai-ready applications faster are better positioned to create new customer value and respond to changing business demands. learn how microsoft azure cloud-native application platforms and modern data services help teams build intelligent applications, accelerate development, and bring ai-powered solutions to market faster. discover practical approaches for creating secure, resilient, and ai-ready foundations that support innovation at scale. azure application development leaders, software developers, enterprise architects, database professionals, operations professionals, and security professionals. discovery session digital live english">
+        <div class="ds-tags"><span>Azure</span></div>
+        <h3>Innovate with AI on a Cloud Native Foundation</h3>
+        <ul class="ds-times" aria-label="Live session date">
+          <li><span class="ds-time" data-start="2026-10-21T17:00:00Z" data-end="2026-10-21T18:00:00Z"></span></li>
+        </ul>
+        <p>Transform operational data into intelligent experiences that help teams innovate faster and scale with confidence.</p>
+        <div class="ds-audience"><strong>Who should attend:</strong> Application development leaders, software developers, enterprise architects, database professionals, operations professionals, and security professionals.</div>
+      </div>
+
+      <div class="event-card event-card--discovery" data-type="Discovery Session" data-modality="Digital" data-month="10" data-search="microsoft discovery session build, ship, and secure software with ai agents across the development lifecycle use ai agents across the software lifecycle to expand development capacity while maintaining visibility, governance, and control. see how developers and ai agents can work together across the software development lifecycle, from planning and coding to testing, deployment, security, and operations. learn how github, microsoft foundry, and azure ai capabilities help teams combine ai-assisted development, enterprise knowledge, governance, and security to build and deliver software faster. discover how organizations are expanding development capacity while maintaining accountability, visibility, and control. business applications ai cloud platform productivity security developer tools azure microsoft 365 copilot and agents ctos, cios, software engineering leaders, platform engineering leaders, devsecops leaders, enterprise architects, ai platform leaders, and security leaders. discovery session digital live english">
+        <div class="ds-tags"><span>Azure</span><span>Microsoft 365</span><span>Copilot &amp; Agents</span></div>
+        <h3>Build, Ship, and Secure Software with AI Agents Across the Development Lifecycle</h3>
+        <ul class="ds-times" aria-label="Live session date">
+          <li><span class="ds-time" data-start="2026-10-22T17:00:00Z" data-end="2026-10-22T18:00:00Z"></span></li>
+        </ul>
+        <p>Use AI agents across the software lifecycle to expand development capacity while maintaining visibility, governance, and control.</p>
+        <div class="ds-audience"><strong>Who should attend:</strong> CTOs, CIOs, software engineering leaders, platform engineering leaders, DevSecOps leaders, enterprise architects, AI platform leaders, and security leaders.</div>
+      </div>
+
+      </div>
+      <p class="ds-empty" hidden>No Discovery Sessions match your filters.</p>
     </div>
   </div>
 </section>
@@ -1031,6 +1226,15 @@ document.addEventListener('DOMContentLoaded', function () {
         <div class="event-meta event-meta-sub"><span class="icon">💻</span> Digital</div>
         <p>A hands-on Azure Databricks lakehouse build for data engineers and architects — Apache Spark, Delta Lake, real-time pipelines with Delta Live Tables, and orchestration through Databricks Workflows, tuned for performance and reliability at scale.</p>
         <div class="card-actions"><a class="btn" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D1521757972&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Workshop&amp;utm_content=Microsoft-Technical-Workshop-Implement-a-Lakehou-2026-10-13" target="_blank" rel="noopener">Register</a></div>
+      </div>
+
+      <div class="event-card" data-type="Workshop" data-modality="Digital" data-month="10" data-search="microsoft technical workshop: build context-aware agents  a hands-on technical workshop where microsoft experts guide you through whiteboarding and rapid prototyping in a sandbox environment, showing how microsoft iq activates the intelligence layer across your people, data, and workflows to build context-aware copilot and ai agents. workshop digital">
+        <span class="event-tag tag-workshop">Workshop</span>
+        <h3>Microsoft Technical Workshop: Build Context-Aware Agents</h3>
+        <div class="event-meta"><span class="icon">📅</span> <span class="event-time" data-start="2026-10-15T16:00:00Z" data-end="2026-10-15T20:00:00Z"></span></div>
+        <div class="event-meta event-meta-sub"><span class="icon">💻</span> Digital</div>
+        <p>A hands-on technical workshop where Microsoft experts guide you through whiteboarding and rapid prototyping in a sandbox environment, showing how Microsoft IQ activates the intelligence layer across your people, data, and workflows to build context-aware Copilot and AI agents.</p>
+        <div class="card-actions"><a class="btn" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D3472292343&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Workshop&amp;utm_content=Microsoft-Technical-Workshop-Build-Context-Aware-2026-10-15" target="_blank" rel="noopener">Register</a></div>
       </div>
 
       <div class="event-card" data-type="Workshop" data-modality="Digital" data-month="10" data-search="technical workshop: build agentic ai solutions with azure ai foundry create agents with azure ai foundry and the agent service, extend them with custom tools, and orchestrate multi-agent solutions using remote mcp tools and semantic kernel. hands-on and code-first — python or c# required. workshop">
@@ -2142,7 +2346,7 @@ document.addEventListener('DOMContentLoaded', function () {
 </section>
 
 <footer>
-  <p>Showing 158 events across the Americas · All times automatically shown in your browser's local time zone.</p>
+  <p>All times automatically shown in your browser's local time zone.</p>
   <p>Sessions are free and open to anyone interested. Registration links open the official Microsoft event page.</p>
 </footer>
 
@@ -2182,11 +2386,76 @@ document.addEventListener('DOMContentLoaded', function () {
   document.querySelectorAll('.events').forEach(function (grid) {
     var up = [], past = [];
     Array.from(grid.querySelectorAll('.event-card')).forEach(function (card) {
-      var t = card.querySelector('.event-time[data-start]');
+      var ts = card.querySelectorAll('.event-time[data-start]'), t = ts[ts.length - 1]; // multi-date cards stay current until their last date ends
       if (t && isPast(t.dataset.start, t.dataset.end)) { card.classList.add('event-card--past'); past.push(card); }
       else { up.push(card); }
     });
     up.concat(past).forEach(function (card) { grid.appendChild(card); });
+  });
+})();
+</script>
+
+<script>
+/* 2a) Discovery Sessions expire on their own (evaluated on every page load): each date drops off its tile once the
+   session ends, tiles with no dates left are removed, and the section plus its filter options disappear once all are over */
+(function () {
+  var now = new Date();
+  var sec = document.querySelector('.section--discovery');
+  if (!sec) return;
+  var grid = sec.querySelector('.ds-list');
+  var live = [];
+  function part(cls, text) { var s = document.createElement('span'); s.className = cls; if (text) s.textContent = text; return s; }
+  /* Render one live date as a calendar badge + weekday/time, in the viewer's own locale and time zone */
+  function renderSlot(t, start, end) {
+    var cal = part('ds-cal'), slot = part('ds-slot');
+    cal.appendChild(part('ds-cal-m', start.toLocaleDateString(undefined, { month: 'short' })));
+    cal.appendChild(part('ds-cal-d', start.toLocaleDateString(undefined, { day: 'numeric' })));
+    slot.appendChild(part('ds-slot-day', start.toLocaleDateString(undefined, { weekday: 'long' })));
+    slot.appendChild(part('ds-slot-hr', start.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' }) + ' \u2013 ' +
+      end.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit', timeZoneName: 'short' })));
+    t.textContent = '';
+    t.title = start.toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
+    t.appendChild(cal);
+    t.appendChild(slot);
+  }
+  Array.from(sec.querySelectorAll('.event-card--discovery')).forEach(function (card) {
+    var starts = [];
+    Array.from(card.querySelectorAll('.ds-times li')).forEach(function (li) {
+      var t = li.querySelector('.ds-time[data-start]');
+      if (!t) return;
+      var start = new Date(t.dataset.start), end = new Date(t.dataset.end || t.dataset.start);
+      if (isNaN(start.getTime()) || end < now) { li.remove(); return; }
+      starts.push(start.getTime());
+      renderSlot(t, start, end);
+    });
+    if (!starts.length) { card.remove(); return; }
+    var list = card.querySelector('.ds-times');
+    if (list) list.setAttribute('aria-label', starts.length === 1 ? 'Live session date' : 'Live session dates');
+    card.dataset.month = starts.map(function (ms) { return new Date(ms).getUTCMonth() + 1; })
+      .filter(function (m, i, all) { return all.indexOf(m) === i; }).join(' ');
+    live.push({ card: card, next: Math.min.apply(null, starts), last: Math.max.apply(null, starts) });
+  });
+  if (!live.length) {
+    sec.remove();
+    var typeOpt = document.querySelector('#f-type option[value="Discovery Session"]');
+    if (typeOpt) typeOpt.remove();
+  } else {
+    live.sort(function (a, b) { return a.next - b.next; });
+    if (grid) live.forEach(function (x) { grid.appendChild(x.card); });
+    var range = sec.querySelector('.ds-range');
+    if (range) {
+      var fmt = function (ms) { return new Date(ms).toLocaleDateString(undefined, { month: 'short', day: 'numeric' }); };
+      var first = fmt(Math.min.apply(null, live.map(function (x) { return x.next; })));
+      var last = fmt(Math.max.apply(null, live.map(function (x) { return x.last; })));
+      range.textContent = first === last ? first : first + ' \u2013 ' + last;
+    }
+  }
+  /* Drop month filter options that no longer match any event on the page (e.g. November once these expire) */
+  var monthCards = Array.from(document.querySelectorAll('.event-card[data-month]'));
+  Array.from(document.querySelectorAll('#f-month option')).forEach(function (o) {
+    if (!o.value) return;
+    var used = monthCards.some(function (c) { return (' ' + c.dataset.month + ' ').indexOf(' ' + o.value + ' ') !== -1; });
+    if (!used) o.remove();
   });
 })();
 </script>
@@ -2229,7 +2498,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (q && c.dataset.search.indexOf(q) === -1) return false;
     if (fType.value && c.dataset.type !== fType.value) return false;
     if (fMod.value && c.dataset.modality !== fMod.value) return false;
-    if (fMonth.value && c.dataset.month !== fMonth.value) return false;
+    if (fMonth.value && (' ' + c.dataset.month + ' ').indexOf(' ' + fMonth.value + ' ') === -1) return false;
     return true;
   }
   function isVisible(c) { return !c.classList.contains('card-hidden') && !(fHide.checked && c.classList.contains('event-card--past')); }
@@ -2267,12 +2536,37 @@ document.addEventListener('DOMContentLoaded', function () {
       else { secGroups.forEach(function (g) { setOpen(g, false); }); }
       sec.classList.toggle('section-empty', secGroups.length === 0);
     });
+    var dsSec = document.querySelector('.section--discovery');
+    if (dsSec) {
+      var dsVis = Array.from(dsSec.querySelectorAll('.event-card--discovery')).filter(isVisible).length;
+      var dsCount = dsSec.querySelector('.ds-count');
+      if (dsCount) dsCount.textContent = dsVis + (dsVis === 1 ? ' session' : ' sessions');
+      var dsEmpty = dsSec.querySelector('.ds-empty');
+      if (dsEmpty) dsEmpty.hidden = dsVis > 0;
+      dsSec.classList.toggle('ds-none', dsVis === 0);
+      var dsList = dsSec.querySelector('.ds-list');
+      if (dsList) { dsList.scrollTop = 0; dsList.dispatchEvent(new Event('scroll')); }
+    }
     countEl.textContent = 'Showing ' + shown + ' of ' + cards.length + ' events';
   }
   [search, fType, fMod, fMonth].forEach(function (el) { el.addEventListener('input', apply); el.addEventListener('change', apply); });
   fHide.addEventListener('change', apply);
   fClear.addEventListener('click', function () { search.value=''; fType.value=''; fMod.value=''; fMonth.value=''; fHide.checked=true; apply(); });
   apply();
+})();
+</script>
+
+<script>
+/* Discovery list: soft fade at the bottom while more sessions are below the fold */
+(function () {
+  var list = document.querySelector('.section--discovery .ds-list');
+  if (!list) return;
+  var panel = list.parentElement;
+  function update() { panel.classList.toggle('ds-more', list.scrollHeight - list.scrollTop - list.clientHeight > 6); }
+  list.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  window.addEventListener('load', update);
+  update();
 })();
 </script>
 
