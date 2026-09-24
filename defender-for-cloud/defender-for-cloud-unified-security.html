@@ -1435,7 +1435,7 @@ footer a:hover { text-decoration: underline; }
 <!-- smec-favicon v1 -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <!-- smec-accuracy v1 -->
-<meta name="smec:last-accuracy-check" content="2026-08-20">
+<meta name="smec:last-accuracy-check" content="2026-09-24">
 <style>/* smec-back-btn v2 */
 .smec-back-btn { position: fixed; bottom: 16px; left: 16px; z-index: 9999;
   box-sizing: border-box;
@@ -1783,7 +1783,7 @@ footer a:hover { text-decoration: underline; }
             <span class="plan-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></span>
             Defender for Servers
           </h3>
-          <p>Protects Windows and Linux machines across Azure, AWS (EC2), GCP (Compute Engine), and on-premises via Azure Arc. Offered in two plans: <strong>Plan 1</strong> for entry-level EDR via native Defender for Endpoint integration, and <strong>Plan 2</strong> which adds agentless scanning, file integrity monitoring, JIT access, and more. The Log Analytics/AMA agents are no longer required. Agentless scanning and MDE replace them.</p>
+          <p>Protects Windows and Linux machines across Azure, AWS (EC2), GCP (Compute Engine), and on-premises via Azure Arc. Offered in two plans: <strong>Plan 1</strong> for entry-level EDR via native Defender for Endpoint integration, and <strong>Plan 2</strong> which adds agentless scanning, file integrity monitoring, JIT access, and more. The Log Analytics/AMA agents are no longer used for most plan features; agentless scanning and MDE replace them for those scenarios, while AMA remains supported for the 500-MB data-ingestion benefit.</p>
           <div class="capability-list">
             <div class="capability"><div><strong>Native Defender for Endpoint integration</strong><span>Auto-onboarded EDR, integrated alerts &amp; incidents, and software inventory discovery across Azure, AWS, and GCP.</span></div></div>
             <div class="capability"><div><strong>Agentless machine scanning </strong><span>Scans software inventory, vulnerabilities, secrets, and malware with no endpoint agent required.</span></div></div>
@@ -2065,7 +2065,7 @@ footer a:hover { text-decoration: underline; }
           <div class="capability-list">
             <div class="capability"><div><strong>Activity monitoring</strong><span>Data-plane and control-plane telemetry without diagnostic logs.</span></div></div>
             <div class="capability"><div><strong>Malware scanning</strong><span>Near real-time scanning on-upload, powered by Microsoft Defender AV, with automated quarantine.</span></div></div>
-            <div class="capability"><div><strong>Sensitive data threat detection</strong><span>Built-in DLP for storage that identifies PII, secrets, and credentials in blobs.</span></div></div>
+            <div class="capability"><div><strong>Sensitive data threat detection</strong><span>Sensitive data discovery helps identify PII, secrets, and credentials in blobs.</span></div></div>
             <div class="capability"><div><strong>Cost-predictable</strong><span>Per storage account pricing with configurable monthly scanning caps.</span></div></div>
           </div>
           <div class="platform-chips">
