@@ -1183,7 +1183,7 @@ footer p { font-size: 14px; margin-bottom: 20px; max-width: 600px; margin-left: 
 <!-- smec-favicon v1 -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <!-- smec-accuracy v1 -->
-<meta name="smec:last-accuracy-check" content="2026-08-20">
+<meta name="smec:last-accuracy-check" content="2026-09-24">
 <style>/* smec-back-btn v2 */
 .smec-back-btn { position: fixed; bottom: 16px; left: 16px; z-index: 9999;
   box-sizing: border-box;
@@ -1497,7 +1497,7 @@ footer p { font-size: 14px; margin-bottom: 20px; max-width: 600px; margin-left: 
       <div class="feature-showcase">
         <div class="feature-text">
           <h3>Point-in-Time Restore &amp; Long-Term Retention</h3>
-          <p>PITR creates a new database reflecting the state of your data at any chosen moment inside the retention window. LTR holds monthly/yearly full backups for compliance needs.</p>
+          <p>PITR creates a new database reflecting the state of your data at any chosen moment inside the retention window. LTR holds weekly, monthly, and yearly full backups for compliance needs.</p>
           <div class="feature-metrics">
             <div class="metric-chip"><div class="m-label">PITR Default</div><div class="m-value">7 days</div></div>
             <div class="metric-chip"><div class="m-label">PITR Max</div><div class="m-value">Up to 35 days</div></div>
@@ -1653,7 +1653,7 @@ footer p { font-size: 14px; margin-bottom: 20px; max-width: 600px; margin-left: 
     <div class="section-header reveal">
       <span class="section-eyebrow">Storage Redundancy</span>
       <h2 class="section-title">Where your backups actually live</h2>
-      <p class="section-desc">The storage redundancy you choose determines how many copies of your backups exist, and whether geo-restore is an option. Switching later takes up to 48 hours to apply.</p>
+      <p class="section-desc">The storage redundancy you choose determines how many copies of your backups exist, and whether geo-restore is an option. For General Purpose and Business Critical databases, changes apply to future backups and can take up to 48 hours; Basic and Hyperscale set backup redundancy at creation.</p>
     </div>
 
     <div class="redundancy-grid reveal">
@@ -1697,7 +1697,7 @@ footer p { font-size: 14px; margin-bottom: 20px; max-width: 600px; margin-left: 
           <div class="redundancy-dot remote">R2</div>
           <div class="redundancy-dot remote">R3</div>
         </div>
-        <p>ZRS primary + GRS paired region. Maximum durability and resilience. Microsoft's recommendation for mission-critical workloads.</p>
+        <p>ZRS primary + GRS paired region. Microsoft's recommendation for applications requiring maximum consistency, durability, availability, performance, and DR resilience.</p>
       </div>
     </div>
   </div>
@@ -2044,7 +2044,7 @@ function buildRecommendations() {
   if (a.retention === 'long') {
     recs.ltr = {
       ...featureCatalog.ltr,
-      why: 'Up to 10 years of retention for compliance, audit, or regulatory needs. Configurable monthly and yearly full backups, optionally immutable.'
+      why: 'Up to 10 years of retention for compliance, audit, or regulatory needs. Configurable weekly, monthly, and yearly full backups, optionally immutable.'
     };
   }
 
