@@ -615,7 +615,7 @@ footer a:hover{text-decoration:underline}
 <!-- smec-favicon v1 -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <!-- smec-accuracy v1 -->
-<meta name="smec:last-accuracy-check" content="2026-08-20">
+<meta name="smec:last-accuracy-check" content="2026-09-24">
 <style>/* smec-back-btn v2 */
 .smec-back-btn { position: fixed; bottom: 16px; left: 16px; z-index: 9999;
   box-sizing: border-box;
@@ -736,7 +736,7 @@ footer a:hover{text-decoration:underline}
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
         <h3>Regulated Data Everywhere</h3>
-        <p>PHI and PII flow through claims platforms, EHRs, care-management tools, and provider portals. Centralizing the desktop keeps data off endpoints — a direct HIPAA and HITRUST benefit.</p>
+        <p>PHI and PII flow through claims platforms, EHRs, care-management tools, and provider portals. Centralizing the desktop helps reduce endpoint data exposure and supports compliance controls.</p>
       </div>
       <div class="why-card">
         <div class="why-icon">
@@ -816,7 +816,7 @@ footer a:hover{text-decoration:underline}
           <li><span class="check">&#10003;</span> IT team is lean — simplicity outweighs flexibility</li>
           <li><span class="check">&#10003;</span> Persistent, 1:1 desktop is non-negotiable</li>
           <li><span class="check">&#10003;</span> Fixed, forecastable cost matters more than optimization</li>
-          <li><span class="check">&#10003;</span> Flex licensing (3:1) fits shift-based populations</li>
+          <li><span class="check">&#10003;</span> Flex dedicated licensing supports up to 3 Cloud PCs per license, with 1 active session</li>
         </ul>
       </div>
       <div class="together-col reveal-right">
@@ -871,7 +871,7 @@ footer a:hover{text-decoration:underline}
           </div>
           <div class="rule-thumb">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 19.5h20L12 2zm0 4l7 12.5H5L12 6z"/><rect x="11" y="10" width="2" height="4"/><rect x="11" y="15.5" width="2" height="2"/></svg>
-            ~0.5 vCPU and ~2 GB RAM per concurrent light user on a pooled host
+            Microsoft baseline: light multi-session workloads can start at up to 6 users per vCPU; pilot to validate
           </div>
         </div>
         <div class="persona-visual" style="background:linear-gradient(135deg,#E0F7FA,#B2EBF2)">
@@ -1194,14 +1194,14 @@ footer a:hover{text-decoration:underline}
         <div class="message-icon">&#128274;</div>
         <div class="message-body">
           <h3>One Security Perimeter</h3>
-          <p>Entra ID + Conditional Access + Defender + Purview apply identically across W365 and AVD. PHI stays in Azure, never on the endpoint.</p>
+          <p>Entra ID + Conditional Access + Defender + Purview can apply across W365 and AVD. Redirection controls help keep PHI in Azure instead of on endpoints.</p>
         </div>
       </div>
       <div class="message-card">
         <div class="message-icon">&#128176;</div>
         <div class="message-body">
           <h3>Flex Licensing</h3>
-          <p>W365 Flex's 3:1 license ratio is a strong cost lever for shift-based claims and contact-center staff.</p>
+          <p>W365 Flex dedicated mode can provision up to three Cloud PCs per license, with one active session at a time, for shift-based staff.</p>
         </div>
       </div>
       <div class="message-card">
@@ -1342,7 +1342,7 @@ function showResult() {
   } else if (predict === 'yes' && lean === 'yes') {
     rec = 'Windows 365 Enterprise';
     cls = 'result-w365';
-    desc = 'Predictable usage + lean IT = Windows 365. Fixed cost, Microsoft-managed infrastructure, zero Azure expertise required. Consider Flex licensing for shift workers.';
+    desc = 'Predictable usage + lean IT = Windows 365. Fixed cost, Microsoft-managed infrastructure, zero Azure expertise required. Consider Flex dedicated licensing for shift workers.';
   } else if (predict === 'no' && lean === 'no') {
     rec = 'AVD Personal';
     cls = 'result-avd';
