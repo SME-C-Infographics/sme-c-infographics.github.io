@@ -719,7 +719,7 @@ footer p + p{margin-top:8px}
 <!-- smec-submitter v1 -->
 <meta name="smec:submitter" content="cbattlegear">
 <!-- smec-accuracy v1 -->
-<meta name="smec:last-accuracy-check" content="2026-08-20">
+<meta name="smec:last-accuracy-check" content="2026-09-24">
 </head>
 <body>
 <a href="/" class="smec-back-btn" data-smec-back-button="v2" aria-label="Back to SME&amp;C Infographics"><svg class="smec-back-btn__icon" aria-hidden="true" viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg><span class="smec-back-btn__label">Back<span class="smec-back-btn__more">&nbsp;to SME&amp;C Infographics</span></span></a>
@@ -1062,19 +1062,19 @@ footer p + p{margin-top:8px}
         <p>
           With Software Assurance or a qualifying subscription, each licensed SQL Server
           gets one passive secondary for high availability and one passive secondary for
-          disaster recovery at no SQL Server license cost. Since November 2022 those same
-          two free passives also apply to pay&#8209;as&#8209;you&#8209;go SQL Server on Azure
-          Virtual Machines, regardless of the regions involved.
+          disaster recovery at no SQL Server license cost. Those same two free passives
+          also apply to pay&#8209;as&#8209;you&#8209;go SQL Server on Azure Virtual Machines when
+          all replicas are hosted in Azure.
         </p>
       </div>
       <div class="rule-card">
         <span class="tag care">THE WORD PASSIVE IS LOAD-BEARING</span>
-        <h3>No reads, no reports, no backups</h3>
+        <h3>No production reads, no reports</h3>
         <p>
           A passive replica serves no user connections outside of failover and limited
-          testing. The moment it answers a read query, runs a report, or takes the backup
-          workload off the primary, it becomes an active replica and must be fully licensed.
-          This is the single most common finding in a SQL licensing review.
+          testing. The moment it answers a read query or runs a report, it becomes an
+          active replica and must be fully licensed. Azure SQL standby replicas have
+          separate operational allowances; see the fine print below.
         </p>
       </div>
       <div class="rule-card">
@@ -1085,10 +1085,10 @@ footer p + p{margin-top:8px}
           replica. Microsoft then provides the vCores licensed to the primary at no extra
           charge under the failover rights benefit. On Business Critical that secondary is a
           four&#8209;node cluster, and <b>the entire instance carries no SQL license cost</b>
-          &mdash; Microsoft publishes savings of up to 55 percent per Managed Instance
-          secondary node. <b>You are still billed for the compute and storage the secondary
-          uses.</b> It is generally available, works with both pay&#8209;as&#8209;you&#8209;go
-          and Azure Hybrid Benefit, and needs no Software Assurance.
+          for the vCores covered by the failover rights benefit. <b>You are still billed
+          for the compute and storage the secondary uses.</b> It is generally available,
+          works with both pay&#8209;as&#8209;you&#8209;go and Azure Hybrid Benefit, and needs no
+          Software Assurance.
         </p>
       </div>
     </div>
@@ -1259,7 +1259,7 @@ footer p + p{margin-top:8px}
             </td>
             <td>
               <span class="cap-chip yes"><svg aria-hidden="true"><use href="#g-yes"/></svg>Available</span>
-              <p class="cap-d">Next-gen General Purpose is in preview.</p>
+              <p class="cap-d">Zone redundancy for Next-gen General Purpose is in preview.</p>
             </td>
             <td>
               <span class="cap-chip yes"><svg aria-hidden="true"><use href="#g-yes"/></svg>Available</span>
@@ -1345,11 +1345,11 @@ footer p + p{margin-top:8px}
             <th scope="row">Link to Azure from SQL Server</th>
             <td>
               <span class="cap-chip yes"><svg aria-hidden="true"><use href="#g-yes"/></svg>Available</span>
-              <p class="cap-d">Managed Instance link, generally available for SQL Server 2016 through 2025.</p>
+              <p class="cap-d">Managed Instance link; one-way replication is generally available for supported SQL Server versions.</p>
             </td>
             <td>
               <span class="cap-chip yes"><svg aria-hidden="true"><use href="#g-yes"/></svg>Available</span>
-              <p class="cap-d">Bidirectional failback generally available for SQL Server 2022 RTM and SQL Server 2025.</p>
+              <p class="cap-d">Two-way disaster recovery for SQL Server 2022 or 2025 with a matching SQL Managed Instance update policy.</p>
             </td>
             <td>
               <span class="cap-chip no"><svg aria-hidden="true"><use href="#g-no"/></svg>Not applicable</span>
@@ -1437,10 +1437,10 @@ footer p + p{margin-top:8px}
         </li>
         <li>
           <b>Passive means passive.</b> The two free passive secondaries assume no user
-          connections outside failover and limited testing. A readable secondary, a reporting
-          secondary, or a secondary that carries the backup workload is an active replica and
-          must be fully licensed. Only these two free passives are shown; nothing beyond them
-          is claimed.
+          connections outside failover and limited testing. A readable secondary or a
+          reporting secondary is an active replica and must be fully licensed. Azure SQL
+          standby replicas separately allow backups and other limited operational tasks.
+          Only these two free passives are shown; nothing beyond them is claimed.
         </li>
         <li>
           <b>Standby replicas are billed for compute and storage.</b> The failover rights
@@ -1483,7 +1483,7 @@ footer p + p{margin-top:8px}
       <div class="src">
         <a href="https://azure.microsoft.com/en-us/pricing/hybrid-benefit/" target="_blank" rel="noopener">Azure Hybrid Benefit overview</a>
         <a href="https://learn.microsoft.com/azure/azure-sql/azure-hybrid-benefit" target="_blank" rel="noopener">Azure Hybrid Benefit for Azure SQL</a>
-        <a href="https://www.microsoft.com/en-us/sql-server/blog/2022/11/16/new-sql-server-on-azure-virtual-machines-and-azure-sql-managed-instance-dr-benefits/" target="_blank" rel="noopener">Announcing the SQL Server on Azure VM and Managed Instance DR benefits</a>
+        <a href="https://learn.microsoft.com/azure/azure-sql/virtual-machines/windows/business-continuity-high-availability-disaster-recovery-hadr-overview" target="_blank" rel="noopener">Business continuity and HADR for SQL Server on Azure VMs</a>
         <a href="https://learn.microsoft.com/azure/azure-sql/database/standby-replica-how-to-configure" target="_blank" rel="noopener">Configure a standby replica, Azure SQL Database</a>
         <a href="https://learn.microsoft.com/azure/azure-sql/managed-instance/failover-group-standby-replica-how-to-configure" target="_blank" rel="noopener">Configure a standby replica, Managed Instance</a>
         <a href="https://learn.microsoft.com/azure/azure-sql/database/high-availability-sla-local-zone-redundancy" target="_blank" rel="noopener">Availability and redundancy, Azure SQL Database</a>
