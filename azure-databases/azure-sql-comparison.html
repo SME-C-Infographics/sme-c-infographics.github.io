@@ -542,7 +542,7 @@
 <!-- smec-favicon v1 -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <!-- smec-accuracy v1 -->
-<meta name="smec:last-accuracy-check" content="2026-08-20">
+<meta name="smec:last-accuracy-check" content="2026-09-24">
 <style>/* smec-back-btn v2 */
 .smec-back-btn { position: fixed; bottom: 16px; left: 16px; z-index: 9999;
   box-sizing: border-box;
@@ -614,16 +614,16 @@
       Azure SQL Decision Guide
     </div>
     <h1>Which Azure SQL Option Is Right for You?</h1>
-    <p>A visual comparison of SQL Server on Azure VM, Azure SQL Managed Instance, and Azure SQL Database to help you choose the best fit for your workload.</p>
+    <p>A visual comparison of SQL Server on Azure VMs, Azure SQL Managed Instance, and Azure SQL Database to help you choose the best fit for your workload.</p>
   </div>
 
   <!-- SPECTRUM -->
   <div class="spectrum">
     <h2>The IaaS → PaaS Spectrum</h2>
     <div class="spectrum-bar">
-      <div class="s-vm">SQL Server on VM</div>
-      <div class="s-mi">Managed Instance</div>
-      <div class="s-db">SQL Database</div>
+      <div class="s-vm">SQL Server on VMs</div>
+      <div class="s-mi">Azure SQL MI</div>
+      <div class="s-db">Azure SQL DB</div>
     </div>
     <div class="spectrum-labels">
       <span>← Full control &amp; responsibility (IaaS)</span>
@@ -640,7 +640,7 @@
         <div class="card-icon">
           <svg viewBox="0 0 24 24"><path d="M4 4h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zm0 2v10h16V6H4zm4 14h8v2H8v-2z"/></svg>
         </div>
-        <h3>SQL Server on Azure VM</h3>
+        <h3>SQL Server on Azure VMs</h3>
         <div class="subtitle">Infrastructure as a Service (IaaS)</div>
       </div>
       <div class="card-body">
@@ -683,7 +683,7 @@
         <div class="card-icon">
           <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 4.02 2 6.5v11C2 19.98 6.48 22 12 22s10-2.02 10-4.5v-11C22 4.02 17.52 2 12 2zm0 2c4.42 0 8 1.57 8 3.5S16.42 11 12 11 4 9.43 4 7.5 7.58 4 12 4zM4 17.5v-3.24C6.06 15.7 8.88 16.5 12 16.5s5.94-.8 8-2.24v3.24c0 1.93-3.58 3.5-8 3.5s-8-1.57-8-3.5zm0-5.5v-2.74C6.06 10.7 8.88 11.5 12 11.5s5.94-.8 8-2.24V12c0 1.93-3.58 3.5-8 3.5S4 13.93 4 12z"/></svg>
         </div>
-        <h3>SQL Managed Instance</h3>
+        <h3>Azure SQL Managed Instance</h3>
         <div class="subtitle">Platform as a Service (PaaS) — Instance-scoped</div>
       </div>
       <div class="card-body">
@@ -712,7 +712,7 @@
         <div class="meter-group">
           <div class="meter-label"><span>Your Management Effort</span><span>Low–Medium</span></div>
           <div class="meter"><div class="meter-fill mi-fill" style="width:35%"></div></div>
-          <div class="meter-label"><span>SQL Compatibility</span><span>~99%</span></div>
+          <div class="meter-label"><span>SQL Compatibility</span><span>Almost 100%</span></div>
           <div class="meter"><div class="meter-fill mi-fill" style="width:95%"></div></div>
           <div class="meter-label"><span>Scaling Flexibility</span><span>Medium</span></div>
           <div class="meter"><div class="meter-fill mi-fill" style="width:60%"></div></div>
@@ -732,9 +732,9 @@
       <div class="card-body">
         <h4 class="db-accent">What It Is</h4>
         <ul>
-          <li>A fully managed, <em>single database</em> service built on the latest stable SQL Server engine</li>
-          <li>Automated patching, backups, tuning, and geo-replication</li>
-          <li>Multiple purchasing models including serverless with auto-pause for cost efficiency</li>
+          <li>A fully managed, <em>database-scoped</em> service built on the latest stable SQL Server engine</li>
+          <li>Automated patching, backups, tuning, and configurable geo-replication</li>
+          <li>Single databases and elastic pools, with provisioned or serverless compute options</li>
         </ul>
 
         <h4 class="db-accent">Best For</h4>
@@ -746,16 +746,16 @@
         </div>
         <ul>
           <li>New cloud-native applications designed for the cloud from day one</li>
-          <li>SaaS products needing per-tenant database isolation</li>
+          <li>SaaS products using single databases or elastic pools for tenant isolation</li>
           <li>Microservice architectures with one database per service</li>
-          <li>Dev/test workloads benefiting from serverless auto-pause</li>
+          <li>Dev/test workloads benefiting from General Purpose serverless auto-pause</li>
         </ul>
 
         <h4 class="db-accent">Operational Profile</h4>
         <div class="meter-group">
           <div class="meter-label"><span>Your Management Effort</span><span>Minimal</span></div>
           <div class="meter"><div class="meter-fill db-fill" style="width:15%"></div></div>
-          <div class="meter-label"><span>SQL Compatibility</span><span>~95%</span></div>
+          <div class="meter-label"><span>SQL Compatibility</span><span>High</span></div>
           <div class="meter"><div class="meter-fill db-fill" style="width:85%"></div></div>
           <div class="meter-label"><span>Scaling Flexibility</span><span>High</span></div>
           <div class="meter"><div class="meter-fill db-fill" style="width:90%"></div></div>
@@ -773,8 +773,8 @@
         <thead>
           <tr>
             <th>Capability</th>
-            <th>SQL Server on VM</th>
-            <th>SQL Managed Instance</th>
+            <th>SQL Server on Azure VMs</th>
+            <th>Azure SQL Managed Instance</th>
             <th>Azure SQL Database</th>
           </tr>
         </thead>
@@ -782,8 +782,8 @@
           <tr>
             <td>SQL Server Compatibility</td>
             <td><span class="check">✔ 100%</span></td>
-            <td><span class="check">✔ ~99%</span></td>
-            <td><span class="partial">◐ ~95%</span></td>
+            <td><span class="check">✔ Almost 100%</span></td>
+            <td><span class="partial">◐ High (database-scoped)</span></td>
           </tr>
           <tr>
             <td>OS Access</td>
@@ -806,7 +806,7 @@
           <tr>
             <td>Linked Servers</td>
             <td><span class="check">✔ Any provider</span></td>
-            <td><span class="partial">◐ SQL Server, SQL DB &amp; Synapse only</span></td>
+            <td><span class="partial">◐ SQL Server, Azure SQL &amp; Synapse only</span></td>
             <td><span class="no">✘ No</span></td>
           </tr>
           <tr>
@@ -855,7 +855,7 @@
             <td>Serverless Tier</td>
             <td><span class="no">✘ No</span></td>
             <td><span class="no">✘ No</span></td>
-            <td><span class="check">✔ Yes (auto-pause)</span></td>
+            <td><span class="check">✔ Yes (auto-pause in General Purpose)</span></td>
           </tr>
           <tr>
             <td>Geo-Replication</td>
@@ -889,7 +889,7 @@
             <div class="flow-connector"></div>
             <div class="flow-branch-label yes-label">YES</div>
             <div class="flow-connector"></div>
-            <div class="flow-result vm-result">→ SQL Server on Azure VM</div>
+            <div class="flow-result vm-result">→ SQL Server on Azure VMs</div>
           </div>
           <div class="flow-branch">
             <div class="flow-connector"></div>
@@ -909,7 +909,7 @@
             <div class="flow-connector"></div>
             <div class="flow-branch-label yes-label">YES</div>
             <div class="flow-connector"></div>
-            <div class="flow-result mi-result">→ SQL Managed Instance</div>
+            <div class="flow-result mi-result">→ Azure SQL Managed Instance</div>
           </div>
           <div class="flow-branch">
             <div class="flow-connector"></div>
@@ -935,7 +935,7 @@
             <div class="flow-connector"></div>
             <div class="flow-branch-label no-label">STILL UNSURE?</div>
             <div class="flow-connector"></div>
-            <div class="flow-result mi-result">→ Start with Managed Instance (broadest compat, PaaS benefits)</div>
+            <div class="flow-result mi-result">→ Start with Azure SQL Managed Instance (broadest compat, PaaS benefits)</div>
           </div>
         </div>
       </div>
@@ -969,19 +969,19 @@
       <div class="scenario-card mi-border">
         <div class="sc-label">Managed Instance</div>
         <h3>Regulated Industry Migration</h3>
-        <p>A financial services firm needs VNet isolation, no public endpoints, and near-100% SQL compatibility. MI checks every box with minimal re-architecture.</p>
+        <p>A financial services firm needs VNet isolation, no public endpoints, and almost 100% SQL compatibility. MI checks every box with minimal re-architecture.</p>
       </div>
 
       <div class="scenario-card db-border">
         <div class="sc-label">SQL Database</div>
         <h3>Multi-Tenant SaaS Product</h3>
-        <p>You're building a SaaS app with one database per customer. Serverless auto-pauses idle trial databases, keeping costs low while scaling on demand.</p>
+        <p>You're building a SaaS app with one database per customer. General Purpose serverless can auto-pause idle trial databases, keeping costs low while scaling on demand.</p>
       </div>
 
       <div class="scenario-card db-border">
         <div class="sc-label">SQL Database</div>
         <h3>Microservice Data Store</h3>
-        <p>Each microservice owns its database. Azure SQL Database gives each service an independent, auto-tuned database with built-in geo-replication.</p>
+        <p>Each microservice owns its database. Azure SQL Database gives each service an independent, auto-tuned database with configurable geo-replication.</p>
       </div>
 
     </div>
@@ -993,7 +993,7 @@
     <p>What you're paying for in each model — actual pricing varies by region, tier, and reservations.</p>
     <div class="cost-grid">
       <div class="cost-card vm-cost">
-        <h3>SQL Server on VM</h3>
+        <h3>SQL Server on Azure VMs</h3>
         <ul class="cost-items">
           <li>VM compute (by size &amp; series)</li>
           <li>SQL Server license (or Azure Hybrid Benefit)</li>
@@ -1003,9 +1003,9 @@
         </ul>
       </div>
       <div class="cost-card mi-cost">
-        <h3>Managed Instance</h3>
+        <h3>Azure SQL Managed Instance</h3>
         <ul class="cost-items">
-          <li>vCores + memory tier (GP or BC)</li>
+          <li>vCores + service tier (GP, Next-gen GP, or BC)</li>
           <li>Storage (per GB provisioned)</li>
           <li>SQL license included (or AHB discount)</li>
           <li>Backup storage (included up to 100% of instance size)</li>
@@ -1013,10 +1013,10 @@
         </ul>
       </div>
       <div class="cost-card db-cost">
-        <h3>SQL Database</h3>
+        <h3>Azure SQL Database</h3>
         <ul class="cost-items">
           <li>DTU-based or vCore-based tiers</li>
-          <li>Serverless: pay per second of compute</li>
+          <li>Serverless: pay per second of compute used</li>
           <li>Provisioned or serverless compute options</li>
           <li>Backup storage (included up to 100%)</li>
           <li>Hyperscale: scale storage independently</li>
