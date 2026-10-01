@@ -356,7 +356,7 @@
 <!-- smec-favicon v1 -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <!-- smec-accuracy v1 -->
-<meta name="smec:last-accuracy-check" content="2026-08-27">
+<meta name="smec:last-accuracy-check" content="2026-10-01">
 <style>/* smec-back-btn v2 */
 .smec-back-btn { position: fixed; bottom: 16px; left: 16px; z-index: 9999;
   box-sizing: border-box;
@@ -462,7 +462,7 @@
         <h3 class="column-title pitfall-title">⚠️ Common Pitfalls</h3>
         <div class="pitfall-item"><h4>Leaving defaults on</h4><p>Fabric ships with permissive defaults. If you don't review them, every user can create workspaces, share externally, and use AI features without guardrails.</p></div>
         <div class="pitfall-item"><h4>No admin role governance</h4><p>Too many Fabric Admins means too many people can change tenant-wide settings. Limit admin roles and use PIM for just-in-time access.</p></div>
-        <div class="pitfall-item"><h4>Audit log blind spot</h4><p>The Power BI activity log retains data for only 30 days; the Unified Audit Log default is 180 days. Both may fall short of compliance requirements. Export to Log Analytics or a storage account for long-term retention.</p></div>
+        <div class="pitfall-item"><h4>Audit log blind spot</h4><p>The Power BI activity log and Microsoft Purview audit solutions have finite retention windows that may fall short of compliance requirements. Export audit data to a supported long-term destination for extended retention.</p></div>
         <div class="pitfall-item"><h4>Feature toggle whack-a-mole</h4><p>Microsoft releases new features monthly. Without a review process, new toggles get enabled without evaluation — creating shadow governance gaps.</p></div>
       </div>
     </div>
@@ -475,7 +475,7 @@
       <div class="rec-card"><div class="card-accent" style="background:#6366F1"></div><div class="step-num" style="background:#6366F1">4</div><h4>AI Features Need a Policy</h4><p class="desc"><strong>Copilot and AI features</strong> consume capacity units and can expose data.<br>Define <strong>who can use them</strong>, in which workspaces, and <strong>monitor CU impact</strong>.</p></div>
     </div>
 
-    <a href="https://learn.microsoft.com/fabric/admin/tenant-settings-index" target="_blank" class="learn-more-btn">📖 Learn More on Microsoft Learn →</a>
+    <a href="https://learn.microsoft.com/en-us/fabric/admin/tenant-settings-index" target="_blank" class="learn-more-btn">📖 Learn More on Microsoft Learn →</a>
   </div>
 </section>
 
@@ -512,10 +512,10 @@
       <div class="rec-card"><div class="card-accent" style="background:#8B5CF6"></div><div class="step-num" style="background:#8B5CF6">1</div><h4>Choose a Workspace Pattern</h4><p class="desc"><strong>Pattern A (Recommended):</strong> One workspace per data product — great for data mesh.<br><strong>Pattern B:</strong> Per medallion layer — for strict regulatory needs.<br><strong>Pattern C:</strong> Consolidated — only for small pilots.</p></div>
       <div class="rec-card"><div class="card-accent" style="background:#8B5CF6"></div><div class="step-num" style="background:#8B5CF6">2</div><h4>Naming Convention</h4><p class="desc">Format: <strong>{Domain} - {Layer/Purpose} - {Description} [{Env}]</strong><br>Example: <strong>Finance - Gold - Revenue Reporting [Prod]</strong><br>Enforce via automation, not email reminders.</p></div>
       <div class="rec-card"><div class="card-accent" style="background:#8B5CF6"></div><div class="step-num" style="background:#8B5CF6">3</div><h4>Medallion Layers</h4><p class="desc"><strong>Bronze</strong> = raw ingestion (land as-is).<br><strong>Silver</strong> = cleansed and conformed.<br><strong>Gold</strong> = curated business models ready for consumption.<br>Each layer = its own workspace for access control.</p></div>
-      <div class="rec-card"><div class="card-accent" style="background:#8B5CF6"></div><div class="step-num" style="background:#8B5CF6">4</div><h4>Lifecycle Management</h4><p class="desc">Review workspaces <strong>quarterly</strong>.<br><strong>Archive</strong> unused workspaces after 90 days of inactivity.<br><strong>Delete</strong> after 180 days.<br>Automate notifications to owners.</p></div>
+      <div class="rec-card"><div class="card-accent" style="background:#8B5CF6"></div><div class="step-num" style="background:#8B5CF6">4</div><h4>Lifecycle Management</h4><p class="desc">Review workspaces <strong>quarterly</strong>.<br>Set an organization-defined inactivity threshold to <strong>archive</strong> unused workspaces.<br>Use Fabric's configurable retention period to recover or permanently remove deleted workspaces.<br>Automate notifications to owners.</p></div>
     </div>
 
-    <a href="https://learn.microsoft.com/fabric/governance/governance-compliance-overview" target="_blank" class="learn-more-btn">📖 Learn More on Microsoft Learn →</a>
+    <a href="https://learn.microsoft.com/en-us/fabric/governance/governance-compliance-overview" target="_blank" class="learn-more-btn">📖 Learn More on Microsoft Learn →</a>
   </div>
 </section>
 
@@ -531,7 +531,7 @@
     <div class="compare-grid">
       <div class="compare-column good-column">
         <h3 class="column-title good-title">✅ What Good Looks Like</h3>
-        <div class="good-item"><span class="check">✓</span><span>3–7 top-level domains aligned to business units or value streams</span></div>
+        <div class="good-item"><span class="check">✓</span><span>Top-level domains are aligned to business units or value streams</span></div>
         <div class="good-item"><span class="check">✓</span><span>Every workspace is assigned to a domain — no orphaned workspaces</span></div>
         <div class="good-item"><span class="check">✓</span><span>Domain admins handle day-to-day governance; central team sets policies</span></div>
         <div class="good-item"><span class="check">✓</span><span>Tenant settings are delegated to domains where appropriate</span></div>
@@ -540,7 +540,7 @@
       </div>
       <div class="compare-column pitfall-column">
         <h3 class="column-title pitfall-title">⚠️ Common Pitfalls</h3>
-        <div class="pitfall-item"><h4>Too many domains</h4><p>Creating a domain per team or project leads to fragmentation. Start with 3–7 aligned to major business functions.</p></div>
+        <div class="pitfall-item"><h4>Too many domains</h4><p>Creating a domain per team or project can lead to fragmentation. Align domains to major business functions or value streams.</p></div>
         <div class="pitfall-item"><h4>Domains without owners</h4><p>A domain without an admin is just a label. Every domain needs a named administrator who is accountable.</p></div>
         <div class="pitfall-item"><h4>Central team bottleneck</h4><p>If the central team must approve every workspace, every access request, and every deployment, you've created a bottleneck.</p></div>
         <div class="pitfall-item"><h4>Ignoring certification</h4><p>Without endorsement and certification, consumers can't distinguish authoritative data from experimental datasets.</p></div>
@@ -552,10 +552,10 @@
       <div class="rec-card"><div class="card-accent" style="background:#A855F7"></div><div class="step-num" style="background:#A855F7">1</div><h4>Align to Business, Not Org Chart</h4><p class="desc">Domains should map to <strong>business functions</strong> (Finance, Sales, Operations) or value streams.<br>Not to reporting lines — <strong>org charts change; business functions are stable</strong>.</p></div>
       <div class="rec-card"><div class="card-accent" style="background:#A855F7"></div><div class="step-num" style="background:#A855F7">2</div><h4>Three-Tier Delegation</h4><p class="desc"><strong>Fabric Admin</strong> → sets tenant-level guardrails.<br><strong>Domain Admin</strong> → manages workspaces, access, and settings within their domain.<br><strong>Domain Contributor</strong> → self-service within boundaries.</p></div>
       <div class="rec-card"><div class="card-accent" style="background:#A855F7"></div><div class="step-num" style="background:#A855F7">3</div><h4>Certification Framework</h4><p class="desc">Three endorsement types:<br><strong>Promoted</strong> — owner recommends it.<br><strong>Certified</strong> — formally reviewed against quality criteria.<br><strong>Master data</strong> — the organization's single source of truth for core data.<br>Certification should require <strong>documented lineage</strong>, refresh reliability, and owner accountability.</p></div>
-      <div class="rec-card"><div class="card-accent" style="background:#A855F7"></div><div class="step-num" style="background:#A855F7">4</div><h4>Default Domain</h4><p class="desc">Configure a <strong>default domain</strong> so new workspaces aren't orphaned.<br>Route them to a <strong>'Sandbox'</strong> or <strong>'Unassigned'</strong> domain for triage.</p></div>
+      <div class="rec-card"><div class="card-accent" style="background:#A855F7"></div><div class="step-num" style="background:#A855F7">4</div><h4>Default Domain</h4><p class="desc">Configure a <strong>default domain</strong> for selected users or security groups so their new workspaces aren't orphaned.<br>Route them to a <strong>'Sandbox'</strong> or <strong>'Unassigned'</strong> domain for triage.</p></div>
     </div>
 
-    <a href="https://learn.microsoft.com/fabric/governance/domains" target="_blank" class="learn-more-btn">📖 Learn More on Microsoft Learn →</a>
+    <a href="https://learn.microsoft.com/en-us/fabric/governance/domains" target="_blank" class="learn-more-btn">📖 Learn More on Microsoft Learn →</a>
   </div>
 </section>
 
@@ -571,9 +571,9 @@
     <div class="compare-grid">
       <div class="compare-column good-column">
         <h3 class="column-title good-title">✅ What Good Looks Like</h3>
-        <div class="good-item"><span class="check">✓</span><span>Workspace roles use security groups — never individual accounts</span></div>
+        <div class="good-item"><span class="check">✓</span><span>Workspace roles prefer security groups over individual accounts</span></div>
         <div class="good-item"><span class="check">✓</span><span>Least privilege is the default: most users are Viewers, not Members</span></div>
-        <div class="good-item"><span class="check">✓</span><span>Sensitivity labels (Public → Highly Confidential) are applied to all data assets</span></div>
+        <div class="good-item"><span class="check">✓</span><span>Organization-defined sensitivity labels are applied according to information-protection policy</span></div>
         <div class="good-item"><span class="check">✓</span><span>Row-Level Security filters data by user context — no 'everyone sees everything'</span></div>
         <div class="good-item"><span class="check">✓</span><span>Access reviews happen quarterly with automated reminders via Entra ID</span></div>
         <div class="good-item"><span class="check">✓</span><span>Admin access uses PIM — just-in-time elevation, not permanent assignment</span></div>
@@ -589,13 +589,13 @@
 
     <h3 class="recs-title">💡 Recommendations</h3>
     <div class="cards">
-      <div class="rec-card"><div class="card-accent" style="background:#EC4899"></div><div class="step-num" style="background:#EC4899">1</div><h4>Four Workspace Roles</h4><p class="desc"><strong>Admin</strong> — infrastructure changes.<br><strong>Member</strong> — create/edit content.<br><strong>Contributor</strong> — edit only assigned items.<br><strong>Viewer</strong> — read-only.<br>Map each to a <strong>security group</strong>.</p></div>
-      <div class="rec-card"><div class="card-accent" style="background:#EC4899"></div><div class="step-num" style="background:#EC4899">2</div><h4>Sensitivity Labels</h4><p class="desc">Four tiers: <strong>Public</strong>, <strong>Internal</strong>, <strong>Confidential</strong>, <strong>Highly Confidential</strong>.<br>Enable <strong>label inheritance</strong> — when a Lakehouse is labeled 'Confidential', downstream reports inherit it.</p></div>
+      <div class="rec-card"><div class="card-accent" style="background:#EC4899"></div><div class="step-num" style="background:#EC4899">1</div><h4>Four Workspace Roles</h4><p class="desc"><strong>Admin</strong> — manage the workspace and its access.<br><strong>Member</strong> — create, edit, and share content.<br><strong>Contributor</strong> — create or modify content without workspace administration.<br><strong>Viewer</strong> — read-only.<br>Map each to a <strong>security group</strong>.</p></div>
+      <div class="rec-card"><div class="card-accent" style="background:#EC4899"></div><div class="step-num" style="background:#EC4899">2</div><h4>Sensitivity Labels</h4><p class="desc">Apply the sensitivity labels defined by your organization’s information-protection policy.<br>Enable <strong>label inheritance</strong> so downstream content can receive protection from upstream data relationships.</p></div>
       <div class="rec-card"><div class="card-accent" style="background:#EC4899"></div><div class="step-num" style="background:#EC4899">3</div><h4>Just-in-Time Access</h4><p class="desc">Use <strong>Privileged Identity Management (PIM)</strong> for admin roles.<br>Admins activate their role for a <strong>time-limited window</strong>, with approval and audit trail.</p></div>
       <div class="rec-card"><div class="card-accent" style="background:#EC4899"></div><div class="step-num" style="background:#EC4899">4</div><h4>RLS Design Patterns</h4><p class="desc"><strong>Static RLS:</strong> map security groups to data filters (e.g., region = 'EMEA').<br><strong>Dynamic RLS:</strong> use <strong>USERPRINCIPALNAME()</strong> for per-user filtering.<br>Always test with <strong>'View as Role'</strong>.</p></div>
     </div>
 
-    <a href="https://learn.microsoft.com/fabric/security/security-overview" target="_blank" class="learn-more-btn">📖 Learn More on Microsoft Learn →</a>
+    <a href="https://learn.microsoft.com/en-us/fabric/security/security-overview" target="_blank" class="learn-more-btn">📖 Learn More on Microsoft Learn →</a>
   </div>
 </section>
 
@@ -623,7 +623,7 @@
         <div class="pitfall-item"><h4>One shared capacity for everything</h4><p>A single capacity means one runaway notebook can throttle everyone's reports. Separate at least by environment.</p></div>
         <div class="pitfall-item"><h4>Ignoring the smoothing window</h4><p>Fabric smooths background job CU consumption over 24 hours (interactive jobs over a minimum of 5 minutes). Teams misread this as 'unlimited' until they hit rejection.</p></div>
         <div class="pitfall-item"><h4>No cost visibility</h4><p>Without showback, no one knows their workloads cost $8K/month.</p></div>
-        <div class="pitfall-item"><h4>Over-provisioning 'just in case'</h4><p>Starting with F64 when F8 would suffice wastes thousands per month. Start small, monitor, right-size.</p></div>
+        <div class="pitfall-item"><h4>Over-provisioning 'just in case'</h4><p>Starting with a larger SKU than the workload requires wastes capacity spend. Start small, monitor, and right-size.</p></div>
       </div>
     </div>
 
@@ -635,7 +635,7 @@
       <div class="rec-card"><div class="card-accent" style="background:#F59E0B"></div><div class="step-num" style="background:#F59E0B">4</div><h4>Showback First</h4><p class="desc">Start with <strong>showback</strong>: give each domain visibility into their CU consumption.<br>After <strong>6–12 months</strong> of stable patterns, transition to <strong>chargeback</strong> for true cost accountability.</p></div>
     </div>
 
-    <a href="https://learn.microsoft.com/fabric/enterprise/licenses" target="_blank" class="learn-more-btn">📖 Learn More on Microsoft Learn →</a>
+    <a href="https://learn.microsoft.com/en-us/fabric/enterprise/licenses" target="_blank" class="learn-more-btn">📖 Learn More on Microsoft Learn →</a>
   </div>
 </section>
 
@@ -675,7 +675,7 @@
       <div class="rec-card"><div class="card-accent" style="background:#10B981"></div><div class="step-num" style="background:#10B981">4</div><h4>Network Security Tiers</h4><p class="desc"><strong>Tier 1:</strong> Public endpoints (default — fine for non-sensitive data).<br><strong>Tier 2:</strong> Conditional Access policies (restrict by location/device).<br><strong>Tier 3:</strong> Private Link + Managed VNet (for regulated industries).</p></div>
     </div>
 
-    <a href="https://learn.microsoft.com/fabric/security/security-overview" target="_blank" class="learn-more-btn">📖 Learn More on Microsoft Learn →</a>
+    <a href="https://learn.microsoft.com/en-us/fabric/security/security-overview" target="_blank" class="learn-more-btn">📖 Learn More on Microsoft Learn →</a>
   </div>
 </section>
 
@@ -715,13 +715,13 @@
       <div class="rec-card"><div class="card-accent" style="background:#0EA5E9"></div><div class="step-num" style="background:#0EA5E9">4</div><h4>Monitor Proactively</h4><p class="desc">Deploy <strong>Capacity Metrics app</strong>. Set alerts for:<br><strong>CU utilization</strong> &gt; 80%<br><strong>Refresh failure rate</strong> &gt; 5%<br><strong>Query duration</strong> &gt; SLA threshold<br>Review weekly — don't wait for user complaints.</p></div>
     </div>
 
-    <a href="https://learn.microsoft.com/fabric/cicd/git-integration/intro-to-git-integration" target="_blank" class="learn-more-btn">📖 Learn More on Microsoft Learn →</a>
+    <a href="https://learn.microsoft.com/en-us/fabric/cicd/git-integration/intro-to-git-integration" target="_blank" class="learn-more-btn">📖 Learn More on Microsoft Learn →</a>
   </div>
 </section>
 
 <!-- ═══════════════════ FOOTER ═════════════════════ -->
 <footer>
-  <p>Sources: <a href="https://learn.microsoft.com/fabric/governance/">Official Governance Documentation</a></p>
+  <p>Sources: <a href="https://learn.microsoft.com/en-us/fabric/governance/governance-compliance-overview">Official Governance Documentation</a></p>
   <p>Microsoft Fabric • Governance Framework</p>
 </footer>
 
