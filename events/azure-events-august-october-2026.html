@@ -166,6 +166,10 @@
   .lite-schedule li.sch-past .sch-num::before { content: '✓'; }
   .lite-schedule li.sch-past .sch-num span { display: none; }
   .spotlight-lite .lite-layout.lite-layout--solo { grid-template-columns: minmax(0, 460px); }
+  /* Featured card is over/filtered out but the inline Fabric card is still showing: schedule + Fabric card side by side */
+  .spotlight-lite .lite-layout.lite-layout--duo { grid-template-columns: 320px minmax(0, 460px); }
+  .spotlight-lite .lite-layout.lite-layout--duo .events--fabric { grid-template-columns: minmax(0, 1fr); }
+  @media (max-width: 980px) { .spotlight-lite .lite-layout.lite-layout--duo { grid-template-columns: minmax(0, 620px); } }
   @media (max-width: 980px) { .spotlight-lite .lite-layout { grid-template-columns: minmax(0, 620px); } .spotlight-lite .lite-layout .events { grid-template-columns: minmax(0, 620px); order: 1; } .spotlight-lite .lite-layout .events--fabric { grid-template-columns: minmax(0, 620px); order: 2; } .lite-schedule { order: 3; } }
 
   /* Fabric-themed lite card (green accents) — used inline in the Featured Partner band */
@@ -174,6 +178,58 @@
   .event-card--fabric .btn { background: #0b6a5f; }
   .event-card--fabric .btn:hover { background: #094e46; }
   .event-card--fabric .btn.btn--rec { background: #0b6a5f; }
+
+  /* Featured FabCon + SQLCon recap band — dark "arena" look (navy → teal) with Fabric-green and SQL-blue glows, a ticket-style
+     card with a local-time date badge and live countdown. The band hides itself once its session is over and past events are hidden. */
+  .spotlight-lite.fabcon-band { position: relative; overflow: hidden; padding: 64px 0 60px; background: linear-gradient(135deg, #061a2b 0%, #0a2c40 45%, #0b4a45 100%); border-bottom: 0; }
+  .fabcon-bg { position: absolute; inset: 0; pointer-events: none; }
+  .fabcon-glow { position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.5; }
+  .fabcon-glow--green { width: 460px; height: 460px; background: #1ec08f; top: -180px; left: -120px; }
+  .fabcon-glow--blue { width: 420px; height: 420px; background: #2b88d8; bottom: -200px; right: 4%; opacity: 0.45; }
+  .fabcon-dots { position: absolute; inset: 0; background-image: radial-gradient(rgba(255,255,255,0.16) 1px, transparent 1.6px); background-size: 22px 22px; -webkit-mask-image: radial-gradient(ellipse 60% 70% at 78% 45%, #000 0%, transparent 70%); mask-image: radial-gradient(ellipse 60% 70% at 78% 45%, #000 0%, transparent 70%); }
+  .fabcon-watermark { position: absolute; left: -6px; bottom: -34px; font-size: 156px; font-weight: 800; letter-spacing: 8px; line-height: 1; color: transparent; -webkit-text-stroke: 1px rgba(255,255,255,0.08); white-space: nowrap; user-select: none; }
+  .fabcon-band .container { position: relative; z-index: 1; }
+  .fabcon-layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 440px); gap: 48px; align-items: center; max-width: 1080px; margin: 0 auto; }
+  .fabcon-copy { color: #d6ebe6; }
+  .fabcon-band .spotlight-lite-eyebrow { color: #7ff0c9; background: rgba(127,240,201,0.12); border: 1px solid rgba(127,240,201,0.35); margin-bottom: 18px; }
+  .fabcon-title { font-size: 44px; line-height: 1.1; font-weight: 800; color: #fff; letter-spacing: -0.5px; margin-bottom: 16px; }
+  .fabcon-kicker { display: block; font-size: 15px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 10px; background: linear-gradient(90deg, #5ee6b0 0%, #4cc9f0 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .fabcon-intro { font-size: 16.5px; color: #c3dcd6; max-width: 560px; margin-bottom: 26px; }
+  .fabcon-points { list-style: none; display: grid; gap: 14px; }
+  .fabcon-points li { display: flex; align-items: center; gap: 14px; font-size: 15px; color: #e6f4f0; }
+  .fabcon-points li strong { color: #fff; }
+  .fabcon-points .pt-icon { flex: 0 0 38px; height: 38px; display: grid; place-items: center; font-size: 18px; border-radius: 11px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.16); }
+  .fabcon-band .events { grid-template-columns: minmax(0, 1fr); margin-bottom: 0; }
+  .event-card--fabcon { position: relative; border: 0; border-radius: 18px; padding: 30px 28px 26px; background: linear-gradient(90deg, #0b6a5f 0%, #1ec08f 50%, #2b88d8 100%) top left / 100% 6px no-repeat, #fff; box-shadow: 0 26px 60px rgba(0,0,0,0.38); }
+  .event-card--fabcon:hover { box-shadow: 0 32px 70px rgba(0,0,0,0.45); }
+  .fabcon-head { padding-right: 92px; }
+  .event-card--fabcon .lite-series strong { color: #0b6a5f; }
+  .event-card--fabcon h3 { font-size: 23px; font-weight: 700; color: #0b3d38; }
+  .fabcon-date { position: absolute; top: -24px; right: 24px; width: 76px; text-align: center; background: #fff; border-radius: 14px; overflow: hidden; box-shadow: 0 12px 28px rgba(0,0,0,0.3); }
+  .fabcon-date span { display: block; }
+  .fabcon-date .m { background: linear-gradient(135deg, #0b6a5f, #12846f); color: #fff; font-size: 12px; font-weight: 700; letter-spacing: 2px; padding: 5px 0 4px; }
+  .fabcon-date .d { font-size: 32px; font-weight: 800; color: #0b4a45; line-height: 1.1; padding-top: 4px; }
+  .fabcon-date .w { font-size: 11px; font-weight: 700; letter-spacing: 1.5px; color: #797775; padding-bottom: 7px; }
+  .fabcon-countdown { display: inline-flex; align-items: center; gap: 8px; align-self: flex-start; font-size: 13px; font-weight: 700; color: #0b6a5f; background: #e3f5f0; border: 1px solid #bfe6dc; border-radius: 20px; padding: 5px 13px; margin: 2px 0 16px; }
+  .fabcon-countdown .cd-dot { width: 8px; height: 8px; border-radius: 50%; background: #1ec08f; }
+  .fabcon-countdown.is-live { color: #a4262c; background: #fde7e9; border-color: #f4bcc1; }
+  .fabcon-countdown.is-live .cd-dot { background: #d13438; }
+  .fabcon-countdown.is-over { color: #605e5c; background: #f3f2f1; border-color: #e1dfdd; }
+  .fabcon-countdown.is-over .cd-dot { background: #a19f9d; }
+  .event-card--fabcon .btn { background: linear-gradient(135deg, #0b6a5f 0%, #12846f 100%); padding: 13px 26px; font-size: 15.5px; border-radius: 8px; box-shadow: 0 10px 22px rgba(11,106,95,0.35); transition: transform 0.15s ease, box-shadow 0.15s ease; }
+  .event-card--fabcon .btn:hover { background: linear-gradient(135deg, #094e46 0%, #0b6a5f 100%); transform: translateY(-1px); box-shadow: 0 14px 28px rgba(11,106,95,0.42); }
+  .event-card--fabcon.event-card--past .btn { background: #a19f9d; box-shadow: none; }
+  .event-card--fabcon.event-card--past .btn.btn--rec { background: #0b6a5f; }
+  @media (prefers-reduced-motion: no-preference) {
+    .fabcon-glow--green { animation: fabconFloat 14s ease-in-out infinite alternate; }
+    .fabcon-glow--blue { animation: fabconFloat 18s ease-in-out infinite alternate-reverse; }
+    .fabcon-countdown:not(.is-over) .cd-dot { animation: fabconPulse 1.8s ease-out infinite; }
+  }
+  @keyframes fabconFloat { from { transform: translate(0, 0) scale(1); } to { transform: translate(60px, 40px) scale(1.12); } }
+  @keyframes fabconPulse { 0% { box-shadow: 0 0 0 0 rgba(30,192,143,0.55); } 80%, 100% { box-shadow: 0 0 0 9px rgba(30,192,143,0); } }
+  @media (max-width: 980px) { .fabcon-layout { grid-template-columns: minmax(0, 620px); justify-content: center; gap: 44px; } .fabcon-title { font-size: 36px; } .fabcon-watermark { font-size: 110px; } }
+  @media (max-width: 640px) { .spotlight-lite.fabcon-band { padding: 48px 0 44px; } .fabcon-title { font-size: 30px; } .fabcon-kicker { font-size: 13px; letter-spacing: 2px; } .event-card--fabcon { padding: 28px 22px 24px; } .fabcon-watermark { font-size: 80px; bottom: -18px; } }
+  body.hide-past .fabcon-band:not(:has(.event-card:not(.event-card--past))) { display: none; }
 
   /* Featured Azure SRE Agent series band (two side-by-side lite cards) */
   .spotlight-lite .events.events--pair { grid-template-columns: repeat(2, minmax(0, 520px)); gap: 24px; justify-content: center; margin-bottom: 0; }
@@ -414,7 +470,6 @@ document.addEventListener('DOMContentLoaded', function () {
     </select>
     <select id="f-month" aria-label="Filter by month">
         <option value="">All months</option>
-        <option value="8">August 2026</option>
         <option value="9">September 2026</option>
         <option value="10">October 2026</option>
         <option value="11">November 2026</option>
@@ -467,7 +522,7 @@ document.addEventListener('DOMContentLoaded', function () {
         <div class="card-actions"><a class="btn" href="https://msit.events.teams.microsoft.com/event/msit.371d9252-482a-4a1e-b537-04aa964ece21@72f988bf-86f1-41af-91ab-2d7cd011db47?source=copyLinkOneEventsShareDialog" target="_blank" rel="noopener">Register</a></div>
       </div>
 
-      <div class="event-card event-card--spotlight" data-type="Training" data-modality="Virtual" data-month="10" data-search="azure ai foundry webinar series session 4 multi-agent orchestration and voice coordinated team real phone call live spoken claim after hours remi nimbus virtual">
+      <div class="event-card event-card--spotlight" data-type="Training" data-modality="Virtual" data-month="10" data-recording="https://aka.ms/RemiSession4" data-search="azure ai foundry webinar series session 4 multi-agent orchestration and voice coordinated team real phone call live spoken claim after hours remi nimbus virtual">
         <span class="event-tag tag-spotlight">Session 4</span>
         <h3>Session 4 — Multi-Agent Orchestration &amp; Voice</h3>
         <div class="event-meta"><span class="icon">📅</span> <span class="event-time" data-start="2026-10-01T19:00:00Z" data-end="2026-10-01T20:30:00Z"></span></div>
@@ -492,6 +547,72 @@ document.addEventListener('DOMContentLoaded', function () {
     <div class="carousel-dots" role="tablist" aria-label="Featured session slides"></div>
   </div>
 </section>
+
+<section class="spotlight-lite fabcon-band">
+  <div class="fabcon-bg" aria-hidden="true">
+    <span class="fabcon-glow fabcon-glow--green"></span>
+    <span class="fabcon-glow fabcon-glow--blue"></span>
+    <span class="fabcon-dots"></span>
+    <span class="fabcon-watermark">BARCELONA</span>
+  </div>
+  <div class="container">
+    <div class="fabcon-layout">
+      <div class="fabcon-copy">
+        <span class="spotlight-lite-eyebrow">📊 Featured Fabric Webinar</span>
+        <h2 class="fabcon-title"><span class="fabcon-kicker">FabCon + SQLCon 2026 · Barcelona</span> What’s New and What Matters</h2>
+        <p class="fabcon-intro">Couldn’t make it to Barcelona? Get the takeaways that matter most in one focused hour — a technical recap of the key announcements, innovations, and platform advancements from FabCon + SQLCon 2026.</p>
+        <ul class="fabcon-points">
+          <li><span class="pt-icon" aria-hidden="true">🚀</span><span><strong>What’s new</strong> — key announcements, innovations, and platform advancements from Barcelona</span></li>
+          <li><span class="pt-icon" aria-hidden="true">📐</span><span><strong>What it means</strong> — the impact on modern data and analytics architectures</span></li>
+          <li><span class="pt-icon" aria-hidden="true">🧭</span><span><strong>What’s next</strong> — what you should be thinking about as you plan ahead</span></li>
+        </ul>
+      </div>
+      <div class="events">
+        <div class="event-card event-card--lite event-card--fabric event-card--fabcon" data-type="Briefing" data-modality="Virtual" data-month="10" data-search="fabcon sqlcon 2026 barcelona what's new and what matters whats new microsoft fabric sql conference recap key announcements innovations platform advancements takeaways modern data analytics architectures fabric webinar briefing virtual microsoft teams october 8">
+          <div class="fabcon-date" aria-hidden="true"><span class="m">OCT</span><span class="d">8</span><span class="w">THU</span></div>
+          <div class="fabcon-head">
+            <span class="event-tag tag-fabric">Fabric Webinar</span>
+            <div class="lite-series">Event recap · <strong>FabCon + SQLCon 2026 Barcelona</strong></div>
+          </div>
+          <h3>What’s New and What Matters</h3>
+          <div class="event-meta"><span class="icon">📅</span> <span class="event-time" data-start="2026-10-08T16:00:00Z" data-end="2026-10-08T17:00:00Z"></span></div>
+          <div class="event-meta event-meta-sub"><span class="icon">💻</span> Virtual · 60 min · Microsoft Teams</div>
+          <div class="fabcon-countdown"><span class="cd-dot" aria-hidden="true"></span><span class="cd-text">Live on Microsoft Teams</span></div>
+          <p>One focused hour on what changed in Barcelona and what it means for your data and analytics platform.</p>
+          <div class="card-actions"><a class="btn" href="https://msit.events.teams.microsoft.com/event/msit.cb62d4d2-c87a-4f36-9a6e-2d37b776797d@72f988bf-86f1-41af-91ab-2d7cd011db47?source=copyLinkOneEventsShareDialog" target="_blank" rel="noopener">Register now <span aria-hidden="true">→</span></a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+/* FabCon band: date badge + countdown in the visitor's local time zone (refreshes every minute) */
+(function () {
+  var card = document.querySelector('.fabcon-band .event-card');
+  var t = card && card.querySelector('.event-time[data-start]');
+  if (!t) return;
+  var start = new Date(t.dataset.start), end = new Date(t.dataset.end || t.dataset.start);
+  if (isNaN(start.getTime())) return;
+  var badge = card.querySelector('.fabcon-date');
+  if (badge) {
+    badge.querySelector('.m').textContent = start.toLocaleDateString(undefined, { month: 'short' }).replace('.', '').toUpperCase();
+    badge.querySelector('.d').textContent = String(start.getDate());
+    badge.querySelector('.w').textContent = start.toLocaleDateString(undefined, { weekday: 'short' }).replace('.', '').toUpperCase();
+  }
+  var pill = card.querySelector('.fabcon-countdown'), txt = pill && pill.querySelector('.cd-text');
+  if (!txt) return;
+  function plural(n, one, many) { return n + ' ' + (n === 1 ? one : many); }
+  function tick() {
+    var now = new Date();
+    if (now >= end) { txt.textContent = 'This session has ended'; pill.classList.add('is-over'); pill.classList.remove('is-live'); return; }
+    if (now >= start) { txt.textContent = 'Live now'; pill.classList.add('is-live'); return; }
+    var mins = Math.ceil((start - now) / 60000), d = Math.floor(mins / 1440), h = Math.floor((mins % 1440) / 60), m = mins % 60;
+    txt.textContent = 'Starts in ' + (d > 0 ? plural(d, 'day', 'days') + ' ' + plural(h, 'hr', 'hrs') : h > 0 ? plural(h, 'hr', 'hrs') + ' ' + m + ' min' : m + ' min');
+  }
+  tick();
+  setInterval(tick, 60000);
+})();
+</script>
 
 <section class="spotlight-lite">
   <div class="container">
@@ -761,53 +882,8 @@ document.addEventListener('DOMContentLoaded', function () {
     <div class="groups">
 
       <div class="group" data-group="Briefing">
-        <button type="button" class="group-head" aria-expanded="false"><span class="chev">▸</span><span class="group-title">Briefing</span><span class="group-count">29 sessions</span></button>
+        <button type="button" class="group-head" aria-expanded="false"><span class="chev">▸</span><span class="group-title">Briefing</span><span class="group-count">24 sessions</span></button>
         <div class="group-body"><div class="events">
-
-      <div class="event-card" data-type="Briefing" data-modality="Digital" data-month="8" data-search="microsoft discovery sessions: build agents and software faster with ai that knows your business  see microsoft solutions in action through expert-led demos and customer scenarios. in just one hour, gain practical insights and next steps to accelerate innovation. briefing digital">
-        <span class="event-tag tag-briefing">Briefing</span>
-        <h3>Microsoft Discovery Sessions: Build Agents and Software Faster with AI That Knows Your Business</h3>
-        <div class="event-meta"><span class="icon">📅</span> <span class="event-time" data-start="2026-08-18T17:00:00Z" data-end="2026-08-18T18:00:00Z"></span></div>
-        <div class="event-meta event-meta-sub"><span class="icon">💻</span> Digital</div>
-        <p>See Microsoft solutions in action through expert-led demos and customer scenarios. In just one hour, gain practical insights and next steps to accelerate innovation.</p>
-        <div class="card-actions"><a class="btn" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D1488490015&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Briefing&amp;utm_content=Microsoft-Discovery-Sessions-Build-Agents-and-So-2026-08-18" target="_blank" rel="noopener">Register</a></div>
-      </div>
-
-      <div class="event-card" data-type="Briefing" data-modality="Digital" data-month="8" data-search="mastering github copilot across the software development life cycle (sdlc)  this hands-on lab is designed to give developers practical experience using github copilot as an ai-powered assistant throughout the software development life cycle (sdlc) briefing digital">
-        <span class="event-tag tag-briefing">Briefing</span>
-        <h3>Mastering GitHub Copilot Across the Software Development Life Cycle (SDLC)</h3>
-        <div class="event-meta"><span class="icon">📅</span> <span class="event-time" data-start="2026-08-20T16:00:00Z" data-end="2026-08-20T20:10:00Z"></span></div>
-        <div class="event-meta event-meta-sub"><span class="icon">💻</span> Digital</div>
-        <p>This hands-on lab is designed to give developers practical experience using GitHub Copilot as an AI-powered assistant throughout the Software Development Life Cycle (SDLC)</p>
-        <div class="card-actions"><a class="btn" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D2966841273&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Briefing&amp;utm_content=Mastering-GitHub-Copilot-Across-the-Software-Dev-2026-08-20" target="_blank" rel="noopener">Register</a></div>
-      </div>
-
-      <div class="event-card" data-type="Briefing" data-modality="Digital" data-month="8" data-search="tech brief: azure databases for ai transformation  data is the fuel for ai, and the right ai-optimized databases can empower your teams to truly innovate. briefing digital">
-        <span class="event-tag tag-briefing">Briefing</span>
-        <h3>Tech Brief: Azure Databases for AI Transformation</h3>
-        <div class="event-meta"><span class="icon">📅</span> <span class="event-time" data-start="2026-08-24T18:00:00Z" data-end="2026-08-24T19:30:00Z"></span></div>
-        <div class="event-meta event-meta-sub"><span class="icon">💻</span> Digital</div>
-        <p>Data is the fuel for AI, and the right AI-optimized databases can empower your teams to truly innovate.</p>
-        <div class="card-actions"><a class="btn" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D4270336538&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Briefing&amp;utm_content=Tech-Brief-Azure-Databases-for-AI-Transformation-2026-08-24" target="_blank" rel="noopener">Register</a></div>
-      </div>
-
-      <div class="event-card" data-type="Briefing" data-modality="Digital" data-month="8" data-search="microsoft discovery session: modernize with ai for a new pace of innovation  see microsoft solutions in action through expert-led demos and customer scenarios. in just one hour, gain practical insights and next steps to accelerate innovation. briefing digital">
-        <span class="event-tag tag-briefing">Briefing</span>
-        <h3>Microsoft Discovery Session: Modernize with AI for a New Pace of Innovation</h3>
-        <div class="event-meta"><span class="icon">📅</span> <span class="event-time" data-start="2026-08-25T17:00:00Z" data-end="2026-08-25T18:00:00Z"></span></div>
-        <div class="event-meta event-meta-sub"><span class="icon">💻</span> Digital</div>
-        <p>See Microsoft solutions in action through expert-led demos and customer scenarios. In just one hour, gain practical insights and next steps to accelerate innovation.</p>
-        <div class="card-actions"><a class="btn" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D3105514802&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Briefing&amp;utm_content=Microsoft-Discovery-Session-Modernize-with-AI-fo-2026-08-25" target="_blank" rel="noopener">Register</a></div>
-      </div>
-
-      <div class="event-card" data-type="Briefing" data-modality="Digital" data-month="8" data-search="mastering github copilot across the software development life cycle (sdlc)  join us in the mastering github copilot across the software development life cycle (sdlc) briefing digital">
-        <span class="event-tag tag-briefing">Briefing</span>
-        <h3>Mastering GitHub Copilot Across the Software Development Life Cycle (SDLC)</h3>
-        <div class="event-meta"><span class="icon">📅</span> <span class="event-time" data-start="2026-08-27T16:00:00Z" data-end="2026-08-27T20:10:00Z"></span></div>
-        <div class="event-meta event-meta-sub"><span class="icon">💻</span> Digital</div>
-        <p>Join us in the Mastering GitHub Copilot Across the Software Development Life Cycle (SDLC)</p>
-        <div class="card-actions"><a class="btn" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D2023909041&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Briefing&amp;utm_content=Mastering-GitHub-Copilot-Across-the-Software-Dev-2026-08-27" target="_blank" rel="noopener">Register</a></div>
-      </div>
 
       <div class="event-card" data-type="Briefing" data-modality="Digital" data-month="9" data-search="microsoft discovery hour: migrate and modernize your estate  unlock the full potential of your organization by joining this session. briefing digital">
         <span class="event-tag tag-briefing">Briefing</span>
@@ -1029,62 +1105,8 @@ document.addEventListener('DOMContentLoaded', function () {
       </div>
 
       <div class="group" data-group="Training">
-        <button type="button" class="group-head" aria-expanded="false"><span class="chev">▸</span><span class="group-title">Training</span><span class="group-count">10 sessions</span></button>
+        <button type="button" class="group-head" aria-expanded="false"><span class="chev">▸</span><span class="group-title">Training</span><span class="group-count">4 sessions</span></button>
         <div class="group-body"><div class="events">
-
-      <div class="event-card" data-type="Training" data-modality="Digital" data-month="8" data-search="microsoft virtual training day: migrate and modernize foundation  learn how to migrate and modernize your organization’s infrastructure, databases, and apps for increased performance and efficiency using azure. training digital">
-        <span class="event-tag tag-training">Training</span>
-        <h3>Microsoft Virtual Training Day: Migrate and Modernize Foundation</h3>
-        <div class="event-meta"><span class="icon">📅</span> <span class="event-time" data-start="2026-08-11T16:00:00Z" data-end="2026-08-11T20:00:00Z"></span></div>
-        <div class="event-meta event-meta-sub"><span class="icon">💻</span> Digital</div>
-        <p>Learn how to migrate and modernize your organization’s infrastructure, databases, and apps for increased performance and efficiency using Azure.</p>
-        <div class="card-actions"><a class="btn" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D1473698983&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Training&amp;utm_content=Microsoft-Virtual-Training-Day-Migrate-and-Moder-2026-08-11" target="_blank" rel="noopener">Register</a></div>
-      </div>
-
-      <div class="event-card" data-type="Training" data-modality="Digital" data-month="8" data-search="microsoft virtual training day: introduction to microsoft azure  learn the basics of cloud computing and how to use the components and resources available in microsoft azure to build and deploy your own cloud solutions. training digital">
-        <span class="event-tag tag-training">Training</span>
-        <h3>Microsoft Virtual Training Day: Introduction to Microsoft Azure</h3>
-        <div class="event-meta"><span class="icon">📅</span> <span class="event-time" data-start="2026-08-20T16:00:00Z" data-end="2026-08-20T20:00:00Z"></span></div>
-        <div class="event-meta event-meta-sub"><span class="icon">💻</span> Digital</div>
-        <p>Learn the basics of cloud computing and how to use the components and resources available in Microsoft Azure to build and deploy your own cloud solutions.</p>
-        <div class="card-actions"><a class="btn" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D3919936921&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Training&amp;utm_content=Microsoft-Virtual-Training-Day-Introduction-to-M-2026-08-20" target="_blank" rel="noopener">Register</a></div>
-      </div>
-
-      <div class="event-card" data-type="Training" data-modality="Digital" data-month="8" data-search="tech brief: powering ai apps and agents at scale on azure app platform  in this session, explore how microsoft azure helps you build, deploy, and scale ai-powered apps and agents and operate them effectively. training digital">
-        <span class="event-tag tag-training">Training</span>
-        <h3>Tech Brief: Powering AI Apps and Agents at Scale on Azure App Platform</h3>
-        <div class="event-meta"><span class="icon">📅</span> <span class="event-time" data-start="2026-08-20T18:00:00Z" data-end="2026-08-20T19:30:00Z"></span></div>
-        <div class="event-meta event-meta-sub"><span class="icon">💻</span> Digital</div>
-        <p>In this session, explore how Microsoft Azure helps you build, deploy, and scale AI-powered apps and agents and operate them effectively.</p>
-        <div class="card-actions"><a class="btn" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D1339446556&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Training&amp;utm_content=Tech-Brief-Powering-AI-Apps-and-Agents-at-Scale--2026-08-20" target="_blank" rel="noopener">Register</a></div>
-      </div>
-
-      <div class="event-card" data-type="Training" data-modality="Digital" data-month="8" data-search="microsoft virtual training day: build ai apps with azure database for postgresql  learn how to enhance your organization’s productivity and deliver engaging user experiences by creating and deploying ai-powered apps using azure database for postgresql. training digital">
-        <span class="event-tag tag-training">Training</span>
-        <h3>Microsoft Virtual Training Day: Build AI Apps with Azure Database for PostgreSQL</h3>
-        <div class="event-meta"><span class="icon">📅</span> <span class="event-time" data-start="2026-08-25T16:00:00Z" data-end="2026-08-26T18:30:00Z"></span></div>
-        <div class="event-meta event-meta-sub"><span class="icon">💻</span> Digital</div>
-        <p>Learn how to enhance your organization’s productivity and deliver engaging user experiences by creating and deploying AI-powered apps using Azure Database for PostgreSQL.</p>
-        <div class="card-actions"><a class="btn" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D3522340598&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Training&amp;utm_content=Microsoft-Virtual-Training-Day-Build-AI-Apps-wit-2026-08-25" target="_blank" rel="noopener">Register</a></div>
-      </div>
-
-      <div class="event-card" data-type="Training" data-modality="Digital" data-month="8" data-search="microsoft virtual training day: introduction to microsoft azure data  learn about the core concepts that support the latest data solutions, such as common formats, workloads, and essential roles, and how to manage diverse data types using azure. training digital">
-        <span class="event-tag tag-training">Training</span>
-        <h3>Microsoft Virtual Training Day: Introduction to Microsoft Azure Data</h3>
-        <div class="event-meta"><span class="icon">📅</span> <span class="event-time" data-start="2026-08-27T16:00:00Z" data-end="2026-08-28T17:45:00Z"></span></div>
-        <div class="event-meta event-meta-sub"><span class="icon">💻</span> Digital</div>
-        <p>Learn about the core concepts that support the latest data solutions, such as common formats, workloads, and essential roles, and how to manage diverse data types using Azure.</p>
-        <div class="card-actions"><a class="btn" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D3934404961&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Training&amp;utm_content=Microsoft-Virtual-Training-Day-Introduction-to-M-2026-08-27" target="_blank" rel="noopener">Register</a></div>
-      </div>
-
-      <div class="event-card" data-type="Training" data-modality="Digital" data-month="8" data-search="microsoft virtual training day: build agentic ai solutions with azure ai foundry  advance your ai agent development skills using azure ai foundry agent service and the semantic kernel agent framework. training digital">
-        <span class="event-tag tag-training">Training</span>
-        <h3>Microsoft Virtual Training Day: Build agentic AI solutions with Azure AI Foundry</h3>
-        <div class="event-meta"><span class="icon">📅</span> <span class="event-time" data-start="2026-08-31T16:00:00Z" data-end="2026-08-31T19:30:00Z"></span></div>
-        <div class="event-meta event-meta-sub"><span class="icon">💻</span> Digital</div>
-        <p>Advance your AI agent development skills using Azure AI Foundry Agent Service and the Semantic Kernel Agent Framework.</p>
-        <div class="card-actions"><a class="btn" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D3462738589&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Training&amp;utm_content=Microsoft-Virtual-Training-Day-Build-agentic-AI--2026-08-31" target="_blank" rel="noopener">Register</a></div>
-      </div>
 
       <div class="event-card" data-type="Training" data-modality="Digital" data-month="9" data-search="microsoft virtual training day: introduction to microsoft azure  learn the basics of cloud computing and how to use the components and resources available in microsoft azure to build and deploy your own cloud solutions. training digital">
         <span class="event-tag tag-training">Training</span>
@@ -1126,53 +1148,8 @@ document.addEventListener('DOMContentLoaded', function () {
       </div>
 
       <div class="group" data-group="Workshop">
-        <button type="button" class="group-head" aria-expanded="false"><span class="chev">▸</span><span class="group-title">Workshop</span><span class="group-count">15 sessions</span></button>
+        <button type="button" class="group-head" aria-expanded="false"><span class="chev">▸</span><span class="group-title">Workshop</span><span class="group-count">11 sessions</span></button>
         <div class="group-body"><div class="events">
-
-      <div class="event-card" data-type="Workshop" data-modality="Digital" data-month="8" data-search="microsoft technical workshop: develop an asp.net core web app that consumes and api  this is an advanced to expert-level course. attendees should be able to demonstrate expertise and a differentiated perspective on the technology from extensive and diverse practical experience. workshop digital">
-        <span class="event-tag tag-workshop">Workshop</span>
-        <h3>Microsoft Technical Workshop: Develop an ASP.NET Core Web App that Consumes and API</h3>
-        <div class="event-meta"><span class="icon">📅</span> <span class="event-time" data-start="2026-08-18T15:00:00Z" data-end="2026-08-18T21:00:00Z"></span></div>
-        <div class="event-meta event-meta-sub"><span class="icon">💻</span> Digital</div>
-        <p>This is an advanced to expert-level course. Attendees should be able to demonstrate expertise and a differentiated perspective on the technology from extensive and diverse practical experience.</p>
-        <div class="card-actions"><a class="btn" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D1707768133&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Workshop&amp;utm_content=Microsoft-Technical-Workshop-Develop-an-ASP-NET--2026-08-18" target="_blank" rel="noopener">Register</a></div>
-      </div>
-
-      <div class="event-card" data-type="Workshop" data-modality="Digital" data-month="8" data-search="microsoft technical workshop: develop generative ai-powered apps with azure ai foundry  join this free technical workshop to learn how to create a customized copilot using language models in chat apps and gain in-depth exploration of the azure ai foundry platform. workshop digital">
-        <span class="event-tag tag-workshop">Workshop</span>
-        <h3>Microsoft Technical Workshop: Develop Generative AI-powered apps with Azure AI Foundry</h3>
-        <div class="event-meta"><span class="icon">📅</span> <span class="event-time" data-start="2026-08-19T15:00:00Z" data-end="2026-08-19T21:00:00Z"></span></div>
-        <div class="event-meta event-meta-sub"><span class="icon">💻</span> Digital</div>
-        <p>Join this free technical workshop to learn how to create a customized copilot using language models in chat apps and gain in-depth exploration of the Azure AI Foundry platform.</p>
-        <div class="card-actions"><a class="btn" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D3528768507&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Workshop&amp;utm_content=Microsoft-Technical-Workshop-Develop-Generative--2026-08-19" target="_blank" rel="noopener">Register</a></div>
-      </div>
-
-      <div class="event-card" data-type="Workshop" data-modality="Digital" data-month="8" data-search="microsoft technical workshop: develop an asp.net core web app that consumes and api  make coding page-focused scenarios more efficient and productive. join us to discover how to build an asp.net core web app using the razor pages feature to consume apis. workshop digital">
-        <span class="event-tag tag-workshop">Workshop</span>
-        <h3>Microsoft Technical Workshop: Develop an ASP.NET Core Web App that Consumes and API</h3>
-        <div class="event-meta"><span class="icon">📅</span> <span class="event-time" data-start="2026-08-20T15:00:00Z" data-end="2026-08-20T21:00:00Z"></span></div>
-        <div class="event-meta event-meta-sub"><span class="icon">💻</span> Digital</div>
-        <p>Make coding page-focused scenarios more efficient and productive. Join us to discover how to build an ASP.NET Core web app using the Razor Pages feature to consume APIs.</p>
-        <div class="card-actions"><a class="btn" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D4103949534&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Workshop&amp;utm_content=Microsoft-Technical-Workshop-Develop-an-ASP-NET--2026-08-20" target="_blank" rel="noopener">Register</a></div>
-      </div>
-
-      <div class="event-card" data-type="Workshop" data-modality="Digital" data-month="8" data-search="microsoft technical workshop: develop an asp.net core web app that consumes and api  this free workshop will guide you through the end-to-end process of migrating microsoft sql server databases to azure sql. workshop digital">
-        <span class="event-tag tag-workshop">Workshop</span>
-        <h3>Microsoft Technical Workshop: Develop an ASP.NET Core Web App that Consumes and API</h3>
-        <div class="event-meta"><span class="icon">📅</span> <span class="event-time" data-start="2026-08-25T15:00:00Z" data-end="2026-08-25T21:00:00Z"></span></div>
-        <div class="event-meta event-meta-sub"><span class="icon">💻</span> Digital</div>
-        <p>This free workshop will guide you through the end-to-end process of migrating Microsoft SQL Server databases to Azure SQL.</p>
-        <div class="card-actions"><a class="btn" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D528895510&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Workshop&amp;utm_content=Microsoft-Technical-Workshop-Develop-an-ASP-NET--2026-08-25" target="_blank" rel="noopener">Register</a></div>
-      </div>
-
-      <div class="event-card" data-type="Workshop" data-modality="Digital" data-month="8" data-search="technical workshop: build agentic ai solutions with ai foundry  join us at a free technical workshop to explore the innovative capabilities of ai agents-and find out how to transform your applications. workshop digital">
-        <span class="event-tag tag-workshop">Workshop</span>
-        <h3>Technical Workshop: Build Agentic AI Solutions with AI Foundry</h3>
-        <div class="event-meta"><span class="icon">📅</span> <span class="event-time" data-start="2026-08-26T15:00:00Z" data-end="2026-08-26T21:00:00Z"></span></div>
-        <div class="event-meta event-meta-sub"><span class="icon">💻</span> Digital</div>
-        <p>Join us at a free technical workshop to explore the innovative capabilities of AI agents-and find out how to transform your applications.</p>
-        <div class="card-actions"><a class="btn" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D228344826&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Workshop&amp;utm_content=Technical-Workshop-Build-Agentic-AI-Solutions-wi-2026-08-26" target="_blank" rel="noopener">Register</a></div>
-      </div>
 
       <div class="event-card" data-type="Workshop" data-modality="Digital" data-month="9" data-search="microsoft technical workshop: migrate sql server workloads to microsoft azure sql  join us in the microsoft technical workshop: migrate sql server workloads to microsoft azure sql. workshop digital">
         <span class="event-tag tag-workshop">Workshop</span>
@@ -1277,7 +1254,7 @@ document.addEventListener('DOMContentLoaded', function () {
       </div>
 
       <div class="group" data-group="Conference">
-        <button type="button" class="group-head" aria-expanded="false"><span class="chev">▸</span><span class="group-title">Conference</span><span class="group-count">1 sessions</span></button>
+        <button type="button" class="group-head" aria-expanded="false"><span class="chev">▸</span><span class="group-title">Conference</span><span class="group-count">1 session</span></button>
         <div class="group-body"><div class="events">
 
       <div class="event-card" data-type="Conference" data-modality="In-Person" data-month="9" data-search="agentic and data immersion day  join us to explore how agentic ai solutions on microsoft foundry and data solutions on microsoft fabric -can drive measurable business outcomes across your organization. conference dallas">
@@ -1306,71 +1283,8 @@ document.addEventListener('DOMContentLoaded', function () {
     <div class="groups">
 
       <div class="group" data-group="Dashboard in a Day">
-        <button type="button" class="group-head" aria-expanded="false"><span class="chev">▸</span><span class="group-title">Dashboard in a Day</span><span class="group-count">24 sessions</span></button>
+        <button type="button" class="group-head" aria-expanded="false"><span class="chev">▸</span><span class="group-title">Dashboard in a Day</span><span class="group-count">17 sessions</span></button>
         <div class="group-body"><div class="events">
-
-      <div class="event-card" data-type="Dashboard in a Day" data-modality="Virtual" data-month="8" data-search="dashboard in a day - maq software maq software a one-day power bi workshop covering the complete analytics workflow: connecting to data, transforming and modeling it, creating interactive reports, and publishing and sharing dashboards. dashboard in a day ">
-        <span class="event-tag tag-diad">Dashboard in a Day</span>
-        <h3>Dashboard in a Day - MAQ Software</h3>
-        <div class="event-meta"><span class="icon">📅</span> <span class="event-time" data-start="2026-08-13T15:00:00Z" data-end="2026-08-13T23:00:00Z"></span></div>
-        <div class="event-meta event-meta-sub"><span class="icon">💻</span> Virtual <span class="dot">·</span> <span class="icon">🤝</span> MAQ Software</div>
-        <p>A one-day Power BI workshop covering the complete analytics workflow: connecting to data, transforming and modeling it, creating interactive reports, and publishing and sharing dashboards.</p>
-        <div class="card-actions"><a class="btn" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D2111421045&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Dashboard%20in%20a%20Day&amp;utm_content=Dashboard-in-a-Day-MAQ-Software-2026-08-13" target="_blank" rel="noopener">Register</a><a class="partner-link" href="http://www.maqsoftware.com/" target="_blank" rel="noopener">Partner site ↗</a></div>
-      </div>
-
-      <div class="event-card" data-type="Dashboard in a Day" data-modality="Virtual" data-month="8" data-search="dashboard in a day - pragmatic works pragmatic works a one-day power bi workshop covering the complete analytics workflow: connecting to data, transforming and modeling it, creating interactive reports, and publishing and sharing dashboards. dashboard in a day ">
-        <span class="event-tag tag-diad">Dashboard in a Day</span>
-        <h3>Dashboard in a Day - Pragmatic Works</h3>
-        <div class="event-meta"><span class="icon">📅</span> <span class="event-time" data-start="2026-08-14T13:00:00Z" data-end="2026-08-14T21:00:00Z"></span></div>
-        <div class="event-meta event-meta-sub"><span class="icon">💻</span> Virtual <span class="dot">·</span> <span class="icon">🤝</span> Pragmatic Works</div>
-        <p>A one-day Power BI workshop covering the complete analytics workflow: connecting to data, transforming and modeling it, creating interactive reports, and publishing and sharing dashboards.</p>
-        <div class="card-actions"><a class="btn" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D4077581447&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Dashboard%20in%20a%20Day&amp;utm_content=Dashboard-in-a-Day-Pragmatic-Works-2026-08-14" target="_blank" rel="noopener">Register</a><a class="partner-link" href="http://www.pragmaticworks.com/" target="_blank" rel="noopener">Partner site ↗</a></div>
-      </div>
-
-      <div class="event-card" data-type="Dashboard in a Day" data-modality="Virtual" data-month="8" data-search="dashboard in a day - pragmatic works pragmatic works a one-day power bi workshop covering the complete analytics workflow: connecting to data, transforming and modeling it, creating interactive reports, and publishing and sharing dashboards. dashboard in a day ">
-        <span class="event-tag tag-diad">Dashboard in a Day</span>
-        <h3>Dashboard in a Day - Pragmatic Works</h3>
-        <div class="event-meta"><span class="icon">📅</span> <span class="event-time" data-start="2026-08-14T14:00:00Z" data-end="2026-08-14T22:00:00Z"></span></div>
-        <div class="event-meta event-meta-sub"><span class="icon">💻</span> Virtual <span class="dot">·</span> <span class="icon">🤝</span> Pragmatic Works</div>
-        <p>A one-day Power BI workshop covering the complete analytics workflow: connecting to data, transforming and modeling it, creating interactive reports, and publishing and sharing dashboards.</p>
-        <div class="card-actions"><a class="btn" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D3941933015&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Dashboard%20in%20a%20Day&amp;utm_content=Dashboard-in-a-Day-Pragmatic-Works-2026-08-14" target="_blank" rel="noopener">Register</a><a class="partner-link" href="http://www.pragmaticworks.com/" target="_blank" rel="noopener">Partner site ↗</a></div>
-      </div>
-
-      <div class="event-card" data-type="Dashboard in a Day" data-modality="Virtual" data-month="8" data-search="dashboard in a day - trility trility a one-day power bi workshop covering the complete analytics workflow: connecting to data, transforming and modeling it, creating interactive reports, and publishing and sharing dashboards. dashboard in a day ">
-        <span class="event-tag tag-diad">Dashboard in a Day</span>
-        <h3>Dashboard in a Day - Trility</h3>
-        <div class="event-meta"><span class="icon">📅</span> <span class="event-time" data-start="2026-08-20T14:00:00Z" data-end="2026-08-20T22:00:00Z"></span></div>
-        <div class="event-meta event-meta-sub"><span class="icon">💻</span> Virtual <span class="dot">·</span> <span class="icon">🤝</span> Trility</div>
-        <p>A one-day Power BI workshop covering the complete analytics workflow: connecting to data, transforming and modeling it, creating interactive reports, and publishing and sharing dashboards.</p>
-        <div class="card-actions"><a class="btn" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D2423199121&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Dashboard%20in%20a%20Day&amp;utm_content=Dashboard-in-a-Day-Trility-2026-08-20" target="_blank" rel="noopener">Register</a><a class="partner-link" href="https://www.trility.io/" target="_blank" rel="noopener">Partner site ↗</a></div>
-      </div>
-
-      <div class="event-card" data-type="Dashboard in a Day" data-modality="Virtual" data-month="8" data-search="dashboard in a day - onpoint insights llc onpoint insights llc a one-day power bi workshop covering the complete analytics workflow: connecting to data, transforming and modeling it, creating interactive reports, and publishing and sharing dashboards. dashboard in a day ">
-        <span class="event-tag tag-diad">Dashboard in a Day</span>
-        <h3>Dashboard in a Day - OnPoint Insights LLC</h3>
-        <div class="event-meta"><span class="icon">📅</span> <span class="event-time" data-start="2026-08-21T13:00:00Z" data-end="2026-08-21T21:00:00Z"></span></div>
-        <div class="event-meta event-meta-sub"><span class="icon">💻</span> Virtual <span class="dot">·</span> <span class="icon">🤝</span> OnPoint Insights LLC</div>
-        <p>A one-day Power BI workshop covering the complete analytics workflow: connecting to data, transforming and modeling it, creating interactive reports, and publishing and sharing dashboards.</p>
-        <div class="card-actions"><a class="btn" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D784676756&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Dashboard%20in%20a%20Day&amp;utm_content=Dashboard-in-a-Day-OnPoint-Insights-LLC-2026-08-21" target="_blank" rel="noopener">Register</a><a class="partner-link" href="https://www.onpointinsights.us/" target="_blank" rel="noopener">Partner site ↗</a></div>
-      </div>
-
-      <div class="event-card" data-type="Dashboard in a Day" data-modality="Virtual" data-month="8" data-search="dashboard in a day - wai technologies wai technologies a one-day power bi workshop covering the complete analytics workflow: connecting to data, transforming and modeling it, creating interactive reports, and publishing and sharing dashboards. dashboard in a day ">
-        <span class="event-tag tag-diad">Dashboard in a Day</span>
-        <h3>Dashboard in a Day - Wai Technologies</h3>
-        <div class="event-meta"><span class="icon">📅</span> <span class="event-time" data-start="2026-08-26T14:00:00Z" data-end="2026-08-26T22:00:00Z"></span></div>
-        <div class="event-meta event-meta-sub"><span class="icon">💻</span> Virtual <span class="dot">·</span> <span class="icon">🤝</span> Wai Technologies</div>
-        <p>A one-day Power BI workshop covering the complete analytics workflow: connecting to data, transforming and modeling it, creating interactive reports, and publishing and sharing dashboards.</p>
-        <div class="card-actions"><a class="btn" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D2726094039&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Dashboard%20in%20a%20Day&amp;utm_content=Dashboard-in-a-Day-Wai-Technologies-2026-08-26" target="_blank" rel="noopener">Register</a><a class="partner-link" href="https://waiin.com/" target="_blank" rel="noopener">Partner site ↗</a></div>
-      </div>
-
-      <div class="event-card" data-type="Dashboard in a Day" data-modality="Virtual" data-month="8" data-search="dashboard in a day - onpoint insights llc onpoint insights llc a one-day power bi workshop covering the complete analytics workflow: connecting to data, transforming and modeling it, creating interactive reports, and publishing and sharing dashboards. dashboard in a day ">
-        <span class="event-tag tag-diad">Dashboard in a Day</span>
-        <h3>Dashboard in a Day - OnPoint Insights LLC</h3>
-        <div class="event-meta"><span class="icon">📅</span> <span class="event-time" data-start="2026-08-28T13:00:00Z" data-end="2026-08-28T21:00:00Z"></span></div>
-        <div class="event-meta event-meta-sub"><span class="icon">💻</span> Virtual <span class="dot">·</span> <span class="icon">🤝</span> OnPoint Insights LLC</div>
-        <p>A one-day Power BI workshop covering the complete analytics workflow: connecting to data, transforming and modeling it, creating interactive reports, and publishing and sharing dashboards.</p>
-        <div class="card-actions"><a class="btn" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D958328070&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Dashboard%20in%20a%20Day&amp;utm_content=Dashboard-in-a-Day-OnPoint-Insights-LLC-2026-08-28" target="_blank" rel="noopener">Register</a><a class="partner-link" href="https://www.onpointinsights.us/" target="_blank" rel="noopener">Partner site ↗</a></div>
-      </div>
 
       <div class="event-card" data-type="Dashboard in a Day" data-modality="Virtual" data-month="9" data-search="dashboard in a day - pragmatic works pragmatic works a one-day power bi workshop covering the complete analytics workflow: connecting to data, transforming and modeling it, creating interactive reports, and publishing and sharing dashboards. dashboard in a day ">
         <span class="event-tag tag-diad">Dashboard in a Day</span>
@@ -1529,98 +1443,8 @@ document.addEventListener('DOMContentLoaded', function () {
       </div>
 
       <div class="group" data-group="Fabric Analyst in a Day">
-        <button type="button" class="group-head" aria-expanded="false"><span class="chev">▸</span><span class="group-title">Fabric Analyst in a Day</span><span class="group-count">26 sessions</span></button>
+        <button type="button" class="group-head" aria-expanded="false"><span class="chev">▸</span><span class="group-title">Fabric Analyst in a Day</span><span class="group-count">16 sessions</span></button>
         <div class="group-body"><div class="events">
-
-      <div class="event-card" data-type="Fabric Analyst in a Day" data-modality="Virtual" data-month="8" data-search="fabric analyst in a day - baker tilly advisory group baker tilly advisory group an end-to-end microsoft fabric workshop for analysts. participants ingest and transform data, build a semantic model, and create power bi reports within a unified analytics experience. fabric analyst in a day ">
-        <span class="event-tag tag-faiad">Fabric Analyst in a Day</span>
-        <h3>Fabric Analyst in a Day - Baker Tilly Advisory Group</h3>
-        <div class="event-meta"><span class="icon">📅</span> <span class="event-time" data-start="2026-08-13T14:00:00Z" data-end="2026-08-13T22:00:00Z"></span></div>
-        <div class="event-meta event-meta-sub"><span class="icon">💻</span> Virtual <span class="dot">·</span> <span class="icon">🤝</span> Baker Tilly Advisory Group</div>
-        <p>An end-to-end Microsoft Fabric workshop for analysts. Participants ingest and transform data, build a semantic model, and create Power BI reports within a unified analytics experience.</p>
-        <div class="card-actions"><a class="btn" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D2856276526&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Fabric%20Analyst%20in%20a%20Day&amp;utm_content=Fabric-Analyst-in-a-Day-Baker-Tilly-Advisory-Gro-2026-08-13" target="_blank" rel="noopener">Register</a><a class="partner-link" href="https://www.bakertilly.com/" target="_blank" rel="noopener">Partner site ↗</a></div>
-      </div>
-
-      <div class="event-card" data-type="Fabric Analyst in a Day" data-modality="Virtual" data-month="8" data-search="fabric analyst in a day - quadrant technologies quadrant technologies an end-to-end microsoft fabric workshop for analysts. participants ingest and transform data, build a semantic model, and create power bi reports within a unified analytics experience. fabric analyst in a day ">
-        <span class="event-tag tag-faiad">Fabric Analyst in a Day</span>
-        <h3>Fabric Analyst in a Day - Quadrant Technologies</h3>
-        <div class="event-meta"><span class="icon">📅</span> <span class="event-time" data-start="2026-08-18T14:00:00Z" data-end="2026-08-18T22:00:00Z"></span></div>
-        <div class="event-meta event-meta-sub"><span class="icon">💻</span> Virtual <span class="dot">·</span> <span class="icon">🤝</span> Quadrant Technologies</div>
-        <p>An end-to-end Microsoft Fabric workshop for analysts. Participants ingest and transform data, build a semantic model, and create Power BI reports within a unified analytics experience.</p>
-        <div class="card-actions"><a class="btn" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D2559789166&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Fabric%20Analyst%20in%20a%20Day&amp;utm_content=Fabric-Analyst-in-a-Day-Quadrant-Technologies-2026-08-18" target="_blank" rel="noopener">Register</a><a class="partner-link" href="https://quadranttechnologies.com/" target="_blank" rel="noopener">Partner site ↗</a></div>
-      </div>
-
-      <div class="event-card" data-type="Fabric Analyst in a Day" data-modality="In-Person" data-month="8" data-search="fabric analyst in a day - levelshift levelshift an end-to-end microsoft fabric workshop for analysts. participants ingest and transform data, build a semantic model, and create power bi reports within a unified analytics experience. fabric analyst in a day santa clarita">
-        <span class="event-tag tag-faiad">Fabric Analyst in a Day</span>
-        <h3>Fabric Analyst in a Day - LevelShift</h3>
-        <div class="event-meta"><span class="icon">📅</span> <span class="event-time" data-start="2026-08-18T16:00:00Z" data-end="2026-08-19T00:00:00Z"></span></div>
-        <div class="event-meta event-meta-sub"><span class="icon">📍</span> Santa Clarita <span class="dot">·</span> <span class="icon">🤝</span> LevelShift</div>
-        <p>An end-to-end Microsoft Fabric workshop for analysts. Participants ingest and transform data, build a semantic model, and create Power BI reports within a unified analytics experience.</p>
-        <div class="card-actions"><a class="btn" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D4234006167&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Fabric%20Analyst%20in%20a%20Day&amp;utm_content=Fabric-Analyst-in-a-Day-LevelShift-2026-08-18" target="_blank" rel="noopener">Register</a><a class="partner-link" href="https://levelshift.com/" target="_blank" rel="noopener">Partner site ↗</a></div>
-      </div>
-
-      <div class="event-card" data-type="Fabric Analyst in a Day" data-modality="Virtual" data-month="8" data-search="fabric analyst in a day - key2 consulting key2 consulting an end-to-end microsoft fabric workshop for analysts. participants ingest and transform data, build a semantic model, and create power bi reports within a unified analytics experience. fabric analyst in a day ">
-        <span class="event-tag tag-faiad">Fabric Analyst in a Day</span>
-        <h3>Fabric Analyst in a Day - Key2 Consulting</h3>
-        <div class="event-meta"><span class="icon">📅</span> <span class="event-time" data-start="2026-08-19T13:00:00Z" data-end="2026-08-19T21:00:00Z"></span></div>
-        <div class="event-meta event-meta-sub"><span class="icon">💻</span> Virtual <span class="dot">·</span> <span class="icon">🤝</span> Key2 Consulting</div>
-        <p>An end-to-end Microsoft Fabric workshop for analysts. Participants ingest and transform data, build a semantic model, and create Power BI reports within a unified analytics experience.</p>
-        <div class="card-actions"><a class="btn" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D3948896573&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Fabric%20Analyst%20in%20a%20Day&amp;utm_content=Fabric-Analyst-in-a-Day-Key2-Consulting-2026-08-19" target="_blank" rel="noopener">Register</a><a class="partner-link" href="https://key2consulting.com/" target="_blank" rel="noopener">Partner site ↗</a></div>
-      </div>
-
-      <div class="event-card" data-type="Fabric Analyst in a Day" data-modality="Virtual" data-month="8" data-search="fabric analyst in a day - nextant nextant an end-to-end microsoft fabric workshop for analysts. participants ingest and transform data, build a semantic model, and create power bi reports within a unified analytics experience. fabric analyst in a day ">
-        <span class="event-tag tag-faiad">Fabric Analyst in a Day</span>
-        <h3>Fabric Analyst in a Day - Nextant</h3>
-        <div class="event-meta"><span class="icon">📅</span> <span class="event-time" data-start="2026-08-24T16:00:00Z" data-end="2026-08-25T00:00:00Z"></span></div>
-        <div class="event-meta event-meta-sub"><span class="icon">💻</span> Virtual <span class="dot">·</span> <span class="icon">🤝</span> Nextant</div>
-        <p>An end-to-end Microsoft Fabric workshop for analysts. Participants ingest and transform data, build a semantic model, and create Power BI reports within a unified analytics experience.</p>
-        <div class="card-actions"><a class="btn" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D64041792&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Fabric%20Analyst%20in%20a%20Day&amp;utm_content=Fabric-Analyst-in-a-Day-Nextant-2026-08-24" target="_blank" rel="noopener">Register</a><a class="partner-link" href="https://www.nextant.com/" target="_blank" rel="noopener">Partner site ↗</a></div>
-      </div>
-
-      <div class="event-card" data-type="Fabric Analyst in a Day" data-modality="Virtual" data-month="8" data-search="fabric analyst in a day - onpoint insights llc onpoint insights llc an end-to-end microsoft fabric workshop for analysts. participants ingest and transform data, build a semantic model, and create power bi reports within a unified analytics experience. fabric analyst in a day ">
-        <span class="event-tag tag-faiad">Fabric Analyst in a Day</span>
-        <h3>Fabric Analyst in a Day - OnPoint Insights LLC</h3>
-        <div class="event-meta"><span class="icon">📅</span> <span class="event-time" data-start="2026-08-25T13:00:00Z" data-end="2026-08-25T21:00:00Z"></span></div>
-        <div class="event-meta event-meta-sub"><span class="icon">💻</span> Virtual <span class="dot">·</span> <span class="icon">🤝</span> OnPoint Insights LLC</div>
-        <p>An end-to-end Microsoft Fabric workshop for analysts. Participants ingest and transform data, build a semantic model, and create Power BI reports within a unified analytics experience.</p>
-        <div class="card-actions"><a class="btn" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D172192563&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Fabric%20Analyst%20in%20a%20Day&amp;utm_content=Fabric-Analyst-in-a-Day-OnPoint-Insights-LLC-2026-08-25" target="_blank" rel="noopener">Register</a><a class="partner-link" href="https://www.onpointinsights.us/" target="_blank" rel="noopener">Partner site ↗</a></div>
-      </div>
-
-      <div class="event-card" data-type="Fabric Analyst in a Day" data-modality="Virtual" data-month="8" data-search="fabric analyst in a day - pragmatic works pragmatic works an end-to-end microsoft fabric workshop for analysts. participants ingest and transform data, build a semantic model, and create power bi reports within a unified analytics experience. fabric analyst in a day ">
-        <span class="event-tag tag-faiad">Fabric Analyst in a Day</span>
-        <h3>Fabric Analyst in a Day - Pragmatic Works</h3>
-        <div class="event-meta"><span class="icon">📅</span> <span class="event-time" data-start="2026-08-25T16:00:00Z" data-end="2026-08-26T00:00:00Z"></span></div>
-        <div class="event-meta event-meta-sub"><span class="icon">💻</span> Virtual <span class="dot">·</span> <span class="icon">🤝</span> Pragmatic Works</div>
-        <p>An end-to-end Microsoft Fabric workshop for analysts. Participants ingest and transform data, build a semantic model, and create Power BI reports within a unified analytics experience.</p>
-        <div class="card-actions"><a class="btn" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D1123274446&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Fabric%20Analyst%20in%20a%20Day&amp;utm_content=Fabric-Analyst-in-a-Day-Pragmatic-Works-2026-08-25" target="_blank" rel="noopener">Register</a><a class="partner-link" href="http://www.pragmaticworks.com/" target="_blank" rel="noopener">Partner site ↗</a></div>
-      </div>
-
-      <div class="event-card" data-type="Fabric Analyst in a Day" data-modality="Virtual" data-month="8" data-search="fabric analyst in a day - intellify solutions llc intellify solutions llc an end-to-end microsoft fabric workshop for analysts. participants ingest and transform data, build a semantic model, and create power bi reports within a unified analytics experience. fabric analyst in a day ">
-        <span class="event-tag tag-faiad">Fabric Analyst in a Day</span>
-        <h3>Fabric Analyst in a Day - Intellify Solutions LLC</h3>
-        <div class="event-meta"><span class="icon">📅</span> <span class="event-time" data-start="2026-08-26T14:00:00Z" data-end="2026-08-26T22:00:00Z"></span></div>
-        <div class="event-meta event-meta-sub"><span class="icon">💻</span> Virtual <span class="dot">·</span> <span class="icon">🤝</span> Intellify Solutions LLC</div>
-        <p>An end-to-end Microsoft Fabric workshop for analysts. Participants ingest and transform data, build a semantic model, and create Power BI reports within a unified analytics experience.</p>
-        <div class="card-actions"><a class="btn" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D664258940&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Fabric%20Analyst%20in%20a%20Day&amp;utm_content=Fabric-Analyst-in-a-Day-Intellify-Solutions-LLC-2026-08-26" target="_blank" rel="noopener">Register</a><a class="partner-link" href="https://intellifysolutions.com/" target="_blank" rel="noopener">Partner site ↗</a></div>
-      </div>
-
-      <div class="event-card" data-type="Fabric Analyst in a Day" data-modality="Virtual" data-month="8" data-search="fabric analyst in a day - covenant technology partners covenant technology partners an end-to-end microsoft fabric workshop for analysts. participants ingest and transform data, build a semantic model, and create power bi reports within a unified analytics experience. fabric analyst in a day ">
-        <span class="event-tag tag-faiad">Fabric Analyst in a Day</span>
-        <h3>Fabric Analyst in a Day - Covenant Technology Partners</h3>
-        <div class="event-meta"><span class="icon">📅</span> <span class="event-time" data-start="2026-08-27T14:00:00Z" data-end="2026-08-27T22:00:00Z"></span></div>
-        <div class="event-meta event-meta-sub"><span class="icon">💻</span> Virtual <span class="dot">·</span> <span class="icon">🤝</span> Covenant Technology Partners</div>
-        <p>An end-to-end Microsoft Fabric workshop for analysts. Participants ingest and transform data, build a semantic model, and create Power BI reports within a unified analytics experience.</p>
-        <div class="card-actions"><a class="btn" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D2511962535&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Fabric%20Analyst%20in%20a%20Day&amp;utm_content=Fabric-Analyst-in-a-Day-Covenant-Technology-Part-2026-08-27" target="_blank" rel="noopener">Register</a><a class="partner-link" href="https://covenanttechnologypartners.com/" target="_blank" rel="noopener">Partner site ↗</a></div>
-      </div>
-
-      <div class="event-card" data-type="Fabric Analyst in a Day" data-modality="Virtual" data-month="8" data-search="fabric analyst in a day - pragmatic works pragmatic works an end-to-end microsoft fabric workshop for analysts. participants ingest and transform data, build a semantic model, and create power bi reports within a unified analytics experience. fabric analyst in a day ">
-        <span class="event-tag tag-faiad">Fabric Analyst in a Day</span>
-        <h3>Fabric Analyst in a Day - Pragmatic Works</h3>
-        <div class="event-meta"><span class="icon">📅</span> <span class="event-time" data-start="2026-08-28T13:00:00Z" data-end="2026-08-28T21:00:00Z"></span></div>
-        <div class="event-meta event-meta-sub"><span class="icon">💻</span> Virtual <span class="dot">·</span> <span class="icon">🤝</span> Pragmatic Works</div>
-        <p>An end-to-end Microsoft Fabric workshop for analysts. Participants ingest and transform data, build a semantic model, and create Power BI reports within a unified analytics experience.</p>
-        <div class="card-actions"><a class="btn" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D1998986310&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Fabric%20Analyst%20in%20a%20Day&amp;utm_content=Fabric-Analyst-in-a-Day-Pragmatic-Works-2026-08-28" target="_blank" rel="noopener">Register</a><a class="partner-link" href="http://www.pragmaticworks.com/" target="_blank" rel="noopener">Partner site ↗</a></div>
-      </div>
 
       <div class="event-card" data-type="Fabric Analyst in a Day" data-modality="Virtual" data-month="9" data-search="fabric analyst in a day - pragmatic works pragmatic works an end-to-end microsoft fabric workshop for analysts. participants ingest and transform data, build a semantic model, and create power bi reports within a unified analytics experience. fabric analyst in a day ">
         <span class="event-tag tag-faiad">Fabric Analyst in a Day</span>
@@ -1770,80 +1594,8 @@ document.addEventListener('DOMContentLoaded', function () {
       </div>
 
       <div class="group" data-group="Agent in a Day">
-        <button type="button" class="group-head" aria-expanded="false"><span class="chev">▸</span><span class="group-title">Agent in a Day</span><span class="group-count">21 sessions</span></button>
+        <button type="button" class="group-head" aria-expanded="false"><span class="chev">▸</span><span class="group-title">Agent in a Day</span><span class="group-count">13 sessions</span></button>
         <div class="group-body"><div class="events">
-
-      <div class="event-card" data-type="Agent in a Day" data-modality="Virtual" data-month="8" data-search="agent in a day - pragmatic works pragmatic works a hands-on workshop for creating intelligent agents with microsoft copilot studio. participants connect knowledge and data, add topics and actions, test their agent, and prepare it for publication. agent in a day ">
-        <span class="event-tag tag-agiad">Agent in a Day</span>
-        <h3>Agent in a Day - Pragmatic Works</h3>
-        <div class="event-meta"><span class="icon">📅</span> <span class="event-time" data-start="2026-08-14T13:00:00Z" data-end="2026-08-14T21:00:00Z"></span></div>
-        <div class="event-meta event-meta-sub"><span class="icon">💻</span> Virtual <span class="dot">·</span> <span class="icon">🤝</span> Pragmatic Works</div>
-        <p>A hands-on workshop for creating intelligent agents with Microsoft Copilot Studio. Participants connect knowledge and data, add topics and actions, test their agent, and prepare it for publication.</p>
-        <div class="card-actions"><a class="btn" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D3918764631&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Agent%20in%20a%20Day&amp;utm_content=Agent-in-a-Day-Pragmatic-Works-2026-08-14" target="_blank" rel="noopener">Register</a><a class="partner-link" href="http://www.pragmaticworks.com/" target="_blank" rel="noopener">Partner site ↗</a></div>
-      </div>
-
-      <div class="event-card" data-type="Agent in a Day" data-modality="Virtual" data-month="8" data-search="agent in a day - pragmatic works pragmatic works a hands-on workshop for creating intelligent agents with microsoft copilot studio. participants connect knowledge and data, add topics and actions, test their agent, and prepare it for publication. agent in a day ">
-        <span class="event-tag tag-agiad">Agent in a Day</span>
-        <h3>Agent in a Day - Pragmatic Works</h3>
-        <div class="event-meta"><span class="icon">📅</span> <span class="event-time" data-start="2026-08-19T13:00:00Z" data-end="2026-08-19T21:00:00Z"></span></div>
-        <div class="event-meta event-meta-sub"><span class="icon">💻</span> Virtual <span class="dot">·</span> <span class="icon">🤝</span> Pragmatic Works</div>
-        <p>A hands-on workshop for creating intelligent agents with Microsoft Copilot Studio. Participants connect knowledge and data, add topics and actions, test their agent, and prepare it for publication.</p>
-        <div class="card-actions"><a class="btn" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D1240689246&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Agent%20in%20a%20Day&amp;utm_content=Agent-in-a-Day-Pragmatic-Works-2026-08-19" target="_blank" rel="noopener">Register</a><a class="partner-link" href="http://www.pragmaticworks.com/" target="_blank" rel="noopener">Partner site ↗</a></div>
-      </div>
-
-      <div class="event-card" data-type="Agent in a Day" data-modality="Virtual" data-month="8" data-search="agent in a day - ub technology innovations, inc. ub technology innovations, inc. a hands-on workshop for creating intelligent agents with microsoft copilot studio. participants connect knowledge and data, add topics and actions, test their agent, and prepare it for publication. agent in a day ">
-        <span class="event-tag tag-agiad">Agent in a Day</span>
-        <h3>Agent in a Day - UB Technology Innovations, Inc.</h3>
-        <div class="event-meta"><span class="icon">📅</span> <span class="event-time" data-start="2026-08-21T13:00:00Z" data-end="2026-08-21T21:00:00Z"></span></div>
-        <div class="event-meta event-meta-sub"><span class="icon">💻</span> Virtual <span class="dot">·</span> <span class="icon">🤝</span> UB Technology Innovations, Inc.</div>
-        <p>A hands-on workshop for creating intelligent agents with Microsoft Copilot Studio. Participants connect knowledge and data, add topics and actions, test their agent, and prepare it for publication.</p>
-        <div class="card-actions"><a class="btn" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D4147854784&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Agent%20in%20a%20Day&amp;utm_content=Agent-in-a-Day-UB-Technology-Innovations-Inc-2026-08-21" target="_blank" rel="noopener">Register</a><a class="partner-link" href="https://ubtiinc.com/" target="_blank" rel="noopener">Partner site ↗</a></div>
-      </div>
-
-      <div class="event-card" data-type="Agent in a Day" data-modality="Virtual" data-month="8" data-search="agent in a day - kaispe kaispe a hands-on workshop for creating intelligent agents with microsoft copilot studio. participants connect knowledge and data, add topics and actions, test their agent, and prepare it for publication. agent in a day ">
-        <span class="event-tag tag-agiad">Agent in a Day</span>
-        <h3>Agent in a Day - KAISPE</h3>
-        <div class="event-meta"><span class="icon">📅</span> <span class="event-time" data-start="2026-08-21T14:00:00Z" data-end="2026-08-21T22:00:00Z"></span></div>
-        <div class="event-meta event-meta-sub"><span class="icon">💻</span> Virtual <span class="dot">·</span> <span class="icon">🤝</span> KAISPE</div>
-        <p>A hands-on workshop for creating intelligent agents with Microsoft Copilot Studio. Participants connect knowledge and data, add topics and actions, test their agent, and prepare it for publication.</p>
-        <div class="card-actions"><a class="btn" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D3970324567&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Agent%20in%20a%20Day&amp;utm_content=Agent-in-a-Day-KAISPE-2026-08-21" target="_blank" rel="noopener">Register</a><a class="partner-link" href="https://www.kaispe.com/" target="_blank" rel="noopener">Partner site ↗</a></div>
-      </div>
-
-      <div class="event-card" data-type="Agent in a Day" data-modality="Virtual" data-month="8" data-search="agent in a day - royal cyber royal cyber a hands-on workshop for creating intelligent agents with microsoft copilot studio. participants connect knowledge and data, add topics and actions, test their agent, and prepare it for publication. agent in a day ">
-        <span class="event-tag tag-agiad">Agent in a Day</span>
-        <h3>Agent in a Day - Royal Cyber</h3>
-        <div class="event-meta"><span class="icon">📅</span> <span class="event-time" data-start="2026-08-21T16:00:00Z" data-end="2026-08-22T00:00:00Z"></span></div>
-        <div class="event-meta event-meta-sub"><span class="icon">💻</span> Virtual <span class="dot">·</span> <span class="icon">🤝</span> Royal Cyber</div>
-        <p>A hands-on workshop for creating intelligent agents with Microsoft Copilot Studio. Participants connect knowledge and data, add topics and actions, test their agent, and prepare it for publication.</p>
-        <div class="card-actions"><a class="btn" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D1170979346&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Agent%20in%20a%20Day&amp;utm_content=Agent-in-a-Day-Royal-Cyber-2026-08-21" target="_blank" rel="noopener">Register</a><a class="partner-link" href="https://www.royalcyber.com/" target="_blank" rel="noopener">Partner site ↗</a></div>
-      </div>
-
-      <div class="event-card" data-type="Agent in a Day" data-modality="In-Person" data-month="8" data-search="agent in a day - imperium dynamics llc imperium dynamics llc a hands-on workshop for creating intelligent agents with microsoft copilot studio. participants connect knowledge and data, add topics and actions, test their agent, and prepare it for publication. agent in a day chicago">
-        <span class="event-tag tag-agiad">Agent in a Day</span>
-        <h3>Agent in a Day - Imperium Dynamics LLC</h3>
-        <div class="event-meta"><span class="icon">📅</span> <span class="event-time" data-start="2026-08-25T14:00:00Z" data-end="2026-08-25T22:00:00Z"></span></div>
-        <div class="event-meta event-meta-sub"><span class="icon">📍</span> Chicago <span class="dot">·</span> <span class="icon">🤝</span> Imperium Dynamics LLC</div>
-        <p>A hands-on workshop for creating intelligent agents with Microsoft Copilot Studio. Participants connect knowledge and data, add topics and actions, test their agent, and prepare it for publication.</p>
-        <div class="card-actions"><a class="btn" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D759889443&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Agent%20in%20a%20Day&amp;utm_content=Agent-in-a-Day-Imperium-Dynamics-LLC-2026-08-25" target="_blank" rel="noopener">Register</a><a class="partner-link" href="https://imperiumdynamics.com/" target="_blank" rel="noopener">Partner site ↗</a></div>
-      </div>
-
-      <div class="event-card" data-type="Agent in a Day" data-modality="Virtual" data-month="8" data-search="agent in a day - netcom learning netcom learning a hands-on workshop for creating intelligent agents with microsoft copilot studio. participants connect knowledge and data, add topics and actions, test their agent, and prepare it for publication. agent in a day ">
-        <span class="event-tag tag-agiad">Agent in a Day</span>
-        <h3>Agent in a Day - NetCom Learning</h3>
-        <div class="event-meta"><span class="icon">📅</span> <span class="event-time" data-start="2026-08-28T13:00:00Z" data-end="2026-08-28T21:00:00Z"></span></div>
-        <div class="event-meta event-meta-sub"><span class="icon">💻</span> Virtual <span class="dot">·</span> <span class="icon">🤝</span> NetCom Learning</div>
-        <p>A hands-on workshop for creating intelligent agents with Microsoft Copilot Studio. Participants connect knowledge and data, add topics and actions, test their agent, and prepare it for publication.</p>
-        <div class="card-actions"><a class="btn" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D4138197134&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Agent%20in%20a%20Day&amp;utm_content=Agent-in-a-Day-NetCom-Learning-2026-08-28" target="_blank" rel="noopener">Register</a><a class="partner-link" href="https://www.netcomlearning.com/" target="_blank" rel="noopener">Partner site ↗</a></div>
-      </div>
-
-      <div class="event-card" data-type="Agent in a Day" data-modality="Virtual" data-month="8" data-search="agent in a day - nextant nextant a hands-on workshop for creating intelligent agents with microsoft copilot studio. participants connect knowledge and data, add topics and actions, test their agent, and prepare it for publication. agent in a day ">
-        <span class="event-tag tag-agiad">Agent in a Day</span>
-        <h3>Agent in a Day - Nextant</h3>
-        <div class="event-meta"><span class="icon">📅</span> <span class="event-time" data-start="2026-08-31T16:00:00Z" data-end="2026-09-01T00:00:00Z"></span></div>
-        <div class="event-meta event-meta-sub"><span class="icon">💻</span> Virtual <span class="dot">·</span> <span class="icon">🤝</span> Nextant</div>
-        <p>A hands-on workshop for creating intelligent agents with Microsoft Copilot Studio. Participants connect knowledge and data, add topics and actions, test their agent, and prepare it for publication.</p>
-        <div class="card-actions"><a class="btn" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D724335449&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Agent%20in%20a%20Day&amp;utm_content=Agent-in-a-Day-Nextant-2026-08-31" target="_blank" rel="noopener">Register</a><a class="partner-link" href="https://www.nextant.com/" target="_blank" rel="noopener">Partner site ↗</a></div>
-      </div>
 
       <div class="event-card" data-type="Agent in a Day" data-modality="In-Person" data-month="9" data-search="agent in a day - imperium dynamics llc imperium dynamics llc a hands-on workshop for creating intelligent agents with microsoft copilot studio. participants connect knowledge and data, add topics and actions, test their agent, and prepare it for publication. agent in a day burlington">
         <span class="event-tag tag-agiad">Agent in a Day</span>
@@ -1966,35 +1718,8 @@ document.addEventListener('DOMContentLoaded', function () {
       </div>
 
       <div class="group" data-group="Chat with Your Data in a Day">
-        <button type="button" class="group-head" aria-expanded="false"><span class="chev">▸</span><span class="group-title">Chat with Your Data in a Day</span><span class="group-count">12 sessions</span></button>
+        <button type="button" class="group-head" aria-expanded="false"><span class="chev">▸</span><span class="group-title">Chat with Your Data in a Day</span><span class="group-count">9 sessions</span></button>
         <div class="group-body"><div class="events">
-
-      <div class="event-card" data-type="Chat with Your Data in a Day" data-modality="Virtual" data-month="8" data-search="chat with your data in a day - softcrylic softcrylic a hands-on workshop for building conversational analytics experiences grounded in organizational data. participants prepare governed data and use microsoft fabric and copilot capabilities to ask questions and uncover insights. chat with your data in a day ">
-        <span class="event-tag tag-cdiad">Chat with Your Data in a Day</span>
-        <h3>Chat with Your Data in a Day - Softcrylic</h3>
-        <div class="event-meta"><span class="icon">📅</span> <span class="event-time" data-start="2026-08-18T13:00:00Z" data-end="2026-08-18T21:00:00Z"></span></div>
-        <div class="event-meta event-meta-sub"><span class="icon">💻</span> Virtual <span class="dot">·</span> <span class="icon">🤝</span> Softcrylic</div>
-        <p>A hands-on workshop for building conversational analytics experiences grounded in organizational data. Participants prepare governed data and use Microsoft Fabric and Copilot capabilities to ask questions and uncover insights.</p>
-        <div class="card-actions"><a class="btn" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D577023219&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Chat%20with%20Your%20Data%20in%20a%20Day&amp;utm_content=Chat-with-Your-Data-in-a-Day-Softcrylic-2026-08-18" target="_blank" rel="noopener">Register</a><a class="partner-link" href="https://www.softcrylic.com/" target="_blank" rel="noopener">Partner site ↗</a></div>
-      </div>
-
-      <div class="event-card" data-type="Chat with Your Data in a Day" data-modality="Virtual" data-month="8" data-search="chat with your data in a day - ryse technologies ryse technologies a hands-on workshop for building conversational analytics experiences grounded in organizational data. participants prepare governed data and use microsoft fabric and copilot capabilities to ask questions and uncover insights. chat with your data in a day ">
-        <span class="event-tag tag-cdiad">Chat with Your Data in a Day</span>
-        <h3>Chat with Your Data in a Day - Ryse Technologies</h3>
-        <div class="event-meta"><span class="icon">📅</span> <span class="event-time" data-start="2026-08-18T15:00:00Z" data-end="2026-08-18T23:00:00Z"></span></div>
-        <div class="event-meta event-meta-sub"><span class="icon">💻</span> Virtual <span class="dot">·</span> <span class="icon">🤝</span> Ryse Technologies</div>
-        <p>A hands-on workshop for building conversational analytics experiences grounded in organizational data. Participants prepare governed data and use Microsoft Fabric and Copilot capabilities to ask questions and uncover insights.</p>
-        <div class="card-actions"><a class="btn" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D2533579645&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Chat%20with%20Your%20Data%20in%20a%20Day&amp;utm_content=Chat-with-Your-Data-in-a-Day-Ryse-Technologies-2026-08-18" target="_blank" rel="noopener">Register</a><a class="partner-link" href="https://www.rysetechnologies.com/" target="_blank" rel="noopener">Partner site ↗</a></div>
-      </div>
-
-      <div class="event-card" data-type="Chat with Your Data in a Day" data-modality="Virtual" data-month="8" data-search="chat with your data in a day - pragmatic works pragmatic works a hands-on workshop for building conversational analytics experiences grounded in organizational data. participants prepare governed data and use microsoft fabric and copilot capabilities to ask questions and uncover insights. chat with your data in a day ">
-        <span class="event-tag tag-cdiad">Chat with Your Data in a Day</span>
-        <h3>Chat with Your Data in a Day - Pragmatic Works</h3>
-        <div class="event-meta"><span class="icon">📅</span> <span class="event-time" data-start="2026-08-20T14:00:00Z" data-end="2026-08-20T22:00:00Z"></span></div>
-        <div class="event-meta event-meta-sub"><span class="icon">💻</span> Virtual <span class="dot">·</span> <span class="icon">🤝</span> Pragmatic Works</div>
-        <p>A hands-on workshop for building conversational analytics experiences grounded in organizational data. Participants prepare governed data and use Microsoft Fabric and Copilot capabilities to ask questions and uncover insights.</p>
-        <div class="card-actions"><a class="btn" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D2073085685&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Chat%20with%20Your%20Data%20in%20a%20Day&amp;utm_content=Chat-with-Your-Data-in-a-Day-Pragmatic-Works-2026-08-20" target="_blank" rel="noopener">Register</a><a class="partner-link" href="http://www.pragmaticworks.com/" target="_blank" rel="noopener">Partner site ↗</a></div>
-      </div>
 
       <div class="event-card" data-type="Chat with Your Data in a Day" data-modality="Virtual" data-month="9" data-search="chat with your data in a day - wai technologies wai technologies a hands-on workshop for building conversational analytics experiences grounded in organizational data. participants prepare governed data and use microsoft fabric and copilot capabilities to ask questions and uncover insights. chat with your data in a day ">
         <span class="event-tag tag-cdiad">Chat with Your Data in a Day</span>
@@ -2081,26 +1806,8 @@ document.addEventListener('DOMContentLoaded', function () {
       </div>
 
       <div class="group" data-group="App in a Day">
-        <button type="button" class="group-head" aria-expanded="false"><span class="chev">▸</span><span class="group-title">App in a Day</span><span class="group-count">9 sessions</span></button>
+        <button type="button" class="group-head" aria-expanded="false"><span class="chev">▸</span><span class="group-title">App in a Day</span><span class="group-count">7 sessions</span></button>
         <div class="group-body"><div class="events">
-
-      <div class="event-card" data-type="App in a Day" data-modality="Virtual" data-month="8" data-search="app in a day - pragmatic works pragmatic works a guided introduction to building business applications with microsoft power apps. participants create an app, work with dataverse data, and automate business processes with power automate. app in a day ">
-        <span class="event-tag tag-aiad">App in a Day</span>
-        <h3>App in a Day - Pragmatic Works</h3>
-        <div class="event-meta"><span class="icon">📅</span> <span class="event-time" data-start="2026-08-19T13:00:00Z" data-end="2026-08-19T21:00:00Z"></span></div>
-        <div class="event-meta event-meta-sub"><span class="icon">💻</span> Virtual <span class="dot">·</span> <span class="icon">🤝</span> Pragmatic Works</div>
-        <p>A guided introduction to building business applications with Microsoft Power Apps. Participants create an app, work with Dataverse data, and automate business processes with Power Automate.</p>
-        <div class="card-actions"><a class="btn" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D3761707085&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=App%20in%20a%20Day&amp;utm_content=App-in-a-Day-Pragmatic-Works-2026-08-19" target="_blank" rel="noopener">Register</a><a class="partner-link" href="http://www.pragmaticworks.com/" target="_blank" rel="noopener">Partner site ↗</a></div>
-      </div>
-
-      <div class="event-card" data-type="App in a Day" data-modality="Virtual" data-month="8" data-search="app in a day - maq software maq software a guided introduction to building business applications with microsoft power apps. participants create an app, work with dataverse data, and automate business processes with power automate. app in a day ">
-        <span class="event-tag tag-aiad">App in a Day</span>
-        <h3>App in a Day - MAQ Software</h3>
-        <div class="event-meta"><span class="icon">📅</span> <span class="event-time" data-start="2026-08-28T15:00:00Z" data-end="2026-08-28T23:00:00Z"></span></div>
-        <div class="event-meta event-meta-sub"><span class="icon">💻</span> Virtual <span class="dot">·</span> <span class="icon">🤝</span> MAQ Software</div>
-        <p>A guided introduction to building business applications with Microsoft Power Apps. Participants create an app, work with Dataverse data, and automate business processes with Power Automate.</p>
-        <div class="card-actions"><a class="btn" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D3412901557&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=App%20in%20a%20Day&amp;utm_content=App-in-a-Day-MAQ-Software-2026-08-28" target="_blank" rel="noopener">Register</a><a class="partner-link" href="http://www.maqsoftware.com/" target="_blank" rel="noopener">Partner site ↗</a></div>
-      </div>
 
       <div class="event-card" data-type="App in a Day" data-modality="Virtual" data-month="9" data-search="app in a day - pragmatic works pragmatic works a guided introduction to building business applications with microsoft power apps. participants create an app, work with dataverse data, and automate business processes with power automate. app in a day ">
         <span class="event-tag tag-aiad">App in a Day</span>
@@ -2169,17 +1876,8 @@ document.addEventListener('DOMContentLoaded', function () {
       </div>
 
       <div class="group" data-group="Real-Time Intelligence in a Day">
-        <button type="button" class="group-head" aria-expanded="false"><span class="chev">▸</span><span class="group-title">Real-Time Intelligence in a Day</span><span class="group-count">6 sessions</span></button>
+        <button type="button" class="group-head" aria-expanded="false"><span class="chev">▸</span><span class="group-title">Real-Time Intelligence in a Day</span><span class="group-count">5 sessions</span></button>
         <div class="group-body"><div class="events">
-
-      <div class="event-card" data-type="Real-Time Intelligence in a Day" data-modality="Virtual" data-month="8" data-search="real-time intelligence in a day - quadrant technologies quadrant technologies a guided microsoft fabric workshop for ingesting, analyzing, and visualizing streaming data. participants use real-time intelligence and kql to build dashboards, queries, alerts, and event-driven insights. real-time intelligence in a day ">
-        <span class="event-tag tag-rtiad">Real-Time Intelligence in a Day</span>
-        <h3>Real-Time Intelligence in a Day - Quadrant Technologies</h3>
-        <div class="event-meta"><span class="icon">📅</span> <span class="event-time" data-start="2026-08-25T14:00:00Z" data-end="2026-08-25T22:00:00Z"></span></div>
-        <div class="event-meta event-meta-sub"><span class="icon">💻</span> Virtual <span class="dot">·</span> <span class="icon">🤝</span> Quadrant Technologies</div>
-        <p>A guided Microsoft Fabric workshop for ingesting, analyzing, and visualizing streaming data. Participants use Real-Time Intelligence and KQL to build dashboards, queries, alerts, and event-driven insights.</p>
-        <div class="card-actions"><a class="btn" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D1886900478&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Real-Time%20Intelligence%20in%20a%20Day&amp;utm_content=Real-Time-Intelligence-in-a-Day-Quadrant-Technol-2026-08-25" target="_blank" rel="noopener">Register</a><a class="partner-link" href="https://quadranttechnologies.com/" target="_blank" rel="noopener">Partner site ↗</a></div>
-      </div>
 
       <div class="event-card" data-type="Real-Time Intelligence in a Day" data-modality="Virtual" data-month="9" data-search="real-time intelligence in a day - quadrant technologies quadrant technologies a guided microsoft fabric workshop for ingesting, analyzing, and visualizing streaming data. participants use real-time intelligence and kql to build dashboards, queries, alerts, and event-driven insights. real-time intelligence in a day ">
         <span class="event-tag tag-rtiad">Real-Time Intelligence in a Day</span>
@@ -2230,35 +1928,8 @@ document.addEventListener('DOMContentLoaded', function () {
       </div>
 
       <div class="group" data-group="Power Pages in a Day">
-        <button type="button" class="group-head" aria-expanded="false"><span class="chev">▸</span><span class="group-title">Power Pages in a Day</span><span class="group-count">6 sessions</span></button>
+        <button type="button" class="group-head" aria-expanded="false"><span class="chev">▸</span><span class="group-title">Power Pages in a Day</span><span class="group-count">3 sessions</span></button>
         <div class="group-body"><div class="events">
-
-      <div class="event-card" data-type="Power Pages in a Day" data-modality="Virtual" data-month="8" data-search="power pages in a day - pragmatic works pragmatic works a hands-on workshop for creating secure, data-driven external websites with microsoft power pages. participants configure pages, forms, lists, dataverse data, and site security. power pages in a day ">
-        <span class="event-tag tag-ppiad">Power Pages in a Day</span>
-        <h3>Power Pages in a Day - Pragmatic Works</h3>
-        <div class="event-meta"><span class="icon">📅</span> <span class="event-time" data-start="2026-08-14T13:00:00Z" data-end="2026-08-14T21:00:00Z"></span></div>
-        <div class="event-meta event-meta-sub"><span class="icon">💻</span> Virtual <span class="dot">·</span> <span class="icon">🤝</span> Pragmatic Works</div>
-        <p>A hands-on workshop for creating secure, data-driven external websites with Microsoft Power Pages. Participants configure pages, forms, lists, Dataverse data, and site security.</p>
-        <div class="card-actions"><a class="btn" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D641762398&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Power%20Pages%20in%20a%20Day&amp;utm_content=Power-Pages-in-a-Day-Pragmatic-Works-2026-08-14" target="_blank" rel="noopener">Register</a><a class="partner-link" href="http://www.pragmaticworks.com/" target="_blank" rel="noopener">Partner site ↗</a></div>
-      </div>
-
-      <div class="event-card" data-type="Power Pages in a Day" data-modality="Virtual" data-month="8" data-search="power pages in a day - upzoids upzoids a hands-on workshop for creating secure, data-driven external websites with microsoft power pages. participants configure pages, forms, lists, dataverse data, and site security. power pages in a day ">
-        <span class="event-tag tag-ppiad">Power Pages in a Day</span>
-        <h3>Power Pages in a Day - Upzoids</h3>
-        <div class="event-meta"><span class="icon">📅</span> <span class="event-time" data-start="2026-08-18T15:00:00Z" data-end="2026-08-18T23:00:00Z"></span></div>
-        <div class="event-meta event-meta-sub"><span class="icon">💻</span> Virtual <span class="dot">·</span> <span class="icon">🤝</span> Upzoids</div>
-        <p>A hands-on workshop for creating secure, data-driven external websites with Microsoft Power Pages. Participants configure pages, forms, lists, Dataverse data, and site security.</p>
-        <div class="card-actions"><a class="btn" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D1952343233&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Power%20Pages%20in%20a%20Day&amp;utm_content=Power-Pages-in-a-Day-Upzoids-2026-08-18" target="_blank" rel="noopener">Register</a><a class="partner-link" href="https://www.upzoids.com/" target="_blank" rel="noopener">Partner site ↗</a></div>
-      </div>
-
-      <div class="event-card" data-type="Power Pages in a Day" data-modality="Virtual" data-month="8" data-search="power pages in a day - avasoft avasoft a hands-on workshop for creating secure, data-driven external websites with microsoft power pages. participants configure pages, forms, lists, dataverse data, and site security. power pages in a day ">
-        <span class="event-tag tag-ppiad">Power Pages in a Day</span>
-        <h3>Power Pages in a Day - Avasoft</h3>
-        <div class="event-meta"><span class="icon">📅</span> <span class="event-time" data-start="2026-08-24T13:00:00Z" data-end="2026-08-24T21:00:00Z"></span></div>
-        <div class="event-meta event-meta-sub"><span class="icon">💻</span> Virtual <span class="dot">·</span> <span class="icon">🤝</span> Avasoft</div>
-        <p>A hands-on workshop for creating secure, data-driven external websites with Microsoft Power Pages. Participants configure pages, forms, lists, Dataverse data, and site security.</p>
-        <div class="card-actions"><a class="btn" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D3951300451&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Power%20Pages%20in%20a%20Day&amp;utm_content=Power-Pages-in-a-Day-Avasoft-2026-08-24" target="_blank" rel="noopener">Register</a><a class="partner-link" href="http://avasoft.com/" target="_blank" rel="noopener">Partner site ↗</a></div>
-      </div>
 
       <div class="event-card" data-type="Power Pages in a Day" data-modality="Virtual" data-month="9" data-search="power pages in a day - pragmatic works pragmatic works a hands-on workshop for creating secure, data-driven external websites with microsoft power pages. participants configure pages, forms, lists, dataverse data, and site security. power pages in a day ">
         <span class="event-tag tag-ppiad">Power Pages in a Day</span>
@@ -2291,17 +1962,8 @@ document.addEventListener('DOMContentLoaded', function () {
       </div>
 
       <div class="group" data-group="SQL AI App in a Day">
-        <button type="button" class="group-head" aria-expanded="false"><span class="chev">▸</span><span class="group-title">SQL AI App in a Day</span><span class="group-count">3 sessions</span></button>
+        <button type="button" class="group-head" aria-expanded="false"><span class="chev">▸</span><span class="group-title">SQL AI App in a Day</span><span class="group-count">2 sessions</span></button>
         <div class="group-body"><div class="events">
-
-      <div class="event-card" data-type="SQL AI App in a Day" data-modality="Virtual" data-month="8" data-search="sql ai app in a day - pragmatic works pragmatic works a hands-on workshop for building an ai-powered application with azure sql and azure ai. participants prepare application data, apply modern retrieval and ai patterns, and integrate intelligent experiences into an app. sql ai app in a day ">
-        <span class="event-tag tag-sqlaiad">SQL AI App in a Day</span>
-        <h3>SQL AI App in a Day - Pragmatic Works</h3>
-        <div class="event-meta"><span class="icon">📅</span> <span class="event-time" data-start="2026-08-13T14:00:00Z" data-end="2026-08-13T22:00:00Z"></span></div>
-        <div class="event-meta event-meta-sub"><span class="icon">💻</span> Virtual <span class="dot">·</span> <span class="icon">🤝</span> Pragmatic Works</div>
-        <p>A hands-on workshop for building an AI-powered application with Azure SQL and Azure AI. Participants prepare application data, apply modern retrieval and AI patterns, and integrate intelligent experiences into an app.</p>
-        <div class="card-actions"><a class="btn" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D1135010427&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=SQL%20AI%20App%20in%20a%20Day&amp;utm_content=SQL-AI-App-in-a-Day-Pragmatic-Works-2026-08-13" target="_blank" rel="noopener">Register</a><a class="partner-link" href="http://www.pragmaticworks.com/" target="_blank" rel="noopener">Partner site ↗</a></div>
-      </div>
 
       <div class="event-card" data-type="SQL AI App in a Day" data-modality="Virtual" data-month="10" data-search="sql ai app in a day - kanerika inc for sql developers and dbas: build secure, ai-powered apps on trusted sql data with t-sql — bringing vector search and intelligent features to the database you already run. sql ai app in a day">
         <span class="event-tag tag-sqlaiad">SQL AI App in a Day</span>
@@ -2325,7 +1987,7 @@ document.addEventListener('DOMContentLoaded', function () {
       </div>
 
       <div class="group" data-group="Train the Trainer">
-        <button type="button" class="group-head" aria-expanded="false"><span class="chev">▸</span><span class="group-title">Train the Trainer</span><span class="group-count">1 sessions</span></button>
+        <button type="button" class="group-head" aria-expanded="false"><span class="chev">▸</span><span class="group-title">Train the Trainer</span><span class="group-count">1 session</span></button>
         <div class="group-body"><div class="events">
 
       <div class="event-card" data-type="Train the Trainer" data-modality="Virtual" data-month="9" data-search="train the trainer - microsoft corporation microsoft corporation instructor enablement for partners preparing to deliver in a day workshops. the session reviews curriculum, lab setup, delivery guidance, facilitation practices, and readiness expectations. train the trainer ">
@@ -2520,7 +2182,11 @@ document.addEventListener('DOMContentLoaded', function () {
       var liteCard = liteLayout.querySelector('.event-card--lite');
       var liteGrid = liteLayout.querySelector('.events');
       var solo = !liteCard || !isVisible(liteCard);
-      liteLayout.classList.toggle('lite-layout--solo', solo);
+      var extraGrids = Array.from(liteLayout.querySelectorAll('.events--fabric'));
+      var extras = extraGrids.reduce(function (n, g) { return n + Array.from(g.querySelectorAll('.event-card')).filter(isVisible).length; }, 0);
+      liteLayout.classList.toggle('lite-layout--solo', solo && !extras);
+      liteLayout.classList.toggle('lite-layout--duo', solo && extras > 0);
+      extraGrids.forEach(function (g) { g.style.display = Array.from(g.querySelectorAll('.event-card')).some(isVisible) ? '' : 'none'; });
       if (liteGrid) liteGrid.style.display = solo ? 'none' : '';
     }
     groups.forEach(function (g) {
