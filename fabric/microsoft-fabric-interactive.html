@@ -311,25 +311,6 @@
   .compare-before li::before { background: rgba(255,75,75,0.5); }
   .compare-after li::before { background: rgba(14,165,91,0.5); }
 
-  /* ========== ANIMATED COUNTER BARS ========== */
-  .metric-bars { max-width: 700px; margin: 3rem auto 0; display: flex; flex-direction: column; gap: 1.5rem; }
-  .metric-item {
-    opacity: 0; transform: translateX(-30px);
-    transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
-  }
-  .metric-item.visible { opacity: 1; transform: translateX(0); }
-  .metric-header { display: flex; justify-content: space-between; margin-bottom: 0.5rem; }
-  .metric-name { font-size: 0.9rem; color: rgba(255,255,255,0.7); }
-  .metric-value { font-size: 0.9rem; font-weight: 700; color: var(--accent); }
-  .metric-track {
-    height: 8px; background: rgba(255,255,255,0.06); border-radius: 100px; overflow: hidden;
-  }
-  .metric-fill {
-    height: 100%; border-radius: 100px; width: 0%;
-    background: linear-gradient(90deg, var(--accent), var(--accent-light, var(--accent)));
-    transition: width 1.5s cubic-bezier(0.22, 1, 0.36, 1);
-  }
-
   /* ========== TIMELINE ========== */
   .timeline { max-width: 700px; margin: 3rem auto 0; position: relative; padding-left: 2rem; }
   .timeline::before {
@@ -481,7 +462,7 @@
 <!-- smec-favicon v1 -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <!-- smec-accuracy v1 -->
-<meta name="smec:last-accuracy-check" content="2026-08-27">
+<meta name="smec:last-accuracy-check" content="2026-10-01">
 <style>/* smec-back-btn v2 */
 .smec-back-btn { position: fixed; bottom: 16px; left: 16px; z-index: 9999;
   box-sizing: border-box;
@@ -603,19 +584,19 @@
   <div class="stats-bar">
     <div class="stat-card" data-animate>
       <div class="stat-number" data-count="9">0</div>
-      <div class="stat-label">Core Workloads</div>
+      <div class="stat-label">Fabric Experiences (including preview)</div>
     </div>
     <div class="stat-card" data-animate>
       <div class="stat-number">1</div>
       <div class="stat-label">Unified Platform</div>
     </div>
     <div class="stat-card" data-animate>
-      <div class="stat-number">100%</div>
-      <div class="stat-label">Azure Integrated</div>
+      <div class="stat-number">Azure</div>
+      <div class="stat-label">OneLake Foundation</div>
     </div>
     <div class="stat-card" data-animate>
-      <div class="stat-number">&infin;</div>
-      <div class="stat-label">Scale Potential</div>
+      <div class="stat-number">SaaS</div>
+      <div class="stat-label">Managed Platform</div>
     </div>
   </div>
 </div>
@@ -658,17 +639,17 @@
       <div class="feature-card theme-blue" data-animate style="--delay: 0.1s">
         <div class="feature-icon">&#x1F517;</div>
         <h3>Seamless Integration</h3>
-        <p>All analytics services connect natively &mdash; no glue code, no complex pipelines between tools. Data flows effortlessly from ingestion to insight.</p>
+        <p>Integrated Fabric workloads can share data through OneLake, reducing the need to move data between analytics tools.</p>
       </div>
       <div class="feature-card theme-blue" data-animate style="--delay: 0.2s">
         <div class="feature-icon">&#x1F4CA;</div>
         <h3>Shared Data Foundation</h3>
-        <p>OneLake provides a single copy of data accessible to all workloads, eliminating duplication and ensuring every team works from the same source of truth.</p>
+        <p>OneLake provides a shared logical data lake; shortcuts can reference existing data without copying it, subject to access permissions.</p>
       </div>
       <div class="feature-card theme-blue" data-animate style="--delay: 0.3s">
         <div class="feature-icon">&#x1F6E1;</div>
         <h3>Unified Governance</h3>
-        <p>Centralized security, compliance, and data governance applied consistently across all analytics services &mdash; from engineering to BI.</p>
+        <p>Fabric provides centralized governance and configurable security controls, with Microsoft Purview protection and compliance capabilities for supported data.</p>
       </div>
     </div>
   </div>
@@ -703,10 +684,10 @@
         <div class="compare-label">&#x2705; With Fabric</div>
         <ul>
           <li>Single integrated platform for all workloads</li>
-          <li>Automatic data orchestration via OneLake</li>
-          <li>Unified security and compliance everywhere</li>
+          <li>Shared data access through OneLake</li>
+          <li>Centralized governance and configurable security</li>
           <li>Low-code / no-code pipeline creation</li>
-          <li>Fully managed SaaS &mdash; zero infra management</li>
+          <li>Managed SaaS &mdash; less underlying infrastructure to manage</li>
         </ul>
       </div>
     </div>
@@ -736,51 +717,19 @@
     <div class="section-header" data-animate>
       <div class="section-number" style="background: var(--accent-bg); color: var(--accent);">03</div>
       <h2>Scalable Data Warehousing</h2>
-      <p>High-performance, elastic data warehousing that separates compute from storage &mdash; scale resources independently to match any workload without over-provisioning.</p>
-    </div>
-
-    <!-- Metric Bars -->
-    <div class="metric-bars theme-teal">
-      <div class="metric-item" data-animate>
-        <div class="metric-header">
-          <span class="metric-name">Query Performance</span>
-          <span class="metric-value">95%</span>
-        </div>
-        <div class="metric-track"><div class="metric-fill" data-width="95"></div></div>
-      </div>
-      <div class="metric-item" data-animate>
-        <div class="metric-header">
-          <span class="metric-name">Storage Efficiency</span>
-          <span class="metric-value">90%</span>
-        </div>
-        <div class="metric-track"><div class="metric-fill" data-width="90"></div></div>
-      </div>
-      <div class="metric-item" data-animate>
-        <div class="metric-header">
-          <span class="metric-name">Auto-Scale Responsiveness</span>
-          <span class="metric-value">88%</span>
-        </div>
-        <div class="metric-track"><div class="metric-fill" data-width="88"></div></div>
-      </div>
-      <div class="metric-item" data-animate>
-        <div class="metric-header">
-          <span class="metric-name">Cost Optimization</span>
-          <span class="metric-value">85%</span>
-        </div>
-        <div class="metric-track"><div class="metric-fill" data-width="85"></div></div>
-      </div>
+      <p>Fabric Data Warehouse separates compute from storage and uses Fabric capacity to meet changing workload demands.</p>
     </div>
 
     <div class="features-grid" style="margin-top: 3rem;">
       <div class="feature-card theme-teal" data-animate>
         <div class="feature-icon">&#x26A1;</div>
         <h3>Elastic Compute</h3>
-        <p>Storage and compute are separated, so the warehouse scales near instantaneously to meet demand. Compute is billed through your Fabric capacity, which you can pause when it isn't in use to save cost.</p>
+        <p>Storage and compute are separated, so the warehouse can scale with demand. You can pause an F-SKU Fabric capacity to save costs when it isn't in use, but not an individual warehouse.</p>
       </div>
       <div class="feature-card theme-teal" data-animate>
         <div class="feature-icon">&#x1F4BE;</div>
         <h3>Open Format Storage</h3>
-        <p>Data stored in Delta Lake / Parquet format in OneLake &mdash; no vendor lock-in. Query with T-SQL, Spark, or any compatible engine.</p>
+        <p>Warehouse data is stored as Delta tables backed by Parquet files in OneLake. Develop with T-SQL, with supported access from Spark.</p>
       </div>
       <div class="feature-card theme-teal" data-animate>
         <div class="feature-icon">&#x1F504;</div>
@@ -822,11 +771,11 @@
       </div>
       <div class="tab-panel" id="tab-experiments">
         <h4>Experiment Tracking</h4>
-        <p>Track every experiment run with automatic parameter, metric, and artifact logging. Compare models side-by-side and identify the best-performing configuration with visual dashboards.</p>
+        <p>Use MLflow to track experiment runs. Autologging captures supported parameters, metrics, and artifacts during model training; compare runs to evaluate configurations.</p>
       </div>
       <div class="tab-panel" id="tab-deployment">
         <h4>Seamless Model Deployment</h4>
-        <p>Operationalize registered MLflow models with the scalable PREDICT function for batch scoring &mdash; from a notebook or the model item page. Write predictions back to OneLake and surface them in Power BI reports through semantic link.</p>
+        <p>Use PREDICT for batch scoring with supported registered MLflow models from a notebook or the model item page. Store predictions in a lakehouse and use them in Power BI reports.</p>
       </div>
     </div>
 
@@ -869,13 +818,13 @@
     <div class="kpi-grid theme-orange">
       <div class="kpi-card" data-animate>
         <div class="kpi-icon">&#x23F1;</div>
-        <div class="kpi-number">&lt;1s</div>
-        <div class="kpi-desc">Ingestion Latency</div>
+        <div class="kpi-number">Live</div>
+        <div class="kpi-desc">Streaming Data</div>
       </div>
       <div class="kpi-card" data-animate>
         <div class="kpi-icon">&#x1F4E1;</div>
-        <div class="kpi-number">M+</div>
-        <div class="kpi-desc">Events per Second</div>
+        <div class="kpi-number">Scale</div>
+        <div class="kpi-desc">Event Processing</div>
       </div>
       <div class="kpi-card" data-animate>
         <div class="kpi-icon">&#x1F50D;</div>
@@ -898,7 +847,7 @@
       <div class="feature-card theme-orange" data-animate>
         <div class="feature-icon">&#x1F9E0;</div>
         <h3>Eventhouse</h3>
-        <p>Purpose-built for time-series and log analytics. Each Eventhouse is a scalable container that hosts multiple KQL databases, enabling lightning-fast queries across billions of rows with intuitive KQL syntax.</p>
+        <p>Purpose-built for time-series and log analytics. Eventhouses host KQL databases for querying large volumes of streaming and historical data with KQL.</p>
       </div>
       <div class="feature-card theme-orange" data-animate>
         <div class="feature-icon">&#x1F4C8;</div>
@@ -926,17 +875,17 @@
       <div class="feature-card theme-pink" data-animate>
         <div class="feature-icon">&#x1F3AF;</div>
         <h3>Direct Lake Mode</h3>
-        <p>Query data directly from OneLake without importing. Get the speed of in-memory analysis with the freshness of live data &mdash; no duplication needed.</p>
+        <p>Analyze Delta tables in OneLake without importing the entire dataset into a semantic model. Direct Lake loads data needed for queries into memory; refresh and access depend on the model configuration and capacity.</p>
       </div>
       <div class="feature-card theme-pink" data-animate>
         <div class="feature-icon">&#x1F4AC;</div>
         <h3>Copilot for Power BI</h3>
-        <p>Generate reports, create DAX measures, and summarize insights using natural language. AI-powered assistance makes BI accessible to every business user.</p>
+        <p>Use natural language to help create reports, write DAX, and summarize insights, where Copilot is enabled and supported by your capacity, tenant settings, and region. Some experiences remain in preview.</p>
       </div>
       <div class="feature-card theme-pink" data-animate>
         <div class="feature-icon">&#x1F465;</div>
         <h3>Self-Service Analytics</h3>
-        <p>Empower business teams to explore data independently with drag-and-drop report building, while IT maintains governance over certified datasets.</p>
+        <p>Empower business teams to explore data independently with drag-and-drop report building, while IT governs endorsed semantic models.</p>
       </div>
       <div class="feature-card theme-pink" data-animate>
         <div class="feature-icon">&#x1F310;</div>
@@ -951,7 +900,7 @@
       <div class="feature-card theme-pink" data-animate>
         <div class="feature-icon">&#x1F512;</div>
         <h3>Row-Level Security</h3>
-        <p>Define data access rules so each user sees only what they're authorized to. Security follows the data across all reports and apps automatically.</p>
+        <p>Define row-level security roles on semantic models and assign users or groups to them. RLS restricts Viewer access, not workspace Admin, Member, or Contributor access.</p>
       </div>
     </div>
   </div>
@@ -993,11 +942,6 @@
         });
         setTimeout(() => {
           entry.target.classList.add('visible');
-          // Animate metric bars
-          const fill = entry.target.querySelector('.metric-fill');
-          if (fill) {
-            fill.style.width = fill.dataset.width + '%';
-          }
         }, delay);
         observer.unobserve(entry.target);
       }
