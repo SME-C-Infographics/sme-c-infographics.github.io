@@ -615,7 +615,7 @@ footer a:hover{text-decoration:underline}
 <!-- smec-favicon v1 -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <!-- smec-accuracy v1 -->
-<meta name="smec:last-accuracy-check" content="2026-08-20">
+<meta name="smec:last-accuracy-check" content="2026-10-01">
 <style>/* smec-back-btn v2 */
 .smec-back-btn { position: fixed; bottom: 16px; left: 16px; z-index: 9999;
   box-sizing: border-box;
@@ -788,11 +788,11 @@ footer a:hover{text-decoration:underline}
         </thead>
         <tbody>
           <tr><td>Model</td><td>SaaS — Microsoft-managed</td><td>PaaS — customer-managed on Azure</td></tr>
-          <tr><td>Session</td><td>1:1 dedicated, persistent</td><td>Pooled multi-session or personal</td></tr>
-          <tr><td>Pricing</td><td>Fixed per-user / month</td><td>Consumption (compute + storage + network)</td></tr>
-          <tr><td>Management</td><td>Intune only</td><td>Intune + ARM + Nerdio / partners</td></tr>
-          <tr><td>Scale</td><td>Manual license adds</td><td>Autoscale — schedule + load-based</td></tr>
-          <tr><td>GPU / Large SKUs</td><td>Preconfigured GPU Cloud PC sizes</td><td>Full Azure VM catalog incl. GPU</td></tr>
+          <tr><td>Session</td><td>Enterprise / Flex dedicated: persistent 1:1; Flex shared: nonpersistent</td><td>Pooled multi-session or personal</td></tr>
+          <tr><td>Pricing</td><td>Enterprise per-user licenses; Flex pooled licenses</td><td>Eligible access licenses plus Azure resource costs</td></tr>
+          <tr><td>Management</td><td>Intune; optional Azure network / custom images</td><td>Azure portal / ARM; optional Intune or partner tools</td></tr>
+          <tr><td>Scale</td><td>Automatic provisioning with licenses and policies</td><td>Autoscale — schedule + load-based</td></tr>
+          <tr><td>GPU / Large SKUs</td><td>Preconfigured GPU Cloud PC sizes</td><td>Supported Azure GPU VM sizes</td></tr>
           <tr><td>Best Fit</td><td>Predictable persona, lean IT</td><td>Variable usage, specialized workloads, scale</td></tr>
         </tbody>
       </table>
@@ -823,7 +823,7 @@ footer a:hover{text-decoration:underline}
         <h3><span class="dot avd-dot"></span> AVD wins when&hellip;</h3>
         <ul class="together-list avd-list">
           <li><span class="check">&#10003;</span> Usage is variable — autoscale drives real savings</li>
-          <li><span class="check">&#10003;</span> Specific GPU VM SKUs or &gt;16 vCPU are required (imaging, analytics, dev)</li>
+          <li><span class="check">&#10003;</span> Supported GPU VM sizes or &gt;16 vCPU are required (imaging, analytics, dev)</li>
           <li><span class="check">&#10003;</span> Custom golden images or complex app layering is needed</li>
           <li><span class="check">&#10003;</span> Multi-session density lowers $/user for light workloads</li>
           <li><span class="check">&#10003;</span> Azure maturity is already in place (landing zone, ExpressRoute)</li>
@@ -912,7 +912,7 @@ footer a:hover{text-decoration:underline}
           <div class="persona-detail-text">Full EHR or claims rich client, Office desktop, multiple browsers, Power BI, Teams video. Persistence and add-ins matter.</div>
           <div class="persona-rec">
             <strong>Recommendation:</strong>
-            <p>W365 Enterprise 4 vCPU / 16 GB or AVD personal when admin rights / plug-ins required</p>
+            <p>W365 Enterprise 4 vCPU / 16 GB or AVD personal when Azure VM-level control is required</p>
           </div>
           <div class="rule-thumb">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 19.5h20L12 2zm0 4l7 12.5H5L12 6z"/><rect x="11" y="10" width="2" height="4"/><rect x="11" y="15.5" width="2" height="2"/></svg>
@@ -1091,7 +1091,7 @@ footer a:hover{text-decoration:underline}
             <div class="hybrid-users">Contact center, claims intake</div>
           </div>
           <div class="hybrid-col" style="background:linear-gradient(135deg,var(--brand-lightest),#C5E1F5)">
-            <h4 style="color:var(--brand-dark)">W365 Enterprise / Flex</h4>
+            <h4 style="color:var(--brand-dark)">W365 Enterprise / Flex Dedicated</h4>
             <p style="color:var(--brand-darker)">Persistent Cloud PC</p>
             <div class="hybrid-users">Care managers, UM nurses, coders</div>
           </div>
@@ -1214,22 +1214,22 @@ footer a:hover{text-decoration:underline}
       <div class="message-card">
         <div class="message-icon">&#9881;&#65039;</div>
         <div class="message-body">
-          <h3>Nerdio + Intune for Day-2</h3>
-          <p>The recommended operating model for AVD at scale — directly addresses the "AVD is too complex to run" objection.</p>
+          <h3>AVD Day-2 Operations</h3>
+          <p>Use Azure Virtual Desktop management and autoscale; Intune and third-party tools such as Nerdio can complement operations where appropriate.</p>
         </div>
       </div>
       <div class="message-card">
         <div class="message-icon">&#128260;</div>
         <div class="message-body">
-          <h3>No Lock-In Between the Two</h3>
-          <p>A user can move from W365 to AVD personal — or back — using the same golden image pipeline. No migration penalty.</p>
+          <h3>Plan Moves Between Platforms</h3>
+          <p>Assess image, profile, app, and data migration when moving users between W365 and AVD. Windows 365 custom images require single-session Windows without FSLogix components.</p>
         </div>
       </div>
       <div class="message-card">
         <div class="message-icon">&#127961;&#65039;</div>
         <div class="message-body">
           <h3>BCP &amp; Resilience</h3>
-          <p>Cloud desktops give instant remote-work continuity during weather events, facility issues, or regional disruptions — critical for 24/7 healthcare.</p>
+          <p>Cloud desktops can support remote-work continuity during facility issues; plan regional recovery separately. Windows 365 cross-region disaster recovery requires eligible licensing and admin activation.</p>
         </div>
       </div>
     </div>
@@ -1334,7 +1334,7 @@ function showResult() {
   if (gpu === 'yes') {
     rec = 'AVD Personal or Windows 365 GPU';
     cls = 'result-avd';
-    desc = 'GPU workloads can use either platform: Windows 365 offers GPU Cloud PCs, while AVD gives the broadest Azure GPU VM catalog and hardware-profile control. Use workload testing to choose the fit.';
+    desc = 'GPU workloads can use either platform: Windows 365 offers GPU Cloud PCs, while AVD offers supported Azure GPU VM sizes and hardware-profile control. Use workload testing to choose the fit.';
   } else if (persist === 'no' && admin === 'no') {
     rec = 'AVD Pooled (Multi-Session)';
     cls = 'result-avd';
@@ -1342,7 +1342,7 @@ function showResult() {
   } else if (predict === 'yes' && lean === 'yes') {
     rec = 'Windows 365 Enterprise';
     cls = 'result-w365';
-    desc = 'Predictable usage + lean IT = Windows 365. Fixed cost, Microsoft-managed infrastructure, zero Azure expertise required. Consider Flex dedicated licensing for shift workers.';
+    desc = 'Predictable usage + lean IT = Windows 365. Fixed cost and Microsoft-managed infrastructure, with optional Azure networking. Consider Flex dedicated licensing for shift workers.';
   } else if (predict === 'no' && lean === 'no') {
     rec = 'AVD Personal';
     cls = 'result-avd';
