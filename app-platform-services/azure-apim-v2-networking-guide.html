@@ -517,7 +517,7 @@ section{padding:80px 20px}
 <!-- smec-favicon v1 -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <!-- smec-accuracy v1 -->
-<meta name="smec:last-accuracy-check" content="2026-09-03">
+<meta name="smec:last-accuracy-check" content="2026-10-08">
 <style>/* smec-back-btn v2 */
 .smec-back-btn { position: fixed; bottom: 16px; left: 16px; z-index: 9999;
   box-sizing: border-box;
@@ -620,23 +620,23 @@ section{padding:80px 20px}
       <div class="glossary-card reveal">
         <div class="glossary-icon">🌐</div>
         <h3>Public</h3>
-        <p>The APIM endpoint is internet-accessible. Even when APIM has VNet integration for outbound, the gateway and developer portal endpoints stay publicly reachable. You secure it using the APIM <code>ip-filter</code> policy.</p>
+        <p>The APIM gateway endpoint is internet-accessible by default. VNet integration for outbound traffic doesn't change that: the gateway, management plane, and developer portal remain publicly accessible. You can filter gateway requests using the APIM <code>ip-filter</code> policy.</p>
       </div>
       <div class="glossary-card reveal">
         <div class="glossary-icon">🚪</div>
         <h3>Internal (Private)</h3>
-        <p>The APIM endpoint is closed to the public internet — only reachable through your private network. A Private Endpoint uses a VNet IP, traffic flows over Private Link on the Microsoft backbone, eliminating public exposure.</p>
+        <p>An inbound Private Endpoint gives clients a private path to the APIM gateway over Private Link. It doesn't by itself disable the public gateway endpoint; disable public network access after configuring the endpoint to restrict incoming traffic to private endpoints. Only the Gateway endpoint supports inbound Private Link.</p>
       </div>
       <div class="glossary-card reveal">
         <div class="glossary-icon">🔌</div>
         <h3>Integration</h3>
-        <p>VNet <strong>integration</strong> means APIM connects <strong>outbound</strong> to private backends through a VNet, but the gateway itself stays public (unless you add a Private Endpoint). Both Standard v2 and Premium v2 support this.</p>
+        <p>VNet <strong>integration</strong> lets APIM connect <strong>outbound</strong> to private backends through a VNet, while the gateway, management plane, and developer portal remain publicly accessible. Both Standard v2 and Premium v2 support integration; an inbound Private Endpoint can provide a private path to the gateway.</p>
         <span class="pill">Outbound only</span>
       </div>
       <div class="glossary-card reveal">
         <div class="glossary-icon">🛡️</div>
         <h3>Injection</h3>
-        <p>Full VNet <strong>injection</strong> means APIM lives inside a VNet — the gateway is reachable at a <strong>private IP only</strong>. Best for full network isolation. Only Premium v2 supports injection. Standard v2 cannot be injected.</p>
+        <p>Premium v2 VNet <strong>injection</strong> isolates gateway inbound and outbound traffic through a delegated VNet subnet; the gateway is reached at a <strong>private IP</strong>. It doesn't place the entire APIM service in the VNet. Only Premium v2 supports injection; Standard v2 doesn't.</p>
         <span class="pill">Premium v2 only</span>
       </div>
     </div>
@@ -665,12 +665,12 @@ section{padding:80px 20px}
       <div class="stage reveal">
         <div class="stage-circle">3</div>
         <h4>Inbound Private Endpoint</h4>
-        <p>Gateway becomes reachable only from your private network.</p>
+        <p>Gateway gets a private path; disable public network access to restrict it to Private Link.</p>
       </div>
       <div class="stage reveal">
         <div class="stage-circle">4</div>
         <h4>Full VNet Injection</h4>
-        <p>APIM lives entirely inside the VNet with a private IP only.</p>
+        <p>Premium v2 gateway traffic is isolated through a VNet and private IP.</p>
       </div>
     </div>
   </div>
@@ -687,7 +687,7 @@ section{padding:80px 20px}
 
     <div class="tabs reveal">
       <button class="tab-btn active" data-tab="s1">1 · Standard v2 Public</button>
-      <button class="tab-btn" data-tab="s2">2 · Standard v2 Internal</button>
+      <button class="tab-btn" data-tab="s2">2 · Standard v2 Private Gateway</button>
       <button class="tab-btn" data-tab="s3">3 · Premium v2 Public</button>
       <button class="tab-btn" data-tab="s4">4 · Premium v2 Internal</button>
     </div>
@@ -772,8 +772,8 @@ section{padding:80px 20px}
       <div class="scenario-card">
         <div class="scenario-header std-int">
           <span class="tag">Scenario 2</span>
-          <h3>Standard v2 — Internal (Private Endpoint + VNet Integration)</h3>
-          <p>Inbound Private Endpoint + outbound VNet integration. End-to-end isolation without paying for Premium injection.</p>
+          <h3>Standard v2 — Private Gateway (Private Endpoint + VNet Integration)</h3>
+          <p>Inbound Private Endpoint + outbound VNet integration. Disable public network access after configuring the endpoint to restrict gateway access to Private Link, without Premium injection.</p>
           <div class="diagram">
             <span class="node-box">🏢 Internal Apps</span>
             <span class="arrow">→</span>
@@ -790,7 +790,7 @@ section{padding:80px 20px}
           <div class="scenario-block when">
             <h4>★ When to use</h4>
             <ul>
-              <li>APIs are for internal apps only — no public exposure</li>
+              <li>APIs are for internal apps only — disable public network access to restrict gateway traffic to Private Link</li>
               <li>Backends live in a VNet, on-prem (via ExpressRoute), or another private network</li>
               <li>You need private-IP inbound but want Standard v2 pricing</li>
               <li>You can accept that the underlying platform is multi-tenant (vs. injection)</li>
@@ -799,11 +799,10 @@ section{padding:80px 20px}
           <div class="scenario-block pros">
             <h4>✓ Pros</h4>
             <ul>
-              <li>No public inbound surface once Private Endpoint is wired up</li>
+              <li>Gateway access can be restricted to Private Link by disabling public network access after creating the Private Endpoint</li>
               <li>Reach private backends through outbound VNet integration</li>
               <li>Cheaper than Premium v2 isolation options</li>
-              <li>Public access can be disabled after Private Endpoint is created</li>
-              <li>End-to-end isolation between clients and backends</li>
+              <li>Private client-to-gateway and gateway-to-backend paths when public network access is disabled and outbound integration is configured</li>
             </ul>
           </div>
           <div class="scenario-block cons">
@@ -816,11 +815,11 @@ section{padding:80px 20px}
             </ul>
           </div>
 
-          <div class="callout info"><strong>Why not injection?</strong> Standard v2 doesn't support full VNet injection — only Premium v2 does. Standard v2 uses Integration (outbound) + Private Endpoint (inbound) to achieve a similar result.</div>
+          <div class="callout info"><strong>Why not injection?</strong> Standard v2 doesn't support VNet injection — only Premium v2 does. Standard v2 uses integration for outbound traffic and a Private Endpoint for private inbound gateway traffic. Private Link supports only the Gateway endpoint.</div>
 
           <div class="steps-section">
             <h4>Step-by-step setup (Azure portal)</h4>
-            <p class="steps-sub">Result: a Standard v2 instance reachable only via Private Endpoint, with outbound traffic flowing through your VNet.</p>
+            <p class="steps-sub">Result: a Standard v2 gateway reachable through a Private Endpoint, with outbound traffic flowing through your VNet and public network access disabled.</p>
             <div class="step-list">
               <div class="step"><div class="step-num-circle">1</div><div class="step-body"><strong>Create a Virtual Network with two subnets</strong><p>Create <code>demo-vnet</code> with address space <code>10.0.0.0/16</code> (same region as APIM).</p>
               <p class="step-detail"><strong>Subnet A — <code>apim-integration-subnet</code></strong>: <code>10.0.0.0/24</code> (min /27, /24 recommended). Delegate to <code>Microsoft.Web/serverFarms</code>.<br><strong>Subnet B — <code>apim-private-endpoint-subnet</code></strong>: <code>10.0.1.0/27</code>. No delegation. The Private Endpoint subnet cannot be delegated.</p></div></div>
@@ -828,13 +827,13 @@ section{padding:80px 20px}
               <div class="step"><div class="step-num-circle">2</div><div class="step-body"><strong>Create an NSG for the integration subnet</strong><p>Name it <code>apim-integration-nsg</code> in the same region.</p></div></div>
 
               <div class="step"><div class="step-num-circle">3</div><div class="step-body"><strong>Attach the NSG and add outbound rules</strong><p>Open the NSG → <strong>Subnets</strong> → <strong>Associate</strong> with <code>apim-integration-subnet</code>. An NSG <strong>must</strong> be associated with the integration subnet.</p>
-              <p class="step-detail">Add two outbound rules — both TCP/443, Action: Allow:<br>• <strong>AllowStorage</strong> → Service Tag <code>Storage</code>, priority 100<br>• <strong>AllowKeyVault</strong> → Service Tag <code>AzureKeyVault</code>, priority 110</p>
+              <p class="step-detail">Allow outbound TCP/443 to the <code>AzureKeyVault</code> service tag, as required by APIM. Add other outbound rules needed for the gateway to reach your backends.</p>
               <p class="step-detail">Inbound NSG rules are not enforced for v2 integration. To enforce inbound NSG, use injection (Scenario 4).</p></div></div>
 
               <div class="step"><div class="step-num-circle">4</div><div class="step-body"><strong>Create the APIM instance with Private Endpoint + Integration</strong><p>Create resource → API Management → Pricing tier <strong>Standard v2</strong>.</p>
               <p class="step-detail"><strong>Networking tab</strong> → choose <em>Inbound private link and/or outbound virtual network integration</em>.<br>• <strong>Private Endpoint</strong>: Name <code>apim-private-ep</code>, Sub-resource <strong>Gateway</strong>, VNet <code>demo-vnet</code>, Subnet <code>apim-private-endpoint-subnet</code>, integrate with private DNS zone <code>privatelink.azure-api.net</code> (default).<br>• <strong>Outbound VNet Integration</strong>: select <code>demo-vnet</code> + <code>apim-integration-subnet</code>.</p></div></div>
 
-              <div class="step"><div class="step-num-circle">5</div><div class="step-body"><strong>Disable public network access</strong><p>You can only do this <strong>after</strong> the Private Endpoint is configured. Instance → <strong>Deployment + infrastructure</strong> → <strong>Network</strong> → <strong>Edit</strong> → set <strong>Public network access = Disabled</strong> → <strong>Save</strong>.</p></div></div>
+              <div class="step"><div class="step-num-circle">5</div><div class="step-body"><strong>Disable public network access</strong><p>You can only do this <strong>after</strong> the Private Endpoint is configured. Instance → <strong>Deployment + infrastructure</strong> → <strong>Network</strong> → <strong>Edit</strong> → under <strong>Inbound features</strong>, select <strong>Disable</strong> for public network access.</p></div></div>
 
               <div class="step"><div class="step-num-circle">6</div><div class="step-body"><strong>Verify DNS</strong><p>Azure auto-creates a record in <code>privatelink.azure-api.net</code> pointing the APIM hostname to its private IP. Confirm under the Private Endpoint → <strong>DNS configuration</strong>. Make sure your VNet is linked to the private DNS zone.</p></div></div>
 
@@ -844,11 +843,11 @@ section{padding:80px 20px}
               <h5>How to test</h5>
               <p>From a VM inside <code>demo-vnet</code>:</p>
               <pre>https://demo-apim-internal.azure-api.net/echo/resource</pre>
-              <p>Should succeed over the private network. From a machine outside the VNet, the URL should not load — proving the gateway is internal-only. Reminder: each APIM instance supports up to <strong>100 Private Link connections</strong>, and only the <strong>Gateway</strong> sub-resource supports inbound Private Link.</p>
+              <p>Should succeed over the private network. With public network access disabled, requests to the public gateway endpoint are rejected (HTTP 403). Only the <strong>Gateway</strong> endpoint supports inbound Private Link, and each APIM instance supports up to <strong>100 Private Link connections</strong>.</p>
             </div>
           </div>
           <div class="summary-box">
-            <strong>In one line:</strong> The semi-private sweet spot — private inbound and private outbound, without paying for full injection. Great for internal-only APIs on a budget.
+            <strong>In one line:</strong> A cost-efficient way to provide a private inbound path to the gateway and private outbound access to backends. Disable public network access to restrict incoming traffic to Private Link.
           </div>
         </div>
       </div>
@@ -860,7 +859,7 @@ section{padding:80px 20px}
         <div class="scenario-header prem-pub">
           <span class="tag">Scenario 3</span>
           <h3>Premium v2 — Public</h3>
-          <p>Internet-facing Premium gateway with higher scale (up to 30 units), availability zones, and the ability to add Private Endpoint later.</p>
+          <p>Internet-facing Premium gateway with up to 30 units and the option to add a Private Endpoint later. Standard v2 also supports optional availability-zone redundancy at creation in supported regions.</p>
           <div class="diagram">
             <span class="node-box">🌍 Internet</span>
             <span class="arrow">→</span>
@@ -875,17 +874,17 @@ section{padding:80px 20px}
           <div class="scenario-block when">
             <h4>★ When to use</h4>
             <ul>
-              <li>You need higher scale-out (up to <strong>30 units</strong>) than Standard v2 offers</li>
-              <li>You want availability-zone support or premium features</li>
-              <li>You may evolve into private inbound later via Private Endpoint</li>
-              <li>SLA, multi-region, or advanced policy needs justify Premium pricing</li>
+              <li>You need more scale than Standard v2's 10-unit maximum (Premium v2 supports up to <strong>30 units</strong>)</li>
+              <li>You need another Premium v2 feature</li>
+              <li>You may add a private Gateway path later with a Private Endpoint and disabled public network access</li>
+              <li>Premium v2 capabilities or higher scale justify the additional cost</li>
             </ul>
           </div>
           <div class="scenario-block pros">
             <h4>✓ Pros</h4>
             <ul>
               <li>Higher scale and richer feature set than Standard v2</li>
-              <li>Public by default, but can add Private Endpoint inbound</li>
+              <li>Public by default; a Private Endpoint can be added later as a separate resource in Premium v2</li>
               <li>Outbound VNet integration available for private backends</li>
               <li><code>ip-filter</code> policy works identically to Standard v2</li>
             </ul>
@@ -895,12 +894,12 @@ section{padding:80px 20px}
             <ul>
               <li>Higher cost than Standard v2</li>
               <li>VNet injection cannot be turned on later — only at creation (see Scenario 4)</li>
-              <li>Still public-facing unless you actively add Private Endpoint</li>
+              <li>Still publicly accessible unless you configure a Private Endpoint and disable public network access</li>
               <li>You can't switch between injection and integration once chosen</li>
             </ul>
           </div>
 
-          <div class="callout info"><strong>When to choose Premium v2 over Standard v2 for public:</strong> when you need full VNet injection later, higher scale (up to 30 units), or availability-zone support. Otherwise Standard v2 gives the same public functionality at a lower cost.</div>
+          <div class="callout info"><strong>When to choose Premium v2 over Standard v2 for public:</strong> when you need full VNet injection, more than Standard v2's 10-unit maximum (Premium v2 supports up to 30), or another Premium v2 feature. Both tiers support availability zones in supported regions.</div>
 
           <div class="steps-section">
             <h4>Step-by-step setup (Azure portal)</h4>
@@ -918,7 +917,7 @@ section{padding:80px 20px}
             </div>
           </div>
           <div class="summary-box">
-            <strong>In one line:</strong> Premium scale and features without full lockdown — flexible for high-throughput public APIs that may grow into a private posture over time (via Private Endpoint, not injection).
+            <strong>In one line:</strong> Premium scale and features for public APIs that may later use a Private Endpoint; disable public network access to restrict gateway access to Private Link.
           </div>
         </div>
       </div>
@@ -930,13 +929,13 @@ section{padding:80px 20px}
         <div class="scenario-header prem-int">
           <span class="tag">Scenario 4</span>
           <h3>Premium v2 — Internal (Full VNet Injection)</h3>
-          <p>The most secure configuration. APIM lives entirely inside your VNet with a private IP only — no public endpoint at all.</p>
+          <p>Premium v2 VNet injection isolates gateway inbound and outbound traffic through a delegated subnet, with the gateway reached at a private IP.</p>
           <div class="diagram">
             <span class="node-box">🏢 Private Network</span>
             <span class="arrow">→</span>
             <span class="node-box">🛡️ NSG (inbound rules apply)</span>
             <span class="arrow">→</span>
-            <span class="node-box">⚡ APIM (inside VNet)</span>
+            <span class="node-box">⚡ APIM Gateway (injected)</span>
             <span class="arrow">→</span>
             <span class="node-box">🎯 Private Backend</span>
           </div>
@@ -945,18 +944,18 @@ section{padding:80px 20px}
           <div class="scenario-block when">
             <h4>★ When to use</h4>
             <ul>
-              <li>Compliance, regulatory, or security policy mandates no public IP at all</li>
+              <li>Compliance, regulatory, or security policy requires private gateway traffic</li>
               <li>You need NSG enforcement on inbound traffic, not just <code>ip-filter</code></li>
-              <li>APIM and backends must both stay inside the corporate network boundary</li>
+              <li>The gateway and backends must both stay inside the corporate network boundary</li>
               <li>You can lock the deployment model in at creation time (it's irreversible)</li>
             </ul>
           </div>
           <div class="scenario-block pros">
             <h4>✓ Pros</h4>
             <ul>
-              <li>Fully private — no public IP exposure</li>
+              <li>Private gateway endpoint with inbound and outbound traffic isolated through the VNet</li>
               <li>NSG rules apply for full network-level inbound control</li>
-              <li>Highest level of isolation v2 offers</li>
+              <li>Highest gateway network isolation available in the v2 tiers</li>
               <li>Premium scale (up to <strong>30 units</strong>) and feature set</li>
             </ul>
           </div>
@@ -967,16 +966,16 @@ section{padding:80px 20px}
               <li>Cannot switch between injection ↔ integration on the same instance</li>
               <li>Highest-cost option in the v2 family</li>
               <li>Requires careful subnet planning (≥ /27 minimum, /24 recommended)</li>
-              <li>You must manage your own DNS — public DNS won't resolve the gateway</li>
+              <li>You must configure DNS to map the gateway hostname to its private IP for clients in the VNet</li>
               <li>External developers can't reach the gateway without extra plumbing</li>
             </ul>
           </div>
 
-          <div class="callout danger"><strong>📌 Critical timing rules:</strong> You can <strong>only</strong> inject Premium v2 into a VNet at creation time. You cannot inject an existing instance later. You also cannot switch between injection and integration once an instance is created.</div>
+          <div class="callout danger"><strong>📌 Critical timing rules:</strong> You can <strong>only</strong> inject Premium v2 into a VNet when the instance is created. You cannot inject an existing instance later, but you can update its injection subnet settings. You also cannot switch between injection and integration.</div>
 
           <div class="steps-section">
             <h4>Step-by-step setup (Azure portal)</h4>
-            <p class="steps-sub">Result: a Premium v2 instance with a private IP only, inside your VNet, with NSG-enforced inbound rules and a self-managed DNS record.</p>
+            <p class="steps-sub">Result: a Premium v2 instance whose gateway traffic is isolated through your VNet, with NSG rules and a DNS record for its private IP.</p>
             <div class="step-list">
               <div class="step"><div class="step-num-circle">1</div><div class="step-body"><strong>Create a Virtual Network and injection subnet</strong><p>Create <code>demo-vnet2</code> in the same region/subscription as your APIM, address space <code>10.1.0.0/16</code>.</p>
               <p class="step-detail"><strong>Subnet — <code>apim-injection-subnet</code></strong>: <code>10.1.0.0/24</code> (min /27, /24 recommended). Delegate to <strong><code>Microsoft.Web/hostingEnvironments</code></strong> (different from the integration scenario).</p>
@@ -985,7 +984,7 @@ section{padding:80px 20px}
               <div class="step"><div class="step-num-circle">2</div><div class="step-body"><strong>Create an NSG for the injection subnet</strong><p>Name it <code>apim-injection-nsg</code> in the same region.</p></div></div>
 
               <div class="step"><div class="step-num-circle">3</div><div class="step-body"><strong>Attach NSG and add outbound rules</strong><p>NSG → <strong>Subnets</strong> → <strong>Associate</strong> with <code>apim-injection-subnet</code>. NSG association is mandatory.</p>
-              <p class="step-detail">Add two outbound rules — TCP/443, Action: Allow:<br>• <strong>AllowStorage</strong> → Service Tag <code>Storage</code>, priority 100<br>• <strong>AllowKeyVault</strong> → Service Tag <code>AzureKeyVault</code>, priority 110</p>
+              <p class="step-detail">Allow outbound TCP/443 to the <code>AzureKeyVault</code> service tag, as required by APIM. Add other outbound rules needed for the gateway to reach your backends.</p>
               <p class="step-detail">You can additionally restrict outbound to internet and only allow VNet/peered destinations.</p></div></div>
 
               <div class="step"><div class="step-num-circle">4</div><div class="step-body"><strong>Create APIM (Premium v2) with VNet Injection</strong><p>Create resource → API Management → <strong>Pricing tier = Premium v2</strong>.</p>
@@ -995,7 +994,7 @@ section{padding:80px 20px}
               <div class="step"><div class="step-num-circle">5</div><div class="step-body"><strong>Note the private IP</strong><p>From the APIM <strong>Overview</strong> page, capture the assigned private IP (e.g., <code>10.1.0.4</code>).</p>
               <p class="step-detail">The IP is dynamically assigned — you can't predict it before deployment, and switching subnets can change it.</p></div></div>
 
-              <div class="step"><div class="step-num-circle">6</div><div class="step-body"><strong>Set up DNS for the private hostname</strong><p>Public DNS won't resolve the gateway. Recommended:</p>
+              <div class="step"><div class="step-num-circle">6</div><div class="step-body"><strong>Set up DNS for the private hostname</strong><p>Configure a DNS record that maps the gateway hostname to its private IP. Recommended:</p>
               <p class="step-detail">• Create an Azure <strong>Private DNS Zone</strong> for <code>azure-api.net</code><br>• Link the zone to <code>demo-vnet2</code><br>• Add an <strong>A record</strong> mapping <code>demo-apim-injected</code> → the APIM private IP</p>
               <p class="step-detail">Quick demo alt: edit the hosts file on a VM inside the VNet:<br><code>10.1.0.4&nbsp;&nbsp;demo-apim-injected.azure-api.net</code></p>
               <p class="step-detail">If you use a custom DNS resolver, also ensure name resolution for <code>*.vault.azure.net</code> (Key Vault). Azure Private DNS handles this automatically.</p></div></div>
@@ -1007,11 +1006,11 @@ section{padding:80px 20px}
               <p>From a VM inside <code>demo-vnet2</code>:</p>
               <pre>nslookup demo-apim-injected.azure-api.net
 curl https://demo-apim-injected.azure-api.net/echo/resource</pre>
-              <p><code>nslookup</code> should return the private IP. <code>curl</code> should succeed. From outside the VNet, DNS won't resolve and the call should time out — proving full isolation.</p>
+              <p><code>nslookup</code> should return the private IP. <code>curl</code> should succeed. Clients outside the connected private network can't reach the gateway through its private IP address.</p>
             </div>
           </div>
           <div class="summary-box">
-            <strong>In one line:</strong> Maximum isolation. Full VNet injection is a one-time, irreversible decision — make it deliberately when full network isolation is mandatory.
+            <strong>In one line:</strong> Gateway traffic isolation through a VNet. Injection is a creation-time choice that can't be switched to integration later.
           </div>
         </div>
       </div>
@@ -1034,8 +1033,8 @@ curl https://demo-apim-injected.azure-api.net/echo/resource</pre>
           <tr><th>Capability</th><th>Standard v2</th><th>Premium v2</th></tr>
         </thead>
         <tbody>
-          <tr><td>Public endpoint by default</td><td><span class="check">✓</span></td><td><span class="check">✓</span></td></tr>
-          <tr><td>Internal-only mode (no public)</td><td>Workaround: Private Endpoint + disable public access</td><td>Built-in via full VNet injection</td></tr>
+          <tr><td>Public gateway by default</td><td><span class="check">✓</span></td><td><span class="check">✓</span></td></tr>
+          <tr><td>Private gateway access</td><td>Private Endpoint + disable public network access</td><td>VNet injection at creation</td></tr>
           <tr><td>Outbound VNet integration</td><td><span class="check">✓</span></td><td><span class="check">✓</span></td></tr>
           <tr><td>Inbound Private Endpoint</td><td><span class="check">✓</span></td><td><span class="check">✓</span></td></tr>
           <tr><td>Full VNet injection</td><td><span class="cross">✕</span></td><td><span class="check">✓</span> <span class="partial">(creation time only)</span></td></tr>
@@ -1044,8 +1043,9 @@ curl https://demo-apim-injected.azure-api.net/echo/resource</pre>
           <tr><td>Switch injection ↔ integration</td><td>N/A</td><td><span class="cross">✕</span> <span class="partial">cannot switch</span></td></tr>
           <tr><td>Inbound NSG enforcement (integration)</td><td><span class="cross">✕</span></td><td><span class="cross">✕</span></td></tr>
           <tr><td>Inbound NSG enforcement (injection)</td><td>N/A</td><td><span class="check">✓</span></td></tr>
+          <tr><td>Availability zones (optional at creation in supported regions)</td><td><span class="check">✓</span></td><td><span class="check">✓</span></td></tr>
           <tr><td>Min subnet / recommended</td><td>/27 min · /24 recommended</td><td>/27 min · /24 recommended</td></tr>
-          <tr><td>Max scale-out units</td><td>Lower</td><td><strong>30</strong></td></tr>
+          <tr><td>Max scale-out units</td><td><strong>10</strong></td><td><strong>30</strong></td></tr>
           <tr><td>Dedicated subnet required</td><td><span class="check">✓</span></td><td><span class="check">✓</span></td></tr>
           <tr><td>Best for</td><td>Cost-efficient public or semi-private APIs</td><td>Full isolation, high scale, premium features</td></tr>
         </tbody>
@@ -1069,7 +1069,7 @@ curl https://demo-apim-injected.azure-api.net/echo/resource</pre>
       </div>
       <div class="stat-card reveal">
         <div class="stat-num" data-target="30">0</div>
-        <div class="stat-label">Max scale-out units for Premium v2 injection</div>
+        <div class="stat-label">Max scale-out units for Premium v2</div>
       </div>
       <div class="stat-card reveal">
         <div class="stat-num">/27</div>
@@ -1098,7 +1098,7 @@ curl https://demo-apim-injected.azure-api.net/echo/resource</pre>
       </div>
       <div class="security-item reveal">
         <h4>🚪 Private Endpoint</h4>
-        <p>Removes inbound internet exposure entirely. Available on both Standard v2 and Premium v2. Only the <strong>Gateway</strong> sub-resource is supported.</p>
+        <p>Provides a private inbound path to the Gateway endpoint on Standard v2 and Premium v2. It doesn't disable the public endpoint by itself; disable public network access to restrict incoming traffic to Private Link.</p>
       </div>
       <div class="security-item warn reveal">
         <h4>🛡️ Inbound NSG Rules</h4>
@@ -1106,7 +1106,7 @@ curl https://demo-apim-injected.azure-api.net/echo/resource</pre>
       </div>
       <div class="security-item danger reveal">
         <h4>🚫 Disable Public Access</h4>
-        <p>Once a Private Endpoint is created, you can turn off public network access from <strong>Deployment + infrastructure → Network</strong> for clean private-only posture.</p>
+        <p>After a Private Endpoint is created, disable public network access to limit inbound traffic to private endpoints. Private Link supports only the <strong>Gateway</strong> endpoint.</p>
       </div>
     </div>
   </div>
@@ -1122,7 +1122,7 @@ curl https://demo-apim-injected.azure-api.net/echo/resource</pre>
     </div>
 
     <div class="tree reveal">
-      <div class="tree-node question">Is full network isolation mandatory?</div>
+      <div class="tree-node question">Do you need private network paths to the gateway and backends?</div>
       <div class="tree-branches">
         <div class="tree-branch">
           <span class="branch-label">YES</span>
@@ -1134,13 +1134,13 @@ curl https://demo-apim-injected.azure-api.net/echo/resource</pre>
             </div>
             <div class="tree-branch">
               <span class="branch-label">NO</span>
-              <div class="tree-result alt"><strong>Standard v2 — Internal</strong><span>Private Endpoint + VNet integration</span></div>
+              <div class="tree-result alt"><strong>Standard v2 — Private Gateway</strong><span>Private Endpoint + VNet integration; disable public access</span></div>
             </div>
           </div>
         </div>
         <div class="tree-branch">
           <span class="branch-label">NO</span>
-          <div class="tree-node">Need 30-unit scale, AZ support, or premium features?</div>
+          <div class="tree-node">Need more than 10 units, VNet injection, or another Premium v2 feature?</div>
           <div class="tree-branches">
             <div class="tree-branch">
               <span class="branch-label">YES</span>
@@ -1161,12 +1161,12 @@ curl https://demo-apim-injected.azure-api.net/echo/resource</pre>
 <footer class="footer">
   <h3>You’ve got this 🎉</h3>
   <div class="footer-divider"></div>
-  <p>Pick the scenario that matches your security posture today, but plan for where you’ll be in 12 months — VNet injection is a creation-time-only decision, and you can’t switch between injection and integration. When in doubt, start with Standard v2 Public and evolve.</p>
+  <p>Pick the scenario that matches your security posture today, but plan for where you’ll be in 12 months — VNet injection is a creation-time-only decision, and you can’t switch between injection and integration. Choose Premium v2 at creation if injection might be required later.</p>
   <div style="max-width:760px;margin:24px auto 0;padding:16px 18px;border:1px solid rgba(255,255,255,.18);border-radius:10px;background:rgba(255,255,255,.04);font-size:.92rem;line-height:1.55;text-align:left;">
     <strong style="display:block;margin-bottom:6px;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;opacity:.75;">Build 2026 — AI Gateway pairings</strong>
     When this APIM v2 instance is also acting as an <strong>AI Gateway</strong>, two new patterns are worth wiring into the same private-network design: (1) <strong>Foundry hosted agents</strong> publishing through APIM as their front door for both inbound MCP traffic and outbound model calls, and (2) <strong>Web IQ</strong> connecting as an MCP-native upstream through the same private-network paths. See the <a href="../foundry/ai-gateway-apim.html" style="color:#9bd1ff;">AI Gateway for Foundry</a> companion for routing details.
     <br><br>
-    <span style="font-size:.78rem;opacity:.7;">Maximum-units (Premium v2 = 30) and the injection-vs-integration irreversibility claims above are based on Microsoft Learn as of June 2026 — re-verify with <a href="https://learn.microsoft.com/en-us/azure/api-management/v2-service-tiers-overview" style="color:#9bd1ff;">v2 service tiers</a> and <a href="https://learn.microsoft.com/en-us/azure/api-management/api-management-using-with-vnet" style="color:#9bd1ff;">VNet integration</a> before quoting in customer-facing decks.</span>
+    <span style="font-size:.78rem;opacity:.7;">Unit limits and injection-versus-integration restrictions are based on Microsoft Learn. See <a href="https://learn.microsoft.com/en-us/azure/api-management/v2-service-tiers-overview" style="color:#9bd1ff;">v2 service tiers</a> and <a href="https://learn.microsoft.com/en-us/azure/api-management/integrate-vnet-outbound" style="color:#9bd1ff;">VNet integration</a>.</span>
   </div>
 </footer>
 
