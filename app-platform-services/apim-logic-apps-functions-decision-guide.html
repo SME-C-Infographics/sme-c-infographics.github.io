@@ -622,7 +622,7 @@
 <!-- smec-favicon v1 -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <!-- smec-accuracy v1 -->
-<meta name="smec:last-accuracy-check" content="2026-09-03">
+<meta name="smec:last-accuracy-check" content="2026-10-08">
 <style>/* smec-back-btn v2 */
 .smec-back-btn { position: fixed; bottom: 16px; left: 16px; z-index: 9999;
   box-sizing: border-box;
@@ -694,7 +694,7 @@
       <span class="hero-tag">Internal Use — SME&amp;C</span>
       <span class="hero-tag">L200–L400</span>
       <span class="hero-tag">Integration &amp; App Platform</span>
-      <span class="hero-tag">v1.3 — 2026-09-03</span>
+      <span class="hero-tag">v1.4 — 2026-10-08</span>
     </div>
     <h1 class="hero-title">App Platform Services Decision Guide</h1>
     <p class="hero-subtitle">When to use API Management, Logic Apps, and Azure Functions — Post-Ignite 2025 Edition</p>
@@ -706,7 +706,7 @@
     <div class="hero-meta">
       <span>For: Sellers · Digital Solution Engineers · Technical Specialists · Architects</span>
       <span>|</span>
-      <span>Grounded against Microsoft Learn, September 2026</span>
+      <span>Grounded against Microsoft Learn, October 2026</span>
     </div>
   </div>
 </header>
@@ -807,7 +807,7 @@
           </div>
           <div class="agent-feature">
             <span class="badge badge-ga">GA</span>
-            <span class="agent-feature-text"><span class="agent-feature-name">AI Gateway — LLM Policies:</span> Token rate limits &amp; quotas, semantic caching, content safety filtering. Available across all APIM tiers.</span>
+            <span class="agent-feature-text"><span class="agent-feature-name">AI Gateway — LLM Policies:</span> Token rate limits &amp; quotas and semantic caching; content-safety filtering is available in all tiers except Consumption. Check tier support for each capability.</span>
           </div>
           <div class="agent-feature">
             <span class="badge badge-ga">GA</span>
@@ -818,8 +818,8 @@
             <span class="agent-feature-text"><span class="agent-feature-name">Workspaces:</span> Federated API governance — teams own their API namespace within a shared APIM instance. Available in Basic v2, Standard v2, Classic Premium, and Premium v2.</span>
           </div>
           <div class="agent-feature">
-            <span class="badge badge-ga">GA</span>
-            <span class="agent-feature-text"><span class="agent-feature-name">APIM as AI Gateway for Agent Loop:</span> Route Logic Apps Agent Loop model calls through APIM AI Gateway for token governance, monitoring, and model portability (BYOM).</span>
+            <span class="badge badge-prev">Preview</span>
+            <span class="agent-feature-text"><span class="agent-feature-name">APIM as Agent Loop model source:</span> In Logic Apps Standard, route Agent Loop model calls through an APIM account with an LLM API (preview) for token governance, monitoring, and model portability (BYOM).</span>
           </div>
         </div>
 
@@ -991,7 +991,7 @@
           </div>
           <div class="agent-feature">
             <span class="badge badge-ga">GA</span>
-            <span class="agent-feature-text"><span class="agent-feature-name">Durable Task Scheduler:</span> Managed backend for Durable Functions orchestrations — improved throughput and distributed tracing. Both Dedicated and Consumption SKUs are GA.</span>
+            <span class="agent-feature-text"><span class="agent-feature-name">Durable Task Scheduler:</span> Managed backend for Durable Functions orchestrations — improved throughput and distributed tracing. The Dedicated SKU is GA; the Consumption SKU is in preview.</span>
           </div>
           <div class="agent-feature">
             <span class="badge badge-ga">GA</span>
@@ -1719,7 +1719,7 @@
             <li><strong>Logic Apps Remote MCP Servers (Standard):</strong> Preview. Exposes workflows as MCP tool endpoints via API Center. High customer demand; likely to move to GA.</li>
             <li><strong>Logic Apps multi-agent handoff (Standard):</strong> Preview. Watch for GA alongside broader Agent Loop feature graduation.</li>
             <li><strong>Durable Task for Microsoft Agent Framework:</strong> Preview. Multi-agent orchestration with OpenAI SDK. Watch for GA alongside Agent Framework GA.</li>
-            <li><strong>Durable Task Scheduler — Consumption SKU:</strong> Preview. Dedicated SKU is GA. Consumption SKU follows.</li>
+            <li><strong>Durable Task Scheduler — Consumption SKU:</strong> Preview. The Dedicated SKU is GA.</li>
             <li><strong>APIM AI Gateway tier:</strong> Public preview — a dedicated, fully managed APIM gateway resource for models and MCP tools (runtime access keys, self-service catalog, token/request limits, content safety). Preview regions: East US 2 and Sweden Central; pricing not yet announced.</li>
             <li><strong>APIM v2 feature parity gaps:</strong> Multi-region deployment, backup/restore, self-hosted gateway, and static IP remain unavailable in the v2 tiers. Multiple custom domain names for the gateway are now supported in Premium v2 (still unavailable in Basic v2 and Standard v2). Monitor Azure updates for roadmap items.</li>
           </ul>
@@ -1788,11 +1788,11 @@
     <div>Contributed by <strong>Toni Montez</strong>, Digital Solution Engineer — SME&amp;C Corporate (US SME&amp;C East-Azure)</div>
     <div>
       Repo: <a href="https://github.com/SME-C-Infographics/sme-c-infographics.github.io" target="_blank" rel="noopener">SME-C-Infographics/sme-c-infographics.github.io</a>
-      &nbsp;·&nbsp; Version 1.3 &nbsp;·&nbsp; Last updated: 2026-09-03
+      &nbsp;·&nbsp; Version 1.4 &nbsp;·&nbsp; Last updated: 2026-10-08
     </div>
-    <div>This asset has a <strong>3-month refresh cadence</strong>. Next review: <strong>2026-12-03</strong></div>
+    <div>This asset has a <strong>3-month refresh cadence</strong>. Next review: <strong>2027-01-08</strong></div>
     <div style="color:var(--divider);font-size:10px;margin-top:4px">
-      All claims grounded against Microsoft Learn documentation, September 2026 (accuracy review — APIM workspace tier availability, v2 parity gaps, phased APIM limits rollout, and Functions language support corrected; APIM AI Gateway tier preview added). Internal use only — SME&amp;C field enablement.
+      All claims grounded against Microsoft Learn documentation, October 2026 (accuracy review — Agent Loop's APIM model source and Durable Task Scheduler Consumption SKU status corrected; APIM LLM policy tier support clarified). Internal use only — SME&amp;C field enablement.
       <br><a href="https://azure.microsoft.com/en-us/blog/new-azure-cobalt-200-vms-deliver-50-performance-improvement-fully-optimized-for-modern-agentic-ai-workloads/" target="_blank" rel="noopener">Cobalt 200 announcement</a>
       &nbsp;·&nbsp;
       <a href="https://techcommunity.microsoft.com/blog/adforpostgresql/azure-horizondb-enterprise-ready-postgres-engineered-for-the-ai-era/4524094" target="_blank" rel="noopener">Azure HorizonDB (Postgres for agents)</a>
