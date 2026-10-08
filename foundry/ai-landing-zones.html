@@ -646,7 +646,7 @@
 <!-- smec-favicon v1 -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <!-- smec-accuracy v1 -->
-<meta name="smec:last-accuracy-check" content="2026-09-03">
+<meta name="smec:last-accuracy-check" content="2026-10-08">
 <style>/* smec-back-btn v2 */
 .smec-back-btn { position: fixed; bottom: 16px; left: 16px; z-index: 9999;
   box-sizing: border-box;
@@ -924,7 +924,7 @@
   <div class="container reveal">
     <span class="quote-mark">"</span>
     <h2>Every team that starts with a blank Azure subscription will build the same networking, identity, key-vault, and policy plumbing — slowly, inconsistently, and without an auditor's blessing. The AI Landing Zone is Microsoft's answer: a pre-paved highway, not another DIY runway.</h2>
-    <p class="cite">— Distilled from Microsoft <a href="https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ai/" target="_blank" rel="noopener">Cloud Adoption Framework</a>, Well-Architected Framework, and the Azure/AI-Landing-Zones reference architecture</p>
+    <p class="cite">— Distilled from Microsoft <a href="https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ai/strategy" target="_blank" rel="noopener">Cloud Adoption Framework AI strategy guidance</a>, Well-Architected Framework, and the Azure/AI-Landing-Zones reference architecture</p>
   </div>
 </section>
 
@@ -976,7 +976,7 @@
           <div class="tile"><strong>Chat &amp; Copilots</strong><span>Foundry-grounded conversational</span></div>
           <div class="tile"><strong>AI Agents</strong><span>Foundry Agent Service</span></div>
           <div class="tile"><strong>Agent Runtime</strong><span>Hosted agents on MXC sandboxes</span></div>
-          <div class="tile"><strong>RAG Apps</strong><span>AI Search + Cosmos / HorizonDB</span></div>
+          <div class="tile"><strong>RAG Apps</strong><span>AI Search + Cosmos / HorizonDB (Preview)</span></div>
           <div class="tile"><strong>Content Processing</strong><span>Document &amp; knowledge mining</span></div>
         </div>
       </div>
@@ -984,9 +984,9 @@
       <div class="arch-row platform">
         <div class="row-label"><h4>AI Platform</h4><p>Foundry &amp; data services</p></div>
         <div class="row-content">
-          <div class="tile"><strong>Microsoft Foundry</strong><span>Account · Projects · Agent Service</span></div>
+          <div class="tile"><strong>Microsoft Foundry</strong><span>Resource · Projects · Agent Service</span></div>
           <div class="tile"><strong>AI Search</strong><span>Vector + keyword retrieval</span></div>
-          <div class="tile"><strong>Cosmos DB / HorizonDB</strong><span>Agent state, memory &amp; Postgres for agents</span></div>
+          <div class="tile"><strong>Cosmos DB / HorizonDB (Preview)</strong><span>Agent state, memory &amp; managed PostgreSQL</span></div>
           <div class="tile"><strong>Storage Account</strong><span>Blobs · grounding sources</span></div>
         </div>
       </div>
@@ -1012,10 +1012,10 @@
       </div>
 
       <div class="arch-row network">
-        <div class="row-label"><h4>Networking</h4><p>no public surface</p></div>
+        <div class="row-label"><h4>Networking</h4><p>private paths for supported services</p></div>
         <div class="row-content">
           <div class="tile"><strong>Hub-Spoke VNet</strong><span>Subnets · NSGs default-deny</span></div>
-          <div class="tile"><strong>Private Endpoints</strong><span>Every PaaS service</span></div>
+          <div class="tile"><strong>Private Endpoints</strong><span>Selected PaaS services</span></div>
           <div class="tile"><strong>Private DNS Zones</strong><span>Resolution stays internal</span></div>
           <div class="tile"><strong>Bastion &amp; Jumphosts</strong><span>Operator access, no public RDP/SSH</span></div>
         </div>
@@ -1056,9 +1056,9 @@
       <div class="pillar p-network">
         <div class="head">
           <div class="glyph"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3a9 9 0 109 9 9 9 0 00-9-9zm0 16a7 7 0 117-7 7 7 0 01-7 7zm-1-11h2v3h3v2h-3v3h-2v-3H8v-2h3z"/></svg></div>
-          <div><h3>Networking</h3><p class="metaphor">no public surface area by default</p></div>
+          <div><h3>Networking</h3><p class="metaphor">private paths for supported services</p></div>
         </div>
-        <p class="tag-line">Hub-spoke VNet topology with private endpoints to every PaaS service and private DNS zones — your AI estate is invisible to the open internet.</p>
+        <p class="tag-line">Use a hub-spoke VNet topology with private endpoints for selected PaaS services and private DNS zones. Configure public network access and ingress separately for your workload.</p>
         <ul>
           <li>NSGs with default-deny baseline</li>
           <li>Private endpoints for Foundry, AI Search, Storage, Key Vault, Cosmos DB</li>
@@ -1072,7 +1072,7 @@
           <div class="glyph"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12a4 4 0 10-4-4 4 4 0 004 4zm0 2c-3 0-9 1.5-9 5v3h18v-3c0-3.5-6-5-9-5z"/></svg></div>
           <div><h3>Identity &amp; Access</h3><p class="metaphor">a VIN number for every agent</p></div>
         </div>
-        <p class="tag-line">Microsoft Entra ID at the core, managed identities everywhere, and Microsoft Entra Agent ID giving every AI agent a first-class, governable identity.</p>
+        <p class="tag-line">Use Microsoft Entra ID and managed identities where supported. Microsoft Entra Agent ID provides a generally available identity and authorization framework for AI agents.</p>
         <ul>
           <li>Managed identities — no shared service keys</li>
           <li>RBAC scoped least-privilege per resource</li>
@@ -1114,11 +1114,11 @@
           <div class="glyph"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 1010 10A10 10 0 0012 2zm0 4a6 6 0 11-6 6 6 6 0 016-6zm0 3a3 3 0 103 3 3 3 0 00-3-3z"/></svg></div>
           <div><h3>AI Platform Services</h3><p class="metaphor">the factory floor, pre-installed</p></div>
         </div>
-        <p class="tag-line">Microsoft Foundry account, projects, and Agent Service — wired to Azure AI Search, Cosmos DB, and Storage. Build the AI; skip the wiring.</p>
+        <p class="tag-line">Microsoft Foundry resource, projects, and Agent Service — wired to Azure AI Search, Cosmos DB, and Storage. Build the AI; skip the wiring.</p>
         <ul>
-          <li>Foundry Account + Projects + Agent Service</li>
+          <li>Foundry Resource + Projects + Agent Service</li>
           <li>Azure AI Search for RAG retrieval</li>
-          <li>Cosmos DB for agent state &amp; memory — or <strong>Azure HorizonDB</strong> (Postgres reimagined for agents) <span style="background:#f0f7ff;border:1px solid #cfe1ff;color:#0d4a8a;padding:.1rem .4rem;border-radius:6px;font-size:.7rem;font-weight:700;">Build 2026</span></li>
+          <li>Cosmos DB for agent state &amp; memory — or <strong>Azure HorizonDB (Preview)</strong>, a managed PostgreSQL database <span style="background:#f0f7ff;border:1px solid #cfe1ff;color:#0d4a8a;padding:.1rem .4rem;border-radius:6px;font-size:.7rem;font-weight:700;">Build 2026</span></li>
           <li>Storage Account for blobs &amp; grounding sources</li>
           <li>Optional compute targets: <strong>Maia 200</strong> AI accelerators for inference, and <strong>Cobalt 200</strong> Arm VMs (preview, ~50% performance gain on Microsoft's fastest Arm processor yet, optimized for agentic workloads) <span style="background:#f0f7ff;border:1px solid #cfe1ff;color:#0d4a8a;padding:.1rem .4rem;border-radius:6px;font-size:.7rem;font-weight:700;">Build 2026</span></li>
         </ul>
@@ -1129,10 +1129,10 @@
           <div class="glyph"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 12h4l3-9 4 18 3-9h4"/></svg></div>
           <div><h3>Observability</h3><p class="metaphor">deployed before workloads</p></div>
         </div>
-        <p class="tag-line">Log Analytics + Application Insights stand up first — so the moment a workload lands, every prompt, tool call, and span is already being captured.</p>
+        <p class="tag-line">Log Analytics and Application Insights provide monitoring; configure agent tracing to collect traces and metrics for your workload.</p>
         <ul>
-          <li>Single Log Analytics workspace, all signals</li>
-          <li>App Insights wired to every service</li>
+          <li>Log Analytics workspace for centralized logs</li>
+          <li>Application Insights for workload and agent monitoring</li>
           <li>OpenTelemetry-compatible agent tracing</li>
           <li>Cost dashboards out of the box</li>
         </ul>
@@ -1195,12 +1195,12 @@
         <div class="component-col req">
           <h5>Required (always deployed)</h5>
           <ul>
-            <li>AI Foundry account</li>
-            <li>AI Foundry projects</li>
-            <li>AI Agent Service</li>
+            <li>Microsoft Foundry resource</li>
+            <li>Microsoft Foundry projects</li>
+            <li>Foundry Agent Service</li>
             <li>RBAC role assignments</li>
             <li>Resource locks</li>
-            <li>AI Foundry connections</li>
+            <li>Microsoft Foundry connections</li>
           </ul>
         </div>
         <div class="component-col byor">
@@ -1208,7 +1208,7 @@
           <ul>
             <li>Key Vault</li>
             <li>Storage Account</li>
-            <li>Cosmos DB <em>or</em> <a href="https://learn.microsoft.com/en-us/azure/horizondb/" target="_blank" rel="noopener">Azure HorizonDB</a> (Postgres for agents)</li>
+            <li>Cosmos DB <em>or</em> <a href="https://learn.microsoft.com/en-us/azure/horizondb/overview" target="_blank" rel="noopener">Azure HorizonDB (Preview)</a> (managed PostgreSQL)</li>
             <li>Azure AI Search</li>
             <li>Existing or new — your choice</li>
           </ul>
@@ -1256,7 +1256,7 @@
           <li>Key Vault, Cosmos DB, AI Search wired in</li>
           <li>Log Analytics + App Insights from day one</li>
           <li>Defender for Cloud + Azure Policy enforced</li>
-          <li>Entra Agent ID for every agent</li>
+          <li>Entra Agent ID framework for agent identities and governance</li>
         </ul>
       </div>
       <div class="rung rung-3">
@@ -1414,10 +1414,10 @@
         <p>The design checklist, cost guide, deployment walkthroughs, use-case catalog, and roadmap. The companion docs you'll actually read.</p>
         <div class="arrow">Open the docs →</div>
       </a>
-      <a class="cta-card" href="https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ai/" target="_blank" rel="noopener">
+      <a class="cta-card" href="https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ai/strategy" target="_blank" rel="noopener">
         <div class="eyebrow">Align to the Framework</div>
         <h3>Cloud Adoption Framework — AI</h3>
-        <p>The strategy-to-execution path that the Landing Zone implements. Strategy → Plan → Ready → Adopt → Govern → Manage.</p>
+        <p>Guidance for aligning AI investments with business needs and planning an organizational AI strategy.</p>
         <div class="arrow">Read CAF for AI →</div>
       </a>
     </div>
@@ -1460,7 +1460,7 @@
   <div class="container">
     <div class="brand-mark">Azure AI Landing Zones</div>
     <p>The runway before takeoff. Build it once, fly many.</p>
-    <p class="small">Based on the official <a href="https://github.com/Azure/AI-Landing-Zones" target="_blank" rel="noopener">Azure/AI-Landing-Zones</a> reference architecture, the <a href="https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ai/" target="_blank" rel="noopener">Cloud Adoption Framework for AI</a>, and the <a href="https://learn.microsoft.com/en-us/azure/well-architected/ai/" target="_blank" rel="noopener">Well-Architected Framework AI workload</a> guidance. GA: November 17, 2025 · Updated June 2026 (Build 2026). New compute &amp; data primitives: <a href="https://azure.microsoft.com/en-us/blog/new-azure-cobalt-200-vms-deliver-50-performance-improvement-fully-optimized-for-modern-agentic-ai-workloads/" target="_blank" rel="noopener">Cobalt 200 VMs</a> · <a href="https://learn.microsoft.com/en-us/azure/horizondb/" target="_blank" rel="noopener">Azure HorizonDB</a>.</p>
+    <p class="small">Based on the official <a href="https://github.com/Azure/AI-Landing-Zones" target="_blank" rel="noopener">Azure/AI-Landing-Zones</a> reference architecture, the <a href="https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ai/strategy" target="_blank" rel="noopener">Cloud Adoption Framework AI strategy guidance</a>, and the <a href="https://learn.microsoft.com/en-us/azure/well-architected/ai/" target="_blank" rel="noopener">Well-Architected Framework AI workload</a> guidance. GA: November 17, 2025 · Updated June 2026 (Build 2026). New compute &amp; data primitives: <a href="https://azure.microsoft.com/en-us/blog/new-azure-cobalt-200-vms-deliver-50-performance-improvement-fully-optimized-for-modern-agentic-ai-workloads/" target="_blank" rel="noopener">Cobalt 200 VMs</a> · <a href="https://learn.microsoft.com/en-us/azure/horizondb/overview" target="_blank" rel="noopener">Azure HorizonDB</a>.</p>
   </div>
 </footer>
 
