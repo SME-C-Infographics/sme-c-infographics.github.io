@@ -544,7 +544,7 @@
 <!-- smec-favicon v1 -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <!-- smec-accuracy v1 -->
-<meta name="smec:last-accuracy-check" content="2026-09-03">
+<meta name="smec:last-accuracy-check" content="2026-10-08">
 <style>/* smec-back-btn v2 */
 .smec-back-btn { position: fixed; bottom: 16px; left: 16px; z-index: 9999;
   box-sizing: border-box;
@@ -659,7 +659,7 @@
       <div class="why-card">
         <div class="why-ico">&#x1F9ED;</div>
         <h4>Grounded Answers, Not Guesses</h4>
-        <p>Every response anchored in your enterprise data &mdash; not the model's imagination. Retrieval from SharePoint, Fabric, Graph, and beyond.</p>
+        <p>Retrieval can ground responses in enterprise data &mdash; including SharePoint, Fabric, and other connected sources &mdash; rather than relying only on the model's training.</p>
       </div>
       <div class="why-card">
         <div class="why-ico">&#x1F511;</div>
@@ -674,7 +674,7 @@
       <div class="why-card">
         <div class="why-ico">&#x1F500;</div>
         <h4>Cross-Source Retrieval</h4>
-        <p>One agent call reaches across Microsoft 365, Fabric, Azure AI Search, and external systems &mdash; coherent answers assembled from scattered data in a single hop.</p>
+        <p>Agents can combine context from Microsoft 365, Fabric, Azure AI Search, and external systems through the appropriate integrations, with each source retaining its own access and governance controls.</p>
       </div>
     </div>
   </div>
@@ -761,7 +761,7 @@
           <h4>What it is</h4>
           <div class="tag-row">
             <span class="tag work-t">M365 Context</span>
-            <span class="tag work-t">MCP Servers</span>
+            <span class="tag work-t">MCP Server</span>
             <span class="tag work-t">Memory</span>
           </div>
           <ul>
@@ -775,10 +775,10 @@
           <h4>How it works</h4>
           <ul>
             <li>Choose A2A for agent delegation, MCP for tool-based context, or REST for service-hosted agents and orchestrators</li>
-            <li>Requests run in the context of the signed-in user through <strong>Microsoft Entra ID delegated authentication</strong></li>
-            <li>Microsoft 365 permissions, sensitivity labels, compliance policies, and permission trimming are enforced automatically</li>
+            <li>Requests use <strong>Microsoft Entra ID delegated authentication</strong> and are scoped to the signed-in user's permissions</li>
+            <li>Work IQ MCP applies tenant policies to tool requests; it is read-only by default, and admins can enable supported write operations</li>
             <li>Context is retrieved dynamically when needed, without maintaining custom vector stores or data-sync jobs</li>
-            <li>Application-only authentication is not supported</li>
+            <li>Application-only authentication isn't supported; requests use delegated access for a signed-in user</li>
           </ul>
         </div>
         <div class="iq-col">
@@ -794,8 +794,8 @@
       </div>
       <div class="iq-links">
         <span class="iq-links-label">Learn:</span>
-        <a href="https://learn.microsoft.com/en-us/microsoft-365/copilot/extensibility/work-iq/" target="_blank" class="iq-link-btn">Work IQ CLI &amp; Overview &rarr;</a>
-        <a href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/add-work-iq" target="_blank" class="iq-link-btn">Use in Copilot Studio &rarr;</a>
+        <a href="https://learn.microsoft.com/en-us/microsoft-365/copilot/extensibility/work-iq/" target="_blank" class="iq-link-btn">Work IQ Overview &rarr;</a>
+        <a href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/agents-experience/add-work-iq" target="_blank" class="iq-link-btn">Use in Copilot Studio (preview) &rarr;</a>
         <a href="https://learn.microsoft.com/en-us/microsoft-agent-365/tooling-servers-overview" target="_blank" class="iq-link-btn">Agent 365 MCP Servers &rarr;</a>
       </div>
     </div>
@@ -803,7 +803,7 @@
     <!-- FABRIC IQ -->
     <div class="iq-card fabric-card reveal">
       <div class="iq-hdr fabric-bg">
-        <span class="iq-preview">Business intelligence context</span>
+        <span class="iq-preview">Business intelligence context (preview)</span>
         <div class="iq-icon-box">&#x1F9F5;</div>
         <div>
           <h3>Fabric IQ</h3>
@@ -814,7 +814,7 @@
         <div class="iq-col">
           <h4>What it is</h4>
           <div class="tag-row">
-            <span class="tag fabric-t">Business Ontology</span>
+            <span class="tag fabric-t">Business Ontology (Preview)</span>
             <span class="tag fabric-t">Semantic Graph</span>
             <span class="tag fabric-t">Data Agents</span>
           </div>
@@ -828,11 +828,11 @@
         <div class="iq-col">
           <h4>How it works</h4>
           <ul>
-            <li>Define entities (Customer, Order, Asset) and their measures once in the <strong>Ontology item</strong> &mdash; bootstrap from existing Power BI semantic models in clicks</li>
+            <li>Define entities (Customer, Order, Asset) and their measures in the <strong>Ontology item (preview)</strong>; generate an ontology from an existing Power BI semantic model</li>
             <li><strong>Data Agents</strong> answer natural-language analytics questions grounded in your data model and business definitions</li>
             <li><strong>Operations Agents</strong> monitor real-time data, detect anomalies, and trigger workflows autonomously within defined business rules</li>
-            <li>Queries cascade through Graph + OneLake with row/column-level security preserved on every hop</li>
-            <li>Plugs into Foundry IQ as a first-class knowledge source &mdash; seamless cross-platform retrieval</li>
+            <li>Ontology definitions bind to live enterprise data, including supported OneLake sources; consuming experiences query the bound data source</li>
+            <li>Use Fabric IQ alongside Foundry IQ when an agent needs both business context and enterprise knowledge retrieval</li>
           </ul>
         </div>
         <div class="iq-col">
@@ -842,7 +842,7 @@
             <li>Analytic / BI copilots with correct terminology and metric definitions</li>
             <li>Cross-domain questions: "Which customers with open support tickets also have renewals this quarter?"</li>
             <li>Operational automation: auto-detect inventory risks, trigger reorder workflows</li>
-            <li>When you're already on Microsoft Fabric &mdash; Fabric IQ is included in your SKU</li>
+            <li>When you need shared business context over data in Microsoft Fabric; check current feature availability and requirements</li>
           </ul>
         </div>
       </div>
@@ -883,7 +883,7 @@
           <h4>How it works</h4>
           <ul>
             <li>Connect a knowledge base to one or more agents and add the knowledge sources that it should query</li>
-            <li>Agentic retrieval uses an optional Azure OpenAI model to plan queries, select sources, run parallel searches, and aggregate results</li>
+            <li>Agentic retrieval uses an optional LLM from Azure OpenAI in Foundry Models to plan queries, select sources, run parallel searches, and aggregate results</li>
             <li>Supports keyword, vector, and hybrid queries over indexed and remote sources, including Azure Blob Storage, SharePoint, OneLake, and public web data</li>
             <li>Returns extractive data with citations so agents can reason over raw content and trace answers to source documents</li>
             <li>Synchronizes supported ACLs, honors Microsoft Purview sensitivity labels, and enforces permissions at query time</li>
@@ -895,7 +895,7 @@
             <li>Any agent that needs <strong>knowledge from more than one source</strong> (the vast majority)</li>
             <li>Enterprise RAG patterns &mdash; replace hand-written retrieval orchestration</li>
             <li>Multi-domain agents: combines M365 context (Work IQ) + business data (Fabric IQ) + domain docs</li>
-            <li>When you need a single governed, auditable retrieval layer with Purview monitoring</li>
+            <li>When you need a shared retrieval layer that honors supported source ACLs and Microsoft Purview sensitivity labels</li>
             <li>Pro-code agents on Foundry or low-code agents in Copilot Studio</li>
           </ul>
         </div>
@@ -915,7 +915,7 @@
         <div class="iq-icon-box">&#x1F310;</div>
         <div>
           <h3>Web IQ</h3>
-          <div class="iq-tag">Search built for the AI era &mdash; model-agnostic, MCP-native grounding from the open web for every agent</div>
+          <div class="iq-tag">Fresh, real-world intelligence from across the web for AI systems and agents</div>
         </div>
       </div>
       <div class="iq-body">
@@ -923,8 +923,8 @@
           <h4>What it is</h4>
           <div class="tag-row">
             <span class="tag web-t">Web Grounding</span>
-            <span class="tag web-t">MCP-Native</span>
-            <span class="tag web-t">Model-Agnostic</span>
+            <span class="tag web-t">Current Information</span>
+            <span class="tag web-t">Microsoft IQ</span>
           </div>
           <ul>
             <li>A Microsoft IQ capability that provides AI systems and agents with fresh, real-world intelligence from across the web</li>
@@ -937,9 +937,7 @@
           <h4>How it works</h4>
           <ul>
             <li>Use fresh web intelligence alongside the work, business, and institutional context available through the other IQ capabilities</li>
-            <li>Choose the sources that fit the agent's task and the information its users need</li>
-            <li>Use primary sources and citations appropriate to your agent's experience and governance requirements</li>
-            <li>Validate the current Web IQ integration options in the official product documentation before implementation</li>
+            <li>Verify current Web IQ integration and governance options in Microsoft documentation before implementation</li>
           </ul>
         </div>
         <div class="iq-col">
@@ -948,7 +946,7 @@
             <li>Any agent that needs <strong>current, public information</strong> &mdash; news, prices, regulations, product specs</li>
             <li>Research, competitive intelligence, market scanning, and customer-due-diligence flows</li>
             <li>Customer-facing assistants that must answer beyond what’s in your enterprise corpus</li>
-            <li>To replace ad-hoc third-party web-search APIs with a single, governed Microsoft surface</li>
+            <li>When Microsoft-provided web intelligence fits the agent's needs; confirm the current integration and governance options</li>
           </ul>
         </div>
       </div>
@@ -993,22 +991,22 @@
             <td>Primary data</td>
             <td>Mail, Teams, SharePoint, OneDrive, Calendar, Word</td>
             <td>OneLake, semantic models, business ontology</td>
-            <td>Any source: above + Azure AI Search + web + SaaS</td>
-            <td>The open web, via Microsoft’s search infrastructure</td>
+            <td>Configured supported sources, including Azure Blob Storage, SharePoint, OneLake, and public web data</td>
+            <td>Fresh, real-world intelligence from across the web</td>
           </tr>
           <tr>
             <td>Interface</td>
-            <td>MCP servers + CLI</td>
-            <td>Fabric items (Ontology, Plan, Graph, Data Agent, Operations Agent)</td>
+            <td>A2A, MCP, and REST APIs; CLI tooling</td>
+            <td>Fabric items, including ontology (preview), semantic models, data agents, and operations agents</td>
             <td>Knowledge base REST API + SDK</td>
-            <td>MCP server (model-agnostic)</td>
+            <td>See current Web IQ documentation</td>
           </tr>
           <tr>
             <td>Where it lives</td>
             <td>Microsoft 365 platform</td>
             <td>Microsoft Fabric</td>
             <td>Microsoft Foundry</td>
-            <td>Standalone service; pluggable into Foundry IQ</td>
+            <td>Microsoft IQ capability</td>
           </tr>
           <tr>
             <td>Best at</td>
@@ -1020,9 +1018,9 @@
           <tr>
             <td>Access control</td>
             <td>Entra ID delegated &mdash; user sees only their data</td>
-            <td>Fabric workspace + row/column-level security</td>
+            <td>Fabric permissions on bound data and semantic models</td>
             <td>Entra ID + Purview + honors each source’s ACLs</td>
-            <td>Public web content; governed via Entra ID + Purview at the call site</td>
+            <td>Confirm current product-specific access controls</td>
           </tr>
           <tr>
             <td>Typical builder</td>
@@ -1033,10 +1031,10 @@
           </tr>
           <tr>
             <td>Licensing</td>
-            <td>M365 Copilot license or consumption billing</td>
-            <td>Included in Microsoft Fabric SKU</td>
+            <td>Usage-based billing; M365 Copilot license not required</td>
+            <td>Fabric workload and feature requirements vary; check current availability</td>
             <td>Token-based + underlying Azure AI Search capacity</td>
-            <td>Consumption-based &mdash; pricing in preview</td>
+            <td>Check current availability and commercial terms</td>
           </tr>
           <tr>
             <td>Primary context</td>
@@ -1143,8 +1141,8 @@
       <!-- Results -->
       <div class="dt-result work-r dt-hidden" id="r-work">
         <h4>&#x2192; Start with Work IQ</h4>
-        <p>Your agent needs Microsoft 365 context. Wire up the relevant <strong>Work IQ MCP servers</strong> (Mail, Calendar, SharePoint, Teams) in Copilot Studio or Agent 365. Deploy directly into the M365 surface where users already work.</p>
-        <p style="margin-top:.75rem;"><a href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/add-work-iq" target="_blank" style="font-weight:600;">Build with Work IQ in Copilot Studio &rarr;</a></p>
+        <p>Your agent needs Microsoft 365 context. Add <strong>Work IQ (preview)</strong> in Copilot Studio, or connect to the Work IQ MCP server for Microsoft 365 data such as mail, calendar, files, people, chat, and sites. Deploy directly into the M365 surface where users already work.</p>
+        <p style="margin-top:.75rem;"><a href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/agents-experience/add-work-iq" target="_blank" style="font-weight:600;">Build with Work IQ in Copilot Studio (preview) &rarr;</a></p>
         <button class="dt-restart" onclick="dtReset()">&#x21bb; Start Over</button>
       </div>
       <div class="dt-result work-r dt-hidden" id="r-work-custom">
@@ -1155,13 +1153,13 @@
       </div>
       <div class="dt-result fabric-r dt-hidden" id="r-fabric">
         <h4>&#x2192; Start with Fabric IQ</h4>
-        <p>Define your business <strong>Ontology</strong> in Fabric. Build <strong>Data Agents</strong> for analytics questions and <strong>Operations Agents</strong> for monitoring. Expose everything through Foundry IQ when you're ready to ship a customer-facing agent.</p>
+        <p>Define your business <strong>ontology (preview)</strong> in Fabric. Build <strong>Data Agents</strong> for analytics questions and <strong>Operations Agents</strong> for monitoring. Use Fabric IQ alongside Foundry IQ when your agent also needs enterprise knowledge retrieval.</p>
         <p style="margin-top:.75rem;"><a href="https://learn.microsoft.com/en-us/fabric/iq/overview" target="_blank" style="font-weight:600;">Explore Fabric IQ &rarr;</a></p>
         <button class="dt-restart" onclick="dtReset()">&#x21bb; Start Over</button>
       </div>
       <div class="dt-result fabric-r dt-hidden" id="r-fabric-mirror">
         <h4>&#x2192; Mirror into Fabric, then Fabric IQ</h4>
-        <p>Use Fabric's <strong>Mirroring</strong> to replicate Azure SQL, Snowflake, or Cosmos DB data into OneLake with zero ETL. Then define your Fabric IQ ontology over the mirrored data &mdash; no data movement, instant semantic layer for agents.</p>
+        <p>Use Fabric Mirroring or OneLake shortcuts where supported to make source data available in OneLake. Mirroring replicates data; shortcuts reference data in place. Then define an ontology over the available data and confirm current source-specific support.</p>
         <p style="margin-top:.75rem;"><a href="https://learn.microsoft.com/en-us/fabric/iq/overview" target="_blank" style="font-weight:600;">Explore Fabric IQ &rarr;</a></p>
         <button class="dt-restart" onclick="dtReset()">&#x21bb; Start Over</button>
       </div>
@@ -1173,13 +1171,13 @@
       </div>
       <div class="dt-result foundry-r dt-hidden" id="r-foundry-simple">
         <h4>&#x2192; Foundry IQ &mdash; Simple Knowledge Base</h4>
-        <p>For a shared knowledge agent, spin up a <strong>Foundry IQ knowledge base</strong> with your docs as the source. Start with <strong>minimal</strong> retrieval reasoning tier for speed, step up to <strong>medium</strong> for complex queries.</p>
+        <p>For a shared knowledge agent, create a <strong>Foundry IQ knowledge base</strong> with your docs as the source. Start with <strong>minimal</strong> retrieval reasoning for speed, and step up to <strong>medium</strong> for complex queries. Portal access to agentic retrieval remains in preview; check current API-version support before production use.</p>
         <p style="margin-top:.75rem;"><a href="https://azure.microsoft.com/en-us/products/ai-foundry/iq/" target="_blank" style="font-weight:600;">Foundry IQ Product Page &rarr;</a></p>
         <button class="dt-restart" onclick="dtReset()">&#x21bb; Start Over</button>
       </div>
       <div class="dt-result web-r dt-hidden" id="r-web">
         <h4>&#x2192; Start with Web IQ</h4>
-        <p>Your agent needs <strong>current, public information</strong>. Use <strong>Web IQ</strong> through its MCP interface &mdash; either directly from the agent or behind a <strong>Foundry IQ knowledge base</strong> so you can blend web results with your enterprise sources later. Model-agnostic, MCP-native, governed by design.</p>
+        <p>Your agent needs <strong>current, public information</strong>. Microsoft Learn describes Web IQ as providing fresh, real-world intelligence from the web. Confirm current integration, availability, and governance options before implementation.</p>
         <p style="margin-top:.75rem;"><a href="https://www.microsoft.com/en-us/webiq" target="_blank" style="font-weight:600;">Visit Web IQ &rarr;</a></p>
         <button class="dt-restart" onclick="dtReset()">&#x21bb; Start Over</button>
       </div>
@@ -1205,8 +1203,8 @@
     <div class="lic-grid reveal">
       <div class="lic-card work-b">
         <h4>Work IQ</h4>
-        <p>Work IQ API use is billed through a <strong>usage-based model using Copilot Credits</strong>. Review the current billing requirements for the protocol and surface you use.</p>
-        <span class="lic-price">Usage-based Copilot Credits</span>
+        <p>Work IQ API access is usage-based and independent of Microsoft 365 Copilot licensing. Work IQ (preview) in Copilot Studio uses Copilot Credits; review billing requirements for the surface you use.</p>
+        <span class="lic-price">Usage-based; billing varies by surface</span>
       </div>
       <div class="lic-card fabric-b">
         <h4>Fabric IQ</h4>
@@ -1240,8 +1238,8 @@
       <div class="res-card work-b">
         <h4><span class="res-dot"></span> Work IQ Resources</h4>
         <ul class="res-list">
-          <li><a href="https://learn.microsoft.com/en-us/microsoft-365/copilot/extensibility/work-iq/" target="_blank">Work IQ Overview &amp; CLI (Microsoft Learn)</a></li>
-          <li><a href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/add-work-iq" target="_blank">Use Work IQ in Copilot Studio</a></li>
+          <li><a href="https://learn.microsoft.com/en-us/microsoft-365/copilot/extensibility/work-iq/" target="_blank">Work IQ overview (Microsoft Learn)</a></li>
+          <li><a href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/agents-experience/add-work-iq" target="_blank">Use Work IQ in Copilot Studio (preview)</a></li>
           <li><a href="https://learn.microsoft.com/en-us/microsoft-agent-365/tooling-servers-overview" target="_blank">Agent 365 Tooling &amp; MCP Servers</a></li>
           <li><a href="https://www.microsoft.com/en-us/microsoft-365/blog/2026/06/02/announcing-the-new-work-iq-apis/" target="_blank">Work IQ APIs (Build 2026)</a></li>
           <li><a href="https://www.microsoft.com/en-us/microsoft-365/blog/2025/11/18/microsoft-ignite-2025-copilot-and-agents-built-to-power-the-frontier-firm/" target="_blank">Ignite 2025 Announcement</a></li>
@@ -1321,7 +1319,7 @@
 </section>
 
 <footer class="footer">
-  <p>Microsoft IQ Platforms Guide &bull; Updated July 2026 &bull; Validate capabilities and availability against the latest <a href="https://learn.microsoft.com/en-us/microsoft-iq/" target="_blank">Microsoft IQ</a>, <a href="https://learn.microsoft.com/en-us/azure/foundry/" target="_blank">Microsoft Foundry</a>, <a href="https://learn.microsoft.com/en-us/fabric/" target="_blank">Microsoft Fabric</a>, and <a href="https://learn.microsoft.com/en-us/microsoft-365/copilot/" target="_blank">Microsoft 365 Copilot</a> documentation.</p>
+  <p>Microsoft IQ Platforms Guide &bull; Updated October 2026 &bull; Validate capabilities and availability against the latest <a href="https://learn.microsoft.com/en-us/microsoft-iq/" target="_blank">Microsoft IQ</a>, <a href="https://learn.microsoft.com/en-us/azure/foundry/" target="_blank">Microsoft Foundry</a>, <a href="https://learn.microsoft.com/en-us/fabric/" target="_blank">Microsoft Fabric</a>, and <a href="https://learn.microsoft.com/en-us/microsoft-365/copilot/" target="_blank">Microsoft 365 Copilot</a> documentation.</p>
 </footer>
 
 <script>
