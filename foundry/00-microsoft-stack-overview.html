@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Microsoft App, AI &amp; Data Stack — A Top-to-Bottom Map</title>
 <!-- smec-accuracy v1 -->
-<meta name="smec:last-accuracy-check" content="2026-09-03">
+<meta name="smec:last-accuracy-check" content="2026-10-08">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; font-size: 16px; }
@@ -745,7 +745,7 @@
             <li>Microsoft Fabric &middot; OneLake (the OneDrive for data)</li>
             <li>Power BI &middot; semantic models &middot; verified answers</li>
             <li>Azure AI Search &middot; vector + semantic + hybrid retrieval</li>
-            <li>Foundry IQ &middot; Fabric IQ &middot; Work IQ &middot; Web IQ (Public Preview)</li>
+            <li>Foundry IQ (some features GA; others in preview) &middot; Fabric IQ (ontology preview) &middot; Work IQ &middot; Web IQ</li>
           </ul>
         </div>
         <div class="next">
@@ -797,10 +797,10 @@
           <li><strong>Microsoft Entra ID</strong> &mdash; user, group, conditional access for humans across M365 and Azure.</li>
           <li><strong>Entra Agent ID</strong> &mdash; non-human identity for agents, so every tool call is attributable.</li>
           <li><strong>Managed identities</strong> &mdash; backend-to-backend auth without secrets.</li>
-          <li><strong>OAuth 2.1 native MCP auth</strong> in APIM (aligned with MCP spec 2025-06-18).</li>
+          <li><strong>OAuth 2.1 token authentication</strong> for MCP clients in APIM.</li>
           <li><strong>Credential Manager</strong> in APIM &middot; outbound token injection with Key Vault references.</li>
         </ul>
-        <div class="learn-row">Docs: <a href="https://learn.microsoft.com/en-us/entra/identity/" target="_blank">Microsoft Entra ID</a> &middot; <a href="https://learn.microsoft.com/en-us/entra/identity/" target="_blank">Entra Agent ID</a></div>
+        <div class="learn-row">Docs: <a href="https://learn.microsoft.com/en-us/entra/identity/" target="_blank">Microsoft Entra ID</a> &middot; <a href="https://learn.microsoft.com/en-us/entra/agent-id/" target="_blank">Entra Agent ID</a></div>
       </div>
 
       <div class="rail-card r2 reveal">
@@ -1017,7 +1017,7 @@
       <details class="gl" data-cat="data">
         <summary><span class="term-cat">Data</span> Foundry IQ</summary>
         <div class="body">
-          The retrieval layer for AI Foundry &mdash; multi-source grounding, indexing, and reranking under one API. Public Preview at time of writing.
+          A managed knowledge layer for agents, with permission-aware knowledge bases that connect to multiple data sources. Some features are generally available, while others remain in preview depending on the Search Service REST API version.
           <div class="where">See: <a href="microsoft-iq-platforms-guide.html">IQ Platforms Guide</a></div>
         </div>
       </details>
@@ -1025,7 +1025,7 @@
       <details class="gl" data-cat="data">
         <summary><span class="term-cat">Data</span> Fabric IQ</summary>
         <div class="body">
-          The semantic-model layer for Microsoft Fabric &mdash; verified, governed business semantics that grounding can trust. Public Preview.
+          The semantic intelligence layer for Microsoft Fabric. The workload includes semantic models and ontology (preview).
           <div class="where">See: <a href="microsoft-iq-platforms-guide.html">IQ Platforms Guide</a></div>
         </div>
       </details>
@@ -1033,7 +1033,7 @@
       <details class="gl" data-cat="data">
         <summary><span class="term-cat">Data</span> Work IQ</summary>
         <div class="body">
-          The M365 context layer &mdash; signals about the user's work patterns, calendar, files, and collaborators that personalize Copilot answers. Public Preview.
+          The workplace intelligence layer that gives agents organizational context, tools, and workspaces through A2A, MCP, and REST APIs.
           <div class="where">See: <a href="microsoft-iq-platforms-guide.html">IQ Platforms Guide</a></div>
         </div>
       </details>
@@ -1089,7 +1089,7 @@
       <details class="gl" data-cat="security">
         <summary><span class="term-cat">Security</span> OAuth 2.1 for MCP</summary>
         <div class="body">
-          Native authentication for APIM-hosted MCP servers, aligned with MCP spec 2025-06-18. Released to GA in the March 2026 APIM AI Gateway release. Lets every MCP tool call carry a verifiable user identity end-to-end.
+          MCP clients can present OAuth tokens or JWTs issued by Microsoft Entra ID to API Management for validation. APIM can forward authorization headers to backend tool invocations.
           <div class="where">See: <a href="ai-gateway-apim.html">AI Gateway in APIM</a> (Security pillar)</div>
         </div>
       </details>
