@@ -302,7 +302,7 @@
 <meta name="twitter:title" content="The Anatomy of an AI Agent — A Field Guide">
 <meta name="twitter:description" content="The Anatomy of an AI Agent — A Field Guide — an interactive infographic from the SME&amp;C Infographic Hub.">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-<meta name="smec:last-accuracy-check" content="2026-09-03">
+<meta name="smec:last-accuracy-check" content="2026-10-08">
 <!-- smec-meta v1 -->
 <style>/* smec-back-btn v2 */
 .smec-back-btn { position: fixed; bottom: 16px; left: 16px; z-index: 9999;
@@ -566,7 +566,7 @@
             <p class="metaphor">the senses — what it sees and hears</p>
           </div>
         </div>
-        <p class="tagline">Everything the agent perceives before it reasons — retrieval results, grounding sources, real-time signals, and the user's current situation. Context is the cure for hallucination.</p>
+        <p class="tagline">Everything the agent perceives before it reasons — retrieval results, grounding sources, real-time signals, and the user's current situation. Grounded context can help reduce hallucinations.</p>
         <ul class="bits">
           <li><strong>Retrieval</strong> — vector + keyword search over your enterprise corpus (Foundry IQ, Azure AI Search)</li>
           <li><strong>Grounding sources</strong> — SharePoint, OneDrive, Fabric IQ, Work IQ, web</li>
@@ -626,9 +626,9 @@
           <li><strong>Evolvable</strong> — improve the skill without rewriting the agent</li>
         </ul>
         <div class="without"><strong>Without them</strong>Every task is re-derived from first principles. Brittle, inconsistent, and impossible to scale across a fleet of agents.</div>
-        <a class="learn-link" href="https://learn.microsoft.com/en-us/training/paths/create-extend-custom-copilots-microsoft-copilot-studio/" target="_blank" rel="noopener noreferrer" aria-label="Package Skills in Copilot Studio on Microsoft Learn (opens in new tab)">
+        <a class="learn-link" href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/agents-experience/skills-overview" target="_blank" rel="noopener noreferrer" aria-label="Use Skills in Copilot Studio on Microsoft Learn (opens in new tab)">
           <svg class="learn-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21 5c-1.11-.35-2.33-.5-3.5-.5-1.95 0-4.05.4-5.5 1.5-1.45-1.1-3.55-1.5-5.5-1.5S2.45 4.9 1 6v14.65c0 .25.25.5.5.5.1 0 .15-.05.25-.05C3.1 20.45 5.05 20 6.5 20c1.95 0 4.05.4 5.5 1.5 1.35-.85 3.8-1.5 5.5-1.5 1.65 0 3.35.3 4.75 1.05.1.05.15.05.25.05.25 0 .5-.25.5-.5V6c-.6-.45-1.25-.75-2-1zm0 13.5c-1.1-.35-2.3-.5-3.5-.5-1.7 0-4.15.65-5.5 1.5V8c1.35-.85 3.8-1.5 5.5-1.5 1.2 0 2.4.15 3.5.5v11.5z"/></svg>
-          Package Skills in Copilot Studio on Microsoft Learn
+          Use Skills in Copilot Studio on Microsoft Learn
           <svg class="ext-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M14 3v2h3.6l-9.8 9.8 1.4 1.4L19 6.4V10h2V3z"/><path d="M19 19H5V5h7V3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7h-2v7z"/></svg>
         </a>
       </article>
@@ -941,19 +941,19 @@
   <div class="container reveal">
     <span class="section-tag">Build it with Microsoft</span>
     <h2>All ten organs, already on the shelf.</h2>
-    <p style="max-width: 780px;">You don't have to build this from scratch. Microsoft's agent stack gives you each organ as a first-class, production-grade capability — and the same loop underneath.</p>
+    <p style="max-width: 780px;">You don't have to build this from scratch. Microsoft's agent stack provides building blocks for these capabilities, with availability varying by product and feature.</p>
 
     <div class="build-ms">
       <a class="ms-card" href="https://learn.microsoft.com/en-us/azure/foundry/" target="_blank" rel="noopener noreferrer">
         <div class="eyebrow">For developers</div>
         <h4>Microsoft Foundry</h4>
-        <p>The full pro-code platform: models, tools (MCP + Logic Apps), Foundry IQ knowledge bases, hosted agents, traces, evals, and Entra Agent ID — GA since Build 2025, expanded at Build 2026 with multi-agent orchestration and A2A support.</p>
+        <p>The full pro-code platform: models, tools (MCP + Logic Apps), Foundry IQ knowledge bases, hosted agents, traces, evals, and Entra Agent ID. Availability varies by feature: Foundry IQ is partially GA (API-level GA; portal access remains preview), and memory is preview. Microsoft Foundry has been GA since Build 2025, expanded at Build 2026 with multi-agent orchestration and A2A support.</p>
         <div class="arrow">Explore the platform →</div>
       </a>
       <a class="ms-card" href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/" target="_blank" rel="noopener noreferrer">
         <div class="eyebrow">For makers</div>
         <h4>Copilot Studio</h4>
-        <p>Low-code agent builder with knowledge, topics, actions, MCP server support, and publishing into Microsoft 365 surfaces. Work IQ brings organizational context, memory, and personalization — with Purview governance built in.</p>
+        <p>Low-code agent builder with knowledge, topics, actions, MCP server support, and publishing into Microsoft 365 surfaces. Work IQ brings organizational context, memory, and personalization; its Copilot Studio integration is in preview and uses the GitHub Copilot harness.</p>
         <div class="arrow">Start building →</div>
       </a>
       <a class="ms-card" href="https://learn.microsoft.com/en-us/agent-framework/" target="_blank" rel="noopener noreferrer">
