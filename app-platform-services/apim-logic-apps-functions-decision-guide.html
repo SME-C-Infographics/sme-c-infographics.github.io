@@ -807,7 +807,7 @@
           </div>
           <div class="agent-feature">
             <span class="badge badge-ga">GA</span>
-            <span class="agent-feature-text"><span class="agent-feature-name">AI Gateway — LLM Policies:</span> Token rate limits &amp; quotas and semantic caching; content-safety filtering is available in all tiers except Consumption. Check tier support for each capability.</span>
+            <span class="agent-feature-text"><span class="agent-feature-name">AI Gateway — LLM Policies:</span> Token rate limits &amp; quotas, semantic caching, and content-safety filtering. Verify tier and gateway support for each capability in the current policy documentation, including <a href="https://learn.microsoft.com/en-us/azure/api-management/llm-content-safety-policy" target="_blank" rel="noopener">content-safety filtering</a>, before selecting a tier.</span>
           </div>
           <div class="agent-feature">
             <span class="badge badge-ga">GA</span>
@@ -990,8 +990,8 @@
             <span class="agent-feature-text"><span class="agent-feature-name">Durable Task for Microsoft Agent Framework:</span> Multi-agent orchestration patterns with OpenAI SDK integration using Durable Functions as the compute substrate.</span>
           </div>
           <div class="agent-feature">
-            <span class="badge badge-ga">GA</span>
-            <span class="agent-feature-text"><span class="agent-feature-name">Durable Task Scheduler:</span> Managed backend for Durable Functions orchestrations — improved throughput and distributed tracing. The Dedicated SKU is GA; the Consumption SKU is in preview.</span>
+            <span class="badge">Check SKU</span>
+            <span class="agent-feature-text"><span class="agent-feature-name">Durable Task Scheduler:</span> Managed backend for Durable Functions orchestrations — improved throughput and distributed tracing. Dedicated and Consumption billing SKUs are available; verify current SKU availability and supported regions in the <a href="https://learn.microsoft.com/en-us/azure/durable-task/scheduler/durable-task-scheduler" target="_blank" rel="noopener">scheduler documentation</a> before deployment.</span>
           </div>
           <div class="agent-feature">
             <span class="badge badge-ga">GA</span>
@@ -1487,7 +1487,7 @@
             <li class="yes">Predictable cost</li>
             <li class="yes">Full App Service features</li>
             <li class="yes">Managed identity</li>
-            <li class="yes">Durable Task Scheduler GA</li>
+            <li class="yes">Durable Task Scheduler (verify SKU availability)</li>
           </ul>
           <span class="sku-pill" style="background:var(--card-bg);color:var(--text-sec)">Predictable pricing required</span>
         </div>
@@ -1711,15 +1711,15 @@
 
       <div class="tl-item" role="listitem">
         <div class="tl-dot tl-dot-yellow" aria-hidden="true"></div>
-        <div class="tl-date preview">Preview Watch List</div>
-        <div class="tl-title">Features in Active Preview — Monitor for GA</div>
+        <div class="tl-date preview">Preview and Availability Watch List</div>
+        <div class="tl-title">Preview Features and Availability Checks</div>
         <div class="tl-desc">
           <ul style="margin:6px 0 0 16px;font-size:12px;color:var(--text-sec);line-height:1.7">
             <li><strong>Logic Apps Agent Loop — Consumption:</strong> Preview with portal-only authoring and fixed model selection. Expect GA promotion with Standard parity over time.</li>
             <li><strong>Logic Apps Remote MCP Servers (Standard):</strong> Preview. Exposes workflows as MCP tool endpoints via API Center. High customer demand; likely to move to GA.</li>
             <li><strong>Logic Apps multi-agent handoff (Standard):</strong> Preview. Watch for GA alongside broader Agent Loop feature graduation.</li>
             <li><strong>Durable Task for Microsoft Agent Framework:</strong> Preview. Multi-agent orchestration with OpenAI SDK. Watch for GA alongside Agent Framework GA.</li>
-            <li><strong>Durable Task Scheduler — Consumption SKU:</strong> Preview. The Dedicated SKU is GA.</li>
+            <li><strong>Durable Task Scheduler — SKU availability:</strong> Check current Dedicated and Consumption availability and regional support in the <a href="https://learn.microsoft.com/en-us/azure/durable-task/scheduler/durable-task-scheduler" target="_blank" rel="noopener">scheduler documentation</a>; don't infer release status from the billing model.</li>
             <li><strong>APIM AI Gateway tier:</strong> Public preview — a dedicated, fully managed APIM gateway resource for models and MCP tools (runtime access keys, self-service catalog, token/request limits, content safety). Preview regions: East US 2 and Sweden Central; pricing not yet announced.</li>
             <li><strong>APIM v2 feature parity gaps:</strong> Multi-region deployment, backup/restore, self-hosted gateway, and static IP remain unavailable in the v2 tiers. Multiple custom domain names for the gateway are now supported in Premium v2 (still unavailable in Basic v2 and Standard v2). Monitor Azure updates for roadmap items.</li>
           </ul>
@@ -1792,7 +1792,7 @@
     </div>
     <div>This asset has a <strong>3-month refresh cadence</strong>. Next review: <strong>2027-01-08</strong></div>
     <div style="color:var(--divider);font-size:10px;margin-top:4px">
-      All claims grounded against Microsoft Learn documentation, October 2026 (accuracy review — Agent Loop's APIM model source and Durable Task Scheduler Consumption SKU status corrected; APIM LLM policy tier support clarified). Internal use only — SME&amp;C field enablement.
+      Reviewed against Microsoft Learn documentation, October 2026 (accuracy review — Agent Loop's APIM model source marked preview; disputed Durable Task Scheduler SKU status and APIM content-safety tier support left for deployment-time verification). Internal use only — SME&amp;C field enablement.
       <br><a href="https://azure.microsoft.com/en-us/blog/new-azure-cobalt-200-vms-deliver-50-performance-improvement-fully-optimized-for-modern-agentic-ai-workloads/" target="_blank" rel="noopener">Cobalt 200 announcement</a>
       &nbsp;·&nbsp;
       <a href="https://techcommunity.microsoft.com/blog/adforpostgresql/azure-horizondb-enterprise-ready-postgres-engineered-for-the-ai-era/4524094" target="_blank" rel="noopener">Azure HorizonDB (Postgres for agents)</a>
