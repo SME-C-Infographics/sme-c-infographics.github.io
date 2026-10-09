@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Microsoft AI Platform Decision Guide</title>
 <!-- smec-accuracy v1 -->
-<meta name="smec:last-accuracy-check" content="2026-09-03">
+<meta name="smec:last-accuracy-check" content="2026-10-08">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; font-size: 16px; }
@@ -682,7 +682,7 @@
           <h4 class="studio-a">What It Is</h4>
           <ul>
             <li>Enterprise-grade platform to create custom Copilots and <strong>autonomous agents</strong> &mdash; see <a href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/" target="_blank">Microsoft Learn docs</a></li>
-            <li>Supports GPT-5, GPT-5.6, Claude Sonnet 5, Claude Opus 5, Microsoft's MAI family, and bring-your-own models</li>
+            <li>Supports models including GPT-5.5 Chat and Claude Sonnet 5 (GA); availability depends on configuration</li>
             <li>Connects to 1,000+ data sources via connectors, MCP, and plugins</li>
           </ul>
           <h4 class="studio-a">Best For</h4>
@@ -774,9 +774,9 @@
         <div class="plat-body">
           <h4 class="foundry-a">What It Is</h4>
           <ul>
-            <li>Microsoft’s unified AI development platform (rebranded from Azure AI Foundry) &mdash; see <a href="https://learn.microsoft.com/en-us/azure/ai-foundry/" target="_blank">Microsoft Learn docs</a></li>
+            <li>Microsoft’s unified AI development platform (rebranded from Azure AI Foundry) &mdash; see <a href="https://learn.microsoft.com/azure/foundry/what-is-foundry" target="_blank">Microsoft Learn docs</a></li>
             <li><strong>10,000+ model catalog</strong> &mdash; GPT-5.6, GPT-5.2, Claude Opus 5, Microsoft <strong>MAI</strong> family, Meta Llama, Mistral, Phi, DeepSeek, plus open-weight models via the <strong>Fireworks AI</strong> partnership <span class="new-badge">Build 2026</span></li>
-            <li>Hosted agents with sub-100&nbsp;ms sandbox cold starts and zero idle cost; one-click publish to Teams and M365 Copilot <span class="new-badge">Build 2026</span></li>
+            <li>Hosted agents run in isolated sandboxes, scale per session, and bill for CPU and memory consumed across active sessions</li>
             <li>Built-in tools for fine-tuning, evaluation, prompt engineering, Agent Optimizer, Adaptive Evaluations, and observability</li>
           </ul>
           <h4 class="foundry-a">Best For</h4>
@@ -896,7 +896,7 @@
           <tr>
             <td>LLM / GPT Access</td>
             <td><span class="check">&#10004; GPT-5 built-in</span></td>
-            <td><span class="check">&#10004; GPT-5, Claude, MAI, BYOM</span></td>
+            <td><span class="check">&#10004; GPT-5.5 Chat, Claude Sonnet 5 (GA), and other models</span></td>
             <td><span class="check">&#10004; GPT-5.6 / 5.2 API</span></td>
             <td><span class="check">&#10004; 10,000+ model catalog</span></td>
             <td><span class="no">&#10006; Not primary</span></td>
@@ -952,7 +952,7 @@
           <tr>
             <td>Model Choice</td>
             <td>GPT-5 (managed)</td>
-            <td>GPT-5, Claude, custom</td>
+            <td>GPT-5.5 Chat, Claude Sonnet 5 (GA), and other models</td>
             <td>OpenAI family</td>
             <td>10,000+ models</td>
             <td>Task-specific models</td>
@@ -1037,7 +1037,7 @@
       </div>
       <div class="dt-result studio-r dt-hidden" id="r-studio">
         <h4>&#x2192; Microsoft Copilot Studio</h4>
-        <p>Build autonomous AI agents with a low-code interface. Supports GPT-5 and Claude models, voice agents, human-in-the-loop governance, agent evaluations, and 1,000+ data connectors. Deploy to Teams, web, WhatsApp, and more.</p>
+        <p>Build autonomous AI agents with a low-code interface. Supports GPT-5.5 Chat and Claude Sonnet 5 (GA), voice agents, human-in-the-loop governance, agent evaluations, and 1,000+ data connectors. Deploy to Teams, web, WhatsApp, and more.</p>
         <p style="margin-top:.75rem;"><a href="https://www.microsoft.com/en-us/microsoft-copilot/microsoft-copilot-studio" target="_blank" style="font-weight:600;">Explore Copilot Studio &rarr;</a></p>
         <button class="dt-restart" onclick="dtReset()">&#x21bb; Start Over</button>
       </div>
@@ -1161,10 +1161,10 @@
       <div class="cost-card studio-c">
         <h3><a href="https://www.microsoft.com/en-us/microsoft-copilot/microsoft-copilot-studio" target="_blank" style="color:inherit;">Copilot Studio</a></h3>
         <ul class="cost-items">
-          <li>Per-tenant monthly license</li>
-          <li>Includes Copilot Credits allotment</li>
-          <li>Pay-as-you-go via Azure for Copilot Credit overages</li>
-          <li>Can be included in M365 license</li>
+          <li>Standalone Copilot Credits subscription or pay-as-you-go through Azure</li>
+          <li>Copilot Credits are the common billing currency</li>
+          <li>Microsoft 365 Copilot licenses can provide access to extend Copilot with agents</li>
+          <li>Costs depend on the credits your agents use</li>
         </ul>
       </div>
 
@@ -1181,7 +1181,7 @@
       <div class="cost-card foundry-c">
         <h3><a href="https://azure.microsoft.com/en-us/products/ai-foundry/" target="_blank" style="color:inherit;">Microsoft Foundry</a></h3>
         <ul class="cost-items">
-          <li>No platform fee (pay for services used)</li>
+          <li>Costs depend on the models and services used</li>
           <li>Compute costs for training/inference</li>
           <li>10,000+ model marketplace pricing</li>
           <li>Azure Savings Plans available</li>
@@ -1276,7 +1276,7 @@
 
 <!-- FOOTER -->
 <div class="footer">
-  <p>Microsoft AI Platform Decision Guide &bull; Updated June 2026 (Build 2026) &bull; Always validate against the latest <a href="https://learn.microsoft.com/en-us/azure/ai-foundry/" target="_blank">Microsoft Foundry documentation</a> &bull; Build 2026 highlights: <a href="https://devblogs.microsoft.com/foundry/whats-new-in-microsoft-foundry-build-2026/" target="_blank">What’s New in Foundry</a>, <a href="https://microsoft.ai/news/building-a-hillclimbing-machine-launching-seven-new-mai-models/" target="_blank">MAI models</a></p>
+  <p>Microsoft AI Platform Decision Guide &bull; Updated October 2026 &bull; Always validate against the latest <a href="https://learn.microsoft.com/azure/foundry/what-is-foundry" target="_blank">Microsoft Foundry documentation</a> &bull; Build 2026 highlights: <a href="https://devblogs.microsoft.com/foundry/whats-new-in-microsoft-foundry-build-2026/" target="_blank">What’s New in Foundry</a>, <a href="https://microsoft.ai/news/building-a-hillclimbing-machine-launching-seven-new-mai-models/" target="_blank">MAI models</a></p>
   <p style="margin-top:.5rem;">Pricing and features subject to change. Visit <a href="https://azure.microsoft.com/en-us/pricing/calculator/" target="_blank">Azure Pricing Calculator</a> for current details.</p>
 </div>
 
