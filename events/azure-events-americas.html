@@ -409,6 +409,11 @@
   /* Featured Azure SRE Agent series band (two side-by-side lite cards) */
   .spotlight-lite .events.events--pair { grid-template-columns: repeat(2, minmax(0, 520px)); gap: 24px; justify-content: center; margin-bottom: 0; }
   @media (max-width: 980px) { .spotlight-lite .events.events--pair { grid-template-columns: minmax(0, 620px); } }
+  /* Azure SRE Agent series: a finished part that has a recording stays on screen at full strength with a blue "View recording" button */
+  body.hide-past .spotlight-lite--sre .event-card--lite.event-card--past[data-recording]:not(.card-hidden) { display: flex; }
+  .spotlight-lite--sre .event-card--lite.event-card--past[data-recording] { opacity: 1; filter: none; }
+  .spotlight-lite--sre .event-card--lite.event-card--past .btn.btn--rec { background: #0a558c; }
+  .spotlight-lite--sre .event-card--lite.event-card--past .btn.btn--rec:hover { background: #0a4a78; }
 
   /* Microsoft Discovery Sessions: compact, scrollable list of wide tiles directly below the SRE band */
   .section--discovery { padding: 46px 0 34px; background: linear-gradient(180deg, #ffffff 0%, #fbfaff 100%); }
@@ -569,6 +574,7 @@
     .event-card--lite .lite-series { color: #a9adb4; }
     .event-card--lite .lite-series strong { color: #8cc8f5; }
     .event-card--lite .btn:hover { background: #0c66a8; }
+    .spotlight-lite--sre .event-card--lite.event-card--past .btn.btn--rec:hover { background: #0c66a8; }
     .event-card--fabric { border-top-color: #1ea58f; }
 
     /* FabCon band (already dark) — only its white ticket card needs a dark surface */
@@ -1221,7 +1227,7 @@ document.addEventListener('DOMContentLoaded', function () {
       <p>Site Reliability Engineering, reimagined with agentic AI. This two-part series takes you from first principles to a hands-on technical deep dive — see how Azure SRE Agent investigates, diagnoses, and helps remediate incidents, and what it takes to run it responsibly in the enterprise.</p>
     </div>
     <div class="events events--pair">
-      <div class="event-card event-card--lite" data-type="Briefing" data-modality="Virtual" data-month="10" data-search="azure sre agent series reliability reimagined with agentic ai part 1 fundamentals site reliability engineering it operations incident investigation diagnosis remediation firefighting hybrid integrations security governance permissions consumption ben magazino harry arce dan kraft briefing virtual webinar october 15">
+      <div class="event-card event-card--lite" data-type="Briefing" data-modality="Virtual" data-month="10" data-recording="https://microsoft-my.sharepoint.com/personal/jubryant_microsoft_com1/_layouts/15/stream.aspx?id=%2Fpersonal%2Fjubryant%5Fmicrosoft%5Fcom1%2FDocuments%2FRecordings%2FAzure%20SRE%20Agent%20Series%20Reliability%2C%20Reimagined%20with%20Agentic%20AI%20%2D%20Part%201%20%E2%80%94%20Azure%20SRE%20Agent%20Fundamentals%2D20261015%5F180229UTC%2DMeeting%20Recording%2Emp4&amp;referrer=StreamWebApp%2EWeb&amp;referrerScenario=AddressBarCopied%2Eview%2E32fb920f%2De5a1%2D46c7%2Dbf5f%2D6111d5ed4608&amp;ga=1&amp;share=cQpQsjfbeWAMRakYdetfOEY%2DEgUCEvY5fMqkdRvfkF7yM%2D7lBg" data-search="azure sre agent series reliability reimagined with agentic ai part 1 fundamentals site reliability engineering it operations incident investigation diagnosis remediation firefighting hybrid integrations security governance permissions consumption ben magazino harry arce dan kraft briefing virtual webinar october 15">
         <span class="event-tag tag-briefing">Azure Webinar</span>
         <div class="lite-series">Part 1 of 2 · <strong>Azure SRE Agent Series</strong></div>
         <h3>Azure SRE Agent Fundamentals</h3>
@@ -2632,7 +2638,7 @@ window.smecSessions = {
 </script>
 
 <script>
-/* 2) Mark past events (gray-out) and reorder them to the end of each grid */
+/* 2) Mark past events (gray-out) and reorder them to the end of each grid; a numbered series pair keeps its Part order */
 (function () {
   var now = new Date();
   function isPast(s, e) { var c = e ? new Date(e) : new Date(s); return !isNaN(c.getTime()) && c < now; }
@@ -2643,7 +2649,7 @@ window.smecSessions = {
       if (ts.length && ts.every(function (t) { return isPast(t.dataset.start, t.dataset.end); })) { card.classList.add('event-card--past'); past.push(card); }
       else { up.push(card); }
     });
-    up.concat(past).forEach(function (card) { grid.appendChild(card); });
+    if (!grid.classList.contains('events--pair')) up.concat(past).forEach(function (card) { grid.appendChild(card); });
   });
 })();
 </script>
