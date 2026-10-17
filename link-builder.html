@@ -98,7 +98,7 @@
 <!-- smec-favicon v1 -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <!-- smec-accuracy v1 -->
-<meta name="smec:last-accuracy-check" content="2026-08-27">
+<meta name="smec:last-accuracy-check" content="2026-10-15">
 <style>/* smec-back-btn v2 */
 .smec-back-btn { position: fixed; bottom: 16px; left: 16px; z-index: 9999;
   box-sizing: border-box;
@@ -164,10 +164,10 @@
 <div class="wrap">
     <h1>UTM Link Builder</h1>
     <p class="lede">
-      Generate a tracked link that routes through
-      <code>redirect.htm</code> so Umami records the click before
-      forwarding the visitor to the destination URL with UTM parameters
-      appended.
+      Generate a tracked link that routes through <code>redirect.htm</code>,
+      which attempts to record the click with Umami before forwarding the
+      visitor to the destination URL. UTM parameters are attached to the
+      redirect link and are not appended to the destination URL.
     </p>
 
     <form id="builder" autocomplete="off">
