@@ -166,38 +166,233 @@
   .group.open .group-head { border-bottom: 1px solid #f3f2f1; }
   .group .events { margin-top: 18px; }
 
-  /* Spotlight series (non-collapsible, above Microsoft-Led Training) */
-  .spotlight { padding: 48px 0 24px; background: linear-gradient(135deg, #f4f0fb 0%, #eef4fb 55%, #f3f9ff 100%); border-bottom: 1px solid #e6ddf2; }
-  .spotlight .section-header { margin-bottom: 28px; }
-  .spotlight-eyebrow { display: inline-block; text-transform: uppercase; letter-spacing: 2px; font-size: 12.5px; font-weight: 700; color: #5c2d91; background: #ece0f7; padding: 6px 15px; border-radius: 20px; margin-bottom: 15px; }
-  .spotlight .section-header h2 { font-size: 29px; color: #4a2378; margin-bottom: 12px; }
-  .spotlight .section-header p { max-width: 760px; }
-  .spotlight-note { margin-top: 16px; font-size: 14px; color: #605e5c; }
-  .spotlight-note strong { color: #5c2d91; }
-  .tag-spotlight { background: #e7d9f7; color: #5c2d91; }
-  .event-card--spotlight { border-top: 3px solid #5c2d91; }
+  /* Foundry webinar series: every session is a recording, so this is a static, compact shelf (no carousel). Wide screens show one
+     equal-height row of five cover cards whose progress bar fills from the first prompt to production; narrower screens turn each
+     session into a slim row (cover, title, button). The whole card is one link (stretched link); its description is the hover tooltip. */
+  .spotlight { position: relative; overflow: hidden; padding: 40px 0 38px; background: linear-gradient(135deg, #f4f0fb 0%, #eef4fb 55%, #f3f9ff 100%); border-bottom: 1px solid #e6ddf2; }
+  .spotlight::before, .spotlight::after { content: ''; position: absolute; width: 540px; height: 540px; border-radius: 50%; filter: blur(96px); opacity: 0.55; pointer-events: none; }
+  .spotlight::before { left: -210px; top: -250px; background: rgba(124,92,224,0.22); }
+  .spotlight::after { right: -210px; bottom: -270px; background: rgba(214,92,190,0.18); }
+  .spotlight .container { position: relative; z-index: 1; }
+  .spotlight .section-header { margin-bottom: 24px; }
+  .spotlight-eyebrow { display: inline-block; text-transform: uppercase; letter-spacing: 2px; font-size: 12.5px; font-weight: 700; color: #5c2d91; background: #ece0f7; padding: 6px 15px; border-radius: 20px; margin-bottom: 14px; }
+  .spotlight .section-header h2 { font-size: 38px; line-height: 1.12; font-weight: 800; letter-spacing: -0.6px; color: #2b1559; margin-bottom: 12px; text-wrap: balance; }
+  .remi-kicker { display: block; margin-bottom: 8px; font-size: 13px; font-weight: 700; letter-spacing: 2.6px; text-transform: uppercase; color: #5c2d91; }
+  .remi-nw { white-space: nowrap; }
+  .remi-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .remi-grad { background: linear-gradient(90deg, #6d3fd0 0%, #c13fb0 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .spotlight .section-header p { max-width: 860px; text-wrap: pretty; }
+  .remi-actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 14px 22px; margin-top: 18px; }
+  .remi-facts { display: inline-flex; background: rgba(255,255,255,0.8); border: 1px solid #e4dcf3; border-radius: 16px; box-shadow: 0 8px 24px rgba(92,45,145,0.08); }
+  .remi-facts > div { padding: 9px 24px; text-align: center; }
+  .remi-facts > div + div { border-left: 1px solid #e8e1f5; }
+  .remi-facts b { display: block; font-size: 22px; line-height: 1.1; font-weight: 800; color: #4a2378; }
+  .remi-facts span { display: block; margin-top: 3px; font-size: 11px; font-weight: 700; letter-spacing: 0.9px; text-transform: uppercase; color: #6b5b84; }
+  .remi-cta { display: inline-flex; align-items: center; gap: 11px; padding: 14px 28px; border-radius: 14px; color: #fff; text-decoration: none; font-size: 16px; font-weight: 700; background: linear-gradient(100deg, #6d3fd0 0%, #a03fc9 100%); box-shadow: 0 12px 28px rgba(109,63,208,0.32); transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease; }
+  .remi-cta::before, .remi-card .btn--rec::before { content: ''; flex: 0 0 auto; border-style: solid; border-width: 6px 0 6px 10px; border-color: transparent transparent transparent currentColor; }
+  .remi-cta:hover { transform: translateY(-2px); box-shadow: 0 16px 34px rgba(109,63,208,0.42); filter: brightness(1.06); }
+  .remi-cta:focus-visible { outline: 3px solid #2b1559; outline-offset: 3px; }
+  .spotlight-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; max-width: 1140px; margin: 0 auto; }
+  .spotlight-grid > .event-card { flex: 1 1 100%; min-width: 0; }
+  .spotlight:not(:has(.event-card:not(.card-hidden))) { display: none; }
   .event-card--spotlight .btn { background: #5c2d91; }
   .event-card--spotlight .btn:hover { background: #4a2378; }
-  /* Featured sessions gray out when past but are never hidden by "Hide past events" */
-  body.hide-past .event-card--spotlight.event-card--past { display: flex !important; }
+  /* Recordings stay on screen at full strength, even with "Hide past events" on */
+  body.hide-past .event-card--spotlight.event-card--past:not(.card-hidden) { display: flex; }
+  .event-card--spotlight.event-card--past { opacity: 1; filter: none; }
 
-  /* Featured series 3D circular (coverflow) carousel */
-  .spotlight .carousel { position: relative; display: flex; align-items: center; gap: 8px; }
-  .spotlight .stage { position: relative; flex: 1 1 auto; height: 560px; perspective: 1700px; overflow: hidden; }
-  .spotlight .carousel-track { position: absolute; inset: 0; transform-style: preserve-3d; }
-  .spotlight .carousel-track .event-card {
-    position: absolute; top: 50%; left: 50%; width: 360px; max-width: 84%; margin: 0;
-    transform-origin: 50% 50%; backface-visibility: hidden;
-    transition: transform 0.6s cubic-bezier(0.22, 0.61, 0.36, 1), opacity 0.6s ease, box-shadow 0.3s ease;
-    will-change: transform, opacity;
+  .spotlight .remi-card { position: relative; padding: 0; overflow: hidden; border: 1px solid #e6def4; border-radius: 16px; box-shadow: 0 6px 20px rgba(60,30,110,0.08); }
+  .spotlight .remi-card:hover, .spotlight .remi-card.event-card--past:hover { transform: translateY(-3px); box-shadow: 0 16px 36px rgba(60,30,110,0.16); }
+  /* Phones: a slim row, cover on the left and the button under the title. The display rules repeat the hide-past override so they outrank it. */
+  .spotlight .remi-card:not(.card-hidden), body.hide-past .spotlight .remi-card.event-card--past:not(.card-hidden) { display: grid; grid-template-columns: 76px minmax(0, 1fr); }
+  .remi-cover { position: relative; overflow: hidden; min-height: 124px; color: #fff; background: radial-gradient(170px 120px at 94% 0%, rgba(255,255,255,0.3), transparent 70%), radial-gradient(210px 150px at 0% 100%, rgba(0,0,0,0.3), transparent 70%), linear-gradient(135deg, var(--g1), var(--g2)); }
+  .remi-chip, .remi-glyph { display: none; }
+  .remi-chip { position: absolute; top: 12px; left: 12px; padding: 3px 10px; border-radius: 999px; font-size: 10.5px; font-weight: 700; letter-spacing: 1px; line-height: 1.5; text-transform: uppercase; white-space: nowrap; color: #fff; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.28); }
+  .remi-chip--r { left: auto; right: 12px; letter-spacing: 0.5px; }
+  .remi-num { position: absolute; left: 50%; top: 46%; transform: translate(-50%, -50%); font-size: 40px; font-weight: 800; line-height: 1; letter-spacing: -1px; color: transparent; -webkit-text-stroke: 1.5px rgba(255,255,255,0.72); pointer-events: none; }
+  .remi-glyph { position: absolute; right: 12px; bottom: 15px; width: 38px; height: 38px; place-items: center; border-radius: 12px; background: rgba(255,255,255,0.16); border: 1px solid rgba(255,255,255,0.36); transition: transform 0.25s ease; }
+  .remi-glyph svg { width: 22px; height: 22px; }
+  .remi-prog { position: absolute; left: 0; right: 0; bottom: 0; display: flex; gap: 3px; }
+  .remi-prog i { flex: 1; height: 5px; background: rgba(255,255,255,0.3); }
+  .remi-prog i.on { background: rgba(255,255,255,0.92); }
+  .remi-card:hover .remi-glyph { transform: scale(1.08); }
+  .remi-card:focus-within { outline: 3px solid #7c5ce0; outline-offset: 3px; }
+  .remi-body { display: flex; flex-direction: column; justify-content: center; min-width: 0; padding: 14px 16px 16px; }
+  .remi-body .event-meta { margin-bottom: 4px; font-size: 12.5px; flex-wrap: wrap; }
+  .remi-dur::before { content: '\00b7'; content: '\00b7' / ''; margin: 0 7px; opacity: 0.6; }
+  .spotlight .remi-body h3 { font-size: 16px; line-height: 1.28; font-weight: 700; color: #2b1559; margin: 0 0 5px; text-wrap: balance; }
+  .remi-card .remi-sum { flex-grow: 0; margin: 0 0 12px; font-size: 13.5px; line-height: 1.42; color: #554d68; text-wrap: pretty; }
+  .remi-card .card-actions { margin: 0; }
+  .remi-card .btn--rec { display: inline-flex; align-items: center; gap: 8px; padding: 8px 15px; border-radius: 9px; font-size: 13.5px; white-space: nowrap; }
+  .remi-card .btn--rec::before { border-width: 4.5px 0 4.5px 7px; }
+  .remi-card .btn::after { content: ''; position: absolute; inset: 0; z-index: 3; }
+
+  /* Tablet and small laptops: one slim row per session with the button in its own column; every row is the same height */
+  @media (min-width: 641px) {
+    .spotlight-grid { display: grid; grid-template-columns: minmax(0, 1fr); grid-auto-rows: 1fr; }
+    .spotlight .remi-card:not(.card-hidden), body.hide-past .spotlight .remi-card.event-card--past:not(.card-hidden) { grid-template-columns: 112px minmax(0, 1fr); }
+    .remi-cover { min-height: 100px; }
+    .remi-num { font-size: 48px; }
+    .remi-body { display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "meta act" "title act" "sum act"; column-gap: 24px; align-content: center; align-items: center; padding: 14px 24px 14px 26px; }
+    .remi-body .event-meta { grid-area: meta; margin-bottom: 3px; font-size: 13.5px; }
+    .spotlight .remi-body h3 { grid-area: title; font-size: 18.5px; margin: 0; }
+    .remi-card .remi-sum { grid-area: sum; margin: 4px 0 0; font-size: 14px; }
+    .remi-card .card-actions { grid-area: act; align-self: center; }
+    .remi-card .btn--rec { padding: 10px 18px; font-size: 14px; }
   }
-  .spotlight .carousel-track .event-card.is-active { box-shadow: 0 22px 48px rgba(74, 35, 120, 0.28); }
-  .spotlight .carousel-btn { flex: 0 0 auto; z-index: 200; width: 46px; height: 46px; border-radius: 50%; border: 1px solid #d9c9ef; background: #fff; color: #5c2d91; font-size: 25px; line-height: 1; cursor: pointer; box-shadow: 0 3px 12px rgba(0,0,0,0.12); transition: background 0.15s ease, transform 0.15s ease; }
-  .spotlight .carousel-btn:hover { background: #f3ebfb; transform: scale(1.08); }
-  .spotlight .carousel-dots { display: flex; justify-content: center; gap: 9px; margin-top: 8px; }
-  .spotlight .carousel-dots button { width: 9px; height: 9px; padding: 0; border-radius: 50%; border: none; background: #d3c4ea; cursor: pointer; transition: transform 0.15s ease, background 0.15s ease; }
-  .spotlight .carousel-dots button.active { background: #5c2d91; transform: scale(1.35); }
-  @media (max-width: 640px) { .spotlight .stage { height: 620px; } .spotlight .carousel-track .event-card { width: 300px; } .spotlight .carousel-btn { width: 40px; height: 40px; font-size: 21px; } }
+  /* Wide screens: one row of five equal cover cards */
+  @media (min-width: 1100px) {
+    .spotlight-grid { display: flex; gap: 16px; }
+    .spotlight-grid > .event-card { flex: 0 1 calc((100% - 64px) / 5); }
+    .spotlight .remi-card:not(.card-hidden), body.hide-past .spotlight .remi-card.event-card--past:not(.card-hidden) { display: flex; flex-direction: column; }
+    .remi-cover { flex: 0 0 auto; height: 104px; min-height: 0; }
+    .remi-chip { display: block; }
+    .remi-glyph { display: grid; }
+    .remi-num { left: 12px; top: auto; bottom: 10px; transform: none; font-size: 60px; line-height: 0.8; -webkit-text-stroke: 1.6px rgba(255,255,255,0.42); }
+    .remi-dur { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+    .remi-body { display: flex; flex-direction: column; justify-content: flex-start; align-items: stretch; align-content: normal; flex: 1 1 auto; padding: 16px 18px 18px; }
+    .remi-body .event-meta { margin-bottom: 8px; font-size: 13px; }
+    .spotlight .remi-body h3 { font-size: 17px; margin: 0 0 7px; }
+    .remi-card .remi-sum { margin: 0 0 16px; font-size: 13px; }
+    .remi-card .card-actions { margin-top: auto; align-self: stretch; }
+    .remi-card .btn--rec { width: 100%; justify-content: center; padding: 11px 14px; font-size: 14px; }
+  }
+  @media (max-width: 640px) {
+    .spotlight { padding: 34px 0 32px; }
+    .spotlight .section-header h2 { font-size: 29px; }
+    .remi-kicker { font-size: 12px; letter-spacing: 2px; }
+    .remi-facts { width: 100%; }
+    .remi-facts > div { flex: 1 1 0; padding: 10px 8px; }
+    .remi-facts b { font-size: 20px; }
+    .remi-cta { width: 100%; justify-content: center; }
+  }
+  @media (prefers-reduced-motion: reduce) { .spotlight .remi-card, .spotlight .remi-card:hover { transform: none; } .remi-glyph { transition: none; } }
+
+  /* Featured "Build Enterprise AI Agents with Fabric & Foundry" (ProArch + Microsoft, two parts): one two-tone stage split by a slanted
+     seam (Fabric teal | Foundry violet) with a bridge badge, a poster date and a white call to action per part. When a part is over or
+     filtered out the stage collapses to the other half; the band hides itself once both are gone. */
+  .duo-band { position: relative; overflow: hidden; scroll-margin-top: 124px; padding: 56px 0 52px; background: linear-gradient(180deg, #f7faff 0%, #eef3fb 100%); border-bottom: 1px solid #dde6f3; }
+  .duo-band::before, .duo-band::after { content: ''; position: absolute; width: 560px; height: 560px; border-radius: 50%; filter: blur(96px); opacity: 0.55; pointer-events: none; }
+  .duo-band::before { left: -190px; top: -250px; background: rgba(30,192,143,0.28); }
+  .duo-band::after { right: -190px; bottom: -270px; background: rgba(112,84,240,0.25); }
+  .duo-band .container { position: relative; z-index: 1; }
+  body:not(.hide-past) .duo-band:not(:has(.event-card:not(.card-hidden))),
+  body.hide-past .duo-band:not(:has(.event-card:not(.card-hidden):not(.event-card--past), .event-card[data-recording]:not(.card-hidden))) { display: none; }
+  .duo-head { max-width: 1040px; margin: 0 auto 36px; text-align: center; }
+  .duo-eyebrow { display: inline-flex; align-items: center; gap: 10px; padding: 5px 16px 5px 6px; border-radius: 999px; font-size: 12px; font-weight: 700; letter-spacing: 1.6px; text-transform: uppercase; color: #27307a; background: #fff; border: 1px solid #d5dcf0; box-shadow: 0 4px 14px rgba(39,48,122,0.08); margin-bottom: 20px; }
+  .duo-new { display: inline-block; padding: 4px 11px; border-radius: 999px; color: #fff; font-size: 11px; letter-spacing: 1.4px; background: linear-gradient(90deg, #0a7a69, #4a35c4); }
+  .duo-title { font-size: 40px; line-height: 1.12; font-weight: 800; letter-spacing: -0.6px; color: #0f172a; margin-bottom: 14px; text-wrap: balance; }
+  .duo-title .duo-t1 { color: #07796a; }
+  .duo-title .duo-t2 { color: #5b3fd1; }
+  .duo-sub { font-size: 17px; line-height: 1.6; color: #475467; max-width: 920px; margin: 0 auto; text-wrap: balance; }
+  .duo-sub .duo-t1 { color: #0a7a69; }
+  .duo-sub .duo-t2 { color: #4a35c4; }
+  .duo-actions { display: flex; flex-direction: column; align-items: center; gap: 12px; margin-top: 26px; }
+  .duo-reg { display: inline-flex; align-items: center; gap: 10px; padding: 15px 30px; border-radius: 14px; color: #fff; text-decoration: none; font-size: 16.5px; font-weight: 700; background: linear-gradient(100deg, #0a7a69 0%, #3b66d8 52%, #5b3fd1 100%); box-shadow: 0 14px 30px rgba(59,80,210,0.3); transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease; }
+  .duo-reg:hover { transform: translateY(-2px); box-shadow: 0 18px 38px rgba(59,80,210,0.4); filter: brightness(1.06); }
+  .duo-reg:focus-visible { outline: 3px solid #27307a; outline-offset: 3px; }
+  .duo-note { margin: 0; font-size: 13.5px; color: #586275; }
+  .duo-note-one { display: none; }
+
+  .duo-stage { position: relative; isolation: isolate; display: flex; max-width: 1140px; margin: 0 auto; border-radius: 28px; overflow: hidden; color: #fff;
+    background:
+      linear-gradient(95deg, transparent calc(50% - 1px), rgba(255,255,255,0.42) calc(50% - 1px), rgba(255,255,255,0.42) calc(50% + 1px), transparent calc(50% + 1px)),
+      linear-gradient(95deg, transparent calc(50% - 46px), rgba(255,255,255,0.08) 50%, transparent calc(50% + 46px)),
+      radial-gradient(560px 380px at 8% 0%, rgba(255,255,255,0.13), transparent 62%),
+      radial-gradient(560px 380px at 96% 100%, rgba(255,255,255,0.1), transparent 62%),
+      linear-gradient(95deg, #053a35 0%, #0a665a 26%, #0a7566 49.8%, #4a35c4 50.2%, #3c2aa9 76%, #231a6d 100%);
+    box-shadow: 0 30px 70px rgba(38,30,120,0.28), 0 12px 28px rgba(5,58,53,0.18); }
+  .duo-stage::before { content: ''; position: absolute; inset: 0; z-index: 0; pointer-events: none; background-image: radial-gradient(rgba(255,255,255,0.22) 1.2px, transparent 1.7px); background-size: 22px 22px; -webkit-mask-image: linear-gradient(90deg, #000 0%, transparent 44%); mask-image: linear-gradient(90deg, #000 0%, transparent 44%); }
+  .duo-net { position: absolute; top: 0; right: 0; z-index: 0; width: 330px; height: 275px; opacity: 0.24; pointer-events: none; -webkit-mask-image: radial-gradient(ellipse 100% 100% at 100% 0%, #000 0%, transparent 72%); mask-image: radial-gradient(ellipse 100% 100% at 100% 0%, #000 0%, transparent 72%); }
+  .duo-bridge { position: absolute; z-index: 3; left: 50%; top: 50%; width: 66px; height: 66px; margin: -33px 0 0 -33px; display: grid; place-items: center; border-radius: 50%; background: #fff; box-shadow: 0 14px 34px rgba(12,10,70,0.38), 0 0 0 8px rgba(255,255,255,0.2); }
+  .duo-bridge svg { width: 30px; height: 30px; }
+
+  .duo-stage .duo-panel { position: relative; z-index: 1; flex: 1 1 0; min-width: 0; padding: 40px 44px 36px; background: none; border: 0; border-radius: 0; box-shadow: none; transition: none; color: #fff; --ink2: #dcf5ef; --solid: #064e45; }
+  .duo-stage .duo-panel:hover { transform: none; box-shadow: none; }
+  .duo-stage .duo-panel--1 { padding-right: 68px; }
+  .duo-stage .duo-panel--2 { padding-left: 68px; --ink2: #e8e4ff; --solid: #3a2aa6; }
+  .duo-stage .duo-panel.event-card--past[data-recording] { opacity: 1; filter: none; }
+  body.hide-past .duo-stage .duo-panel.event-card--past[data-recording]:not(.card-hidden) { display: flex; }
+  .duo-top { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 12px; margin-bottom: 18px; }
+  .duo-part { padding: 5px 13px; border-radius: 999px; background: #fff; color: var(--solid); font-size: 11.5px; font-weight: 800; letter-spacing: 1.6px; text-transform: uppercase; }
+  .duo-prod { font-size: 12.5px; font-weight: 700; letter-spacing: 2.2px; text-transform: uppercase; color: var(--ink2); }
+  .duo-count { margin-left: auto; display: inline-flex; align-items: center; gap: 8px; padding: 5px 12px; border-radius: 999px; font-size: 12.5px; font-weight: 700; color: #fff; background: rgba(0,0,0,0.26); border: 1px solid rgba(255,255,255,0.34); white-space: nowrap; }
+  .duo-count .cd-dot { flex: 0 0 8px; height: 8px; border-radius: 50%; background: #7dffd2; }
+  .duo-count.is-live { background: rgba(196,38,44,0.92); border-color: rgba(255,255,255,0.5); }
+  .duo-count.is-live .cd-dot { background: #fff; }
+  .duo-count.is-over { background: rgba(0,0,0,0.34); }
+  .duo-count.is-over .cd-dot { background: #b3b3b3; }
+  .duo-when { display: flex; align-items: center; gap: 18px; margin-bottom: 20px; }
+  .duo-date { display: flex; align-items: baseline; gap: 10px; line-height: 0.9; }
+  .duo-m { font-size: 46px; font-weight: 300; letter-spacing: 1px; color: var(--ink2); }
+  .duo-d { font-size: 72px; font-weight: 800; letter-spacing: -2px; color: #fff; }
+  .duo-time { display: flex; flex-direction: column; gap: 3px; padding-left: 18px; border-left: 1px solid rgba(255,255,255,0.38); }
+  .duo-wd { font-size: 19px; font-weight: 700; line-height: 1.2; color: #fff; }
+  .duo-tm { font-size: 16px; line-height: 1.2; color: var(--ink2); }
+  .duo-stage .duo-panel h3 { font-size: 27px; line-height: 1.2; font-weight: 700; letter-spacing: -0.2px; color: #fff; margin: 0 0 10px; text-wrap: balance; }
+  .duo-stage .duo-panel .duo-lead { font-size: 15px; line-height: 1.55; color: var(--ink2); margin: 0 0 16px; flex-grow: 0; text-wrap: pretty; }
+  .duo-list { list-style: none; display: grid; gap: 10px; margin: 0 0 22px; padding: 0; }
+  .duo-list li { position: relative; padding-left: 30px; font-size: 14.5px; line-height: 1.45; color: #fff; text-wrap: pretty; }
+  .duo-list li::before { content: '\2713'; content: '\2713' / ''; position: absolute; left: 0; top: 0; width: 20px; height: 20px; display: grid; place-items: center; border-radius: 50%; background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.4); font-size: 11px; font-weight: 800; line-height: 1; }
+  .duo-who { margin-top: auto; padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.22); min-height: 108px; }
+  .duo-who-h { display: block; margin-bottom: 8px; font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--ink2); }
+  .duo-spk { display: grid; gap: 6px; margin: 0; }
+  .duo-spk > div { display: grid; grid-template-columns: 82px minmax(0, 1fr); column-gap: 10px; align-items: baseline; }
+  .duo-spk dt { font-size: 11px; font-weight: 700; letter-spacing: 1.4px; text-transform: uppercase; color: var(--ink2); }
+  .duo-spk dd { margin: 0; font-size: 13.5px; line-height: 1.4; color: #fff; }
+  .duo-spk .duo-p { display: block; }
+  .duo-spk b { font-weight: 600; }
+  .duo-role { color: var(--ink2); }
+  .duo-role::before { content: '\00b7'; content: '\00b7' / ''; margin: 0 7px; }
+  .duo-stage .duo-panel .card-actions { margin-top: 20px; }
+  .duo-stage .btn.duo-cta { display: inline-flex; align-items: center; gap: 8px; padding: 13px 26px; border-radius: 12px; background: #fff; color: var(--solid); font-size: 15.5px; font-weight: 700; box-shadow: 0 10px 24px rgba(0,0,0,0.26); transition: transform 0.15s ease, box-shadow 0.15s ease; }
+  .duo-stage .btn.duo-cta:hover { background: #fff; transform: translateY(-2px); box-shadow: 0 14px 30px rgba(0,0,0,0.34); }
+  .duo-stage .btn.duo-cta:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+  .duo-cta [aria-hidden] { transition: transform 0.15s ease; }
+  .duo-cta:hover [aria-hidden] { transform: translateX(3px); }
+  @media (prefers-reduced-motion: no-preference) {
+    .duo-bridge::after { content: ''; position: absolute; inset: 0; border-radius: 50%; box-shadow: 0 0 0 0 rgba(255,255,255,0.55); animation: duoPulse 2.4s ease-out infinite; }
+    .duo-count:not(.is-over) .cd-dot { animation: duoDot 1.8s ease-out infinite; }
+  }
+  @keyframes duoPulse { 0% { box-shadow: 0 0 0 0 rgba(255,255,255,0.5); } 80%, 100% { box-shadow: 0 0 0 16px rgba(255,255,255,0); } }
+  @keyframes duoDot { 0% { box-shadow: 0 0 0 0 rgba(125,255,210,0.6); } 80%, 100% { box-shadow: 0 0 0 7px rgba(125,255,210,0); } }
+
+  /* One part showing (the other is over, or filtered out): the bridge goes and the stage becomes a single panel */
+  :is(.duo-band:has(.duo-panel--1.card-hidden), body.hide-past .duo-band:has(.duo-panel--1.event-card--past:not([data-recording])), .duo-band:has(.duo-panel--2.card-hidden), body.hide-past .duo-band:has(.duo-panel--2.event-card--past:not([data-recording]))) .duo-bridge { display: none; }
+  :is(.duo-band:has(.duo-panel--1.card-hidden), body.hide-past .duo-band:has(.duo-panel--1.event-card--past:not([data-recording])), .duo-band:has(.duo-panel--2.card-hidden), body.hide-past .duo-band:has(.duo-panel--2.event-card--past:not([data-recording]))) .duo-note-both { display: none; }
+  :is(.duo-band:has(.duo-panel--1.card-hidden), body.hide-past .duo-band:has(.duo-panel--1.event-card--past:not([data-recording])), .duo-band:has(.duo-panel--2.card-hidden), body.hide-past .duo-band:has(.duo-panel--2.event-card--past:not([data-recording]))) .duo-note-one { display: inline; }
+  @media (min-width: 1041px) {
+    :is(.duo-band:has(.duo-panel--1.card-hidden), body.hide-past .duo-band:has(.duo-panel--1.event-card--past:not([data-recording])), .duo-band:has(.duo-panel--2.card-hidden), body.hide-past .duo-band:has(.duo-panel--2.event-card--past:not([data-recording]))) .duo-stage { max-width: 700px; }
+    :is(.duo-band:has(.duo-panel--1.card-hidden), body.hide-past .duo-band:has(.duo-panel--1.event-card--past:not([data-recording])), .duo-band:has(.duo-panel--2.card-hidden), body.hide-past .duo-band:has(.duo-panel--2.event-card--past:not([data-recording]))) .duo-stage::before, :is(.duo-band:has(.duo-panel--1.card-hidden), body.hide-past .duo-band:has(.duo-panel--1.event-card--past:not([data-recording])), .duo-band:has(.duo-panel--2.card-hidden), body.hide-past .duo-band:has(.duo-panel--2.event-card--past:not([data-recording]))) .duo-net { display: none; }
+    :is(.duo-band:has(.duo-panel--1.card-hidden), body.hide-past .duo-band:has(.duo-panel--1.event-card--past:not([data-recording]))) .duo-stage { background: radial-gradient(520px 360px at 8% 0%, rgba(255,255,255,0.13), transparent 62%), linear-gradient(135deg, #4a35c4 0%, #231a6d 100%); }
+    :is(.duo-band:has(.duo-panel--2.card-hidden), body.hide-past .duo-band:has(.duo-panel--2.event-card--past:not([data-recording]))) .duo-stage { background: radial-gradient(520px 360px at 8% 0%, rgba(255,255,255,0.13), transparent 62%), linear-gradient(135deg, #0a7566 0%, #053a35 100%); }
+    :is(.duo-band:has(.duo-panel--1.card-hidden), body.hide-past .duo-band:has(.duo-panel--1.event-card--past:not([data-recording]))) .duo-panel--2 { padding-left: 44px; }
+    :is(.duo-band:has(.duo-panel--2.card-hidden), body.hide-past .duo-band:has(.duo-panel--2.event-card--past:not([data-recording]))) .duo-panel--1 { padding-right: 44px; }
+  }
+  @media (max-width: 1040px) {
+    .duo-stage { flex-direction: column; max-width: 680px; background: none; box-shadow: none; border-radius: 0; overflow: visible; }
+    .duo-stage::before, .duo-net { display: none; }
+    .duo-stage .duo-panel { padding: 36px 30px 32px; border-radius: 26px; box-shadow: 0 24px 50px rgba(30,24,100,0.26); }
+    .duo-stage .duo-panel--1 { background: linear-gradient(150deg, #053a35 0%, #0a7566 100%); }
+    .duo-stage .duo-panel--2 { background: linear-gradient(150deg, #4a35c4 0%, #231a6d 100%); }
+    .duo-stage .duo-panel:hover { box-shadow: 0 24px 50px rgba(30,24,100,0.26); }
+    .duo-bridge { position: relative; left: auto; top: auto; margin: -22px auto; width: 56px; height: 56px; }
+    .duo-bridge svg { width: 26px; height: 26px; transform: rotate(90deg); }
+    .duo-who { min-height: 0; }
+  }
+  @media (max-width: 640px) {
+    .duo-band { padding: 44px 0 40px; }
+    .duo-title { font-size: 29px; }
+    .duo-sub { font-size: 15.5px; }
+    .duo-stage .duo-panel { padding: 30px 22px 28px; border-radius: 22px; }
+    .duo-m { font-size: 36px; }
+    .duo-d { font-size: 58px; }
+    .duo-wd { font-size: 17px; }
+    .duo-stage .duo-panel h3 { font-size: 23px; }
+    .duo-count { margin-left: 0; }
+    .duo-spk > div { grid-template-columns: minmax(0, 1fr); row-gap: 2px; }
+    .duo-stage .btn.duo-cta, .duo-reg { width: 100%; justify-content: center; }
+  }
 
   /* Lesser spotlight bands (FabCon recap, Azure SRE Agent series): shared eyebrow, header, and "lite" card styles */
   .spotlight-lite { padding: 32px 0 26px; background: linear-gradient(135deg, #eef4fb 0%, #eaf2f8 55%, #eef6f4 100%); border-bottom: 1px solid #dbe6ef; }
@@ -553,18 +748,39 @@
     .iad-chip { color: #d3d5d9; background: #2a2e35; }
     .iad-slot .btn.iad-reg { background: var(--iad-solid); }
 
-    /* Featured series (Foundry carousel) */
+    /* Foundry webinar series (recordings) */
     .spotlight { background: linear-gradient(135deg, #1c1630 0%, #161b2b 55%, #131a25 100%); border-bottom-color: #2c2540; }
+    .spotlight::before { background: rgba(124,92,224,0.28); }
+    .spotlight::after { background: rgba(214,92,190,0.16); }
     .spotlight-eyebrow { color: #d2b8f7; background: rgba(155,107,224,0.2); }
-    .spotlight .section-header h2 { color: #d2b8f7; }
-    .spotlight-note { color: #a9adb4; }
-    .spotlight-note strong { color: #d2b8f7; }
-    .event-card--spotlight { border-top-color: #9b6be0; }
-    .spotlight .carousel-track .event-card.is-active { box-shadow: 0 22px 48px rgba(0,0,0,0.6); }
-    .spotlight .carousel-btn { background: #1e2127; border-color: #3d3456; color: #d2b8f7; box-shadow: 0 3px 12px rgba(0,0,0,0.45); }
-    .spotlight .carousel-btn:hover { background: #2a2440; }
-    .spotlight .carousel-dots button { background: #3d3456; }
-    .spotlight .carousel-dots button.active { background: #a07be0; }
+    .remi-kicker { color: #c9a8f5; }
+    .spotlight .section-header h2 { color: #f3eefc; }
+    .remi-grad { background-image: linear-gradient(90deg, #b79cff 0%, #ff8ad8 100%); }
+    .remi-facts { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.12); box-shadow: none; }
+    .remi-facts > div + div { border-left-color: rgba(255,255,255,0.12); }
+    .remi-facts b { color: #e6dcfb; }
+    .remi-facts span { color: #a9a1bd; }
+    .remi-cta:focus-visible { outline-color: #fff; }
+    .spotlight .remi-card { border-color: #2f333b; box-shadow: 0 6px 20px rgba(0,0,0,0.4); }
+    .spotlight .remi-card:hover, .spotlight .remi-card.event-card--past:hover { box-shadow: 0 18px 40px rgba(0,0,0,0.55); }
+    .spotlight .remi-body h3 { color: #f3f3f3; }
+    .remi-card .remi-sum { color: #c3bfd2; }
+    .remi-card:focus-within { outline-color: #b79cff; }
+
+    /* Fabric & Foundry band: the stage stays vivid in both schemes; the band around it and its header go dark */
+    .duo-band { background: linear-gradient(180deg, #11141a 0%, #0f1218 100%); border-bottom-color: #232833; }
+    .duo-band::before { background: rgba(30,192,143,0.2); }
+    .duo-band::after { background: rgba(112,84,240,0.26); }
+    .duo-eyebrow { color: #cfd6ff; background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.16); box-shadow: none; }
+    .duo-title { color: #f4f6fb; }
+    .duo-title .duo-t1 { color: #3fd9bf; }
+    .duo-title .duo-t2 { color: #a99bff; }
+    .duo-sub { color: #b4bac6; }
+    .duo-sub .duo-t1 { color: #5fe0c8; }
+    .duo-sub .duo-t2 { color: #b9adff; }
+    .duo-note { color: #98a0ad; }
+    .duo-reg:focus-visible { outline-color: #fff; }
+    .duo-stage { box-shadow: 0 30px 70px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,255,255,0.08); }
 
     /* Featured webinar bands (SRE; the FabCon and GitHub bands are dark in both schemes) */
     .spotlight-lite { background: linear-gradient(135deg, #111e2b 0%, #12202a 55%, #11211d 100%); border-bottom-color: #22303c; }
@@ -824,71 +1040,118 @@ document.addEventListener('DOMContentLoaded', function () {
   </div>
 </div>
 
-<section class="spotlight">
+<section class="duo-band" id="fabric-foundry-agents" aria-labelledby="duo-title">
   <div class="container">
-    <div class="section-header">
-      <span class="spotlight-eyebrow">✨ Featured Series</span>
-      <h2>Azure AI Foundry Webinar Series — Build “Remi”: From One Prompt to Production</h2>
-      <p>Five Thursdays, one solution that grows every week. Follow Nimbus, a mid-size insurer, as it builds “Remi,” an always-on claims assistant — starting from a single model call and ending with a governed, evaluated, multi-agent system with a live voice line, all on Azure AI Foundry. Every session is ~60% hands-on build and ~40% business value. Attend one or attend all five; the story compounds.</p>
-      <div class="spotlight-note">🕐 All sessions <strong>Thursdays, Sep 10 – Oct 8</strong> · shown below in your local time zone.</div>
-    </div>
-    <div class="carousel">
-      <button type="button" class="carousel-btn carousel-prev" aria-label="Previous sessions">&#8249;</button>
-      <div class="stage">
-        <div class="carousel-track">
-
-      <div class="event-card event-card--spotlight" data-type="Training" data-modality="Virtual" data-month="9" data-recording="https://aka.ms/RemiSession1" data-search="azure ai foundry webinar series session 1 foundations and model selection remi nimbus pick the right model quality latency cost model router adjuster note structured claim remi nimbus virtual">
-        <span class="event-tag tag-spotlight">Session 1</span>
-        <h3>Session 1 — Foundations &amp; Model Selection</h3>
-        <div class="event-meta"><span class="icon">📅</span> <span class="event-time" data-start="2026-09-10T19:00:00Z" data-end="2026-09-10T20:30:00Z"></span></div>
-        <div class="event-meta event-meta-sub"><span class="icon">💻</span> Virtual · 90 min · No experience required</div>
-        <p>Cut through the jargon and learn to pick the right model by quality, latency, and cost — not the “best” one. Watch a messy adjuster note turn into a clean, structured claim in seconds, and see a model router send easy work to a cheap model and hard work to a strong one.</p>
-        <div class="card-actions"><a class="btn" href="https://msit.events.teams.microsoft.com/event/msit.a5da4a4d-6ade-4db5-be06-da6c46daa062@72f988bf-86f1-41af-91ab-2d7cd011db47?source=copyLinkOneEventsShareDialog" target="_blank" rel="noopener">Register</a></div>
+    <header class="duo-head">
+      <span class="duo-eyebrow"><span class="duo-new">New</span>2-part webinar series · ProArch + Microsoft</span>
+      <h2 class="duo-title" id="duo-title">Build Enterprise AI Agents with <span class="duo-t1">Fabric</span> &amp; <span class="duo-t2">Foundry</span></h2>
+      <p class="duo-sub">From connected enterprise data to intelligent AI agents. See how <strong class="duo-t1">Microsoft Fabric</strong> becomes the data foundation — and how <strong class="duo-t2">Microsoft Foundry</strong> brings reasoning, context, and action into your AI experiences.</p>
+      <div class="duo-actions">
+        <a class="duo-reg" href="https://www.proarch.com/events/microsoft-fabric-foundry-ai-agents-webinar?utm_campaign=53802148-ProArch%20AI-Services&amp;utm_source=Microsoft%20Sellers&amp;utm_medium=Microsoft%20Sellers" target="_blank" rel="noopener" aria-label="Save my seat: register for the Fabric and Foundry webinar series">Save my seat <span aria-hidden="true">→</span></a>
+        <p class="duo-note"><span class="duo-note-both">One short form · pick one or both sessions · times shown in your local time zone</span><span class="duo-note-one">One short form · times shown in your local time zone</span></p>
       </div>
-
-      <div class="event-card event-card--spotlight" data-type="Training" data-modality="Virtual" data-month="9" data-recording="https://aka.ms/RemiSession2" data-search="azure ai foundry webinar series session 2 enterprise data grounding and content understanding rag citations scanned packets photos video structured fields remi nimbus virtual">
-        <span class="event-tag tag-spotlight">Session 2</span>
-        <h3>Session 2 — Enterprise Data, Grounding &amp; Content Understanding</h3>
-        <div class="event-meta"><span class="icon">📅</span> <span class="event-time" data-start="2026-09-17T19:00:00Z" data-end="2026-09-17T20:30:00Z"></span></div>
-        <div class="event-meta event-meta-sub"><span class="icon">💻</span> Virtual · 90 min</div>
-        <p>Make AI answer from your own truth. Connect enterprise data, ground it with RAG, and turn scanned packets, photos, and video into structured fields with citations you can defend.</p>
-        <div class="card-actions"><a class="btn" href="https://msit.events.teams.microsoft.com/event/msit.e7db266b-cd24-492c-b4cf-d5baebb6ea22@72f988bf-86f1-41af-91ab-2d7cd011db47?source=copyLinkOneEventsShareDialog" target="_blank" rel="noopener">Register</a></div>
-      </div>
-
-      <div class="event-card event-card--spotlight" data-type="Training" data-modality="Virtual" data-month="9" data-recording="https://aka.ms/RemiSession3" data-search="azure ai foundry webinar series session 3 tools actions and the hosted agent verify policy live weather estimate payout file claim human approval gate remi nimbus virtual">
-        <span class="event-tag tag-spotlight">Session 3</span>
-        <h3>Session 3 — Tools, Actions &amp; the Hosted Agent</h3>
-        <div class="event-meta"><span class="icon">📅</span> <span class="event-time" data-start="2026-09-24T19:00:00Z" data-end="2026-09-24T20:30:00Z"></span></div>
-        <div class="event-meta event-meta-sub"><span class="icon">💻</span> Virtual · 90 min</div>
-        <p>Cross the line from answering to doing. Build a hosted agent that verifies a policy, checks live weather, estimates a payout, and files the claim — with a human approval gate.</p>
-        <div class="card-actions"><a class="btn" href="https://msit.events.teams.microsoft.com/event/msit.371d9252-482a-4a1e-b537-04aa964ece21@72f988bf-86f1-41af-91ab-2d7cd011db47?source=copyLinkOneEventsShareDialog" target="_blank" rel="noopener">Register</a></div>
-      </div>
-
-      <div class="event-card event-card--spotlight" data-type="Training" data-modality="Virtual" data-month="10" data-recording="https://aka.ms/RemiSession4" data-search="azure ai foundry webinar series session 4 multi-agent orchestration and voice coordinated team real phone call live spoken claim after hours remi nimbus virtual">
-        <span class="event-tag tag-spotlight">Session 4</span>
-        <h3>Session 4 — Multi-Agent Orchestration &amp; Voice</h3>
-        <div class="event-meta"><span class="icon">📅</span> <span class="event-time" data-start="2026-10-01T19:00:00Z" data-end="2026-10-01T20:30:00Z"></span></div>
-        <div class="event-meta event-meta-sub"><span class="icon">💻</span> Virtual · 90 min</div>
-        <p>Turn one overloaded agent into a coordinated team, then put a real phone call at the front door. See a live spoken claim handled end to end, after hours.</p>
-        <div class="card-actions"><a class="btn" href="https://msit.events.teams.microsoft.com/event/msit.87e18f12-1feb-4be4-9860-7e95af833034@72f988bf-86f1-41af-91ab-2d7cd011db47?source=copyLinkOneEventsShareDialog" target="_blank" rel="noopener">Register</a></div>
-      </div>
-
-      <div class="event-card event-card--spotlight" data-type="Training" data-modality="Virtual" data-month="10" data-recording="https://aka.ms/RemiSession5" data-search="azure ai foundry webinar series session 5 production-grade gateway security evaluation genaiops guardrails red-teaming ci cd remi nimbus virtual 120 minutes">
-        <span class="event-tag tag-spotlight">Session 5</span>
-        <h3>Session 5 — Production-Grade: Gateway, Security, Evaluation &amp; GenAIOps</h3>
-        <div class="event-meta"><span class="icon">📅</span> <span class="event-time" data-start="2026-10-08T19:00:00Z" data-end="2026-10-08T21:00:00Z"></span></div>
-        <div class="event-meta event-meta-sub"><span class="icon">💻</span> Virtual · 120 min</div>
-        <p>Everything between “it works in a demo” and “it runs the business.” AI gateway, security, guardrails, evaluations, red-teaming, and CI/CD. This is the session that gets you to production.</p>
-        <div class="card-actions"><a class="btn" href="https://msit.events.teams.microsoft.com/event/msit.c49a1635-6cc7-452d-bb79-77b949c50cc7@72f988bf-86f1-41af-91ab-2d7cd011db47?source=copyLinkOneEventsShareDialog" target="_blank" rel="noopener">Register</a></div>
-      </div>
-
+    </header>
+    <div class="duo-stage">
+      <svg class="duo-net" viewBox="0 0 360 300" aria-hidden="true" focusable="false"><g fill="none" stroke="#fff" stroke-width="1.2" stroke-linecap="round"><path d="M30 220 110 160 190 190 260 110 330 150M110 160 120 70 210 40 260 110M190 190 250 250 330 230M30 220 70 275M120 70 60 40M210 40 300 30M330 150 330 230"/><circle cx="260" cy="110" r="14" opacity=".7"/></g><g fill="#fff"><circle cx="30" cy="220" r="3.5"/><circle cx="110" cy="160" r="5"/><circle cx="190" cy="190" r="3.5"/><circle cx="260" cy="110" r="6"/><circle cx="330" cy="150" r="3.5"/><circle cx="120" cy="70" r="4"/><circle cx="210" cy="40" r="3.5"/><circle cx="250" cy="250" r="4"/><circle cx="330" cy="230" r="3.5"/><circle cx="70" cy="275" r="3"/><circle cx="60" cy="40" r="3"/><circle cx="300" cy="30" r="3"/></g></svg>
+      <!-- data-start is UTC (2 PM Eastern); the script below shows each part's date and time in the visitor's time zone.
+           When a part's recording is posted, add data-recording="URL" to its card and it switches to "View recording". -->
+      <div class="event-card duo-panel duo-panel--1" data-type="Briefing" data-modality="Virtual" data-month="10" data-partner="ProArch" data-start="2026-10-28T18:00:00Z" data-search="build enterprise ai agents with fabric and foundry two-part webinar series proarch microsoft part 1 webinar 01 microsoft fabric building the data foundation for enterprise ai contract intelligence fragmented enterprise data ai-ready foundation copilots agents onelake lakehouse warehouse semantic models kpis relationships rules power bi copilot fabric data agents natural language governed foundation venkatesh rajupalepu swathi priya mannepalli briefing virtual webinar october 28 data analytics partner">
+        <div class="duo-top">
+          <span class="duo-part">Part 1 of 2</span>
+          <span class="duo-prod">Microsoft Fabric</span>
+          <span class="duo-count"><span class="cd-dot" aria-hidden="true"></span><span class="cd-text">Starts Oct 28</span></span>
         </div>
+        <div class="duo-when">
+          <div class="duo-date"><span class="duo-m">OCT</span><span class="duo-d">28</span></div>
+          <div class="duo-time"><span class="duo-wd">Wednesday</span><span class="duo-tm">2:00 PM ET</span></div>
+        </div>
+        <h3>Building the Data Foundation for Enterprise AI</h3>
+        <p class="duo-lead">A Contract Intelligence example shows how Microsoft Fabric turns fragmented enterprise data into an AI-ready foundation for copilots and agents.</p>
+        <ul class="duo-list" aria-label="What you will learn">
+          <li>Turn fragmented data into trusted, business-ready information with OneLake, Lakehouse, and Warehouse</li>
+          <li>Add business context with semantic models, KPIs, and rules you can reuse across Power BI, Copilot, and AI apps</li>
+          <li>Ask business questions in plain language with Fabric Data Agents</li>
+        </ul>
+        <div class="duo-who">
+          <span class="duo-who-h">Speakers</span>
+          <dl class="duo-spk">
+            <div><dt>ProArch</dt><dd><span class="duo-p"><b>Venkatesh Rajupalepu</b><span class="duo-role">VP, Solutioning &amp; Technology</span></span></dd></div>
+            <div><dt>Microsoft</dt><dd><span class="duo-p"><b>Swathi Priya Mannepalli</b><span class="duo-role">Sr. DSE, Data &amp; AI / Fabric</span></span></dd></div>
+          </dl>
+        </div>
+        <div class="card-actions"><a class="btn duo-cta" href="https://www.proarch.com/events/microsoft-fabric-foundry-ai-agents-webinar?utm_campaign=53802148-ProArch%20AI-Services&amp;utm_source=Microsoft%20Sellers&amp;utm_medium=Microsoft%20Sellers" target="_blank" rel="noopener" aria-label="Save my seat: register for Part 1, Building the Data Foundation for Enterprise AI">Save my seat <span aria-hidden="true">→</span></a></div>
       </div>
-      <button type="button" class="carousel-btn carousel-next" aria-label="Next sessions">&#8250;</button>
+      <div class="duo-bridge" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><defs><linearGradient id="duo-arrow" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#0a7a69"/><stop offset="1" stop-color="#4a35c4"/></linearGradient></defs><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="url(#duo-arrow)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="event-card duo-panel duo-panel--2" data-type="Training" data-modality="Virtual" data-month="11" data-partner="ProArch" data-start="2026-11-18T19:00:00Z" data-search="build enterprise ai agents with fabric and foundry two-part webinar series proarch microsoft part 2 webinar 02 microsoft foundry turning enterprise data into an intelligent ai agent azure ai foundry fabric iq foundry agents semantic models ontologies fabric data agents business context enterprise knowledge tools governance identity security observability human approval governed actions venkatesh rajupalepu pj bhakta srinivas kasu training virtual webinar november 18 partner">
+        <div class="duo-top">
+          <span class="duo-part">Part 2 of 2</span>
+          <span class="duo-prod">Microsoft Foundry</span>
+          <span class="duo-count"><span class="cd-dot" aria-hidden="true"></span><span class="cd-text">Starts Nov 18</span></span>
+        </div>
+        <div class="duo-when">
+          <div class="duo-date"><span class="duo-m">NOV</span><span class="duo-d">18</span></div>
+          <div class="duo-time"><span class="duo-wd">Wednesday</span><span class="duo-tm">2:00 PM ET</span></div>
+        </div>
+        <h3>Turning Enterprise Data into an Intelligent AI Agent</h3>
+        <p class="duo-lead">Building on Part 1, see how Microsoft Foundry and Fabric IQ turn trusted enterprise context into AI agents that can investigate, reason, recommend, and act.</p>
+        <ul class="duo-list" aria-label="What you will learn">
+          <li>Give agents trusted business context with Fabric’s semantic foundation and Fabric IQ</li>
+          <li>Connect semantic models, ontologies, Fabric Data Agents, and Foundry Agents in one enterprise AI architecture</li>
+          <li>Move from recommendations to governed action with identity, security, observability, and human approval</li>
+        </ul>
+        <div class="duo-who">
+          <span class="duo-who-h">Speakers</span>
+          <dl class="duo-spk">
+            <div><dt>ProArch</dt><dd><span class="duo-p"><b>Venkatesh Rajupalepu</b><span class="duo-role">VP, Solutioning &amp; Technology</span></span></dd></div>
+            <div><dt>Microsoft</dt><dd><span class="duo-p"><b>PJ Bhakta</b><span class="duo-role">DSE, Apps &amp; AI</span></span><span class="duo-p"><b>Srinivas Kasu</b><span class="duo-role">DSE, Apps &amp; AI</span></span></dd></div>
+          </dl>
+        </div>
+        <div class="card-actions"><a class="btn duo-cta" href="https://www.proarch.com/events/microsoft-fabric-foundry-ai-agents-webinar?utm_campaign=53802148-ProArch%20AI-Services&amp;utm_source=Microsoft%20Sellers&amp;utm_medium=Microsoft%20Sellers" target="_blank" rel="noopener" aria-label="Save my seat: register for Part 2, Turning Enterprise Data into an Intelligent AI Agent">Save my seat <span aria-hidden="true">→</span></a></div>
+      </div>
     </div>
-    <div class="carousel-dots" role="tablist" aria-label="Featured session slides"></div>
   </div>
 </section>
+<script>
+/* Fabric & Foundry band: each part's date, weekday, time, and countdown in the visitor's own time zone. ProArch lists no length, so a
+   part counts as live for 90 minutes after it starts and is then marked past (hidden by "Hide past events" unless it has a recording). */
+(function () {
+  var band = document.querySelector('.duo-band');
+  if (!band) return;
+  var LIVE_MIN = 90, parts = [];
+  function plural(n, one, many) { return n + ' ' + (n === 1 ? one : many); }
+  Array.from(band.querySelectorAll('.duo-panel[data-start]')).forEach(function (card) {
+    var start = new Date(card.dataset.start);
+    if (isNaN(start.getTime())) return;
+    function put(sel, txt) { var el = card.querySelector(sel); if (el) el.textContent = txt; }
+    put('.duo-m', start.toLocaleDateString(undefined, { month: 'short' }).replace('.', '').toUpperCase());
+    put('.duo-d', String(start.getDate()));
+    put('.duo-wd', start.toLocaleDateString(undefined, { weekday: 'long' }));
+    put('.duo-tm', start.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit', timeZoneName: 'short' }));
+    var pill = card.querySelector('.duo-count');
+    parts.push({ card: card, start: start, end: new Date(start.getTime() + LIVE_MIN * 60000), pill: pill, txt: pill && pill.querySelector('.cd-text'), btn: card.querySelector('.duo-cta') });
+  });
+  if (!parts.length) return;
+  function tick() {
+    var now = new Date();
+    parts.forEach(function (x) {
+      var over = now >= x.end, live = !over && now >= x.start, rec = !!x.card.dataset.recording;
+      if (over) x.card.classList.add('event-card--past');
+      if (x.txt) {
+        if (over) x.txt.textContent = rec ? 'Recording available' : 'This session has ended';
+        else if (live) x.txt.textContent = 'Live now';
+        else {
+          var mins = Math.ceil((x.start - now) / 60000), d = Math.floor(mins / 1440), h = Math.floor((mins % 1440) / 60), m = mins % 60;
+          x.txt.textContent = 'Starts in ' + (d >= 3 ? plural(d, 'day', 'days') : d > 0 ? plural(d, 'day', 'days') + ' ' + plural(h, 'hr', 'hrs') : h > 0 ? plural(h, 'hr', 'hrs') + ' ' + m + ' min' : m + ' min');
+        }
+      }
+      if (x.pill) { x.pill.classList.toggle('is-live', live); x.pill.classList.toggle('is-over', over); }
+      if (over && !rec && x.btn) x.btn.textContent = 'Session ended';
+    });
+  }
+  tick();
+  setInterval(tick, 60000);
+})();
+</script>
 
 <section class="spotlight-lite fabcon-band">
   <div class="fabcon-bg" aria-hidden="true">
@@ -982,6 +1245,36 @@ document.addEventListener('DOMContentLoaded', function () {
   setInterval(tick, 60000);
 })();
 </script>
+
+<section class="spotlight-lite spotlight-lite--sre">
+  <div class="container">
+    <div class="section-header">
+      <span class="spotlight-lite-eyebrow">🤖 Featured Azure Webinar Series</span>
+      <h2>Azure SRE Agent: Reliability, Reimagined with Agentic AI</h2>
+      <p>Site Reliability Engineering, reimagined with agentic AI. This two-part series takes you from first principles to a hands-on technical deep dive — see how Azure SRE Agent investigates, diagnoses, and helps remediate incidents, and what it takes to run it responsibly in the enterprise.</p>
+    </div>
+    <div class="events events--pair">
+      <div class="event-card event-card--lite" data-type="Briefing" data-modality="Virtual" data-month="10" data-recording="https://microsoft-my.sharepoint.com/personal/jubryant_microsoft_com1/_layouts/15/stream.aspx?id=%2Fpersonal%2Fjubryant%5Fmicrosoft%5Fcom1%2FDocuments%2FRecordings%2FAzure%20SRE%20Agent%20Series%20Reliability%2C%20Reimagined%20with%20Agentic%20AI%20%2D%20Part%201%20%E2%80%94%20Azure%20SRE%20Agent%20Fundamentals%2D20261015%5F180229UTC%2DMeeting%20Recording%2Emp4&amp;referrer=StreamWebApp%2EWeb&amp;referrerScenario=AddressBarCopied%2Eview%2E32fb920f%2De5a1%2D46c7%2Dbf5f%2D6111d5ed4608&amp;ga=1&amp;share=cQpQsjfbeWAMRakYdetfOEY%2DEgUCEvY5fMqkdRvfkF7yM%2D7lBg" data-search="azure sre agent series reliability reimagined with agentic ai part 1 fundamentals site reliability engineering it operations incident investigation diagnosis remediation firefighting hybrid integrations security governance permissions consumption ben magazino harry arce dan kraft briefing virtual webinar october 15">
+        <span class="event-tag tag-briefing">Azure Webinar</span>
+        <div class="lite-series">Part 1 of 2 · <strong>Azure SRE Agent Series</strong></div>
+        <h3>Azure SRE Agent Fundamentals</h3>
+        <div class="event-meta"><span class="icon">📅</span> <span class="event-time" data-start="2026-10-15T18:00:00Z" data-end="2026-10-15T19:15:00Z"></span></div>
+        <div class="event-meta event-meta-sub"><span class="icon">💻</span> Virtual · 75 min · Ben Magazino, Harry Arce &amp; Dan Kraft</div>
+        <p>An introduction to how agentic AI is reshaping IT operations and Site Reliability Engineering — moving teams from reactive firefighting to AI-assisted investigation, diagnosis, and recommended remediation. Watch the agent work an issue end to end, then explore responsible enterprise adoption: hybrid scenarios, integrations, security, governance, and choosing a strong first use case. Closes with live Q&amp;A.</p>
+        <div class="card-actions"><a class="btn" href="https://msit.events.teams.microsoft.com/event/msit.11201954-bb9a-4d5a-a8bd-45d2fdf3d4a6@72f988bf-86f1-41af-91ab-2d7cd011db47?source=copyLinkOneEventsShareDialog" target="_blank" rel="noopener">Register</a></div>
+      </div>
+      <div class="event-card event-card--lite" data-type="Training" data-modality="Virtual" data-month="10" data-search="azure sre agent series reliability reimagined with agentic ai part 2 technical deep dive architecture guardrails permissions networking data residency governance incident lifecycle detection investigation diagnosis remediation mcp servers apis scripts tools session insights human in the loop observability ben magazino harry arce dan kraft training virtual webinar october 29">
+        <span class="event-tag tag-training">Azure Webinar</span>
+        <div class="lite-series">Part 2 of 2 · <strong>Azure SRE Agent Series</strong></div>
+        <h3>Azure SRE Agent Technical Deep Dive</h3>
+        <div class="event-meta"><span class="icon">📅</span> <span class="event-time" data-start="2026-10-29T18:00:00Z" data-end="2026-10-29T19:15:00Z"></span></div>
+        <div class="event-meta event-meta-sub"><span class="icon">💻</span> Virtual · 75 min · Ben Magazino, Harry Arce &amp; Dan Kraft</div>
+        <p>A demonstration-driven deep dive into how Azure SRE Agent actually operates. Explore the architecture and guardrails that make it enterprise-ready — permissions, networking, data residency, and governance — then follow one incident through its full lifecycle. See how to extend the agent with MCP servers, APIs, and tools, and operationalize it day to day with human-in-the-loop review and Session Insights. Closes with live Q&amp;A.</p>
+        <div class="card-actions"><a class="btn" href="https://msit.events.teams.microsoft.com/event/msit.9c9bc8ea-3cef-497e-b023-1c1153aec21b@72f988bf-86f1-41af-91ab-2d7cd011db47?source=copyLinkOneEventsShareDialog" target="_blank" rel="noopener">Register</a></div>
+      </div>
+    </div>
+  </div>
+</section>
 
 <section class="ghs-band" aria-labelledby="ghs-title">
   <svg class="ghs-grid-art" viewBox="0 0 417 95" aria-hidden="true" focusable="false"><g stroke-width="4" stroke-linejoin="round"><path fill="#161b22" stroke="#161b22" d="M2 2h7v7h-7zM2 30h7v7h-7zM2 58h7v7h-7zM2 86h7v7h-7zM16 16h7v7h-7zM16 86h7v7h-7zM30 2h7v7h-7zM30 16h7v7h-7zM30 72h7v7h-7zM58 2h7v7h-7zM58 86h7v7h-7zM72 44h7v7h-7zM72 58h7v7h-7zM72 86h7v7h-7zM86 44h7v7h-7zM86 72h7v7h-7zM86 86h7v7h-7zM100 30h7v7h-7zM114 16h7v7h-7zM114 86h7v7h-7zM128 44h7v7h-7zM128 86h7v7h-7zM142 30h7v7h-7zM142 58h7v7h-7zM142 86h7v7h-7zM156 2h7v7h-7zM156 16h7v7h-7zM170 2h7v7h-7zM170 30h7v7h-7zM170 72h7v7h-7zM170 86h7v7h-7zM184 30h7v7h-7zM198 2h7v7h-7zM198 16h7v7h-7zM198 72h7v7h-7zM212 2h7v7h-7zM212 16h7v7h-7zM226 72h7v7h-7zM226 86h7v7h-7zM240 72h7v7h-7zM240 86h7v7h-7zM254 16h7v7h-7zM254 30h7v7h-7zM268 16h7v7h-7zM268 30h7v7h-7zM268 72h7v7h-7zM268 86h7v7h-7zM282 2h7v7h-7zM282 16h7v7h-7zM282 58h7v7h-7zM282 86h7v7h-7zM296 2h7v7h-7zM296 16h7v7h-7zM310 2h7v7h-7zM324 44h7v7h-7zM324 72h7v7h-7zM338 16h7v7h-7zM338 30h7v7h-7zM338 58h7v7h-7zM352 2h7v7h-7zM352 44h7v7h-7zM366 2h7v7h-7zM366 44h7v7h-7zM366 58h7v7h-7zM366 72h7v7h-7zM366 86h7v7h-7zM380 2h7v7h-7zM380 30h7v7h-7zM380 44h7v7h-7zM380 58h7v7h-7zM380 86h7v7h-7zM394 16h7v7h-7zM394 30h7v7h-7zM394 44h7v7h-7zM394 72h7v7h-7zM394 86h7v7h-7zM408 16h7v7h-7zM408 58h7v7h-7zM408 72h7v7h-7z"/><path fill="#0e4429" stroke="#0e4429" d="M2 72h7v7h-7zM16 58h7v7h-7zM30 58h7v7h-7zM30 86h7v7h-7zM44 16h7v7h-7zM44 44h7v7h-7zM44 58h7v7h-7zM44 72h7v7h-7zM58 30h7v7h-7zM58 72h7v7h-7zM72 2h7v7h-7zM86 2h7v7h-7zM100 2h7v7h-7zM100 44h7v7h-7zM100 72h7v7h-7zM114 58h7v7h-7zM128 58h7v7h-7zM142 2h7v7h-7zM142 16h7v7h-7zM156 30h7v7h-7zM156 58h7v7h-7zM156 86h7v7h-7zM170 44h7v7h-7zM170 58h7v7h-7zM184 2h7v7h-7zM184 58h7v7h-7zM184 86h7v7h-7zM198 44h7v7h-7zM212 30h7v7h-7zM212 44h7v7h-7zM212 72h7v7h-7zM226 16h7v7h-7zM226 30h7v7h-7zM226 44h7v7h-7zM240 30h7v7h-7zM268 2h7v7h-7zM268 44h7v7h-7zM268 58h7v7h-7zM282 30h7v7h-7zM296 30h7v7h-7zM296 72h7v7h-7zM296 86h7v7h-7zM310 16h7v7h-7zM310 44h7v7h-7zM310 58h7v7h-7zM324 16h7v7h-7zM324 30h7v7h-7zM324 58h7v7h-7zM352 30h7v7h-7zM352 72h7v7h-7zM352 86h7v7h-7zM380 16h7v7h-7zM394 2h7v7h-7zM408 44h7v7h-7z"/><path fill="#006d32" stroke="#006d32" d="M2 16h7v7h-7zM16 30h7v7h-7zM16 44h7v7h-7zM16 72h7v7h-7zM58 44h7v7h-7zM72 16h7v7h-7zM86 16h7v7h-7zM86 58h7v7h-7zM100 16h7v7h-7zM100 58h7v7h-7zM100 86h7v7h-7zM114 30h7v7h-7zM114 72h7v7h-7zM128 16h7v7h-7zM128 30h7v7h-7zM156 72h7v7h-7zM170 16h7v7h-7zM184 44h7v7h-7zM198 30h7v7h-7zM198 86h7v7h-7zM212 58h7v7h-7zM226 2h7v7h-7zM240 2h7v7h-7zM240 44h7v7h-7zM240 58h7v7h-7zM254 58h7v7h-7zM254 72h7v7h-7zM296 44h7v7h-7zM296 58h7v7h-7zM310 30h7v7h-7zM310 72h7v7h-7zM324 2h7v7h-7zM324 86h7v7h-7zM338 44h7v7h-7zM338 72h7v7h-7zM352 58h7v7h-7zM366 16h7v7h-7zM366 30h7v7h-7zM394 58h7v7h-7zM408 30h7v7h-7z"/><path fill="#26a641" stroke="#26a641" d="M2 44h7v7h-7zM16 2h7v7h-7zM30 44h7v7h-7zM44 30h7v7h-7zM58 58h7v7h-7zM72 30h7v7h-7zM72 72h7v7h-7zM114 2h7v7h-7zM114 44h7v7h-7zM128 2h7v7h-7zM128 72h7v7h-7zM142 72h7v7h-7zM156 44h7v7h-7zM184 16h7v7h-7zM184 72h7v7h-7zM212 86h7v7h-7zM226 58h7v7h-7zM254 44h7v7h-7zM254 86h7v7h-7zM282 44h7v7h-7zM282 72h7v7h-7zM310 86h7v7h-7zM338 2h7v7h-7zM352 16h7v7h-7zM380 72h7v7h-7zM408 2h7v7h-7zM408 86h7v7h-7z"/><path fill="#39d353" stroke="#39d353" d="M30 30h7v7h-7zM44 2h7v7h-7zM44 86h7v7h-7zM58 16h7v7h-7zM86 30h7v7h-7zM142 44h7v7h-7zM198 58h7v7h-7zM240 16h7v7h-7zM254 2h7v7h-7zM338 86h7v7h-7z"/></g></svg>
@@ -1219,32 +1512,99 @@ document.addEventListener('DOMContentLoaded', function () {
 })();
 </script>
 
-<section class="spotlight-lite spotlight-lite--sre">
+<section class="spotlight" aria-labelledby="foundry-series-title">
   <div class="container">
     <div class="section-header">
-      <span class="spotlight-lite-eyebrow">🤖 Featured Azure Webinar Series</span>
-      <h2>Azure SRE Agent: Reliability, Reimagined with Agentic AI</h2>
-      <p>Site Reliability Engineering, reimagined with agentic AI. This two-part series takes you from first principles to a hands-on technical deep dive — see how Azure SRE Agent investigates, diagnoses, and helps remediate incidents, and what it takes to run it responsibly in the enterprise.</p>
+      <span class="spotlight-eyebrow">🎬 On-Demand Series</span>
+      <h2 id="foundry-series-title"><span class="remi-kicker">Azure AI Foundry Webinar Series<span class="remi-sr"> — </span></span>Build <span class="remi-grad">“Remi”</span>: From One Prompt to Production</h2>
+      <p>Five sessions, one solution that grows every week. Follow Nimbus, a mid-size insurer, as it builds “Remi,” an always-on claims assistant — starting from a single model call and ending with a governed, evaluated, multi-agent system with a live voice line, all on Azure AI Foundry. Watch one or watch all five; the story compounds.</p>
+      <div class="remi-actions">
+        <div class="remi-facts"><div><b>5</b><span>sessions</span></div><div><b>7.5 hrs</b><span>on demand</span></div><div><b>60 / 40</b><span>hands-on / business</span></div></div>
+        <a class="remi-cta" href="https://aka.ms/RemiSession1" target="_blank" rel="noopener">Start with Session 1</a>
+      </div>
     </div>
-    <div class="events events--pair">
-      <div class="event-card event-card--lite" data-type="Briefing" data-modality="Virtual" data-month="10" data-recording="https://microsoft-my.sharepoint.com/personal/jubryant_microsoft_com1/_layouts/15/stream.aspx?id=%2Fpersonal%2Fjubryant%5Fmicrosoft%5Fcom1%2FDocuments%2FRecordings%2FAzure%20SRE%20Agent%20Series%20Reliability%2C%20Reimagined%20with%20Agentic%20AI%20%2D%20Part%201%20%E2%80%94%20Azure%20SRE%20Agent%20Fundamentals%2D20261015%5F180229UTC%2DMeeting%20Recording%2Emp4&amp;referrer=StreamWebApp%2EWeb&amp;referrerScenario=AddressBarCopied%2Eview%2E32fb920f%2De5a1%2D46c7%2Dbf5f%2D6111d5ed4608&amp;ga=1&amp;share=cQpQsjfbeWAMRakYdetfOEY%2DEgUCEvY5fMqkdRvfkF7yM%2D7lBg" data-search="azure sre agent series reliability reimagined with agentic ai part 1 fundamentals site reliability engineering it operations incident investigation diagnosis remediation firefighting hybrid integrations security governance permissions consumption ben magazino harry arce dan kraft briefing virtual webinar october 15">
-        <span class="event-tag tag-briefing">Azure Webinar</span>
-        <div class="lite-series">Part 1 of 2 · <strong>Azure SRE Agent Series</strong></div>
-        <h3>Azure SRE Agent Fundamentals</h3>
-        <div class="event-meta"><span class="icon">📅</span> <span class="event-time" data-start="2026-10-15T18:00:00Z" data-end="2026-10-15T19:15:00Z"></span></div>
-        <div class="event-meta event-meta-sub"><span class="icon">💻</span> Virtual · 75 min · Ben Magazino, Harry Arce &amp; Dan Kraft</div>
-        <p>An introduction to how agentic AI is reshaping IT operations and Site Reliability Engineering — moving teams from reactive firefighting to AI-assisted investigation, diagnosis, and recommended remediation. Watch the agent work an issue end to end, then explore responsible enterprise adoption: hybrid scenarios, integrations, security, governance, and choosing a strong first use case. Closes with live Q&amp;A.</p>
-        <div class="card-actions"><a class="btn" href="https://msit.events.teams.microsoft.com/event/msit.11201954-bb9a-4d5a-a8bd-45d2fdf3d4a6@72f988bf-86f1-41af-91ab-2d7cd011db47?source=copyLinkOneEventsShareDialog" target="_blank" rel="noopener">Register</a></div>
+    <div class="spotlight-grid">
+
+      <div class="event-card event-card--spotlight remi-card" style="--g1:#6d5ce7;--g2:#4f46c8" data-type="Training" data-modality="Virtual" data-month="9" data-recording="https://aka.ms/RemiSession1" data-search="azure ai foundry webinar series session 1 foundations and model selection remi nimbus pick the right model quality latency cost model router adjuster note structured claim remi nimbus virtual choose the right model for your project by quality latency and cost on demand recording">
+        <div class="remi-cover">
+          <span class="remi-chip" aria-hidden="true">Session 1</span>
+          <span class="remi-chip remi-chip--r" aria-hidden="true">90 min</span>
+          <span class="remi-num" aria-hidden="true">01</span>
+          <span class="remi-glyph" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M24 7l4.2 12.8L41 24l-12.8 4.2L24 41l-4.2-12.8L7 24l12.8-4.2z"/><path d="M38 6v7M34.5 9.5h7"/></svg></span>
+          <span class="remi-prog" aria-hidden="true"><i class="on"></i><i></i><i></i><i></i><i></i></span>
+        </div>
+        <div class="remi-body">
+          <div class="event-meta"><span class="icon">📅</span> <span class="event-time" data-dates="only" data-start="2026-09-10T19:00:00Z" data-end="2026-09-10T20:30:00Z"></span><span class="remi-dur">90 min</span></div>
+          <h3><span class="remi-sr">Session 1 of 5: </span>Foundations &amp; Model Selection</h3>
+          <p class="remi-sum">Choose the right model for your project by quality, latency, and cost.</p>
+          <div class="card-actions"><a class="btn btn--rec" href="https://aka.ms/RemiSession1" target="_blank" rel="noopener" title="Cut through the jargon and learn to pick the right model by quality, latency, and cost — not the “best” one. Watch a messy adjuster note turn into a clean, structured claim in seconds, and see a model router send easy work to a cheap model and hard work to a strong one.">View recording</a></div>
+        </div>
       </div>
-      <div class="event-card event-card--lite" data-type="Training" data-modality="Virtual" data-month="10" data-search="azure sre agent series reliability reimagined with agentic ai part 2 technical deep dive architecture guardrails permissions networking data residency governance incident lifecycle detection investigation diagnosis remediation mcp servers apis scripts tools session insights human in the loop observability ben magazino harry arce dan kraft training virtual webinar october 29">
-        <span class="event-tag tag-training">Azure Webinar</span>
-        <div class="lite-series">Part 2 of 2 · <strong>Azure SRE Agent Series</strong></div>
-        <h3>Azure SRE Agent Technical Deep Dive</h3>
-        <div class="event-meta"><span class="icon">📅</span> <span class="event-time" data-start="2026-10-29T18:00:00Z" data-end="2026-10-29T19:15:00Z"></span></div>
-        <div class="event-meta event-meta-sub"><span class="icon">💻</span> Virtual · 75 min · Ben Magazino, Harry Arce &amp; Dan Kraft</div>
-        <p>A demonstration-driven deep dive into how Azure SRE Agent actually operates. Explore the architecture and guardrails that make it enterprise-ready — permissions, networking, data residency, and governance — then follow one incident through its full lifecycle. See how to extend the agent with MCP servers, APIs, and tools, and operationalize it day to day with human-in-the-loop review and Session Insights. Closes with live Q&amp;A.</p>
-        <div class="card-actions"><a class="btn" href="https://msit.events.teams.microsoft.com/event/msit.9c9bc8ea-3cef-497e-b023-1c1153aec21b@72f988bf-86f1-41af-91ab-2d7cd011db47?source=copyLinkOneEventsShareDialog" target="_blank" rel="noopener">Register</a></div>
+
+      <div class="event-card event-card--spotlight remi-card" style="--g1:#7a5ae0;--g2:#5a3fc4" data-type="Training" data-modality="Virtual" data-month="9" data-recording="https://aka.ms/RemiSession2" data-search="azure ai foundry webinar series session 2 enterprise data grounding and content understanding rag citations scanned packets photos video structured fields remi nimbus virtual make ai answer from your own data with citations you can defend on demand recording">
+        <div class="remi-cover">
+          <span class="remi-chip" aria-hidden="true">Session 2</span>
+          <span class="remi-chip remi-chip--r" aria-hidden="true">75 min</span>
+          <span class="remi-num" aria-hidden="true">02</span>
+          <span class="remi-glyph" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" focusable="false"><ellipse cx="24" cy="12" rx="13" ry="5"/><path d="M11 12v10c0 2.8 5.8 5 13 5s13-2.2 13-5V12M11 22v10c0 2.8 5.8 5 13 5s13-2.2 13-5V22"/></svg></span>
+          <span class="remi-prog" aria-hidden="true"><i class="on"></i><i class="on"></i><i></i><i></i><i></i></span>
+        </div>
+        <div class="remi-body">
+          <div class="event-meta"><span class="icon">📅</span> <span class="event-time" data-dates="only" data-start="2026-09-17T19:00:00Z" data-end="2026-09-17T20:30:00Z"></span><span class="remi-dur">75 min</span></div>
+          <h3><span class="remi-sr">Session 2 of 5: </span>Enterprise Data, Grounding &amp; Content Understanding</h3>
+          <p class="remi-sum">Make AI answer from your own data, with citations you can defend.</p>
+          <div class="card-actions"><a class="btn btn--rec" href="https://aka.ms/RemiSession2" target="_blank" rel="noopener" title="Make AI answer from your own truth. Connect enterprise data, ground it with RAG, and turn scanned packets, photos, and video into structured fields with citations you can defend.">View recording</a></div>
+        </div>
       </div>
+
+      <div class="event-card event-card--spotlight remi-card" style="--g1:#8754d8;--g2:#6a38b8" data-type="Training" data-modality="Virtual" data-month="9" data-recording="https://aka.ms/RemiSession3" data-search="azure ai foundry webinar series session 3 tools actions and the hosted agent verify policy live weather estimate payout file claim human approval gate remi nimbus virtual go from answering to doing agents that act with human approval on demand recording">
+        <div class="remi-cover">
+          <span class="remi-chip" aria-hidden="true">Session 3</span>
+          <span class="remi-chip remi-chip--r" aria-hidden="true">60 min</span>
+          <span class="remi-num" aria-hidden="true">03</span>
+          <span class="remi-glyph" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M27 5L11 26h11l-3 17 18-22H26z"/></svg></span>
+          <span class="remi-prog" aria-hidden="true"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></span>
+        </div>
+        <div class="remi-body">
+          <div class="event-meta"><span class="icon">📅</span> <span class="event-time" data-dates="only" data-start="2026-09-24T19:00:00Z" data-end="2026-09-24T20:30:00Z"></span><span class="remi-dur">60 min</span></div>
+          <h3><span class="remi-sr">Session 3 of 5: </span>Tools, Actions &amp; the Hosted Agent</h3>
+          <p class="remi-sum">Go from answering to doing: agents that act, with human approval.</p>
+          <div class="card-actions"><a class="btn btn--rec" href="https://aka.ms/RemiSession3" target="_blank" rel="noopener" title="Cross the line from answering to doing. Build a hosted agent that verifies a policy, checks live weather, estimates a payout, and files the claim — with a human approval gate.">View recording</a></div>
+        </div>
+      </div>
+
+      <div class="event-card event-card--spotlight remi-card" style="--g1:#9a4fc9;--g2:#7a2fa8" data-type="Training" data-modality="Virtual" data-month="10" data-recording="https://aka.ms/RemiSession4" data-search="azure ai foundry webinar series session 4 multi-agent orchestration and voice coordinated team real phone call live spoken claim after hours remi nimbus virtual turn one overloaded agent into a coordinated team that answers the phone on demand recording">
+        <div class="remi-cover">
+          <span class="remi-chip" aria-hidden="true">Session 4</span>
+          <span class="remi-chip remi-chip--r" aria-hidden="true">105 min</span>
+          <span class="remi-num" aria-hidden="true">04</span>
+          <span class="remi-glyph" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" focusable="false"><circle cx="24" cy="12" r="5"/><circle cx="11" cy="35" r="5"/><circle cx="37" cy="35" r="5"/><path d="M21.6 16.5L13.4 30.5M26.4 16.5l8.2 14M16 35h16"/></svg></span>
+          <span class="remi-prog" aria-hidden="true"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span>
+        </div>
+        <div class="remi-body">
+          <div class="event-meta"><span class="icon">📅</span> <span class="event-time" data-dates="only" data-start="2026-10-01T19:00:00Z" data-end="2026-10-01T20:30:00Z"></span><span class="remi-dur">105 min</span></div>
+          <h3><span class="remi-sr">Session 4 of 5: </span>Multi-Agent Orchestration &amp; Voice</h3>
+          <p class="remi-sum">Turn one overloaded agent into a coordinated team that answers the phone.</p>
+          <div class="card-actions"><a class="btn btn--rec" href="https://aka.ms/RemiSession4" target="_blank" rel="noopener" title="Turn one overloaded agent into a coordinated team, then put a real phone call at the front door. See a live spoken claim handled end to end, after hours.">View recording</a></div>
+        </div>
+      </div>
+
+      <div class="event-card event-card--spotlight remi-card" style="--g1:#4a2a9a;--g2:#231463" data-type="Training" data-modality="Virtual" data-month="10" data-recording="https://aka.ms/RemiSession5" data-search="azure ai foundry webinar series session 5 production-grade gateway security evaluation genaiops guardrails red-teaming ci cd remi nimbus virtual 120 minutes bridge the gap between a working demo and a system that runs the business on demand recording">
+        <div class="remi-cover">
+          <span class="remi-chip" aria-hidden="true">Session 5</span>
+          <span class="remi-chip remi-chip--r" aria-hidden="true">120 min</span>
+          <span class="remi-num" aria-hidden="true">05</span>
+          <span class="remi-glyph" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M24 5l15 5.5V23c0 9-6.5 16-15 20-8.5-4-15-11-15-20V10.5z"/><path d="M16.5 24l5 5 10-11"/></svg></span>
+          <span class="remi-prog" aria-hidden="true"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></span>
+        </div>
+        <div class="remi-body">
+          <div class="event-meta"><span class="icon">📅</span> <span class="event-time" data-dates="only" data-start="2026-10-08T19:00:00Z" data-end="2026-10-08T21:00:00Z"></span><span class="remi-dur">120 min</span></div>
+          <h3><span class="remi-sr">Session 5 of 5: </span><span class="remi-nw">Production-Grade:</span> Gateway, Security, Evaluation &amp; GenAIOps</h3>
+          <p class="remi-sum">Bridge the gap between a working demo and a system that runs the business.</p>
+          <div class="card-actions"><a class="btn btn--rec" href="https://aka.ms/RemiSession5" target="_blank" rel="noopener" title="Everything between “it works in a demo” and “it runs the business.” AI gateway, security, guardrails, evaluations, red-teaming, and CI/CD. This is the session that gets you to production.">View recording</a></div>
+        </div>
+      </div>
+
     </div>
   </div>
 </section>
@@ -2724,7 +3084,7 @@ window.smecSessions = {
 (function () {
   var now = new Date();
   function isPast(s, e) { var c = e ? new Date(e) : new Date(s); return !isNaN(c.getTime()) && c < now; }
-  document.querySelectorAll('.event-card--spotlight, .event-card--lite').forEach(function (card) {
+  document.querySelectorAll('.event-card--spotlight, .event-card--lite, .duo-panel').forEach(function (card) {
     var rec = card.dataset.recording;
     var t = card.querySelector('.event-time[data-start]');
     var past = t && isPast(t.dataset.start, t.dataset.end);
@@ -2860,104 +3220,6 @@ window.smecSessions = {
 })();
 </script>
 
-<script>
-/* Featured series 3D circular (coverflow) carousel */
-(function () {
-  var carousel = document.querySelector('.spotlight .carousel');
-  if (!carousel) return;
-  var stage = carousel.querySelector('.stage');
-  var track = carousel.querySelector('.carousel-track');
-  var prev = carousel.querySelector('.carousel-prev');
-  var next = carousel.querySelector('.carousel-next');
-  var dotsWrap = document.querySelector('.spotlight .carousel-dots');
-  var active = 0, timer = null;
-  var AUTO_MS = 4500;
-
-  /* Self-contained past marking (track is not a global .events grid) */
-  var now = new Date();
-  Array.from(track.querySelectorAll('.event-card')).forEach(function (card) {
-    var t = card.querySelector('.event-time[data-start]');
-    if (!t) return;
-    var c = t.dataset.end ? new Date(t.dataset.end) : new Date(t.dataset.start);
-    if (!isNaN(c.getTime()) && c < now) card.classList.add('event-card--past');
-  });
-
-  function cards() {
-    return Array.from(track.querySelectorAll('.event-card')).filter(function (c) { return !c.classList.contains('card-hidden'); });
-  }
-  function layout() {
-    var list = cards();
-    var n = list.length;
-    if (!n) return;
-    if (active >= n) active = 0;
-    var w = stage.clientWidth;
-    var spacing = Math.min(300, Math.max(150, w * 0.27));
-    var depth = spacing * 0.95;
-    list.forEach(function (card, i) {
-      var rel = ((i - active) % n + n) % n;
-      if (rel > n / 2) rel -= n;
-      var a = Math.abs(rel);
-      var visible = a <= 2;
-      card.style.transform =
-        'translateX(calc(-50% + ' + (rel * spacing) + 'px)) translateY(-50%) translateZ(' + (-a * depth) + 'px) rotateY(' + (-rel * 42) + 'deg) scale(' + (1 - a * 0.14) + ')';
-      card.style.opacity = visible ? String(1 - a * 0.32) : '0';
-      card.style.zIndex = String(100 - a);
-      card.style.visibility = visible ? 'visible' : 'hidden';
-      card.style.pointerEvents = visible ? 'auto' : 'none';
-      card.classList.toggle('is-active', a === 0);
-    });
-    if (dotsWrap) Array.from(dotsWrap.children).forEach(function (d, i) { d.classList.toggle('active', i === active); });
-  }
-  function buildDots() {
-    if (!dotsWrap) return;
-    var n = cards().length;
-    dotsWrap.innerHTML = '';
-    for (var i = 0; i < n; i++) {
-      var b = document.createElement('button');
-      b.type = 'button';
-      b.setAttribute('aria-label', 'Go to session ' + (i + 1));
-      (function (idx) { b.addEventListener('click', function () { active = idx; layout(); restart(); }); })(i);
-      dotsWrap.appendChild(b);
-    }
-    dotsWrap.style.display = n > 1 ? 'flex' : 'none';
-  }
-  function go(dir) {
-    var n = cards().length;
-    if (n <= 1) return;
-    active = (active + dir % n + n) % n;
-    layout();
-  }
-  function restart() { if (timer) clearInterval(timer); timer = setInterval(function () { go(1); }, AUTO_MS); }
-
-  /* Clicking a side card brings it to the front instead of following its link */
-  cards().forEach(function (card, i) {
-    card.addEventListener('click', function (e) {
-      if (!card.classList.contains('is-active')) { e.preventDefault(); active = cards().indexOf(card); layout(); restart(); }
-    });
-  });
-
-  prev.addEventListener('click', function () { go(-1); restart(); });
-  next.addEventListener('click', function () { go(1); restart(); });
-  carousel.addEventListener('mouseenter', function () { if (timer) clearInterval(timer); });
-  carousel.addEventListener('mouseleave', restart);
-  window.addEventListener('resize', function () { layout(); });
-
-  function init() {
-    buildDots();
-    var list = cards();
-    var idx = list.findIndex(function (c) {
-      var t = c.querySelector('.event-time[data-start]');
-      if (!t) return false;
-      var d = t.dataset.end ? new Date(t.dataset.end) : new Date(t.dataset.start);
-      return !isNaN(d.getTime()) && d >= now;
-    });
-    active = idx >= 0 ? idx : 0;
-    layout();
-    restart();
-  }
-  if (document.readyState === 'complete') init(); else window.addEventListener('load', init);
-})();
-</script>
 <script>
 /* Hero eyebrow: keep the date span current — from this month to the last bookable session still on the page (conferences excluded) */
 (function () {
