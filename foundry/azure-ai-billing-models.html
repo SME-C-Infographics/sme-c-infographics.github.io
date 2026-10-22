@@ -689,7 +689,7 @@
   </div>
   <div class="nav-links">
     <a href="#top">Overview</a>
-    <a href="#models">7 Models</a>
+    <a href="#models">7 Choices</a>
     <a href="#decision">PAYG vs PTU</a>
     <a href="#deployment">Deployment Types</a>
     <a href="#spillover">Spillover</a>
@@ -715,11 +715,11 @@
       &ldquo;The right billing model is <strong>discovered through usage maturity</strong> &mdash; not chosen before the workload is understood. Start with consumption. Let telemetry drive commitment.&rdquo;
     </div>
     <div class="hero-cta">
-      <a href="#models" class="btn btn-primary">Explore the 7 Models &rarr;</a>
+      <a href="#models" class="btn btn-primary">Explore the 7 Choices &rarr;</a>
       <a href="#forecast" class="btn btn-outline">Build a Forecast</a>
     </div>
     <div class="hero-stats">
-      <div class="hero-stat"><div class="stat-num">7</div><div class="stat-label">Billing models</div></div>
+      <div class="hero-stat"><div class="stat-num">7</div><div class="stat-label">Billing &amp; purchasing choices</div></div>
       <div class="hero-stat"><div class="stat-num">4</div><div class="stat-label">Deployment types</div></div>
       <div class="hero-stat"><div class="stat-num">5</div><div class="stat-label">Maturity stages</div></div>
     </div>
@@ -739,8 +739,8 @@
   <div class="container">
     <div class="reveal">
       <span class="section-label">The Model Map</span>
-      <h2 class="section-title">Seven Billing Models &mdash; One Ecosystem</h2>
-      <p class="section-sub">Azure AI billing is not a single meter. It maps to workload patterns. Matching the right model to the right workload is the single highest-leverage cost decision you will make.</p>
+      <h2 class="section-title">Seven Billing &amp; Purchasing Choices &mdash; One Ecosystem</h2>
+      <p class="section-sub">Azure AI billing is not a single meter. These choices combine deployment options, PTU billing options, and a cross-service prepurchase plan. Match each workload to the deployment and purchasing option that fits it.</p>
     </div>
     <div class="billing-grid">
 
@@ -768,7 +768,7 @@
         <span class="bill-badge bb3">&#x1F7E2; Global Batch (~50% off)</span>
         <h3>Global Batch</h3>
         <div class="bill-cost"><span class="cost-dots"><span class="cost-lo">$</span><span class="cost-off">$$$</span></span><span class="cost-note">Per-token &middot; ~50% off Standard (lowest per-token)</span></div>
-        <p class="bill-pays">Asynchronous model processing at approximately 50% less than Global Standard. Uses a separate token quota so batch jobs never compete with interactive workloads. Completions returned within 24 hours.</p>
+        <p class="bill-pays">Asynchronous model processing at approximately 50% less than Global Standard, with a separate quota and a 24-hour target turnaround. Use it for eligible workloads that don't require real-time responses.</p>
         <div class="bill-row"><strong>Use when:</strong> Offline summarization, bulk classification, document processing</div>
         <div class="bill-row"><strong>Forecast:</strong> Jobs &times; avg tokens per job; batch quota is independent</div>
         <div class="bill-row"><strong>Watch out:</strong> Not suitable for real-time user interactions</div>
@@ -836,7 +836,7 @@
     <div class="reveal">
       <span class="section-label">The Fundamental Decision</span>
       <h2 class="section-title">Pay-Per-Token vs. Provisioned Throughput</h2>
-      <p class="section-sub">Every Foundry model deployment bills one of two ways. Getting this decision right determines most of your bill &mdash; everything else is tuning.</p>
+      <p class="section-sub">For Foundry Models sold by Azure, compare pay-per-token processing with provisioned throughput. Managed Compute is a separate, hourly-billed option for supported open-source models.</p>
     </div>
 
     <div class="decision-grid reveal">
@@ -874,9 +874,9 @@
 <section id="deployment" style="background:#fff;">
   <div class="container">
     <div class="reveal">
-      <span class="section-label">Deployment Type Spectrum</span>
-      <h2 class="section-title">Four Deployment Types &mdash; Four Cost Profiles</h2>
-      <p class="section-sub">Deployment types are more than a performance choice &mdash; each carries a distinct cost structure. Choose based on your traffic pattern, latency requirement, and data-residency needs.</p>
+      <span class="section-label">Model Serving Spectrum</span>
+      <h2 class="section-title">Four Common Choices &mdash; Four Cost Profiles</h2>
+      <p class="section-sub">This comparison covers Standard, Priority, Batch, and Provisioned processing for Foundry Models sold by Azure. Managed Compute is a separate preview option for supported open-source models. Choose based on traffic, latency, and data-residency needs.</p>
     </div>
     <div class="spectrum-wrap reveal">
       <div class="spectrum-grid">
@@ -925,13 +925,13 @@
       <div class="spill-node spill-ptu">
         <span class="sn-icon">&#x23F1;</span>
         <h4>Provisioned (PTU) deployment</h4>
-        <p>Serves your steady baseline traffic at predictable latency. When PTUs are fully consumed it returns a non-200 &mdash; e.g. <strong>429</strong> (PTUs exhausted), <strong>400</strong> (long-context over the PTU limit), or <strong>500 / 503</strong> (server errors).</p>
+        <p>Serves your steady baseline traffic at predictable latency. When the provisioned deployment returns a non-200 response, spillover can route the request to its paired Standard deployment. Documented examples include <strong>429</strong>, <strong>500</strong>, and <strong>503</strong>.</p>
         <span class="sn-cost">Billed: hourly PTU cost only</span>
       </div>
       <div class="spill-arrow">
         <span class="sa-glyph">&rarr;</span>
         <span class="sa-label">Spillover</span>
-        <span class="sa-codes">on 429 / 400 / 500 / 503</span>
+        <span class="sa-codes">on eligible non-200 responses</span>
       </div>
       <div class="spill-node spill-payg">
         <span class="sn-icon">&#x1F4B3;</span>
@@ -945,7 +945,7 @@
       <div class="spill-card sp1 reveal">
         <span class="sc-tag">When it triggers</span>
         <h4>Overage, not everyday load</h4>
-        <p>The service always prioritizes the PTU deployment first and only spills the overflow. Spillover fires when the provisioned deployment returns 429, 400, 500, or 503 &mdash; and can be enabled for all requests or per-request via the <code>x-ms-spillover-deployment</code> header.</p>
+        <p>Spillover routes requests when the provisioned deployment returns an eligible non-200 response. It can be enabled for all requests or per-request via the <code>x-ms-spillover-deployment</code> header.</p>
       </div>
       <div class="spill-card sp2 reveal">
         <span class="sc-tag">How you are billed</span>
@@ -965,7 +965,7 @@
     </div>
 
     <div class="spill-note reveal">
-      <strong>Trade-off to note:</strong> spilled requests may incur additional latency versus the provisioned path, and if the Standard deployment also fails, its response is returned to the caller. Enable spillover on global and data-zone provisioned deployments to maximize PTU utilization while keeping bursts covered.
+      <strong>Trade-off to note:</strong> spilled requests may incur additional latency versus the provisioned path, and if the Standard deployment also fails, its response is returned to the caller. Confirm model and deployment eligibility before relying on spillover.
     </div>
   </div>
 </section>
@@ -1052,8 +1052,8 @@
   <div class="container">
     <div class="reveal">
       <span class="section-label">Token Economics</span>
-      <h2 class="section-title">Two Numbers That Drive Your Model Bill</h2>
-      <p class="section-sub">Every Azure AI Foundry model call is billed on two meters. Understanding the ratio between them is the fastest way to find avoidable cost.</p>
+      <h2 class="section-title">Input and Output Usage Shape Token Costs</h2>
+      <p class="section-sub">For per-token inference, input and output usage are generally metered separately. Billing units and rates vary by model, modality, and deployment type; PTU and Managed Compute use capacity-based billing.</p>
     </div>
     <div class="token-grid">
       <div class="token-card reveal">
@@ -1063,9 +1063,9 @@
         <p style="margin-block-start:.75rem;font-size:.84rem;color:rgba(255,255,255,.55);">A RAG prompt with system instructions, retrieved chunks, and chat history can reach 6,000&ndash;10,000 tokens <em>before</em> the user submits a question. Every chunk you retrieve costs input tokens.</p>
       </div>
       <div class="token-card reveal">
-        <div class="token-big orange">4&ndash;8&times;</div>
-        <h4>Output tokens &mdash; the expensive side</h4>
-        <p>What the model generates in response. Generated sequentially token-by-token, not in parallel &mdash; which is why output tokens cost 4&ndash;8&times; more than input tokens depending on the model.</p>
+        <div class="token-big orange">OUT</div>
+        <h4>Output tokens &mdash; monitor response volume</h4>
+        <p>What the model generates in response. Output-token rates vary by model and deployment type, so compare current pricing for the specific workload rather than assuming a fixed ratio to input-token rates.</p>
         <p style="margin-block-start:.75rem;font-size:.84rem;color:rgba(255,255,255,.55);">Verbose response instructions directly drive output cost. Set &ldquo;max_tokens&rdquo; limits, use structured outputs, and avoid open-ended completion patterns in high-volume scenarios.</p>
       </div>
     </div>
@@ -1161,14 +1161,14 @@
       <div class="hidden-card h5 reveal">
         <div class="hidden-tag">AI Gateway &middot; Metrics</div>
         <h4>Token Metrics &amp; Load Balancing (APIM)</h4>
-        <p>The <em>llm-emit-token-metric</em> policy produces per-consumer token metrics for chargeback and showback, while the gateway load-balances across multiple AI endpoints and applies circuit breakers for resilience.</p>
+        <p>The <em>llm-emit-token-metric</em> policy sends model- and provider-dependent token metrics to Application Insights for usage allocation and showback. Calculate monetary costs separately using the applicable rates; the gateway can also load-balance across endpoints.</p>
         <span class="hidden-stat hs-info">&#x1F4CA; Per-app cost visibility &amp; routing</span>
       </div>
 
       <div class="hidden-card h3 reveal">
         <div class="hidden-tag">Semantic Caching</div>
         <h4>Semantic Caching (APIM)</h4>
-        <p>Returns cached responses for prompts that are similar in meaning &mdash; not only identical &mdash; using an Azure Managed Redis vector store. Repeat and near-duplicate questions never reach the model, so those tokens are never billed.</p>
+        <p>A configured vector cache can return a stored response when a prompt meets the similarity threshold, reducing calls to the backend model. Cache misses still reach the model, and the cache and embeddings backend can incur costs.</p>
         <span class="hidden-stat hs-info">&#x2193; Eliminates redundant model calls</span>
       </div>
 
@@ -1287,7 +1287,7 @@
           <tr><td style="padding:.4rem .75rem;">9</td><td style="padding:.4rem .75rem;">300,000,000</td><td style="padding:.4rem .75rem; font-weight:700; color:#107c10;">20%</td></tr>
         </tbody>
       </table>
-      <p style="font-size:.75rem; color:#6b6478; margin-block-start:.9rem; line-height:1.5;"><strong>Illustrative:</strong> at the $0.01 pay-as-you-go rate, 1,500,000 credits &asymp; $15,000; a Tier&nbsp;2 plan (~$14,100) saves ~6%. The more you buy, the greater the discount &mdash; but P3 discounts don&rsquo;t stack with other discounts, and both PAYG and P3 draw down your Microsoft Azure Consumption Commitment (MACC). Validate current pricing before budgeting.</p>
+      <p style="font-size:.75rem; color:#6b6478; margin-block-start:.9rem; line-height:1.5;"><strong>Illustrative:</strong> at the $0.01 pay-as-you-go rate, 1,500,000 credits &asymp; $15,000; a Tier&nbsp;2 plan (~$14,100) saves ~6%. The more you buy, the greater the discount &mdash; but P3 discounts don&rsquo;t stack with other discounts. The P3 purchase is billed separately and isn&rsquo;t deducted from Azure Prepayment; confirm other agreement-specific credits before budgeting.</p>
     </div>
 
     <div class="spectrum-note reveal" style="margin-block-start:1.5rem; background:#f3eefb; border:1px solid #dcd0f0; color:#3d1a6b;">
@@ -1386,7 +1386,7 @@
 
       <div class="control-card reveal">
         <h4>Tag Every Resource at Creation</h4>
-        <p>Apply environment, workload, team, and cost-center tags to every Foundry resource at creation time. Retroactive tagging is expensive. Tags enable cost attribution and showback reports.</p>
+        <p>Apply environment, workload, team, and cost-center tags to Foundry resources. Cost tags apply to usage reported while the tags are present and aren&rsquo;t added retroactively to historical cost data.</p>
       </div>
 
       <div class="control-card reveal">
