@@ -675,7 +675,7 @@
 <!-- smec-submitter v1 -->
 <meta name="smec:submitter" content="cbattlegear">
 <!-- smec-accuracy v1 -->
-<meta name="smec:last-accuracy-check" content="2026-09-17">
+<meta name="smec:last-accuracy-check" content="2026-10-22">
 </head>
 <body>
 <a href="/" class="smec-back-btn" data-smec-back-button="v2" aria-label="Back to SME&amp;C Infographics"><svg class="smec-back-btn__icon" aria-hidden="true" viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg><span class="smec-back-btn__label">Back<span class="smec-back-btn__more">&nbsp;to SME&amp;C Infographics</span></span></a>
@@ -758,7 +758,7 @@
         <span class="bill-badge bb2">&#x26A1; Priority Processing</span>
         <h3>Priority Processing</h3>
         <div class="bill-cost"><span class="cost-dots cost-hi">$$$$</span><span class="cost-note">Per-token &middot; highest (latency premium over Standard)</span></div>
-        <p class="bill-pays">Pay-per-token, same as Standard, but on a priority tier with lower, more consistent latency. Higher per-token cost for the performance guarantee.</p>
+        <p class="bill-pays">Priority processing provides low-latency performance with pay-as-you-go pricing. Availability and pricing vary by supported model and deployment type; check current details before budgeting.</p>
         <div class="bill-row"><strong>Use when:</strong> Latency-sensitive, not yet ready to provision PTUs</div>
         <div class="bill-row"><strong>Forecast:</strong> Same as PAYG; apply the priority rate premium</div>
         <div class="bill-row"><strong>Watch out:</strong> Higher unit cost than Standard; validate whether PTU would be more economical</div>
@@ -775,20 +775,20 @@
       </div>
 
       <div class="billing-card bc4 reveal">
-        <span class="bill-badge bb4">&#x1F5A5;&#xFE0F; Managed Compute</span>
-        <h3>Managed Compute (GPU/hr)</h3>
-        <div class="bill-cost"><span class="cost-cap">&#x23F1; per GPU-hour</span><span class="cost-note">Capacity-based &middot; not token-metered</span></div>
-        <p class="bill-pays">Dedicated GPU infrastructure for open-source and custom models. Pay per compute-hour for the GPU you choose &mdash; A100, H100, H200, or MI300 &mdash; regardless of actual token throughput.</p>
-        <div class="bill-row"><strong>Use when:</strong> Open-source models, fine-tuned custom models, GPU-bound workloads</div>
-        <div class="bill-row"><strong>Forecast:</strong> GPU-hours deployed &times; hourly rate per GPU type</div>
-        <div class="bill-row"><strong>Watch out:</strong> Idle GPU still billed; size carefully for utilization</div>
+        <span class="bill-badge bb4">&#x1F5A5;&#xFE0F; Managed Compute (preview)</span>
+        <h3>Managed Compute (preview)</h3>
+        <div class="bill-cost"><span class="cost-cap">&#x23F1; per accelerator-hour</span><span class="cost-note">Capacity-based &middot; not token-metered</span></div>
+        <p class="bill-pays">Hosts supported open-source models on dedicated GPU capacity. Billed hourly per accelerator based on the model instances deployed. Supported families currently include NVIDIA A100, NVIDIA H100, and AMD MI300X.</p>
+        <div class="bill-row"><strong>Use when:</strong> Hosting supported open-source models on dedicated GPU capacity</div>
+        <div class="bill-row"><strong>Forecast:</strong> Accelerators per instance &times; model instances &times; running hours &times; hourly rate</div>
+        <div class="bill-row"><strong>Watch out:</strong> Preview, without an SLA; Microsoft doesn't recommend production workloads</div>
       </div>
 
       <div class="billing-card bc5 reveal">
         <span class="bill-badge bb5">&#x23F1; PTU Hourly</span>
         <h3>Provisioned Throughput (PTU) &mdash; Hourly</h3>
         <div class="bill-cost"><span class="cost-cap">&#x23F1; per PTU-hour</span><span class="cost-note">Capacity-based &middot; effective per-token falls as utilization rises</span></div>
-        <p class="bill-pays">Dedicated model-processing capacity measured in Provisioned Throughput Units. Billed hourly per deployed PTU count &mdash; whether or not requests are being handled. PTU quota is regional and model-independent; confirm supported models and capacity requirements before deployment.</p>
+        <p class="bill-pays">Dedicated model-processing capacity measured in Provisioned Throughput Units. Billed hourly per deployed PTU count &mdash; whether or not requests are being handled. PTU quota is shared across supported models in a region and deployment type; confirm model support and capacity before deployment.</p>
         <div class="bill-row"><strong>Use when:</strong> Predictable, latency-sensitive production traffic</div>
         <div class="bill-row"><strong>Forecast:</strong> PTUs deployed &times; hours deployed &times; PTU hourly rate</div>
         <div class="bill-row"><strong>Watch out:</strong> Billing stops only on deletion; validate utilization before committing</div>
@@ -859,7 +859,7 @@
           <tr><th>Traffic pattern</th><th>Best fit</th></tr>
           <tr><td>Steady, high, latency-sensitive</td><td class="rec rec-ptu">PTU Hourly (validate first)</td></tr>
           <tr><td>Continuous production, proven usage</td><td class="rec rec-ptu">PTU Reservation (discount)</td></tr>
-          <tr><td>Open-source / custom GPU model</td><td class="rec rec-batch">Managed Compute (GPU/hr)</td></tr>
+          <tr><td>Host an open-source model on dedicated GPU capacity</td><td class="rec rec-batch">Managed Compute (preview)</td></tr>
         </table>
       </div>
     </div>
@@ -906,7 +906,7 @@
         </div>
       </div>
       <div class="spectrum-note">
-        <strong>PTU key fact:</strong> PTU quota is model-independent &mdash; a single quota item per subscription and region caps the total PTUs deployable across all supported models and versions, so one allocation can flex across GPT-4o, DeepSeek, and other supported models. Confirm model support, minimum capacity, and regional availability before planning a deployment.
+        <strong>PTU key fact:</strong> PTU quota is shared across supported models in a region and deployment type. Confirm the model, version, deployment type, minimum capacity, and regional availability before planning a deployment.
       </div>
     </div>
   </div>
@@ -1345,9 +1345,9 @@
       <div class="principle reveal">
         <div class="principle-icon">&#x1F4BB;</div>
         <div>
-          <h4>&ldquo;We use open-source or custom fine-tuned models.&rdquo;</h4>
-          <p>Managed Compute gives dedicated GPU infrastructure without managing hardware. Choose the GPU family that matches model size and throughput requirements. Pay per compute-hour.</p>
-          <span class="rec-label rl-batch">&#x2192; Managed Compute (GPU/hr)</span>
+          <h4>&ldquo;We need to host an open-source model on dedicated GPU capacity.&rdquo;</h4>
+          <p>Managed Compute (preview) hosts supported open-source models on dedicated GPU capacity. Charges are hourly per accelerator while model instances are running.</p>
+          <span class="rec-label rl-batch">&#x2192; Managed Compute (preview)</span>
         </div>
       </div>
 
