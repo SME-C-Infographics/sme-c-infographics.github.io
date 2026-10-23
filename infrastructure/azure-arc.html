@@ -974,7 +974,7 @@
 <!-- smec-favicon v1 -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <!-- smec-accuracy v1 -->
-<meta name="smec:last-accuracy-check" content="2026-08-27">
+<meta name="smec:last-accuracy-check" content="2026-10-15">
 <style>/* smec-back-btn v2 */
 .smec-back-btn { position: fixed; bottom: 16px; left: 16px; z-index: 9999;
   box-sizing: border-box;
@@ -1145,7 +1145,7 @@
                 <p>Unified governance, defense-in-depth security, and deploy-anywhere DevOps — all from one control plane.</p>
                 <div class="only-azure-callout">
                     <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                    No other cloud provider offers a free, software-only control plane this comprehensive
+                    Core Azure Arc control-plane features are available at no extra cost; other Azure services may incur charges
                 </div>
             </div>
 
@@ -1156,14 +1156,14 @@
                         <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
                     </div>
                     <h3>Governance at Scale</h3>
-                    <p>Consistent policies and visibility across every environment, from a single management plane.</p>
+                    <p>Consistent policies and visibility across supported connected resources, from a single management plane.</p>
                     <ul class="benefit-list">
-                        <li>Azure Policy enforcement everywhere</li>
-                        <li>Resource Graph for instant KQL queries</li>
+                        <li>Azure Policy for supported resources</li>
+                        <li>Search Arc-enabled resources with Resource Graph</li>
                         <li>Hierarchical management groups</li>
-                        <li>Cost allocation via tags</li>
+                        <li>Organize resources with tags</li>
                         <li>ARM / Bicep / Terraform IaC</li>
-                        <li>Compliance dashboards at scale</li>
+                        <li>Compliance reporting for supported services</li>
                     </ul>
                 </a>
 
@@ -1173,11 +1173,11 @@
                         <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
                     </div>
                     <h3>Hybrid Security</h3>
-                    <p>Defense-in-depth from endpoint to cloud, with Microsoft's full security stack at your disposal.</p>
+                    <p>Extend Microsoft security services to supported hybrid and multicloud resources.</p>
                     <ul class="benefit-list">
-                        <li>Microsoft Defender for Cloud CSPM</li>
-                        <li>EDR + vulnerability management</li>
-                        <li>Agentless malware &amp; secret scanning</li>
+                        <li>Microsoft Defender for Cloud plans</li>
+                        <li>Endpoint detection and response</li>
+                        <li>Agentless scanning with Defender for Servers Plan 2</li>
                         <li>Just-in-time VM access</li>
                         <li>Microsoft Sentinel SIEM/SOAR</li>
                         <li>Extended Security Updates (ESU)</li>
@@ -1192,12 +1192,12 @@
                     <h3>DevOps Anywhere</h3>
                     <p>Ship code to any infrastructure with GitOps, CI/CD pipelines, and Kubernetes — anywhere.</p>
                     <ul class="benefit-list">
-                        <li>GitOps via Flux for any K8s cluster</li>
+                        <li>GitOps via Flux for supported clusters</li>
                         <li>GitHub Actions / Azure DevOps CI/CD</li>
                         <li>Custom Locations for hybrid PaaS</li>
-                        <li>SSH Arc + Run Command (free)</li>
+                        <li>SSH access and Run Command (preview)</li>
                         <li>Arc-enabled data services (SQL MI)</li>
-                        <li>AKS on Azure Local / Edge</li>
+                        <li>AKS on Azure Local</li>
                     </ul>
                 </a>
             </div>
@@ -1210,62 +1210,61 @@
             <div class="section-header reveal">
                 <span class="label">Beyond Servers</span>
                 <h2>The Full Arc Ecosystem</h2>
-                <p>Azure Arc extends far beyond server management — Kubernetes, edge, AI, and multi-cloud are all part of the platform. Unlike AWS Outposts or Google Anthos, Arc requires zero hardware and works with your existing infrastructure.</p>
+                <p>Azure Arc extends Azure management, security, and governance to resources outside Azure. Depending on the resource type, onboarding uses the Connected Machine agent or Azure Arc Resource Bridge on your existing infrastructure.</p>
             </div>
 
             <div class="capabilities-grid">
                 <a href="https://learn.microsoft.com/en-us/azure/azure-arc/kubernetes/overview" target="_blank" rel="noopener" class="acrylic-card cap-card reveal">
                     <span class="cap-icon">&#9784;</span>
                     <h3>Arc-Enabled Kubernetes</h3>
-                    <p>Connect any CNCF-conformant cluster — EKS, GKE, OpenShift, Rancher, K3s. Cluster connection is free; GitOps config starts with 6 free vCPUs.</p>
+                    <p>Connect CNCF-certified Kubernetes clusters running on supported distributions, including clusters in other clouds and on-premises environments. GitOps configuration includes 6 free vCPUs.</p>
                     <span class="cap-tag ga">GA</span>
                 </a>
 
                 <a href="https://learn.microsoft.com/en-us/azure/azure-arc/vmware-vsphere/overview" target="_blank" rel="noopener" class="acrylic-card cap-card reveal reveal-delay-1">
                     <span class="cap-icon">&#127970;</span>
                     <h3>VMware vSphere &amp; SCVMM</h3>
-                    <p>Full VM lifecycle management from the Azure portal. Create, resize, start, stop, and delete VMs across VMware and Hyper-V — free.</p>
+                    <p>Manage VMware vSphere and SCVMM virtual machines from Azure, including lifecycle and power operations, at no extra cost. Azure Arc-enabled SCVMM retires in September 2029.</p>
                     <span class="cap-tag free-tag">Free</span>
                 </a>
 
-                <a href="https://learn.microsoft.com/en-us/azure/aks/ai-toolchain-operator" target="_blank" rel="noopener" class="acrylic-card cap-card reveal reveal-delay-2">
+                <a href="https://learn.microsoft.com/en-us/azure/aks-hybrid-edge/local/hyperconverged/deploy-ai-model" target="_blank" rel="noopener" class="acrylic-card cap-card reveal reveal-delay-2">
                     <span class="cap-icon">&#129302;</span>
                     <h3>AI at the Edge (KAITO)</h3>
-                    <p>Deploy AI models to hybrid and edge infrastructure with Kubernetes AI Toolchain Operator. Includes Foundry Local for offline development.</p>
+                    <p>Deploy AI models on AKS, including AKS on Azure Local, with the Kubernetes AI toolchain operator (KAITO).</p>
                     <span class="cap-tag preview">Preview</span>
                 </a>
 
                 <a href="https://learn.microsoft.com/en-us/azure/azure-arc/servers/prepare-extended-security-updates" target="_blank" rel="noopener" class="acrylic-card cap-card reveal reveal-delay-1">
                     <span class="cap-icon">&#128737;&#65039;</span>
                     <h3>Extended Security Updates</h3>
-                    <p>Keep end-of-support Windows Server 2012 and SQL Server 2014/2016 protected with critical security patches delivered through Azure Arc.</p>
+                    <p>Azure Arc can deliver ESUs for eligible Windows Server 2016 instances starting January 13, 2027, and eligible SQL Server 2014/2016 instances. Windows Server 2012 ESUs ended on October 13, 2026.</p>
                     <span class="cap-tag ga">GA</span>
                 </a>
 
                 <a href="https://learn.microsoft.com/en-us/azure/kubernetes-fleet/overview" target="_blank" rel="noopener" class="acrylic-card cap-card reveal reveal-delay-2">
                     <span class="cap-icon">&#128640;</span>
-                    <h3>Fleet Manager</h3>
-                    <p>Join Arc-enabled Kubernetes clusters to a fleet for centralized workload placement across clusters. Update rings and DNS load balancing stay AKS-only.</p>
+                    <h3>Azure Kubernetes Fleet Manager</h3>
+                    <p>Arc-enabled clusters support workload placement in Fleet Manager; multi-cluster updates and DNS-based load balancing are currently supported for AKS clusters only.</p>
                     <span class="cap-tag ga">GA</span>
                 </a>
 
-                <a href="https://learn.microsoft.com/en-us/azure/aks/aksarc/disconnected-operations-aks" target="_blank" rel="noopener" class="acrylic-card cap-card reveal reveal-delay-3">
+                <a href="https://learn.microsoft.com/en-us/azure/aks-hybrid-edge/local/disconnected-operations/overview" target="_blank" rel="noopener" class="acrylic-card cap-card reveal reveal-delay-3">
                     <span class="cap-icon">&#128225;</span>
                     <h3>Disconnected Operations</h3>
-                    <p>Run AKS on Azure Local in fully disconnected mode for sovereign, classified, and air-gapped environments with intermittent connectivity.</p>
-                    <span class="cap-tag preview">Preview</span>
+                    <p>Run AKS on Azure Local from a local control plane without a connection to the Azure public cloud, for sovereign or isolated sites.</p>
                 </a>
             </div>
         </div>
     </section>
 
-    <!-- ========== 4. FREE-FOREVER BENTO GRID ========== -->
+    <!-- ========== 4. NO-COST CONTROL PLANE BENTO GRID ========== -->
     <section id="free">
         <div class="container">
             <div class="section-header reveal">
-                <span class="label">Zero Cost, Full Power</span>
-                <h2>The Free-Forever Control Plane</h2>
-                <p>Every Arc deployment starts here — powerful management capabilities at absolutely no cost. No trials, no expiration. No other cloud provider gives you this for free.</p>
+                <span class="label">Core Management Capabilities</span>
+                <h2>No-Cost Azure Arc Control Plane</h2>
+                <p>Core control-plane features for Azure Arc-enabled servers, VMware vSphere, and SCVMM are available at no extra cost. Azure services used with Arc-enabled resources, such as Microsoft Defender for Cloud or Azure Monitor, are billed separately.</p>
             </div>
 
             <div class="bento-grid">
@@ -1275,8 +1274,8 @@
                         <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
                     </div>
                     <h3>ARM Projection</h3>
-                    <p>Non-Azure resources appear as first-class Azure Resource Manager objects. Manage on-prem servers, VMs from VMware vSphere and SCVMM, and multi-cloud resources — all with full Azure identity. ARM templates, Bicep, and Terraform work seamlessly.</p>
-                    <span class="price-badge free">Forever Free</span>
+                    <p>Connected non-Azure resources are represented in Azure Resource Manager and can be organized and managed using supported Azure capabilities, including role-based access control and infrastructure-as-code tools.</p>
+                    <span class="price-badge free">No extra cost</span>
                 </a>
 
                 <!-- Resource Graph Indexing -->
@@ -1285,8 +1284,8 @@
                         <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v4m0 12v4m-10-10h4m12 0h4"/><path d="M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83m-14.14 0l2.83-2.83m8.48-8.48l2.83-2.83"/></svg>
                     </div>
                     <h3>Resource Graph Indexing</h3>
-                    <p>Instant KQL queries across your entire hybrid estate. Search thousands of resources in seconds.</p>
-                    <span class="price-badge free">Forever Free</span>
+                    <p>Search and query indexed Azure Arc resources with Azure Resource Graph.</p>
+                    <span class="price-badge free">No extra cost</span>
                 </a>
 
                 <!-- Global Tagging -->
@@ -1295,8 +1294,8 @@
                         <svg viewBox="0 0 24 24"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><circle cx="7" cy="7" r="1"/></svg>
                     </div>
                     <h3>Global Tagging</h3>
-                    <p>Apply Azure tags everywhere for cost allocation, compliance grouping, and automation triggers.</p>
-                    <span class="price-badge free">Forever Free</span>
+                    <p>Organize supported Azure Arc resources with Azure tags for grouping and automation.</p>
+                    <span class="price-badge free">No extra cost</span>
                 </a>
 
                 <!-- Unified RBAC -->
@@ -1305,8 +1304,8 @@
                         <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
                     </div>
                     <h3>Unified RBAC</h3>
-                    <p>One identity plane for everything. Azure role-based access control extends to every Arc-connected resource — on-prem, edge, or multi-cloud. No separate identity silos.</p>
-                    <span class="price-badge free">Forever Free</span>
+                    <p>Use Azure role-based access control to manage access to supported Azure Arc resources and operations across hybrid environments.</p>
+                    <span class="price-badge free">No extra cost</span>
                 </a>
 
                 <!-- Server Management -->
@@ -1315,8 +1314,8 @@
                         <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="7" rx="2"/><rect x="2" y="14" width="20" height="7" rx="2"/><circle cx="6" cy="6.5" r="1"/><circle cx="6" cy="17.5" r="1"/></svg>
                     </div>
                     <h3>Server &amp; VM Management</h3>
-                    <p>SSH, Run Command, and Custom Script Extensions for servers anywhere. Plus free VM lifecycle management for VMware vSphere and SCVMM environments via Azure Arc Resource Bridge.</p>
-                    <span class="price-badge free">Forever Free</span>
+                    <p>SSH access and Run Command (preview) are available for connected servers; Custom Script extensions can run scripts on hybrid machines. VMware vSphere and SCVMM VM lifecycle operations are available at no extra cost through Azure Arc Resource Bridge.</p>
+                    <span class="price-badge free">No extra cost</span>
                 </a>
             </div>
         </div>
@@ -1336,11 +1335,11 @@
                 <a href="https://learn.microsoft.com/en-us/azure/defender-for-cloud/defender-for-servers-overview" target="_blank" rel="noopener" class="acrylic-card tier-card reveal">
                     <div class="tier-info">
                         <h3>Microsoft Defender for Servers — Plan 1</h3>
-                        <p>Endpoint Detection &amp; Response (EDR) via Microsoft Defender for Endpoint, vulnerability management, and context-based security alerts.</p>
+                        <p>Entry-level protection focused on endpoint detection and response (EDR) through the Microsoft Defender for Endpoint integration with Defender for Cloud.</p>
                         <div class="tier-features">
                             <span class="tier-feature-tag">EDR Integration</span>
-                            <span class="tier-feature-tag">Vulnerability Scanning</span>
-                            <span class="tier-feature-tag">Auto Agent Onboarding</span>
+                            <span class="tier-feature-tag">Microsoft Defender for Endpoint</span>
+                            <span class="tier-feature-tag">Endpoint protection</span>
                         </div>
                     </div>
                     <div class="tier-price">
@@ -1353,17 +1352,17 @@
                 <a href="https://learn.microsoft.com/en-us/azure/defender-for-cloud/defender-for-servers-overview" target="_blank" rel="noopener" class="acrylic-card tier-card reveal reveal-delay-1">
                     <div class="tier-info">
                         <h3>Microsoft Defender for Servers — Plan 2</h3>
-                        <p>Everything in Plan 1 plus agentless scanning, compliance assessment, file integrity monitoring, just-in-time VM access, 500 MB/day free log ingestion, and adaptive controls.</p>
+                        <p>Plan 1 features plus agentless posture and vulnerability scanning, malware and secrets scanning, compliance and OS configuration assessment, file integrity monitoring, just-in-time machine access, and free daily ingestion for eligible data.</p>
                         <div class="tier-features">
                             <span class="tier-feature-tag">Agentless Scanning</span>
                             <span class="tier-feature-tag">Compliance Assessment</span>
                             <span class="tier-feature-tag">File Integrity Monitoring</span>
                             <span class="tier-feature-tag">JIT VM Access</span>
-                            <span class="tier-feature-tag">500 MB/day Logs Free</span>
+                            <span class="tier-feature-tag">500 MB/day eligible data per node</span>
                         </div>
                         <div class="savings-badge">
                             <svg viewBox="0 0 24 24" stroke-width="2"><path d="M12 2v20m5-17H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H7"/></svg>
-                            Includes Update Manager + Guest Config — saves $11/server/mo
+                            Eligible Windows Server licenses and attestation can include management services; networking, storage, and log ingestion can still incur costs
                         </div>
                     </div>
                     <div class="tier-price">
@@ -1376,7 +1375,7 @@
                 <a href="https://learn.microsoft.com/en-us/azure/update-manager/manage-arc-enabled-servers-programmatically" target="_blank" rel="noopener" class="acrylic-card tier-card reveal reveal-delay-2">
                     <div class="tier-info">
                         <h3>Azure Update Manager</h3>
-                        <p>Unified patch management across Windows and Linux servers. Schedule, assess, and deploy OS updates at scale. Replaces the deprecated WSUS workflow.</p>
+                        <p>Assess update status and schedule or deploy OS updates to Azure Arc-enabled Windows and Linux servers with Azure Update Manager.</p>
                         <div class="tier-features">
                             <span class="tier-feature-tag">Patch Scheduling</span>
                             <span class="tier-feature-tag">Compliance Reporting</span>
@@ -1392,8 +1391,8 @@
                 <!-- Machine Configuration -->
                 <a href="https://learn.microsoft.com/en-us/azure/azure-arc/servers/security-machine-configuration" target="_blank" rel="noopener" class="acrylic-card tier-card reveal reveal-delay-3">
                     <div class="tier-info">
-                        <h3>Azure Policy Guest Configuration + Change Tracking</h3>
-                        <p>Enforce OS-level configuration baselines with Azure Policy. Includes change tracking and inventory for drift detection across your hybrid estate.</p>
+                        <h3>Azure Machine Configuration + Change Tracking and Inventory</h3>
+                        <p>Audit and configure machine settings with Azure Machine Configuration, and track changes to software, services, files, and registries on Azure Arc-enabled servers.</p>
                         <div class="tier-features">
                             <span class="tier-feature-tag">OS Configuration Baselines</span>
                             <span class="tier-feature-tag">Drift Detection</span>
@@ -1410,9 +1409,9 @@
                 <a href="https://learn.microsoft.com/en-us/windows-server/get-started/enable-hotpatch-azure-arc-enabled-servers" target="_blank" rel="noopener" class="acrylic-card tier-card reveal reveal-delay-4">
                     <div class="tier-info">
                         <h3>Hotpatching</h3>
-                        <p>Apply critical security patches to Windows Server 2025 without rebooting — now included at no extra cost for Azure Arc-enabled servers.</p>
+                        <p>Hotpatch supported Windows Server 2025 installations without restarting. Hotpatch for Azure Arc-enabled servers is available at no extra cost.</p>
                         <div class="tier-features">
-                            <span class="tier-feature-tag">Zero-Reboot Patching</span>
+                            <span class="tier-feature-tag">Hotpatch without restarts</span>
                             <span class="tier-feature-tag">Reduced Downtime</span>
                             <span class="tier-feature-tag">Windows Server 2025</span>
                         </div>
@@ -1436,7 +1435,7 @@
             <div class="section-header reveal">
                 <span class="label">Database Management, Unified</span>
                 <h2>Arc-Enabled SQL Server</h2>
-                <p>Consistent SQL Server management across every environment. Pay-as-you-go licensing eliminates upfront costs — just connect and go. This level of hybrid database management is unique to Azure.</p>
+                <p>Manage supported SQL Server instances hosted in datacenters, at the edge, or with other cloud providers from Azure. Azure Arc also supports pay-as-you-go licensing for SQL Server.</p>
             </div>
 
             <div class="sql-comparison">
