@@ -230,7 +230,7 @@
   .ecosystem-row { display: grid; gap: .75rem; margin-bottom: .75rem; }
   .ecosystem-row:last-child { margin-bottom: 0; }
   .ecosystem-row.two { grid-template-columns: repeat(2, 1fr); }
-  .ecosystem-row.three { grid-template-columns: repeat(3, 1fr); }
+  .ecosystem-row.four { grid-template-columns: repeat(4, 1fr); }
   .ecosystem-node {
     border-radius: 14px; padding: .9rem 1rem; text-align: center;
     background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.1);
@@ -538,7 +538,7 @@
 <!-- smec-favicon v1 -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <!-- smec-accuracy v1 -->
-<meta name="smec:last-accuracy-check" content="2026-09-17">
+<meta name="smec:last-accuracy-check" content="2026-10-22">
 <style>/* smec-back-btn v2 */
 .smec-back-btn { position: fixed; bottom: 16px; left: 16px; z-index: 9999;
   box-sizing: border-box;
@@ -673,10 +673,11 @@
         <div class="ecosystem-row">
           <div class="ecosystem-node iq">Microsoft IQ</div>
         </div>
-        <div class="ecosystem-row three">
+        <div class="ecosystem-row four">
           <div class="ecosystem-node">Work IQ</div>
-          <div class="ecosystem-node">Foundry IQ</div>
           <div class="ecosystem-node">Fabric IQ</div>
+          <div class="ecosystem-node">Foundry IQ</div>
+          <div class="ecosystem-node">Web IQ</div>
         </div>
         <div class="ecosystem-row">
           <div class="ecosystem-node foundation">Microsoft Azure</div>
@@ -686,8 +687,8 @@
         </div>
       </div>
       <div class="ecosystem-rail">
-        <strong>Agent 365</strong>
-        <span>The control plane to observe, govern, manage, secure, and increasingly track agent spend.</span>
+        <strong>Microsoft Agent 365</strong>
+        <span>Observe, govern, and secure agents across the organization.</span>
       </div>
     </div>
 
@@ -847,7 +848,7 @@
     <div class="reveal">
       <span class="section-label">Right-Sized Oversight</span>
       <h2 class="section-title">The Matrixed Governance Model</h2>
-      <p class="section-sub">One size fits nothing. Microsoft tiers agent governance by risk and complexity, then uses Agent 365 as the control plane to observe, govern, manage, secure, and track agents across the enterprise.</p>
+      <p class="section-sub">One size fits nothing. Microsoft Agent 365 helps organizations observe, govern, and secure agents across the enterprise, with lifecycle and access controls for admins.</p>
     </div>
 
     <div class="matrix-wrap reveal">
@@ -858,12 +859,12 @@
           <div class="matrix-content">
             <div class="matrix-level">Tier 1 &mdash; Self-Service</div>
             <h4>Personal Agents</h4>
-            <div class="matrix-tool">Agent Builder in <a href="https://learn.microsoft.com/en-us/microsoft-365/copilot/" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;">Microsoft 365 Copilot</a></div>
+            <div class="matrix-tool">Agent Builder in <a href="https://learn.microsoft.com/en-us/microsoft-365/copilot/extensibility/agent-builder" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;">Microsoft 365 Copilot</a></div>
             <ul>
-              <li>Knowledge-only, read-only</li>
-              <li>SharePoint/OneDrive the user already sees</li>
-              <li>No actions, no plug-ins</li>
-              <li>Shared personally or via link</li>
+              <li>Grounded in configured knowledge sources</li>
+              <li>SharePoint and Copilot connector sources</li>
+              <li>No external-service actions; skills are Frontier preview</li>
+              <li>Private by default; share with users or org-wide if enabled</li>
             </ul>
             <div class="matrix-review">No proactive review &mdash; reactive takedown only</div>
           </div>
@@ -895,7 +896,7 @@
               <li>Ships as Teams apps or catalog listings</li>
               <li>Can affect many users</li>
             </ul>
-            <div class="matrix-review">Full SDLC + Agent 365 visibility: security, privacy, accessibility, RAI, maker stack</div>
+            <div class="matrix-review">Full SDLC + Microsoft Agent 365 visibility: security, privacy, accessibility, RAI, maker stack</div>
           </div>
         </div>
 
