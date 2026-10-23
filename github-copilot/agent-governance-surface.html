@@ -115,7 +115,7 @@
 <!-- smec-favicon v1 -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <!-- smec-accuracy v1 -->
-<meta name="smec:last-accuracy-check" content="2026-09-17">
+<meta name="smec:last-accuracy-check" content="2026-10-22">
 <style>/* smec-back-btn v2 */
 .smec-back-btn { position: fixed; bottom: 16px; left: 16px; z-index: 9999;
   box-sizing: border-box;
@@ -192,7 +192,7 @@
   <div class="container">
     <span class="section-label">Six surfaces, five control planes</span>
     <h2 class="section-title">Who owns the source of truth</h2>
-    <p class="section-sub">This isn't about whether governance exists. It's about where you have to look, and how many places a regulator or auditor has to query to reconstruct what happened.</p>
+    <p class="section-sub">This isn't about whether governance exists. It's about where you have to look, and how many places a regulator or auditor has to query to reconstruct what happened. The table describes primary product controls and evidence surfaces, not every export or enterprise monitoring integration.</p>
 
     <div class="gov">
       <div class="gov-row">
@@ -215,7 +215,7 @@
 
       <div class="gov-row">
         <div class="surface">Audit log<small>Who did what, when</small></div>
-        <div data-label="Copilot"><span class="loc loc-gh">GitHub</span><span class="cell-note">GitHub agent activity plus Copilot usage and PR metrics.</span></div>
+        <div data-label="Copilot"><span class="loc loc-gh">GitHub</span><span class="cell-note">PR timelines, commits, and agent session logs; usage metrics are a separate reporting surface.</span></div>
         <div data-label="Desktop app"><span class="loc loc-gh">GitHub</span><span class="cell-note">PR/commit events stay in GitHub; Agent Merge and Rubber Duck pre-merge checks surface in the app and in PR conversation.</span></div>
         <div data-label="GitHub-hosted"><span class="loc loc-gh">GitHub</span><span class="cell-note">Agent starts, PRs, and review comments stay in GitHub surfaces.</span></div>
         <div data-label="Standalone"><span class="loc loc-mix">Mixed</span><span class="cell-note">GitHub PR events plus Actions logs, Anthropic usage, or ChatGPT Codex settings/history.</span></div>
@@ -250,7 +250,7 @@
       </div>
 
       <div class="gov-row">
-        <div class="surface">Content exclusions<small>Files the agent can’t read</small></div>
+        <div class="surface">Content exclusions<small>Whether Copilot exclusion settings apply</small></div>
         <div data-label="Copilot"><span class="loc loc-vendor">Not honored</span><span class="cell-note">Copilot cloud agent does <strong>not</strong> honor Copilot content exclusions.</span></div>
         <div data-label="Desktop app"><span class="loc loc-vendor">Not honored</span><span class="cell-note">Shares the Copilot cloud agent’s exclusion limitation; treat the same as the cloud agent for sensitive code.</span></div>
         <div data-label="GitHub-hosted"><span class="loc loc-vendor">Not honored</span><span class="cell-note">GitHub docs say third-party agents share Copilot cloud agent’s protections and limitations.</span></div>
