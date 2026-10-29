@@ -1435,7 +1435,7 @@ footer a:hover { text-decoration: underline; }
 <!-- smec-favicon v1 -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <!-- smec-accuracy v1 -->
-<meta name="smec:last-accuracy-check" content="2026-09-24">
+<meta name="smec:last-accuracy-check" content="2026-10-29">
 <style>/* smec-back-btn v2 */
 .smec-back-btn { position: fixed; bottom: 16px; left: 16px; z-index: 9999;
   box-sizing: border-box;
@@ -1595,6 +1595,7 @@ footer a:hover { text-decoration: underline; }
       <div class="overview-text reveal">
         <h3>One connected experience for DevOps, Cloud Architects, and SecOps</h3>
         <p>Rather than evaluating vulnerabilities and misconfigurations in isolation, Defender for Cloud uses a cloud security graph to understand how resources connect, surfacing attack paths an adversary could realistically follow.</p>
+        <p>Defender for Cloud is expanding to the Microsoft Defender portal. The portal experience is in public preview; Azure portal remains necessary for AWS and GCP onboarding and some management tasks.</p>
         <div>
           <span class="benefit-pill"><span class="dot"></span>Multicloud & hybrid</span>
           <span class="benefit-pill"><span class="dot"></span>Agentless + agent-based</span>
@@ -1637,14 +1638,14 @@ footer a:hover { text-decoration: underline; }
           <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
         </div>
         <h3>DevSecOps & AI Security</h3>
-        <p>Catch risk before it reaches production. Scans Terraform, Bicep, ARM, Kubernetes, and container images across GitHub, Azure DevOps, and GitLab, plus purpose-built detections for GenAI workloads.</p>
+        <p>Catch risk before it reaches production. Scans Terraform, Bicep, ARM, Kubernetes, and container images across GitHub, Azure DevOps, and GitLab; Defender for Cloud also provides AI posture management and threat protection for supported generative AI services.</p>
       </div>
       <div class="pillar-card pillar-3 reveal reveal-delay-3">
         <div class="pillar-icon">
           <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><line x1="2" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22" y2="12"/><line x1="12" y1="2" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22"/></svg>
         </div>
         <h3>Cloud Workload Protection</h3>
-        <p>Runtime threat detection mapped to MITRE ATT&amp;CK, powered by Microsoft's global threat intelligence. Resource-specific alerts for servers, databases, storage, containers, and AI workloads.</p>
+        <p>Runtime threat detection mapped to MITRE ATT&amp;CK, powered by Microsoft's global threat intelligence. Resource-specific alerts for servers, databases, storage, containers, and supported AI services.</p>
       </div>
     </div>
 
@@ -1768,7 +1769,7 @@ footer a:hover { text-decoration: underline; }
       <button class="coverage-tab active" data-panel="servers">Servers</button>
       <button class="coverage-tab" data-panel="databases">Databases</button>
       <button class="coverage-tab" data-panel="storage">Storage</button>
-      <button class="coverage-tab" data-panel="ai">AI Workloads</button>
+      <button class="coverage-tab" data-panel="ai">AI Security</button>
       <button class="coverage-tab" data-panel="containers">Containers</button>
       <button class="coverage-tab" data-panel="appservice">App Service</button>
       <button class="coverage-tab" data-panel="apis">APIs</button>
@@ -2170,51 +2171,51 @@ footer a:hover { text-decoration: underline; }
         <div class="coverage-info">
           <h3>
             <span class="plan-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.663 17h4.673M12 3v1M12 20v1M4.22 4.22l.71.71M18.36 18.36l.71.71M1 12h1M22 12h1M4.22 19.78l.71-.71M18.36 5.64l.71-.71"/><circle cx="12" cy="12" r="5"/></svg></span>
-            Defender for AI Workloads
+            AI security in Defender for Cloud
           </h3>
-          <p>Purpose-built detections for GenAI, aligned to the OWASP Top 10 for LLMs. Discover your full AI stack, identify toxic combinations, and stop prompt injection, data poisoning, and wallet abuse.</p>
+          <p>Threat protection for AI services is generally available for supported Azure OpenAI and Azure AI Model Inference text workloads. It uses Azure AI Content Safety Prompt Shields and Microsoft threat intelligence to alert on data leakage, data poisoning, jailbreaks, credential theft, and other threats.</p>
           <div class="capability-list">
-            <div class="capability"><div><strong>AI Security Posture Management</strong><span>Unified inventory of orchestrators, datasets, models, plugins, and agents across Azure, AWS, and GCP.</span></div></div>
-            <div class="capability"><div><strong>Content analysis</strong><span>Detects jailbreak attempts, malicious URLs, secrets in prompts, and encoding manipulations.</span></div></div>
-            <div class="capability"><div><strong>Behavioral analysis</strong><span>Catches crescendo attacks, intent manipulation, and wallet abuse via user/app/tool patterns.</span></div></div>
-            <div class="capability"><div><strong>Azure AI Content Safety Prompt Shields</strong><span>Built-in integration with Azure AI Content Safety.</span></div></div>
+            <div class="capability"><div><strong>AI security posture management</strong><span>Discovers AI workloads and their AI bill of materials across supported Azure, AWS, and GCP services. AI agent discovery is in preview and requires a Microsoft Agent 365 license.</span></div></div>
+            <div class="capability"><div><strong>Threat detection</strong><span>Activity monitoring and prompt evidence provide security alerts; image and audio tokens aren't scanned.</span></div></div>
+            <div class="capability"><div><strong>Defender XDR integration</strong><span>Centralizes AI workload alerts and incidents for investigation in Defender XDR.</span></div></div>
+            <div class="capability"><div><strong>Microsoft Agent 365 requirement</strong><span>AI agent discovery and security posture require a Microsoft Agent 365 license, effective July 1, 2026.</span></div></div>
           </div>
           <div class="platform-chips">
             <span class="platform-chip azure">Azure OpenAI</span>
-            <span class="platform-chip azure">AI Foundry Models</span>
-            <span class="platform-chip azure">Copilot Studio</span>
+            <span class="platform-chip azure">Azure AI Model Inference</span>
+            <span class="platform-chip azure">Azure AI Content Safety</span>
           </div>
         </div>
         <div class="coverage-visual">
           <div class="coverage-layer">
-            <div class="coverage-layer-title">Suspicious content</div>
+            <div class="coverage-layer-title">Threat alerts</div>
             <div class="coverage-items">
-              <span class="coverage-pill">Jailbreak attempts</span>
-              <span class="coverage-pill">Secrets & sensitive data</span>
-              <span class="coverage-pill">Malicious URLs</span>
-              <span class="coverage-pill">Encoding manipulations</span>
+              <span class="coverage-pill">Data leakage</span>
+              <span class="coverage-pill">Data poisoning</span>
+              <span class="coverage-pill">Jailbreaks</span>
+              <span class="coverage-pill">Credential theft</span>
             </div>
           </div>
           <div class="coverage-layer">
-            <div class="coverage-layer-title">Suspicious behaviors</div>
+            <div class="coverage-layer-title">Supported AI services</div>
             <div class="coverage-items">
-              <span class="coverage-pill">User behavior</span>
-              <span class="coverage-pill">Application behavior</span>
-              <span class="coverage-pill">Tool behavior</span>
-              <span class="coverage-pill">Wallet abuse</span>
+              <span class="coverage-pill">Azure OpenAI</span>
+              <span class="coverage-pill">Azure AI Model Inference</span>
+              <span class="coverage-pill">Text tokens only</span>
             </div>
           </div>
           <div class="coverage-layer">
-            <div class="coverage-layer-title">Aligned to</div>
+            <div class="coverage-layer-title">Integrated with</div>
             <div class="coverage-items">
-              <span class="coverage-pill">OWASP Top 10 for LLMs</span>
-              <span class="coverage-pill">MITRE ATLAS</span>
+              <span class="coverage-pill">Azure AI Content Safety Prompt Shields</span>
+              <span class="coverage-pill">Microsoft Defender XDR</span>
             </div>
           </div>
           <div class="coverage-layer new-capabilities">
-            <div class="coverage-layer-title">New capabilities</div>
+            <div class="coverage-layer-title">Preview capability</div>
             <div class="coverage-items">
-              <span class="coverage-pill">AI model security</span>
+              <span class="coverage-pill">AI agent discovery</span>
+              <span class="coverage-pill">Requires Agent 365</span>
             </div>
           </div>
         </div>
@@ -2260,7 +2261,7 @@ footer a:hover { text-decoration: underline; }
           <img src="https://ts4.mm.bing.net/th?id=OIP.L-mLmJuFjIXXJ4RQf5_P-QHaHa&pid=15.1" alt="Microsoft Security Copilot logo">
         </div>
         <h4>Security Copilot</h4>
-        <p>Ask natural-language questions across your cloud findings; no KQL required. Included in M365 E5/E7.</p>
+        <p>Use natural-language prompts to analyze and remediate recommendations. Security Copilot is included for eligible Microsoft 365 E5 and E7 customers.</p>
       </div>
       <div class="ecosystem-card eco-purview reveal reveal-delay-2">
         <div class="ecosystem-icon">
