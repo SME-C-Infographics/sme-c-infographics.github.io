@@ -8,6 +8,14 @@ A single destination for infographics that help visualize and understand our pre
 
 1. [Creating HTML Infographics with CoWork](docs/creating-html-infographics-with-cowork.md)
 2. [Adding an Infographic to the Website](docs/adding-an-infographic-to-the-website.md)
+3. [Adding a Partner Event with Markdown](docs/adding-a-partner-event.md)
+
+## Partner Events
+
+[Browse partner-hosted customer events](https://sme-c-infographics.github.io/events/partner-events.html).
+Add one `.md` file per event in `partner-events/` through a PR. GitHub Actions
+validates submissions and refreshes the page after merge; no local tooling or
+HTML editing is required.
 
 ## Automation
 

@@ -1,8 +1,8 @@
 name: Ensure Site Chrome
 
 # Single post-merge safety net for the tracking snippet, back button, and
-# manifest. Runs all three sequentially so they share one commit/push and
-# can't race each other into "fetch first" rejections.
+# manifest, plus the Markdown-backed partner events page. Runs sequentially
+# so they share one commit/push and can't race into "fetch first" rejections.
 
 on:
   push:
@@ -10,6 +10,9 @@ on:
       - main
     paths:
       - "**/*.html"
+      - "partner-events/**"
+      - "scripts/generate-partner-events.py"
+      - "scripts/tests/test_partner_events.py"
       - "scripts/ensure-tracking.py"
       - "scripts/ensure-back-button.py"
       - "scripts/ensure-meta.py"
@@ -36,6 +39,9 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.x"
+
+      - name: Generate partner events from Markdown
+        run: python3 scripts/generate-partner-events.py
 
       - name: Ensure tracking snippet in HTML pages
         run: python3 scripts/ensure-tracking.py

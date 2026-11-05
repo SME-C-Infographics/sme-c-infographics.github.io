@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Upcoming Partner Events for Customers</title>
+  <script>
+    (() => {
+      const param = new URLSearchParams(window.location.search).get("scoutTheme");
+      const theme =
+        param || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      document.documentElement.setAttribute("data-theme", theme);
+    })();
+  </script>
+  <style>
+    :root {
+      color-scheme: light;
+      --cp-bg: #f7f4ef;
+      --cp-bg-elevated: #fcfbf8;
+      --cp-surface: #ffffff;
+      --cp-surface-soft: #f5f5f5;
+      --cp-border: #dedede;
+      --cp-border-strong: #919191;
+      --cp-text: #242424;
+      --cp-text-muted: #5c5c5c;
+      --cp-text-soft: #6f6f6f;
+      --cp-accent: #b11f4b;
+      --cp-accent-hover: #9a1a41;
+      --cp-accent-soft: rgba(177, 31, 75, 0.08);
+      --cp-accent-fg: #ffffff;
+      --cp-success: #16a34a;
+      --cp-danger: #dc2626;
+      --cp-warning: #f59e0b;
+      --cp-link: #0078d4;
+      --cp-shadow: 0 18px 48px rgba(0, 0, 0, 0.12);
+      --cp-overlay: rgba(255, 255, 255, 0.8);
+      --cp-panel: rgba(255, 255, 255, 0.86);
+      --cp-panel-strong: rgba(255, 255, 255, 0.96);
+      --cp-sheen: rgba(255, 255, 255, 0.55);
+      --cp-highlight: rgba(177, 31, 75, 0.12);
+    }
+    html[data-theme="dark"] {
+      color-scheme: dark;
+      --cp-bg: #3d3b3a;
+      --cp-bg-elevated: #343231;
+      --cp-surface: #292929;
+      --cp-surface-soft: #2e2e2e;
+      --cp-border: #474747;
+      --cp-border-strong: #5f5f5f;
+      --cp-text: #dedede;
+      --cp-text-muted: #919191;
+      --cp-text-soft: #b0b0b0;
+      --cp-accent: #fd8ea1;
+      --cp-accent-hover: #fb7b91;
+      --cp-accent-soft: rgba(253, 142, 161, 0.14);
+      --cp-accent-fg: #1a1a1a;
+      --cp-success: #4ade80;
+      --cp-danger: #f87171;
+      --cp-warning: #fbbf24;
+      --cp-link: #4da6ff;
+      --cp-shadow: 0 18px 48px rgba(0, 0, 0, 0.32);
+      --cp-overlay: rgba(41, 41, 41, 0.88);
+      --cp-panel: rgba(41, 41, 41, 0.72);
+      --cp-panel-strong: rgba(41, 41, 41, 0.96);
+      --cp-sheen: rgba(255, 255, 255, 0.04);
+      --cp-highlight: rgba(253, 142, 161, 0.12);
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--cp-bg); color: var(--cp-text); font: 16px/1.6 "Segoe UI", Aptos, Calibri, -apple-system, BlinkMacSystemFont, sans-serif; }
+    a { color: var(--cp-link); text-underline-offset: 3px; }
+    a:hover { color: var(--cp-accent-hover); }
+    button, input, select { font: inherit; }
+    :focus-visible { outline: 3px solid var(--cp-accent); outline-offset: 4px; }
+    [hidden] { display: none !important; }
+    .wrap { max-width: 1160px; margin: auto; padding: 0 32px; }
+    .site-nav { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; padding-top: 24px; padding-bottom: 24px; font-size: .875rem; }
+    .site-nav a { font-weight: 600; }
+    .hero { border-top: 1px solid var(--cp-border); border-bottom: 1px solid var(--cp-border); background: var(--cp-bg-elevated); padding: 64px 0 48px; }
+    .eyebrow { color: var(--cp-accent); font-size: .75rem; font-weight: 700; text-transform: uppercase; letter-spacing: .12em; margin: 0 0 16px; }
+    h1 { font-size: clamp(2.5rem, 6vw, 4rem); line-height: 1.08; letter-spacing: -.04em; max-width: 800px; margin: 0 0 24px; }
+    .intro { max-width: 680px; color: var(--cp-text-muted); font-size: 1.125rem; margin-bottom: 32px; }
+    .hero-bottom { display: flex; flex-wrap: wrap; gap: 24px; align-items: center; }
+    .contribute { display: inline-block; border: 1px solid var(--cp-accent); border-radius: .625rem; padding: 12px 20px; color: var(--cp-accent); font-weight: 600; text-decoration: none; }
+    .contribute:hover { background: var(--cp-accent-soft); }
+    .hero-note { color: var(--cp-text-muted); font-size: .875rem; max-width: 400px; margin: 0; }
+    main.wrap { padding-top: 32px; padding-bottom: 64px; }
+    .filters { border: 1px solid var(--cp-border); border-radius: 16px; padding: 24px; background: var(--cp-surface); display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+    .search-field { grid-column: span 2; }
+    label { display: block; font-size: .8125rem; font-weight: 600; margin-bottom: 8px; }
+    input, select { width: 100%; min-width: 0; min-height: 44px; padding: 8px 12px; border: 1px solid var(--cp-border-strong); border-radius: .625rem; background: var(--cp-bg-elevated); color: var(--cp-text); }
+    input::placeholder { color: var(--cp-text-muted); }
+    .results-bar { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; justify-content: space-between; margin: 32px 0 24px; }
+    .results-bar h2 { font-size: 1.25rem; margin: 0; }
+    #result-count { font-size: .875rem; font-weight: 400; color: var(--cp-text-muted); margin-left: 8px; }
+    #timezone { margin: 0; color: var(--cp-text-muted); font-size: .8125rem; }
+    .events { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+    .event-card { display: flex; flex-direction: column; min-width: 0; padding: 28px; border: 1px solid var(--cp-border); border-radius: 16px; background: var(--cp-surface); overflow-wrap: anywhere; }
+    .card-eyebrow { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; color: var(--cp-accent); font-size: .8125rem; font-weight: 700; }
+    .event-card h3 { font-size: 1.5rem; line-height: 1.3; margin: 20px 0 16px; }
+    .event-time { font-weight: 600; }
+    .event-time, .event-location, .event-cost { font-size: .875rem; margin: 0 0 8px; }
+    .event-location, .event-cost { color: var(--cp-text-muted); }
+    .event-description { margin: 8px 0 16px; }
+    .event-description p { margin: 12px 0; }
+    .event-description ul { padding-left: 20px; }
+    .tags { display: flex; flex-wrap: wrap; gap: 8px; margin: auto 0 24px; padding-top: 8px; }
+    .tag { display: inline-block; font-size: .75rem; font-weight: 600; padding: 4px 12px; border-radius: .625rem; color: var(--cp-text-muted); background: var(--cp-surface-soft); border: 1px solid var(--cp-border); }
+    .register { display: block; border-radius: .625rem; padding: 12px 16px; background: var(--cp-accent); color: var(--cp-accent-fg); text-decoration: none; font-weight: 600; text-align: center; }
+    .register:hover { background: var(--cp-accent-hover); color: var(--cp-accent-fg); }
+    .empty { padding: 48px 24px; border: 1px dashed var(--cp-border-strong); border-radius: 16px; text-align: center; background: var(--cp-bg-elevated); }
+    .empty h3 { font-size: 1.25rem; margin: 0 0 8px; }
+    .empty p { color: var(--cp-text-muted); margin: 0 auto 20px; max-width: 520px; }
+    button { cursor: pointer; border: 1px solid var(--cp-border-strong); border-radius: .625rem; background: var(--cp-surface); color: var(--cp-text); padding: 8px 16px; }
+    footer { border-top: 1px solid var(--cp-border); padding: 32px 0; font-size: .8125rem; color: var(--cp-text-muted); }
+    footer p { max-width: 760px; }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+    .skip-link { position: absolute; top: -100px; left: 16px; padding: 12px; background: var(--cp-surface); z-index: 1; }
+    .skip-link:focus { top: 16px; }
+    @media (max-width: 800px) { .filters { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    @media (max-width: 600px) {
+      .wrap { padding-left: 20px; padding-right: 20px; }
+      .hero { padding: 40px 0 32px; }
+      .events, .filters { grid-template-columns: 1fr; }
+      .search-field { grid-column: auto; }
+      .filters, .event-card { padding: 20px; }
+    }
+  </style>
+<script defer src="https://a.ndme.sh/script.js" data-website-id="9478c1a0-93c6-4c21-855a-69e50e15cbc4"></script>
+<style>/* smec-back-btn v2 */
+.smec-back-btn { position: fixed; bottom: 16px; left: 16px; z-index: 9999;
+  box-sizing: border-box;
+  display: inline-flex; align-items: center; justify-content: flex-start;
+  gap: 8px; height: 40px; padding: 0 16px 0 12px; border-radius: 20px;
+  background: rgba(0, 120, 212, 0.92) !important; color: #fff !important;
+  text-decoration: none !important;
+  font: 600 14px/1 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif !important;
+  letter-spacing: 0.01em;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18); backdrop-filter: blur(6px);
+  opacity: 0;
+  animation: smec-back-btn-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.4s forwards;
+  transition:
+    padding 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    background 0.3s ease,
+    box-shadow 0.3s ease;
+  overflow: hidden; white-space: nowrap; }
+.smec-back-btn__icon { flex: 0 0 auto; display: inline-block;
+  width: 18px; height: 18px; }
+.smec-back-btn__label { display: inline-block; flex: 0 0 auto;
+  font: inherit; color: inherit; }
+.smec-back-btn__more { display: inline-block; max-width: 0; opacity: 0;
+  overflow: hidden; vertical-align: bottom;
+  font: inherit; color: inherit;
+  transition:
+    opacity 0.18s ease 0s,
+    max-width 0.45s cubic-bezier(0.22, 1, 0.36, 1) 0.05s; }
+
+.smec-back-btn:hover, .smec-back-btn:focus-visible {
+  background: rgba(0, 90, 158, 0.96) !important; color: #fff !important;
+  text-decoration: none !important;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.22); }
+.smec-back-btn:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+.smec-back-btn:hover .smec-back-btn__more,
+.smec-back-btn:focus-visible .smec-back-btn__more {
+  max-width: 260px; opacity: 1;
+  transition:
+    max-width 0.45s cubic-bezier(0.22, 1, 0.36, 1) 0s,
+    opacity 0.25s ease 0.2s; }
+
+@keyframes smec-back-btn-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@media (hover: none) {
+  .smec-back-btn__more { max-width: 260px; opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .smec-back-btn, .smec-back-btn__more,
+  .smec-back-btn:hover .smec-back-btn__more,
+  .smec-back-btn:focus-visible .smec-back-btn__more {
+    transition: background 0.2s ease, color 0.2s ease;
+    animation: none; opacity: 1; }
+}
+@media (max-width: 600px) { .smec-back-btn { bottom: 12px; left: 12px; } }
+</style>
+<!-- smec-meta v1 -->
+<meta name="description" content="Upcoming Partner Events for Customers — an interactive infographic from the SME&amp;C Infographic Hub.">
+<meta property="og:title" content="Upcoming Partner Events for Customers">
+<meta property="og:description" content="Upcoming Partner Events for Customers — an interactive infographic from the SME&amp;C Infographic Hub.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://sme-c-infographics.github.io/events/partner-events.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Upcoming Partner Events for Customers">
+<meta name="twitter:description" content="Upcoming Partner Events for Customers — an interactive infographic from the SME&amp;C Infographic Hub.">
+<!-- smec-favicon v1 -->
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+</head>
+<body>
+<a href="/" class="smec-back-btn" data-smec-back-button="v2" aria-label="Back to SME&amp;C Infographics"><svg class="smec-back-btn__icon" aria-hidden="true" viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg><span class="smec-back-btn__label">Back<span class="smec-back-btn__more">&nbsp;to SME&amp;C Infographics</span></span></a>
+
+  <a class="skip-link" href="#main">Skip to events</a>
+  <nav class="site-nav wrap" aria-label="Site">
+    <a href="../index.html">SME&amp;C Infographic Hub</a>
+    <a href="azure-events-americas.html">Microsoft customer events &rarr;</a>
+  </nav>
+  <header class="hero">
+    <div class="wrap">
+      <p class="eyebrow">Learn with the partner community</p>
+      <h1>Partner expertise.<br>Your next opportunity.</h1>
+      <p class="intro">Discover partner-hosted events for customers: practical workshops, expert briefings, and hands-on learning across Microsoft technologies.</p>
+      <div class="hero-bottom">
+        <a class="contribute" href="https://github.com/SME-C-Infographics/sme-c-infographics.github.io/blob/main/docs/adding-a-partner-event.md">Submit a partner event &rarr;</a>
+        <p class="hero-note">Community-contributed. Reviewed through pull requests.<br>No local tools needed to add an event.</p>
+      </div>
+    </div>
+  </header>
+  <main class="wrap" id="main">
+    <form class="filters" id="filters" aria-label="Filter partner events" hidden>
+      <div class="search-field"><label for="search">Find an event</label><input id="search" type="search" placeholder="Search events, partners, or topics"></div>
+      <div><label for="partner">Partner</label><select id="partner"><option value="">All partners</option></select></div>
+      <div><label for="format">Format</label><select id="format"><option value="">All formats</option></select></div>
+      <div><label for="topic">Topic</label><select id="topic"><option value="">All topics</option></select></div>
+      <div><label for="month">Starting month (your timezone)</label><select id="month"><option value="">All months</option></select></div>
+      <div><label for="period">When</label><select id="period"><option value="upcoming">Upcoming &amp; live</option><option value="past">Past events</option><option value="all">All events</option></select></div>
+      <div><label for="reset-filters">Start over</label><button id="reset-filters" type="reset">Reset filters</button></div>
+    </form>
+    <div class="results-bar">
+      <h2><span id="results-heading">Partner events</span><span id="result-count" role="status" aria-live="polite"></span></h2>
+      <p id="timezone">Event times include their UTC offsets.</p>
+    </div>
+    <noscript><p>JavaScript is off. All submitted events are listed below in date order, including past events, with their original UTC offsets. If no listings appear, use the submission link above to share the first event.</p></noscript>
+    <div class="events" id="events">
+<!-- smec-partner-events v1 -->
+<article class="event-card" id="event-2026-09-23-coretek-unlock-data-for-ai-workshop-detroit" data-start="2026-09-23T08:30-04:00" data-end="2026-09-23T14:30-04:00" data-partner="Coretek Services" data-format="In person" data-topics="[&quot;Azure Database for PostgreSQL&quot;, &quot;AI&quot;, &quot;Data modernization&quot;, &quot;Azure Data Factory&quot;]">
+  <div class="card-eyebrow"><span>Coretek Services</span><span class="tag">In person</span></div>
+  <h3>Unlock Data for AI Workshop</h3>
+  <p class="event-time"><time datetime="2026-09-23T08:30-04:00">Sep 23, 2026, 08:30 UTC-04:00</time>
+    to <time datetime="2026-09-23T14:30-04:00">Sep 23, 2026, 14:30 UTC-04:00</time></p>
+  <p class="event-location">Microsoft Innovation Hub, 1 Campus Martius, Detroit, MI 48226</p>
+  <p class="event-cost">Cost: See registration page</p>
+  <div class="event-description"><p>Join Coretek and Microsoft for a hands-on executive workshop focused on preparing enterprise data platforms for AI outcomes.</p>
+<ul><li>Explore practical approaches for modernizing SQL estates on open, cost-efficient Azure data services.</li><li>Review architecture patterns for AI and analytics use cases, including RAG and vector search scenarios.</li><li>Build a plan to move from AI ambition to a production-ready data and AI foundation.</li></ul></div>
+  <div class="tags" aria-label="Topics"><span class="tag">Azure Database for PostgreSQL</span><span class="tag">AI</span><span class="tag">Data modernization</span><span class="tag">Azure Data Factory</span></div>
+  <a class="register" href="https://pages.coretek.com/unlock-data-for-ai-workshop-september" target="_blank" rel="noopener noreferrer">Register with Coretek Services<span class="sr-only"> for Unlock Data for AI Workshop (opens in a new tab)</span> &rarr;</a>
+</article>
+<article class="event-card" id="event-2026-09-29-insight-controlling-github-copilot-spend" data-start="2026-09-29T12:00-04:00" data-end="2026-09-29T13:00-04:00" data-partner="Insight" data-format="Virtual" data-topics="[&quot;GitHub Copilot&quot;, &quot;AI cost governance&quot;, &quot;Usage-based billing&quot;, &quot;Engineering productivity&quot;]">
+  <div class="card-eyebrow"><span>Insight</span><span class="tag">Virtual</span></div>
+  <h3>Controlling GitHub Copilot Spend</h3>
+  <p class="event-time"><time datetime="2026-09-29T12:00-04:00">Sep 29, 2026, 12:00 UTC-04:00</time>
+    to <time datetime="2026-09-29T13:00-04:00">Sep 29, 2026, 13:00 UTC-04:00</time></p>
+  <p class="event-location">Online</p>
+  <p class="event-cost">Cost: Free</p>
+  <div class="event-description"><p>This customer webinar covers practical ways to manage GitHub Copilot usage and spend while scaling AI-assisted development.</p>
+<ul><li>Understand usage-based billing and AI Credits in GitHub Copilot.</li><li>Learn model-selection and usage practices that improve value and reduce unnecessary cost.</li><li>Apply budgeting and visibility patterns for cross-team governance.</li></ul></div>
+  <div class="tags" aria-label="Topics"><span class="tag">GitHub Copilot</span><span class="tag">AI cost governance</span><span class="tag">Usage-based billing</span><span class="tag">Engineering productivity</span></div>
+  <a class="register" href="https://www.insight.com/en_US/content-and-resources/webinars/controlling-github-copilot-spend.html" target="_blank" rel="noopener noreferrer">Register with Insight<span class="sr-only"> for Controlling GitHub Copilot Spend (opens in a new tab)</span> &rarr;</a>
+</article>
+<article class="event-card" id="event-2026-10-07-trianz-azure-field-enablement-workshop-atlanta" data-start="2026-10-07T10:00-04:00" data-end="2026-10-07T14:00-04:00" data-partner="Trianz" data-format="In person" data-topics="[&quot;Azure migration&quot;, &quot;SQL modernization&quot;, &quot;Oracle to PostgreSQL migration&quot;, &quot;TCO&quot;]">
+  <div class="card-eyebrow"><span>Trianz</span><span class="tag">In person</span></div>
+  <h3>Azure Field Enablement Workshop</h3>
+  <p class="event-time"><time datetime="2026-10-07T10:00-04:00">Oct 07, 2026, 10:00 UTC-04:00</time>
+    to <time datetime="2026-10-07T14:00-04:00">Oct 07, 2026, 14:00 UTC-04:00</time></p>
+  <p class="event-location">Microsoft Atlanta Office, Conference Room 4S.2B 1, Atlanta, GA</p>
+  <p class="event-cost">Cost: Free</p>
+  <div class="event-description"><p>Trianz and Microsoft are hosting an in-person workshop focused on accelerating Azure migration and modernization motions.</p>
+<ul><li>Review practical assessment-to-migration motions for infrastructure, application, and database workloads.</li><li>Explore migration scenarios including SQL modernization and Oracle to PostgreSQL transitions.</li><li>Learn approaches for building account-level plans and business cases faster.</li></ul></div>
+  <div class="tags" aria-label="Topics"><span class="tag">Azure migration</span><span class="tag">SQL modernization</span><span class="tag">Oracle to PostgreSQL migration</span><span class="tag">TCO</span></div>
+  <a class="register" href="https://www.trianz.com/events/azure-field-enablement-workshop" target="_blank" rel="noopener noreferrer">Register with Trianz<span class="sr-only"> for Azure Field Enablement Workshop (opens in a new tab)</span> &rarr;</a>
+</article>
+<article class="event-card" id="event-2026-11-03-xoriant-agentic-ai-summit-nyc" data-start="2026-11-03T13:00-05:00" data-end="2026-11-03T17:00-05:00" data-partner="Xoriant" data-format="In person" data-topics="[&quot;Agentic AI&quot;, &quot;Azure AI Foundry&quot;, &quot;Copilot Studio&quot;, &quot;Microsoft Fabric&quot;]">
+  <div class="card-eyebrow"><span>Xoriant</span><span class="tag">In person</span></div>
+  <h3>Agentic AI Summit: Operationalizing AI Agents for Healthcare and Financial Services</h3>
+  <p class="event-time"><time datetime="2026-11-03T13:00-05:00">Nov 03, 2026, 13:00 UTC-05:00</time>
+    to <time datetime="2026-11-03T17:00-05:00">Nov 03, 2026, 17:00 UTC-05:00</time></p>
+  <p class="event-location">Microsoft Innovation Hub, 11 Times Square, 7th Floor, New York, NY 10036</p>
+  <p class="event-cost">Cost: See registration page</p>
+  <div class="event-description"><p>Join Microsoft and Xoriant for a working session on moving from AI pilots to governed, scalable agentic AI solutions.</p>
+<ul><li>Compare Microsoft agent approaches and where each fits in enterprise architecture.</li><li>Learn governance and security patterns for production-ready AI agents.</li><li>Review industry use cases and practical steps from concept to production.</li></ul></div>
+  <div class="tags" aria-label="Topics"><span class="tag">Agentic AI</span><span class="tag">Azure AI Foundry</span><span class="tag">Copilot Studio</span><span class="tag">Microsoft Fabric</span></div>
+  <a class="register" href="https://www.xoriant.com/events/agentic-ai-summit-operationalizing-ai-agents-for-healthcare-financial-services" target="_blank" rel="noopener noreferrer">Register with Xoriant<span class="sr-only"> for Agentic AI Summit: Operationalizing AI Agents for Healthcare and Financial Services (opens in a new tab)</span> &rarr;</a>
+</article>
+<article class="event-card" id="event-2026-11-05-insight-what-github-universe-means-for-agentic-development" data-start="2026-11-05T12:00-05:00" data-end="2026-11-05T13:00-05:00" data-partner="Insight" data-format="Virtual" data-topics="[&quot;GitHub Copilot&quot;, &quot;Agentic development&quot;, &quot;AI software engineering&quot;, &quot;Agent orchestration&quot;]">
+  <div class="card-eyebrow"><span>Insight</span><span class="tag">Virtual</span></div>
+  <h3>What GitHub Universe Means for Agentic Development</h3>
+  <p class="event-time"><time datetime="2026-11-05T12:00-05:00">Nov 05, 2026, 12:00 UTC-05:00</time>
+    to <time datetime="2026-11-05T13:00-05:00">Nov 05, 2026, 13:00 UTC-05:00</time></p>
+  <p class="event-location">Online</p>
+  <p class="event-cost">Cost: Free</p>
+  <div class="event-description"><p>This webinar explains practical takeaways from GitHub Universe and how engineering teams can evaluate emerging agentic development capabilities.</p>
+<ul><li>Understand what recent GitHub and Copilot announcements mean in real-world development workflows.</li><li>Explore pilot-ready agent patterns and where to apply them first.</li><li>Learn how teams can evaluate value and readiness for broader rollout.</li></ul></div>
+  <div class="tags" aria-label="Topics"><span class="tag">GitHub Copilot</span><span class="tag">Agentic development</span><span class="tag">AI software engineering</span><span class="tag">Agent orchestration</span></div>
+  <a class="register" href="https://www.insight.com/en_US/content-and-resources/webinars/what-github-universe-means-for-agentic-development.html" target="_blank" rel="noopener noreferrer">Register with Insight<span class="sr-only"> for What GitHub Universe Means for Agentic Development (opens in a new tab)</span> &rarr;</a>
+</article>
+<article class="event-card" id="event-2026-11-12-presidio-sql-2016-ends-azure-begins-live-webinar" data-start="2026-11-12T11:00-05:00" data-end="2026-11-12T12:00-05:00" data-partner="Presidio" data-format="Virtual" data-topics="[&quot;SQL Server modernization&quot;, &quot;Azure SQL&quot;, &quot;Migration&quot;, &quot;TCO&quot;]">
+  <div class="card-eyebrow"><span>Presidio</span><span class="tag">Virtual</span></div>
+  <h3>SQL 2016 Ends. Azure Begins. Live Webinar</h3>
+  <p class="event-time"><time datetime="2026-11-12T11:00-05:00">Nov 12, 2026, 11:00 UTC-05:00</time>
+    to <time datetime="2026-11-12T12:00-05:00">Nov 12, 2026, 12:00 UTC-05:00</time></p>
+  <p class="event-location">Online</p>
+  <p class="event-cost">Cost: Free</p>
+  <div class="event-description"><p>Join Presidio, Microsoft, and AMD for a live webinar on planning your path off SQL Server 2014 and 2016 with practical migration and modernization guidance.</p>
+<ul><li>Learn approaches to reduce security and compliance risk by moving SQL workloads to Azure.</li><li>Understand migration complexity and TCO considerations for budget-ready planning.</li><li>See phased options from SQL IaaS migration through modernization on Azure SQL services.</li></ul></div>
+  <div class="tags" aria-label="Topics"><span class="tag">SQL Server modernization</span><span class="tag">Azure SQL</span><span class="tag">Migration</span><span class="tag">TCO</span></div>
+  <a class="register" href="https://www.brighttalk.com/webcast/15881/677870?utm_source=brighttalk-sharing&amp;utm_medium=web&amp;utm_campaign=linkshare" target="_blank" rel="noopener noreferrer">Register with Presidio<span class="sr-only"> for SQL 2016 Ends. Azure Begins. Live Webinar (opens in a new tab)</span> &rarr;</a>
+</article>
+<article class="event-card" id="event-2026-11-12-insight-from-sql-assessment-to-modernization" data-start="2026-11-12T12:00-05:00" data-end="2026-11-12T13:00-05:00" data-partner="Insight" data-format="Virtual" data-topics="[&quot;Azure SQL PaaS&quot;, &quot;SQL modernization&quot;, &quot;Migration assessment&quot;, &quot;Database strategy&quot;]">
+  <div class="card-eyebrow"><span>Insight</span><span class="tag">Virtual</span></div>
+  <h3>From SQL Assessment to Modernization: Finding the Right Path to SQL PaaS</h3>
+  <p class="event-time"><time datetime="2026-11-12T12:00-05:00">Nov 12, 2026, 12:00 UTC-05:00</time>
+    to <time datetime="2026-11-12T13:00-05:00">Nov 12, 2026, 13:00 UTC-05:00</time></p>
+  <p class="event-location">Online</p>
+  <p class="event-cost">Cost: Free</p>
+  <div class="event-description"><p>Insight and Microsoft will share an assessment-first approach for SQL modernization, with guidance on reducing migration risk while progressing toward Azure SQL PaaS.</p>
+<ul><li>Learn how workload-level assessments uncover dependencies and modernization constraints early.</li><li>Separate true exception paths from workloads ready to modernize now.</li><li>Build a practical roadmap that preserves application continuity and long-term SQL strategy.</li></ul></div>
+  <div class="tags" aria-label="Topics"><span class="tag">Azure SQL PaaS</span><span class="tag">SQL modernization</span><span class="tag">Migration assessment</span><span class="tag">Database strategy</span></div>
+  <a class="register" href="https://www.insight.com/en_US/content-and-resources/webinars/from-sql-assessment-to-modernization-finding-the-right-path-to-sql-paas.html" target="_blank" rel="noopener noreferrer">Register with Insight<span class="sr-only"> for From SQL Assessment to Modernization: Finding the Right Path to SQL PaaS (opens in a new tab)</span> &rarr;</a>
+</article>
+<article class="event-card" id="event-2026-12-01-presidio-sql-migration-bootcamp-houston" data-start="2026-12-01T10:00-06:00" data-end="2026-12-01T14:00-06:00" data-partner="Presidio" data-format="In person" data-topics="[&quot;SQL migration&quot;, &quot;Azure SQL&quot;, &quot;Modernization&quot;, &quot;Data platform&quot;]">
+  <div class="card-eyebrow"><span>Presidio</span><span class="tag">In person</span></div>
+  <h3>SQL 2016 Ends. Azure Begins. Houston Bootcamp</h3>
+  <p class="event-time"><time datetime="2026-12-01T10:00-06:00">Dec 01, 2026, 10:00 UTC-06:00</time>
+    to <time datetime="2026-12-01T14:00-06:00">Dec 01, 2026, 14:00 UTC-06:00</time></p>
+  <p class="event-location">750 Town and Country Blvd, Suite 1000, Houston, TX 77024</p>
+  <p class="event-cost">Cost: Free</p>
+  <div class="event-description"><p>This in-person bootcamp helps customers build a practical SQL Server migration and modernization plan with Presidio and Microsoft solution experts.</p>
+<ul><li>Work through migration and modernization patterns for SQL workloads moving to Azure.</li><li>Get guidance on sequencing near-term migration and longer-term modernization choices.</li><li>Review key planning inputs such as complexity, timing, and business outcomes.</li></ul></div>
+  <div class="tags" aria-label="Topics"><span class="tag">SQL migration</span><span class="tag">Azure SQL</span><span class="tag">Modernization</span><span class="tag">Data platform</span></div>
+  <a class="register" href="https://invite.presidio.com/sql2016endsazurebeginshousto" target="_blank" rel="noopener noreferrer">Register with Presidio<span class="sr-only"> for SQL 2016 Ends. Azure Begins. Houston Bootcamp (opens in a new tab)</span> &rarr;</a>
+</article>
+<article class="event-card" id="event-2026-12-02-presidio-sql-migration-bootcamp-dallas" data-start="2026-12-02T10:00-06:00" data-end="2026-12-02T14:00-06:00" data-partner="Presidio" data-format="In person" data-topics="[&quot;SQL migration&quot;, &quot;Azure SQL&quot;, &quot;Modernization&quot;, &quot;Data platform&quot;]">
+  <div class="card-eyebrow"><span>Presidio</span><span class="tag">In person</span></div>
+  <h3>SQL 2016 Ends. Azure Begins. Dallas Bootcamp</h3>
+  <p class="event-time"><time datetime="2026-12-02T10:00-06:00">Dec 02, 2026, 10:00 UTC-06:00</time>
+    to <time datetime="2026-12-02T14:00-06:00">Dec 02, 2026, 14:00 UTC-06:00</time></p>
+  <p class="event-location">7000 State Highway 161, Building LC1, Irving, TX 75039</p>
+  <p class="event-cost">Cost: Free</p>
+  <div class="event-description"><p>Attend this Presidio-led, in-person SQL modernization bootcamp focused on helping customers plan and execute SQL estate transitions to Azure.</p>
+<ul><li>Learn how to address end-of-support risk for SQL Server 2014 and 2016.</li><li>Compare migration-first and modernization-now paths based on workload priorities.</li><li>Leave with actionable guidance to move from assessment to implementation.</li></ul></div>
+  <div class="tags" aria-label="Topics"><span class="tag">SQL migration</span><span class="tag">Azure SQL</span><span class="tag">Modernization</span><span class="tag">Data platform</span></div>
+  <a class="register" href="https://invite.presidio.com/sql2016endsazurebeginsdallas" target="_blank" rel="noopener noreferrer">Register with Presidio<span class="sr-only"> for SQL 2016 Ends. Azure Begins. Dallas Bootcamp (opens in a new tab)</span> &rarr;</a>
+</article>
+<article class="event-card" id="event-2026-12-08-presidio-sql-migration-bootcamp-boston" data-start="2026-12-08T10:00-05:00" data-end="2026-12-08T14:00-05:00" data-partner="Presidio" data-format="In person" data-topics="[&quot;SQL migration&quot;, &quot;Azure SQL&quot;, &quot;Modernization&quot;, &quot;Data platform&quot;]">
+  <div class="card-eyebrow"><span>Presidio</span><span class="tag">In person</span></div>
+  <h3>SQL 2016 Ends. Azure Begins. Boston Bootcamp</h3>
+  <p class="event-time"><time datetime="2026-12-08T10:00-05:00">Dec 08, 2026, 10:00 UTC-05:00</time>
+    to <time datetime="2026-12-08T14:00-05:00">Dec 08, 2026, 14:00 UTC-05:00</time></p>
+  <p class="event-location">5 Wayside Road, Burlington, MA 01803</p>
+  <p class="event-cost">Cost: Free</p>
+  <div class="event-description"><p>This hands-on Presidio bootcamp supports customers evaluating SQL migration and modernization options on Azure with guidance tailored to practical execution.</p>
+<ul><li>Understand migration options to Azure SQL IaaS and managed services.</li><li>Review modernization opportunities aligned to broader data and AI goals.</li><li>Gain planning inputs for phased rollout and stakeholder alignment.</li></ul></div>
+  <div class="tags" aria-label="Topics"><span class="tag">SQL migration</span><span class="tag">Azure SQL</span><span class="tag">Modernization</span><span class="tag">Data platform</span></div>
+  <a class="register" href="https://invite.presidio.com/sql2016endsazurebeginsboston" target="_blank" rel="noopener noreferrer">Register with Presidio<span class="sr-only"> for SQL 2016 Ends. Azure Begins. Boston Bootcamp (opens in a new tab)</span> &rarr;</a>
+</article>
+<article class="event-card" id="event-2026-12-10-presidio-sql-migration-bootcamp-philadelphia" data-start="2026-12-10T10:00-05:00" data-end="2026-12-10T14:00-05:00" data-partner="Presidio" data-format="In person" data-topics="[&quot;SQL migration&quot;, &quot;Azure SQL&quot;, &quot;Modernization&quot;, &quot;Data platform&quot;]">
+  <div class="card-eyebrow"><span>Presidio</span><span class="tag">In person</span></div>
+  <h3>SQL 2016 Ends. Azure Begins. Philadelphia Bootcamp</h3>
+  <p class="event-time"><time datetime="2026-12-10T10:00-05:00">Dec 10, 2026, 10:00 UTC-05:00</time>
+    to <time datetime="2026-12-10T14:00-05:00">Dec 10, 2026, 14:00 UTC-05:00</time></p>
+  <p class="event-location">45 Liberty Boulevard, Malvern, PA 19355</p>
+  <p class="event-cost">Cost: Free</p>
+  <div class="event-description"><p>Join Presidio for an in-person SQL migration and modernization bootcamp designed for customers planning to move from legacy SQL Server estates to Azure.</p>
+<ul><li>Explore migration and modernization paths based on workload readiness.</li><li>Learn how to reduce security and compliance risk from end-of-support versions.</li><li>Align technical planning with cost and business-priority considerations.</li></ul></div>
+  <div class="tags" aria-label="Topics"><span class="tag">SQL migration</span><span class="tag">Azure SQL</span><span class="tag">Modernization</span><span class="tag">Data platform</span></div>
+  <a class="register" href="https://invite.presidio.com/sql2016endsazurebeginsphilad" target="_blank" rel="noopener noreferrer">Register with Presidio<span class="sr-only"> for SQL 2016 Ends. Azure Begins. Philadelphia Bootcamp (opens in a new tab)</span> &rarr;</a>
+</article>
+<!-- /smec-partner-events -->
+    </div>
+    <div class="empty" id="empty" hidden>
+      <h3 id="empty-title">No partner events yet</h3>
+      <p id="empty-description">Have an upcoming customer workshop or briefing? Be the first partner to share an event.</p>
+      <a href="https://github.com/SME-C-Infographics/sme-c-infographics.github.io/blob/main/docs/adding-a-partner-event.md">Learn how to submit an event &rarr;</a>
+    </div>
+  </main>
+  <footer>
+    <div class="wrap">
+      <p>These events are hosted by independent partner organizations. Registration, pricing, availability, and any collection of personal information are managed by the host. A listing is not a Microsoft endorsement. Confirm details on the partner's registration page.</p>
+    </div>
+  </footer>
+  <script>
+    (() => {
+      const cards = [...document.querySelectorAll(".event-card")];
+      const form = document.getElementById("filters");
+      const fields = Object.fromEntries(["search", "partner", "format", "topic", "month", "period"].map(id => [id, document.getElementById(id)]));
+      const empty = document.getElementById("empty");
+      const count = document.getElementById("result-count");
+      const pad = value => String(value).padStart(2, "0");
+      const monthKey = date => `${date.getFullYear()}-${pad(date.getMonth() + 1)}`;
+      const formatter = new Intl.DateTimeFormat(undefined, { dateStyle: "medium", timeStyle: "short" });
+      const monthFormatter = new Intl.DateTimeFormat(undefined, { year: "numeric", month: "long" });
+      const entries = cards.map(card => {
+        const start = new Date(card.dataset.start);
+        const end = new Date(card.dataset.end);
+        const topics = JSON.parse(card.dataset.topics);
+        card.querySelectorAll("time").forEach(time => {
+          time.textContent = formatter.format(new Date(time.dateTime));
+        });
+        return { card, start, end, topics, month: monthKey(start), search: card.textContent.toLocaleLowerCase() };
+      });
+
+      function addOptions(field, values) {
+        [...new Set(values)].sort((a, b) => a.localeCompare(b)).forEach(value => {
+          field.add(new Option(value, value));
+        });
+      }
+      addOptions(fields.partner, cards.map(card => card.dataset.partner));
+      addOptions(fields.format, cards.map(card => card.dataset.format));
+      addOptions(fields.topic, entries.flatMap(entry => entry.topics));
+      [...new Set(entries.map(entry => entry.month))].sort().forEach(month => {
+        const [year, number] = month.split("-").map(Number);
+        fields.month.add(new Option(monthFormatter.format(new Date(year, number - 1, 1)), month));
+      });
+
+      function filter() {
+        const now = new Date();
+        const query = fields.search.value.trim().toLocaleLowerCase();
+        let visible = 0;
+        const ordered = [...entries].sort((a, b) => fields.period.value === "past" ? b.start - a.start : a.start - b.start);
+        const container = document.getElementById("events");
+        ordered.forEach((entry, index) => {
+          const matches = (!query || entry.search.includes(query))
+            && (!fields.partner.value || entry.card.dataset.partner === fields.partner.value)
+            && (!fields.format.value || entry.card.dataset.format === fields.format.value)
+            && (!fields.topic.value || entry.topics.includes(fields.topic.value))
+            && (!fields.month.value || entry.month === fields.month.value)
+            && (fields.period.value === "all" || (fields.period.value === "past" ? entry.end <= now : entry.end > now));
+          entry.card.hidden = !matches;
+          if (matches) visible++;
+          if (container.children[index] !== entry.card) {
+            container.insertBefore(entry.card, container.children[index] || null);
+          }
+        });
+        count.textContent = `${visible} event${visible === 1 ? "" : "s"}`;
+        document.getElementById("results-heading").textContent = fields.period.value === "past" ? "Past partner events" : fields.period.value === "all" ? "All partner events" : "Upcoming partner events";
+        empty.hidden = visible !== 0;
+        document.getElementById("empty-title").textContent = entries.length ? "No events match these filters" : "No partner events yet";
+        document.getElementById("empty-description").textContent = entries.length ? "Try a different search, reset the filters, or choose All events to include past sessions." : "Have an upcoming customer workshop or briefing? Be the first partner to share an event.";
+      }
+
+      document.getElementById("timezone").textContent = `Times shown in your timezone: ${formatter.resolvedOptions().timeZone}`;
+      form.hidden = false;
+      form.addEventListener("submit", event => event.preventDefault());
+      form.addEventListener("input", filter);
+      form.addEventListener("change", filter);
+      form.addEventListener("reset", () => setTimeout(filter, 0));
+      filter();
+      setInterval(filter, 60000);
+    })();
+  </script>
+</body>
+</html>
