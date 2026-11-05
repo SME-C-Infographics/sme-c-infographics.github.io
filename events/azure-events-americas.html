@@ -614,6 +614,43 @@
   .spotlight-lite--sre .event-card--lite.event-card--past .btn.btn--rec { background: #0a558c; }
   .spotlight-lite--sre .event-card--lite.event-card--past .btn.btn--rec:hover { background: #0a4a78; }
 
+  /* SQL 2016 Ends. Azure Begins. band (Presidio + Microsoft): one card, every location and date as its own row. A dark Azure band in both color schemes. */
+  .sqlx-band { position: relative; overflow: hidden; padding: 64px 0 60px; color: #fff; background: linear-gradient(135deg, #04213d 0%, #093f73 50%, #0b5fa8 100%); }
+  .sqlx-band::before { content: ''; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(620px 380px at 10% 6%, rgba(80,230,255,0.18), transparent 62%), radial-gradient(560px 440px at 94% 98%, rgba(0,120,212,0.5), transparent 62%); }
+  .sqlx-band::after { content: ''; position: absolute; inset: 0; pointer-events: none; background-image: radial-gradient(rgba(255,255,255,0.09) 1px, transparent 1.4px); background-size: 24px 24px; -webkit-mask-image: linear-gradient(115deg, transparent 35%, #000 100%); mask-image: linear-gradient(115deg, transparent 35%, #000 100%); }
+  .sqlx-band .container { position: relative; z-index: 1; }
+  .sqlx-layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 540px); gap: 52px; align-items: center; }
+  .sqlx-eyebrow { display: inline-block; text-transform: uppercase; letter-spacing: 2px; font-size: 11.5px; font-weight: 700; color: #8fe9ff; background: rgba(80,230,255,0.12); border: 1px solid rgba(80,230,255,0.38); padding: 5px 13px; border-radius: 20px; margin-bottom: 16px; }
+  .sqlx-kicker { display: block; font-size: 14px; font-weight: 600; letter-spacing: 0.3px; color: #b7dcf7; margin-bottom: 12px; }
+  .sqlx-title { font-size: 46px; line-height: 1.06; font-weight: 700; letter-spacing: -0.6px; color: #fff; margin: 0 0 16px; }
+  .sqlx-title span { display: block; }
+  .sqlx-title .sqlx-end { color: rgba(255,255,255,0.7); }
+  .sqlx-title .sqlx-grad { background: linear-gradient(90deg, #50e6ff 0%, #9be3ff 55%, #fff 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent; }
+  .sqlx-intro { font-size: 16.5px; line-height: 1.6; color: #d6e8f7; max-width: 580px; margin: 0 0 20px; }
+  .sqlx-points { list-style: none; display: grid; gap: 11px; margin: 0; max-width: 580px; }
+  .sqlx-points li { display: flex; align-items: flex-start; gap: 11px; font-size: 15px; line-height: 1.5; color: #e8f2fb; }
+  .sqlx-check { flex: 0 0 auto; width: 22px; height: 22px; margin-top: 1px; border-radius: 50%; display: grid; place-items: center; font-size: 12px; font-weight: 700; color: #04213d; background: #50e6ff; }
+  .sqlx-sr { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+  .sqlx-band .events { display: block; margin: 0; }
+  .event-card--sqlx { padding: 26px 26px 22px; border-radius: 16px; border-color: transparent; background: linear-gradient(90deg, #0078d4, #50e6ff) top left / 100% 6px no-repeat, #fff; box-shadow: 0 30px 70px rgba(0,16,40,0.45); }
+  .event-card--sqlx:hover { transform: none; box-shadow: 0 30px 70px rgba(0,16,40,0.45); }
+  .event-card--sqlx .event-tag { margin-top: 6px; }
+  .event-card--sqlx h3 { font-size: 22px; margin: 2px 0 8px; }
+  .event-card--sqlx .event-meta-sub { flex-wrap: wrap; margin-bottom: 14px; }
+  .event-card--sqlx .session-list { margin: 0; gap: 10px; }
+  .event-card--sqlx .session-list > li { padding: 12px 12px 12px 14px; gap: 14px; }
+  .event-card--sqlx .session-list > li.session--extra { display: flex; }
+  .event-card--sqlx .session-more { display: none; }
+  .event-card--sqlx .session-when { gap: 1px; }
+  .event-card--sqlx .session-loc { order: -2; margin: 0; font-size: 15px; font-weight: 700; color: #242424; }
+  .event-card--sqlx .session-addr { order: -1; font-size: 12.5px; line-height: 1.4; color: #605e5c; }
+  .event-card--sqlx .session-time { flex-direction: row; flex-wrap: wrap; column-gap: 8px; margin-top: 3px; }
+  .event-card--sqlx .session-hours::before { content: '\00b7'; margin-right: 8px; color: #a19f9d; }
+  .sqlx-band:not(:has(.event-card:not(.card-hidden))) { display: none; }
+  body.hide-past .sqlx-band:not(:has(.event-card:not(.event-card--past))) { display: none; }
+  @media (max-width: 980px) { .sqlx-layout { grid-template-columns: minmax(0, 620px); justify-content: center; gap: 34px; } .sqlx-title { font-size: 38px; } }
+  @media (max-width: 640px) { .sqlx-band { padding: 48px 0 44px; } .sqlx-title { font-size: 33px; } .event-card--sqlx { padding: 22px 16px 16px; } .event-card--sqlx .session-list > li { flex-wrap: wrap; } .event-card--sqlx .session-list .btn.btn--sm { width: 100%; padding: 9px 14px; } }
+
   /* Microsoft Discovery Sessions: compact, scrollable list of wide tiles directly below the SRE band */
   .section--discovery { padding: 46px 0 34px; background: linear-gradient(180deg, #ffffff 0%, #fbfaff 100%); }
   .section--discovery .section-header { margin-bottom: 22px; }
@@ -796,6 +833,12 @@
     .event-card--lite .btn:hover { background: #0c66a8; }
     .spotlight-lite--sre .event-card--lite.event-card--past .btn.btn--rec:hover { background: #0c66a8; }
     .event-card--fabric { border-top-color: #1ea58f; }
+
+    /* SQL 2016 band: the band itself is dark in both schemes, only the white booking card needs a dark surface */
+    .event-card--sqlx { background: linear-gradient(90deg, #0078d4, #50e6ff) top left / 100% 6px no-repeat, #1e2127; box-shadow: 0 30px 70px rgba(0,0,0,0.6); }
+    .event-card--sqlx .session-loc { color: #f3f3f3; }
+    .event-card--sqlx .session-addr { color: #a9adb4; }
+    .event-card--sqlx .session-hours::before { color: #5a5f68; }
 
     /* FabCon band (already dark) — only its white ticket card needs a dark surface */
     .event-card--fabcon { background: linear-gradient(90deg, #0b6a5f 0%, #1ec08f 50%, #2b88d8 100%) top left / 100% 6px no-repeat, #1e2127; box-shadow: 0 26px 60px rgba(0,0,0,0.6); }
@@ -1253,36 +1296,6 @@ document.addEventListener('DOMContentLoaded', function () {
 })();
 </script>
 
-<section class="spotlight-lite spotlight-lite--sre">
-  <div class="container">
-    <div class="section-header">
-      <span class="spotlight-lite-eyebrow">🤖 Featured Azure Webinar Series</span>
-      <h2>Azure SRE Agent: Reliability, Reimagined with Agentic AI</h2>
-      <p>Site Reliability Engineering, reimagined with agentic AI. This two-part series takes you from first principles to a hands-on technical deep dive — see how Azure SRE Agent investigates, diagnoses, and helps remediate incidents, and what it takes to run it responsibly in the enterprise.</p>
-    </div>
-    <div class="events events--pair">
-      <div class="event-card event-card--lite" data-type="Briefing" data-modality="Virtual" data-month="10" data-recording="https://microsoft-my.sharepoint.com/personal/jubryant_microsoft_com1/_layouts/15/stream.aspx?id=%2Fpersonal%2Fjubryant%5Fmicrosoft%5Fcom1%2FDocuments%2FRecordings%2FAzure%20SRE%20Agent%20Series%20Reliability%2C%20Reimagined%20with%20Agentic%20AI%20%2D%20Part%201%20%E2%80%94%20Azure%20SRE%20Agent%20Fundamentals%2D20261015%5F180229UTC%2DMeeting%20Recording%2Emp4&amp;referrer=StreamWebApp%2EWeb&amp;referrerScenario=AddressBarCopied%2Eview%2Eed5e7c96%2D1890%2D4115%2D9df0%2Dc4b1120ba972&amp;share=cQpQsjfbeWAMRakYdetfOEY%2DEgUD8OTq6%5FpibenRvWW6PX16ag" data-search="azure sre agent series reliability reimagined with agentic ai part 1 fundamentals site reliability engineering it operations incident investigation diagnosis remediation firefighting hybrid integrations security governance permissions consumption ben magazino harry arce dan kraft briefing virtual webinar october 15">
-        <span class="event-tag tag-briefing">Azure Webinar</span>
-        <div class="lite-series">Part 1 of 2 · <strong>Azure SRE Agent Series</strong></div>
-        <h3>Azure SRE Agent Fundamentals</h3>
-        <div class="event-meta"><span class="icon">📅</span> <span class="event-time" data-start="2026-10-15T18:00:00Z" data-end="2026-10-15T19:15:00Z"></span></div>
-        <div class="event-meta event-meta-sub"><span class="icon">💻</span> Virtual · 75 min · Ben Magazino, Harry Arce &amp; Dan Kraft</div>
-        <p>An introduction to how agentic AI is reshaping IT operations and Site Reliability Engineering — moving teams from reactive firefighting to AI-assisted investigation, diagnosis, and recommended remediation. Watch the agent work an issue end to end, then explore responsible enterprise adoption: hybrid scenarios, integrations, security, governance, and choosing a strong first use case. Closes with live Q&amp;A.</p>
-        <div class="card-actions"><a class="btn" href="https://msit.events.teams.microsoft.com/event/msit.11201954-bb9a-4d5a-a8bd-45d2fdf3d4a6@72f988bf-86f1-41af-91ab-2d7cd011db47?source=copyLinkOneEventsShareDialog" target="_blank" rel="noopener">Register</a></div>
-      </div>
-      <div class="event-card event-card--lite" data-type="Training" data-modality="Virtual" data-month="10" data-recording="https://microsoft-my.sharepoint.com/personal/jubryant_microsoft_com1/_layouts/15/stream.aspx?id=%2Fpersonal%2Fjubryant%5Fmicrosoft%5Fcom1%2FDocuments%2FRecordings%2FAzure%20SRE%20Agent%20Series%20Reliability%2C%20Reimagined%20with%20Agentic%20AI%20%2D%20Part%202%20%E2%80%94%20Azure%20SRE%20Agent%20Technical%20Deep%20Dive%2D20261029%5F180305UTC%2DMeeting%20Recording%2Emp4&amp;referrer=StreamWebApp%2EWeb&amp;referrerScenario=AddressBarCopied%2Eview%2E244ffc62%2Dce98%2D441f%2Dbbe5%2D44ad517e93ee&amp;share=cQpX8WjhK667QaOEg132H2DDEgUDb1M5P2l3BOVtSjmGUp0gRw" data-search="azure sre agent series reliability reimagined with agentic ai part 2 technical deep dive architecture guardrails permissions networking data residency governance incident lifecycle detection investigation diagnosis remediation mcp servers apis scripts tools session insights human in the loop observability ben magazino harry arce dan kraft training virtual webinar october 29">
-        <span class="event-tag tag-training">Azure Webinar</span>
-        <div class="lite-series">Part 2 of 2 · <strong>Azure SRE Agent Series</strong></div>
-        <h3>Azure SRE Agent Technical Deep Dive</h3>
-        <div class="event-meta"><span class="icon">📅</span> <span class="event-time" data-start="2026-10-29T18:00:00Z" data-end="2026-10-29T19:15:00Z"></span></div>
-        <div class="event-meta event-meta-sub"><span class="icon">💻</span> Virtual · 75 min · Ben Magazino, Harry Arce &amp; Dan Kraft</div>
-        <p>A demonstration-driven deep dive into how Azure SRE Agent actually operates. Explore the architecture and guardrails that make it enterprise-ready — permissions, networking, data residency, and governance — then follow one incident through its full lifecycle. See how to extend the agent with MCP servers, APIs, and tools, and operationalize it day to day with human-in-the-loop review and Session Insights. Closes with live Q&amp;A.</p>
-        <div class="card-actions"><a class="btn" href="https://msit.events.teams.microsoft.com/event/msit.9c9bc8ea-3cef-497e-b023-1c1153aec21b@72f988bf-86f1-41af-91ab-2d7cd011db47?source=copyLinkOneEventsShareDialog" target="_blank" rel="noopener">Register</a></div>
-      </div>
-    </div>
-  </div>
-</section>
-
 <section class="ghs-band" aria-labelledby="ghs-title">
   <svg class="ghs-grid-art" viewBox="0 0 417 95" aria-hidden="true" focusable="false"><g stroke-width="4" stroke-linejoin="round"><path fill="#161b22" stroke="#161b22" d="M2 2h7v7h-7zM2 30h7v7h-7zM2 58h7v7h-7zM2 86h7v7h-7zM16 16h7v7h-7zM16 86h7v7h-7zM30 2h7v7h-7zM30 16h7v7h-7zM30 72h7v7h-7zM58 2h7v7h-7zM58 86h7v7h-7zM72 44h7v7h-7zM72 58h7v7h-7zM72 86h7v7h-7zM86 44h7v7h-7zM86 72h7v7h-7zM86 86h7v7h-7zM100 30h7v7h-7zM114 16h7v7h-7zM114 86h7v7h-7zM128 44h7v7h-7zM128 86h7v7h-7zM142 30h7v7h-7zM142 58h7v7h-7zM142 86h7v7h-7zM156 2h7v7h-7zM156 16h7v7h-7zM170 2h7v7h-7zM170 30h7v7h-7zM170 72h7v7h-7zM170 86h7v7h-7zM184 30h7v7h-7zM198 2h7v7h-7zM198 16h7v7h-7zM198 72h7v7h-7zM212 2h7v7h-7zM212 16h7v7h-7zM226 72h7v7h-7zM226 86h7v7h-7zM240 72h7v7h-7zM240 86h7v7h-7zM254 16h7v7h-7zM254 30h7v7h-7zM268 16h7v7h-7zM268 30h7v7h-7zM268 72h7v7h-7zM268 86h7v7h-7zM282 2h7v7h-7zM282 16h7v7h-7zM282 58h7v7h-7zM282 86h7v7h-7zM296 2h7v7h-7zM296 16h7v7h-7zM310 2h7v7h-7zM324 44h7v7h-7zM324 72h7v7h-7zM338 16h7v7h-7zM338 30h7v7h-7zM338 58h7v7h-7zM352 2h7v7h-7zM352 44h7v7h-7zM366 2h7v7h-7zM366 44h7v7h-7zM366 58h7v7h-7zM366 72h7v7h-7zM366 86h7v7h-7zM380 2h7v7h-7zM380 30h7v7h-7zM380 44h7v7h-7zM380 58h7v7h-7zM380 86h7v7h-7zM394 16h7v7h-7zM394 30h7v7h-7zM394 44h7v7h-7zM394 72h7v7h-7zM394 86h7v7h-7zM408 16h7v7h-7zM408 58h7v7h-7zM408 72h7v7h-7z"/><path fill="#0e4429" stroke="#0e4429" d="M2 72h7v7h-7zM16 58h7v7h-7zM30 58h7v7h-7zM30 86h7v7h-7zM44 16h7v7h-7zM44 44h7v7h-7zM44 58h7v7h-7zM44 72h7v7h-7zM58 30h7v7h-7zM58 72h7v7h-7zM72 2h7v7h-7zM86 2h7v7h-7zM100 2h7v7h-7zM100 44h7v7h-7zM100 72h7v7h-7zM114 58h7v7h-7zM128 58h7v7h-7zM142 2h7v7h-7zM142 16h7v7h-7zM156 30h7v7h-7zM156 58h7v7h-7zM156 86h7v7h-7zM170 44h7v7h-7zM170 58h7v7h-7zM184 2h7v7h-7zM184 58h7v7h-7zM184 86h7v7h-7zM198 44h7v7h-7zM212 30h7v7h-7zM212 44h7v7h-7zM212 72h7v7h-7zM226 16h7v7h-7zM226 30h7v7h-7zM226 44h7v7h-7zM240 30h7v7h-7zM268 2h7v7h-7zM268 44h7v7h-7zM268 58h7v7h-7zM282 30h7v7h-7zM296 30h7v7h-7zM296 72h7v7h-7zM296 86h7v7h-7zM310 16h7v7h-7zM310 44h7v7h-7zM310 58h7v7h-7zM324 16h7v7h-7zM324 30h7v7h-7zM324 58h7v7h-7zM352 30h7v7h-7zM352 72h7v7h-7zM352 86h7v7h-7zM380 16h7v7h-7zM394 2h7v7h-7zM408 44h7v7h-7z"/><path fill="#006d32" stroke="#006d32" d="M2 16h7v7h-7zM16 30h7v7h-7zM16 44h7v7h-7zM16 72h7v7h-7zM58 44h7v7h-7zM72 16h7v7h-7zM86 16h7v7h-7zM86 58h7v7h-7zM100 16h7v7h-7zM100 58h7v7h-7zM100 86h7v7h-7zM114 30h7v7h-7zM114 72h7v7h-7zM128 16h7v7h-7zM128 30h7v7h-7zM156 72h7v7h-7zM170 16h7v7h-7zM184 44h7v7h-7zM198 30h7v7h-7zM198 86h7v7h-7zM212 58h7v7h-7zM226 2h7v7h-7zM240 2h7v7h-7zM240 44h7v7h-7zM240 58h7v7h-7zM254 58h7v7h-7zM254 72h7v7h-7zM296 44h7v7h-7zM296 58h7v7h-7zM310 30h7v7h-7zM310 72h7v7h-7zM324 2h7v7h-7zM324 86h7v7h-7zM338 44h7v7h-7zM338 72h7v7h-7zM352 58h7v7h-7zM366 16h7v7h-7zM366 30h7v7h-7zM394 58h7v7h-7zM408 30h7v7h-7z"/><path fill="#26a641" stroke="#26a641" d="M2 44h7v7h-7zM16 2h7v7h-7zM30 44h7v7h-7zM44 30h7v7h-7zM58 58h7v7h-7zM72 30h7v7h-7zM72 72h7v7h-7zM114 2h7v7h-7zM114 44h7v7h-7zM128 2h7v7h-7zM128 72h7v7h-7zM142 72h7v7h-7zM156 44h7v7h-7zM184 16h7v7h-7zM184 72h7v7h-7zM212 86h7v7h-7zM226 58h7v7h-7zM254 44h7v7h-7zM254 86h7v7h-7zM282 44h7v7h-7zM282 72h7v7h-7zM310 86h7v7h-7zM338 2h7v7h-7zM352 16h7v7h-7zM380 72h7v7h-7zM408 2h7v7h-7zM408 86h7v7h-7z"/><path fill="#39d353" stroke="#39d353" d="M30 30h7v7h-7zM44 2h7v7h-7zM44 86h7v7h-7zM58 16h7v7h-7zM86 30h7v7h-7zM142 44h7v7h-7zM198 58h7v7h-7zM240 16h7v7h-7zM254 2h7v7h-7zM338 86h7v7h-7z"/></g></svg>
   <div class="container">
@@ -1518,6 +1531,71 @@ document.addEventListener('DOMContentLoaded', function () {
   play();
 })();
 </script>
+
+<!-- SQL 2016 Ends. Azure Begins. (Presidio + Microsoft + AMD): ONE card, one row per location and date.
+     Dates, venues and links come from partner-events/*presidio-sql* ; naming, the 75-minute webinar length and the AMD co-host were
+     checked against Presidio's own registration pages (invite.presidio.com, BrightTALK) on 2026-11-05. Keep this band in sync with them. -->
+<section class="sqlx-band" id="sql-2016-azure-begins" aria-labelledby="sqlx-title">
+  <div class="container">
+    <div class="sqlx-layout">
+      <div class="sqlx-copy">
+        <span class="sqlx-eyebrow">⭐ Featured Partner Event</span>
+        <span class="sqlx-kicker">Presidio + Microsoft + AMD · live webinar and in-person roadshow</span>
+        <h2 class="sqlx-title" id="sqlx-title"><span class="sqlx-end">SQL 2016 Ends.</span> <span class="sqlx-grad">Azure Begins.</span></h2>
+        <p class="sqlx-intro">A focused session for IT and business leaders on what end of support means for your organization, your options for moving SQL workloads to Azure, and how to reduce risk now while keeping the door open to modernize on your timeline. Join the live webinar, or attend the roadshow stop nearest you.</p>
+        <ul class="sqlx-points">
+          <li><span class="sqlx-check" aria-hidden="true">✓</span><span>Understand what end of support means for your security, compliance, and audit posture</span></li>
+          <li><span class="sqlx-check" aria-hidden="true">✓</span><span>Choose your path: migrate first to Azure SQL, or modernize now, based on your priorities and readiness</span></li>
+          <li><span class="sqlx-check" aria-hidden="true">✓</span><span>In person, leave with a high-level Migration &amp; Modernization Roadmap and recommended next steps</span></li>
+        </ul>
+      </div>
+      <div class="events">
+        <div class="event-card event-card--multi event-card--sqlx" data-type="Briefing" data-modality="Virtual In-Person" data-month="11 12" data-partner="Presidio" data-search="sql 2016 ends. azure begins. live webinar + in-person roadshow presidio microsoft amd sql server end of support security compliance audit migrate first modernize now azure sql it and business leaders cio cto ciso cfo online houston, tx irving, tx dallas burlington, ma boston malvern, pa philadelphia microsoft innovation hub briefing virtual in-person partner event free">
+          <span class="event-tag tag-briefing">Partner Event</span>
+          <h3><span class="sqlx-sr">SQL 2016 Ends. Azure Begins. </span>Live webinar + in-person roadshow</h3>
+          <div class="event-meta event-meta-sub"><span class="icon">📍</span> Online + 4 cities <span class="dot">·</span> Presidio, Microsoft &amp; AMD</div>
+          <ul class="session-list" aria-label="Sessions by location">
+          <li data-month="11" data-modality="Virtual"><span class="session-when"><span class="session-time" data-start="2026-11-12T16:00:00Z" data-end="2026-11-12T17:15:00Z"></span><span class="session-loc">💻 Online · live webinar</span><span class="session-addr">Presented by Presidio, Microsoft, and AMD</span></span><a class="btn btn--sm" href="https://www.brighttalk.com/webcast/15881/677870?utm_source=brighttalk-sharing&amp;utm_medium=web&amp;utm_campaign=linkshare" target="_blank" rel="noopener">Register</a></li>
+          <li data-month="12" data-modality="In-Person"><span class="session-when"><span class="session-time" data-start="2026-12-01T16:00:00Z" data-end="2026-12-01T20:00:00Z"></span><span class="session-loc">📍 Houston, TX</span><span class="session-addr">Microsoft Innovation Hub · 750 Town and Country Blvd</span></span><a class="btn btn--sm" href="https://invite.presidio.com/sql2016endsazurebeginshousto" target="_blank" rel="noopener">Register</a></li>
+          <li data-month="12" data-modality="In-Person"><span class="session-when"><span class="session-time" data-start="2026-12-02T16:00:00Z" data-end="2026-12-02T20:00:00Z"></span><span class="session-loc">📍 Irving, TX (Dallas area)</span><span class="session-addr">Microsoft Innovation Hub · 7000 State Highway 161</span></span><a class="btn btn--sm" href="https://invite.presidio.com/sql2016endsazurebeginsdallas" target="_blank" rel="noopener">Register</a></li>
+          <li data-month="12" data-modality="In-Person"><span class="session-when"><span class="session-time" data-start="2026-12-08T15:00:00Z" data-end="2026-12-08T19:00:00Z"></span><span class="session-loc">📍 Burlington, MA (Boston area)</span><span class="session-addr">Microsoft Innovation Hub · 5 Wayside Rd</span></span><a class="btn btn--sm" href="https://invite.presidio.com/sql2016endsazurebeginsboston" target="_blank" rel="noopener">Register</a></li>
+          <li data-month="12" data-modality="In-Person"><span class="session-when"><span class="session-time" data-start="2026-12-10T15:00:00Z" data-end="2026-12-10T19:00:00Z"></span><span class="session-loc">📍 Malvern, PA (Philadelphia area)</span><span class="session-addr">Microsoft Innovation Hub · 45 Liberty Blvd</span></span><a class="btn btn--sm" href="https://invite.presidio.com/sql2016endsazurebeginsphilad" target="_blank" rel="noopener">Register</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="spotlight-lite spotlight-lite--sre">
+  <div class="container">
+    <div class="section-header">
+      <span class="spotlight-lite-eyebrow">🤖 Featured Azure Webinar Series</span>
+      <h2>Azure SRE Agent: Reliability, Reimagined with Agentic AI</h2>
+      <p>Site Reliability Engineering, reimagined with agentic AI. This two-part series takes you from first principles to a hands-on technical deep dive — see how Azure SRE Agent investigates, diagnoses, and helps remediate incidents, and what it takes to run it responsibly in the enterprise.</p>
+    </div>
+    <div class="events events--pair">
+      <div class="event-card event-card--lite" data-type="Briefing" data-modality="Virtual" data-month="10" data-recording="https://microsoft-my.sharepoint.com/personal/jubryant_microsoft_com1/_layouts/15/stream.aspx?id=%2Fpersonal%2Fjubryant%5Fmicrosoft%5Fcom1%2FDocuments%2FRecordings%2FAzure%20SRE%20Agent%20Series%20Reliability%2C%20Reimagined%20with%20Agentic%20AI%20%2D%20Part%201%20%E2%80%94%20Azure%20SRE%20Agent%20Fundamentals%2D20261015%5F180229UTC%2DMeeting%20Recording%2Emp4&amp;referrer=StreamWebApp%2EWeb&amp;referrerScenario=AddressBarCopied%2Eview%2Eed5e7c96%2D1890%2D4115%2D9df0%2Dc4b1120ba972&amp;share=cQpQsjfbeWAMRakYdetfOEY%2DEgUD8OTq6%5FpibenRvWW6PX16ag" data-search="azure sre agent series reliability reimagined with agentic ai part 1 fundamentals site reliability engineering it operations incident investigation diagnosis remediation firefighting hybrid integrations security governance permissions consumption ben magazino harry arce dan kraft briefing virtual webinar october 15">
+        <span class="event-tag tag-briefing">Azure Webinar</span>
+        <div class="lite-series">Part 1 of 2 · <strong>Azure SRE Agent Series</strong></div>
+        <h3>Azure SRE Agent Fundamentals</h3>
+        <div class="event-meta"><span class="icon">📅</span> <span class="event-time" data-start="2026-10-15T18:00:00Z" data-end="2026-10-15T19:15:00Z"></span></div>
+        <div class="event-meta event-meta-sub"><span class="icon">💻</span> Virtual · 75 min · Ben Magazino, Harry Arce &amp; Dan Kraft</div>
+        <p>An introduction to how agentic AI is reshaping IT operations and Site Reliability Engineering — moving teams from reactive firefighting to AI-assisted investigation, diagnosis, and recommended remediation. Watch the agent work an issue end to end, then explore responsible enterprise adoption: hybrid scenarios, integrations, security, governance, and choosing a strong first use case. Closes with live Q&amp;A.</p>
+        <div class="card-actions"><a class="btn" href="https://msit.events.teams.microsoft.com/event/msit.11201954-bb9a-4d5a-a8bd-45d2fdf3d4a6@72f988bf-86f1-41af-91ab-2d7cd011db47?source=copyLinkOneEventsShareDialog" target="_blank" rel="noopener">Register</a></div>
+      </div>
+      <div class="event-card event-card--lite" data-type="Training" data-modality="Virtual" data-month="10" data-recording="https://microsoft-my.sharepoint.com/personal/jubryant_microsoft_com1/_layouts/15/stream.aspx?id=%2Fpersonal%2Fjubryant%5Fmicrosoft%5Fcom1%2FDocuments%2FRecordings%2FAzure%20SRE%20Agent%20Series%20Reliability%2C%20Reimagined%20with%20Agentic%20AI%20%2D%20Part%202%20%E2%80%94%20Azure%20SRE%20Agent%20Technical%20Deep%20Dive%2D20261029%5F180305UTC%2DMeeting%20Recording%2Emp4&amp;referrer=StreamWebApp%2EWeb&amp;referrerScenario=AddressBarCopied%2Eview%2E244ffc62%2Dce98%2D441f%2Dbbe5%2D44ad517e93ee&amp;share=cQpX8WjhK667QaOEg132H2DDEgUDb1M5P2l3BOVtSjmGUp0gRw" data-search="azure sre agent series reliability reimagined with agentic ai part 2 technical deep dive architecture guardrails permissions networking data residency governance incident lifecycle detection investigation diagnosis remediation mcp servers apis scripts tools session insights human in the loop observability ben magazino harry arce dan kraft training virtual webinar october 29">
+        <span class="event-tag tag-training">Azure Webinar</span>
+        <div class="lite-series">Part 2 of 2 · <strong>Azure SRE Agent Series</strong></div>
+        <h3>Azure SRE Agent Technical Deep Dive</h3>
+        <div class="event-meta"><span class="icon">📅</span> <span class="event-time" data-start="2026-10-29T18:00:00Z" data-end="2026-10-29T19:15:00Z"></span></div>
+        <div class="event-meta event-meta-sub"><span class="icon">💻</span> Virtual · 75 min · Ben Magazino, Harry Arce &amp; Dan Kraft</div>
+        <p>A demonstration-driven deep dive into how Azure SRE Agent actually operates. Explore the architecture and guardrails that make it enterprise-ready — permissions, networking, data residency, and governance — then follow one incident through its full lifecycle. See how to extend the agent with MCP servers, APIs, and tools, and operationalize it day to day with human-in-the-loop review and Session Insights. Closes with live Q&amp;A.</p>
+        <div class="card-actions"><a class="btn" href="https://msit.events.teams.microsoft.com/event/msit.9c9bc8ea-3cef-497e-b023-1c1153aec21b@72f988bf-86f1-41af-91ab-2d7cd011db47?source=copyLinkOneEventsShareDialog" target="_blank" rel="noopener">Register</a></div>
+      </div>
+    </div>
+  </div>
+</section>
 
 <section class="spotlight" aria-labelledby="foundry-series-title">
   <div class="container">
@@ -3123,7 +3201,11 @@ window.smecSessions = {
     var q = search.value.trim().toLowerCase();
     if (q && c.dataset.search.indexOf(q) === -1) return false;
     if (fType.value && c.dataset.type !== fType.value) return false;
-    if (fMod.value && c.dataset.modality !== fMod.value) return false;
+    if (fMod.value && (' ' + c.dataset.modality + ' ').indexOf(' ' + fMod.value + ' ') === -1) return false;
+    var dated = c.querySelectorAll('.session-list > li[data-modality]');   // mixed online / in-person cards: some upcoming date must fit every active filter
+    if (dated.length && (fMod.value || fMonth.value) && !Array.from(dated).some(function (li) {
+      return !li.classList.contains('session--past') && (!fMod.value || li.dataset.modality === fMod.value) && (!fMonth.value || li.dataset.month === fMonth.value);
+    })) return false;
     if (fMonth.value && (' ' + c.dataset.month + ' ').indexOf(' ' + fMonth.value + ' ') === -1) return false;
     return true;
   }
@@ -3144,7 +3226,10 @@ window.smecSessions = {
       var ok = cardMatches(c); c.classList.toggle('card-hidden', !ok); if (ok && isVisible(c)) shown++;
       var rows = c.querySelectorAll('.session-list > li');
       if (rows.length) {
-        rows.forEach(function (li) { li.classList.toggle('session--offmonth', !!fMonth.value && li.dataset.month !== fMonth.value); });
+        rows.forEach(function (li) {
+          var offFormat = !!fMod.value && !!li.dataset.modality && li.dataset.modality !== fMod.value;   // rows of a mixed card that don't match the format filter
+          li.classList.toggle('session--offmonth', (!!fMonth.value && li.dataset.month !== fMonth.value) || offFormat);
+        });
         c.classList.toggle('sessions-filtered', !!fMonth.value);
       }
     });
