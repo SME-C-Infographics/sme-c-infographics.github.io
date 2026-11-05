@@ -16,7 +16,7 @@
   @keyframes heroKen { from { transform: scale(1.04) translateX(0); } to { transform: scale(1.13) translateX(-2%); } }
   .hero-scrim { position: absolute; inset: 0; z-index: 0; pointer-events: none; background: linear-gradient(90deg, rgba(5,11,26,0.97) 0%, rgba(5,11,26,0.88) 26%, rgba(5,11,26,0.55) 50%, rgba(5,11,26,0.14) 74%, rgba(5,11,26,0) 100%), linear-gradient(0deg, rgba(5,11,26,0.62) 0%, rgba(5,11,26,0) 44%); }
   .hero-content { position: relative; z-index: 1; max-width: 1180px; margin: 0 auto; padding: 0 20px; }
-  .hero-event-nav { margin-bottom: 24px; }
+  .hero-event-nav { position: absolute; top: 20px; left: 0; right: 0; z-index: 2; display: flex; justify-content: flex-end; max-width: 1180px; margin: 0 auto; padding: 0 20px; }
   .hero-event-link { display: inline-flex; align-items: center; min-height: 44px; padding: 8px 16px; border: 1px solid rgba(255,255,255,0.25); border-radius: 6px; color: #fff; background: rgba(5,11,26,0.55); font-size: 14px; font-weight: 600; text-decoration: none; }
   .hero-event-link:hover { color: #050b1a; background: #fff; }
   .hero-event-link:focus-visible { outline: 2px solid #8fe1ff; outline-offset: 3px; }
@@ -911,10 +911,10 @@
 <header class="hero">
   <div class="hero-media" aria-hidden="true"></div>
   <div class="hero-scrim" aria-hidden="true"></div>
+  <nav class="hero-event-nav" aria-label="Events">
+    <a class="hero-event-link" href="partner-events.html">For partner lead events &rarr;</a>
+  </nav>
   <div class="hero-content">
-    <nav class="hero-event-nav" aria-label="Events">
-      <a class="hero-event-link" href="partner-events.html">For partner lead events &rarr;</a>
-    </nav>
     <div class="hero-inner">
     <div class="eyebrow">October 2026 – March 2027 · Americas</div>
     <h1>Azure Events Across the Americas</h1>
