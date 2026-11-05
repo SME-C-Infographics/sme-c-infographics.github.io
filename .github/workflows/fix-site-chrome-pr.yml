@@ -1,13 +1,16 @@
 name: Fix Site Chrome on PR
 
 # Single PR auto-fix workflow for the tracking snippet, back button, and
-# manifest. Runs all three sequentially and produces one commit so the
-# fixers can't race each other on push.
+# manifest, plus the Markdown-backed partner events page. Produces one commit
+# so the fixers can't race each other on push.
 
 on:
   pull_request:
     paths:
       - "**/*.html"
+      - "partner-events/**"
+      - "scripts/generate-partner-events.py"
+      - "scripts/tests/test_partner_events.py"
       - "scripts/ensure-tracking.py"
       - "scripts/ensure-back-button.py"
       - "scripts/ensure-meta.py"
@@ -61,6 +64,9 @@ jobs:
           ORIGINAL_SUBMITTER: ${{ github.event.pull_request.user.login }}
         run: |
           xargs -r -a changed-html.txt python3 scripts/tag-submitter.py --submitter "$ORIGINAL_SUBMITTER"
+
+      - name: Generate partner events from Markdown
+        run: python3 scripts/generate-partner-events.py
 
       - name: Ensure tracking snippet in HTML pages
         run: python3 scripts/ensure-tracking.py
