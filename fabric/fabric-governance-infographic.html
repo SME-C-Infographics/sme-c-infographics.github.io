@@ -356,7 +356,7 @@
 <!-- smec-favicon v1 -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <!-- smec-accuracy v1 -->
-<meta name="smec:last-accuracy-check" content="2026-10-01">
+<meta name="smec:last-accuracy-check" content="2026-11-05">
 <style>/* smec-back-btn v2 */
 .smec-back-btn { position: fixed; bottom: 16px; left: 16px; z-index: 9999;
   box-sizing: border-box;
@@ -454,15 +454,15 @@
         <div class="good-item"><span class="check">✓</span><span>All tenant settings are documented with an owner, rationale, and review date</span></div>
         <div class="good-item"><span class="check">✓</span><span>Workspace creation is restricted to approved groups — no sprawl</span></div>
         <div class="good-item"><span class="check">✓</span><span>Feature toggles are scoped to security groups, not enabled tenant-wide</span></div>
-        <div class="good-item"><span class="check">✓</span><span>Audit logs are enabled with retention beyond 90 days</span></div>
+        <div class="good-item"><span class="check">✓</span><span>Audit retention is configured to meet compliance requirements; export logs when longer-term retention is needed</span></div>
         <div class="good-item"><span class="check">✓</span><span>AI and Copilot features are governed with clear usage policies</span></div>
         <div class="good-item"><span class="check">✓</span><span>A monthly review cadence catches drift before it becomes a problem</span></div>
       </div>
       <div class="compare-column pitfall-column">
         <h3 class="column-title pitfall-title">⚠️ Common Pitfalls</h3>
-        <div class="pitfall-item"><h4>Leaving defaults on</h4><p>Fabric ships with permissive defaults. If you don't review them, every user can create workspaces, share externally, and use AI features without guardrails.</p></div>
+        <div class="pitfall-item"><h4>Leaving defaults unreviewed</h4><p>Tenant-setting defaults vary by feature. Review who can create workspaces, share externally, and use Copilot or other AI features, then scope access to the appropriate users or groups.</p></div>
         <div class="pitfall-item"><h4>No admin role governance</h4><p>Too many Fabric Admins means too many people can change tenant-wide settings. Limit admin roles and use PIM for just-in-time access.</p></div>
-        <div class="pitfall-item"><h4>Audit log blind spot</h4><p>The Power BI activity log and Microsoft Purview audit solutions have finite retention windows that may fall short of compliance requirements. Export audit data to a supported long-term destination for extended retention.</p></div>
+        <div class="pitfall-item"><h4>Audit log blind spot</h4><p>Power BI activity-log and Microsoft Purview audit retention depend on the service, license, and configured policies. Check retention against compliance requirements and export audit data when longer-term retention is needed.</p></div>
         <div class="pitfall-item"><h4>Feature toggle whack-a-mole</h4><p>Microsoft releases new features monthly. Without a review process, new toggles get enabled without evaluation — creating shadow governance gaps.</p></div>
       </div>
     </div>
@@ -472,7 +472,7 @@
       <div class="rec-card"><div class="card-accent" style="background:#6366F1"></div><div class="step-num" style="background:#6366F1">1</div><h4>Document Before You Change</h4><p class="desc"><strong>Export a baseline</strong> of all tenant settings before making changes.<br>This becomes your <strong>audit trail</strong> and rollback reference.</p></div>
       <div class="rec-card"><div class="card-accent" style="background:#6366F1"></div><div class="step-num" style="background:#6366F1">2</div><h4>Scope, Don't Blanket</h4><p class="desc">Use <strong>security groups</strong> to scope tenant settings.<br>Instead of enabling a feature for the entire org, <strong>enable it for a pilot group first</strong>.</p></div>
       <div class="rec-card"><div class="card-accent" style="background:#6366F1"></div><div class="step-num" style="background:#6366F1">3</div><h4>Treat Settings as Code</h4><p class="desc">At maturity, manage tenant settings via <strong>Infrastructure-as-Code</strong>.<br>Changes go through <strong>pull requests with approval</strong>, not manual portal clicks.</p></div>
-      <div class="rec-card"><div class="card-accent" style="background:#6366F1"></div><div class="step-num" style="background:#6366F1">4</div><h4>AI Features Need a Policy</h4><p class="desc"><strong>Copilot and AI features</strong> consume capacity units and can expose data.<br>Define <strong>who can use them</strong>, in which workspaces, and <strong>monitor CU impact</strong>.</p></div>
+      <div class="rec-card"><div class="card-accent" style="background:#6366F1"></div><div class="step-num" style="background:#6366F1">4</div><h4>AI Features Need a Policy</h4><p class="desc"><strong>Copilot and AI features</strong> can increase capacity utilization.<br>Define <strong>who can use them</strong>, in which workspaces, and <strong>monitor CU impact</strong>.</p></div>
     </div>
 
     <a href="https://learn.microsoft.com/en-us/fabric/admin/tenant-settings-index" target="_blank" class="learn-more-btn">📖 Learn More on Microsoft Learn →</a>
@@ -532,10 +532,10 @@
       <div class="compare-column good-column">
         <h3 class="column-title good-title">✅ What Good Looks Like</h3>
         <div class="good-item"><span class="check">✓</span><span>Top-level domains are aligned to business units or value streams</span></div>
-        <div class="good-item"><span class="check">✓</span><span>Every workspace is assigned to a domain — no orphaned workspaces</span></div>
+        <div class="good-item"><span class="check">✓</span><span>Workspaces are assigned to domains where appropriate; unassigned workspaces are identified for review</span></div>
         <div class="good-item"><span class="check">✓</span><span>Domain admins handle day-to-day governance; central team sets policies</span></div>
         <div class="good-item"><span class="check">✓</span><span>Tenant settings are delegated to domains where appropriate</span></div>
-        <div class="good-item"><span class="check">✓</span><span>Data products are endorsed and certified at the domain level</span></div>
+        <div class="good-item"><span class="check">✓</span><span>Trusted Fabric items are endorsed and certified using organization-defined criteria</span></div>
         <div class="good-item"><span class="check">✓</span><span>Subdomains provide granularity without over-complicating the structure</span></div>
       </div>
       <div class="compare-column pitfall-column">
@@ -550,7 +550,7 @@
     <h3 class="recs-title">💡 Recommendations</h3>
     <div class="cards">
       <div class="rec-card"><div class="card-accent" style="background:#A855F7"></div><div class="step-num" style="background:#A855F7">1</div><h4>Align to Business, Not Org Chart</h4><p class="desc">Domains should map to <strong>business functions</strong> (Finance, Sales, Operations) or value streams.<br>Not to reporting lines — <strong>org charts change; business functions are stable</strong>.</p></div>
-      <div class="rec-card"><div class="card-accent" style="background:#A855F7"></div><div class="step-num" style="background:#A855F7">2</div><h4>Three-Tier Delegation</h4><p class="desc"><strong>Fabric Admin</strong> → sets tenant-level guardrails.<br><strong>Domain Admin</strong> → manages workspaces, access, and settings within their domain.<br><strong>Domain Contributor</strong> → self-service within boundaries.</p></div>
+      <div class="rec-card"><div class="card-accent" style="background:#A855F7"></div><div class="step-num" style="background:#A855F7">2</div><h4>Delegate Domain Governance</h4><p class="desc"><strong>Fabric Admin</strong> → sets tenant-level guardrails and can delegate eligible settings.<br><strong>Domain Admin</strong> → manages their domain and settings delegated to it.<br><strong>Domain Contributor</strong> → assigns workspaces they administer to a domain.</p></div>
       <div class="rec-card"><div class="card-accent" style="background:#A855F7"></div><div class="step-num" style="background:#A855F7">3</div><h4>Certification Framework</h4><p class="desc">Three endorsement types:<br><strong>Promoted</strong> — owner recommends it.<br><strong>Certified</strong> — formally reviewed against quality criteria.<br><strong>Master data</strong> — the organization's single source of truth for core data.<br>Certification should require <strong>documented lineage</strong>, refresh reliability, and owner accountability.</p></div>
       <div class="rec-card"><div class="card-accent" style="background:#A855F7"></div><div class="step-num" style="background:#A855F7">4</div><h4>Default Domain</h4><p class="desc">Configure a <strong>default domain</strong> for selected users or security groups so their new workspaces aren't orphaned.<br>Route them to a <strong>'Sandbox'</strong> or <strong>'Unassigned'</strong> domain for triage.</p></div>
     </div>
@@ -622,7 +622,7 @@
         <h3 class="column-title pitfall-title">⚠️ Common Pitfalls</h3>
         <div class="pitfall-item"><h4>One shared capacity for everything</h4><p>A single capacity means one runaway notebook can throttle everyone's reports. Separate at least by environment.</p></div>
         <div class="pitfall-item"><h4>Ignoring the smoothing window</h4><p>Fabric smooths background job CU consumption over 24 hours (interactive jobs over a minimum of 5 minutes). Teams misread this as 'unlimited' until they hit rejection.</p></div>
-        <div class="pitfall-item"><h4>No cost visibility</h4><p>Without showback, no one knows their workloads cost $8K/month.</p></div>
+        <div class="pitfall-item"><h4>No cost visibility</h4><p>Without showback, teams lack visibility into the capacity costs of their workloads.</p></div>
         <div class="pitfall-item"><h4>Over-provisioning 'just in case'</h4><p>Starting with a larger SKU than the workload requires wastes capacity spend. Start small, monitor, and right-size.</p></div>
       </div>
     </div>
@@ -630,9 +630,9 @@
     <h3 class="recs-title">💡 Recommendations</h3>
     <div class="cards">
       <div class="rec-card"><div class="card-accent" style="background:#F59E0B"></div><div class="step-num" style="background:#F59E0B">1</div><h4>Capacity Topology</h4><p class="desc"><strong>Pattern 1:</strong> Single shared (NOT for prod).<br><strong>Pattern 2 (Recommended):</strong> Per domain — enables cost attribution.<br><strong>Pattern 3:</strong> Per workload type (interactive vs background).<br><strong>Pattern 4:</strong> Per environment + domain (enterprise).</p></div>
-      <div class="rec-card"><div class="card-accent" style="background:#F59E0B"></div><div class="step-num" style="background:#F59E0B">2</div><h4>Monitor Before You Scale</h4><p class="desc">Deploy the <strong>Capacity Metrics app</strong> on day one.<br>Review <strong>weekly</strong>. Scale based on data, not guesses.<br><strong>F2 handles more than you'd expect</strong> for BI-only workloads.</p></div>
-      <div class="rec-card"><div class="card-accent" style="background:#F59E0B"></div><div class="step-num" style="background:#F59E0B">3</div><h4>Smoothing vs Throttling</h4><p class="desc">Fabric's <strong>24h smoothing window</strong> for background jobs absorbs burst usage (interactive jobs smooth over at least 5 min).<br>But if your average exceeds capacity:<br><strong>1.</strong> Interactive operations delayed 20 sec (usage &gt; 10 min of capacity)<br><strong>2.</strong> Interactive operations rejected (usage &gt; 60 min of capacity)<br><strong>3.</strong> All requests rejected incl. background (usage &gt; 24 hr)</p></div>
-      <div class="rec-card"><div class="card-accent" style="background:#F59E0B"></div><div class="step-num" style="background:#F59E0B">4</div><h4>Showback First</h4><p class="desc">Start with <strong>showback</strong>: give each domain visibility into their CU consumption.<br>After <strong>6–12 months</strong> of stable patterns, transition to <strong>chargeback</strong> for true cost accountability.</p></div>
+      <div class="rec-card"><div class="card-accent" style="background:#F59E0B"></div><div class="step-num" style="background:#F59E0B">2</div><h4>Monitor Before You Scale</h4><p class="desc">Deploy the <strong>Capacity Metrics app</strong> early.<br>Review <strong>weekly</strong>. Scale based on measured workload data, not guesses.</p></div>
+      <div class="rec-card"><div class="card-accent" style="background:#F59E0B"></div><div class="step-num" style="background:#F59E0B">3</div><h4>Smoothing vs Throttling</h4><p class="desc">Fabric smooths interactive operations over at least <strong>5 minutes</strong> (up to 64 minutes) and background operations over <strong>24 hours</strong>.<br>When future capacity is used up:<br><strong>1.</strong> At 10 minutes, new interactive operations are delayed 20 seconds.<br><strong>2.</strong> At 1 hour, new interactive operations are rejected.<br><strong>3.</strong> At 24 hours, all new requests are rejected.</p></div>
+      <div class="rec-card"><div class="card-accent" style="background:#F59E0B"></div><div class="step-num" style="background:#F59E0B">4</div><h4>Showback First</h4><p class="desc">Start with <strong>showback</strong>: give each domain visibility into its CU consumption.<br>After stable usage patterns are established, consider transitioning to <strong>chargeback</strong> for cost accountability.</p></div>
     </div>
 
     <a href="https://learn.microsoft.com/en-us/fabric/enterprise/licenses" target="_blank" class="learn-more-btn">📖 Learn More on Microsoft Learn →</a>
@@ -655,24 +655,24 @@
         <div class="good-item"><span class="check">✓</span><span>DLP policies are active in enforcement mode with user-facing policy tips</span></div>
         <div class="good-item"><span class="check">✓</span><span>Data lineage is tracked end-to-end from source to report</span></div>
         <div class="good-item"><span class="check">✓</span><span>Microsoft Purview provides unified governance across Fabric and other platforms</span></div>
-        <div class="good-item"><span class="check">✓</span><span>Private endpoints protect sensitive workloads from public internet access</span></div>
+        <div class="good-item"><span class="check">✓</span><span>Inbound Private Link and supported outbound private data-source connections are governed separately</span></div>
         <div class="good-item"><span class="check">✓</span><span>OneLake shortcuts and gateways are inventoried with credential rotation schedules</span></div>
       </div>
       <div class="compare-column pitfall-column">
         <h3 class="column-title pitfall-title">⚠️ Common Pitfalls</h3>
-        <div class="pitfall-item"><h4>DLP in monitor-only forever</h4><p>Many orgs enable DLP in 'monitor mode' and never transition to enforcement. Set a deadline (4–6 weeks) to move to blocking.</p></div>
+        <div class="pitfall-item"><h4>DLP policies never reviewed</h4><p>Review policy matches in simulation before enforcement, and continue monitoring alerts after deployment.</p></div>
         <div class="pitfall-item"><h4>No data classification</h4><p>Without classification, you can't apply the right protection. A 'Highly Confidential' dataset and a public reference table get the same (lack of) protection.</p></div>
         <div class="pitfall-item"><h4>Lineage gaps</h4><p>If data flows through external tools (ADF, Databricks) before landing in Fabric, built-in lineage breaks.</p></div>
-        <div class="pitfall-item"><h4>OneLake shortcut sprawl</h4><p>Shortcuts let any workspace reference data from another. Without governance, you create invisible data dependencies.</p></div>
+        <div class="pitfall-item"><h4>OneLake shortcut sprawl</h4><p>Shortcuts can reference data in other workspaces or external sources. Govern access and dependencies to avoid hidden data relationships.</p></div>
       </div>
     </div>
 
     <h3 class="recs-title">💡 Recommendations</h3>
     <div class="cards">
-      <div class="rec-card"><div class="card-accent" style="background:#10B981"></div><div class="step-num" style="background:#10B981">1</div><h4>Classify at the Source</h4><p class="desc">Apply sensitivity labels when data <strong>enters Fabric (Bronze layer)</strong>.<br>Labels flow downstream through lineage.<br>Don't wait until the Gold layer — <strong>by then, unclassified data has already been exposed</strong>.</p></div>
-      <div class="rec-card"><div class="card-accent" style="background:#10B981"></div><div class="step-num" style="background:#10B981">2</div><h4>DLP Rollout Strategy</h4><p class="desc"><strong>Week 1–2:</strong> Test mode (no user impact).<br><strong>Week 3–4:</strong> Monitor mode (log violations).<br><strong>Week 5+:</strong> Enforce with policy tips (block + educate).<br>Review <strong>false positives weekly</strong>.</p></div>
+      <div class="rec-card"><div class="card-accent" style="background:#10B981"></div><div class="step-num" style="background:#10B981">1</div><h4>Classify at the Source</h4><p class="desc">Apply sensitivity labels when data <strong>enters Fabric (Bronze layer)</strong>.<br>Where supported, downstream items can inherit a more restrictive label when lineage relationships are created.<br>Don't wait until the Gold layer — <strong>by then, unclassified data may already have been exposed</strong>.</p></div>
+      <div class="rec-card"><div class="card-accent" style="background:#10B981"></div><div class="step-num" style="background:#10B981">2</div><h4>DLP Rollout Strategy</h4><p class="desc">Run policies in <strong>simulation mode</strong> and review matches before enforcement.<br>After enforcement, monitor alerts and refine policies based on the results.</p></div>
       <div class="rec-card"><div class="card-accent" style="background:#10B981"></div><div class="step-num" style="background:#10B981">3</div><h4>Purview Integration</h4><p class="desc">Fabric has built-in lineage, but <strong>Purview extends governance</strong> across Azure SQL, Databricks, Power BI, and external sources.<br>Register Fabric as a <strong>Purview source</strong> for unified catalog.</p></div>
-      <div class="rec-card"><div class="card-accent" style="background:#10B981"></div><div class="step-num" style="background:#10B981">4</div><h4>Network Security Tiers</h4><p class="desc"><strong>Tier 1:</strong> Public endpoints (default — fine for non-sensitive data).<br><strong>Tier 2:</strong> Conditional Access policies (restrict by location/device).<br><strong>Tier 3:</strong> Private Link + Managed VNet (for regulated industries).</p></div>
+      <div class="rec-card"><div class="card-accent" style="background:#10B981"></div><div class="step-num" style="background:#10B981">4</div><h4>Separate Inbound and Outbound Controls</h4><p class="desc">Use <strong>Private Link</strong> to restrict inbound access to Fabric through private endpoints.<br>Use <strong>managed private endpoints</strong> for supported workloads that need private access to data sources.<br>Choose controls based on your network requirements and workload support.</p></div>
     </div>
 
     <a href="https://learn.microsoft.com/en-us/fabric/security/security-overview" target="_blank" class="learn-more-btn">📖 Learn More on Microsoft Learn →</a>
