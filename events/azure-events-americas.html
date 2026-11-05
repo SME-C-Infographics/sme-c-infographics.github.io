@@ -3048,6 +3048,23 @@ window.smecSessions = {
       return !past;
     });
     if (!live.length) return;
+    /* "N cities" labels follow the dates still listed: finished dates drop off a card, so a typed-in count would go stale */
+    Array.from(card.querySelectorAll('.event-meta-sub')).forEach(function (meta) {
+      Array.from(meta.childNodes).forEach(function (t) {
+        if (t.nodeType !== 3) return;
+        t.nodeValue = t.nodeValue.replace(/(Online\s\+\s)?(\d+)\s+cit(?:y|ies)/, function (all, online) {
+          var place = {};
+          live.forEach(function (li) {
+            if (li.dataset.modality === 'Virtual') return;
+            var loc = li.querySelector('.session-loc');
+            place[(loc || li).textContent.replace(/\s+/g, ' ').trim()] = 1;
+          });
+          var n = Object.keys(place).length;
+          var keepOnline = !!online && live.some(function (li) { return li.dataset.modality === 'Virtual'; });
+          return n ? (keepOnline ? 'Online + ' : '') + n + (n === 1 ? ' city' : ' cities') : (keepOnline ? 'Online' : all);
+        });
+      });
+    });
     card.dataset.month = live.map(function (li) { return li.dataset.month; })
       .filter(function (m, i, all) { return all.indexOf(m) === i; }).join(' ');
     if (live.length > SHOW) {
