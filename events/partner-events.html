@@ -116,9 +116,12 @@
     .hero-media { background-image: var(--cp-hero-image); background-position: center right; background-size: cover; }
     .hero-scrim { background: var(--cp-hero-scrim); }
     .hero :focus-visible { outline-color: var(--cp-hero-focus); }
-    .site-nav { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 24px; padding-top: 20px; padding-bottom: 20px; font-size: .8125rem; }
+    .site-nav { position: relative; display: flex; align-items: center; min-height: 84px; padding-top: 20px; padding-bottom: 20px; padding-right: 320px; font-size: .8125rem; }
     .site-nav a { color: var(--cp-hero-muted); font-weight: 600; text-decoration: none; }
     .site-nav a:hover { color: var(--cp-hero-text); text-decoration: underline; }
+    .site-nav .hero-event-link { position: absolute; top: 20px; right: 20px; display: inline-flex; align-items: center; min-height: 44px; padding: 8px 16px; border: 1px solid var(--cp-hero-border); border-radius: 6px; color: var(--cp-hero-text); background: var(--cp-hero-panel); font-size: 14px; font-weight: 600; text-decoration: none; }
+    .site-nav .hero-event-link:hover { color: var(--cp-hero-bg); background: var(--cp-hero-text); text-decoration: none; }
+    .site-nav .hero-event-link:focus-visible { outline: 2px solid var(--cp-hero-focus); outline-offset: 3px; }
     .hero-content { padding-top: 56px; padding-bottom: 64px; }
     .hero-inner { max-width: 640px; }
     h1 { font-size: clamp(2.125rem, 4.5vw, 3.375rem); font-weight: 700; line-height: 1.08; letter-spacing: -.01em; margin: 0 0 20px; }
@@ -177,6 +180,7 @@
     @media (hover: hover) { .event-card:hover { transform: translateY(-4px); box-shadow: var(--cp-card-hover-shadow); } }
     @media (max-width: 700px) {
       html { scroll-padding-top: 20px; }
+      .site-nav { padding-top: 80px; padding-right: 20px; }
       .hero-content { padding-top: 40px; padding-bottom: 48px; }
       .hero-scrim { background: var(--cp-hero-mobile-scrim); }
       .intro { font-size: 1rem; }
@@ -274,7 +278,7 @@
     <div class="hero-scrim" aria-hidden="true"></div>
     <nav class="site-nav wrap" aria-label="Site">
       <a href="../index.html">SME&amp;C Infographic Hub</a>
-      <a href="azure-events-americas.html">For Microsoft lead events &rarr;</a>
+      <a class="hero-event-link" href="azure-events-americas.html">For Microsoft lead events &rarr;</a>
     </nav>
     <div class="hero-content wrap">
       <div class="hero-inner">
