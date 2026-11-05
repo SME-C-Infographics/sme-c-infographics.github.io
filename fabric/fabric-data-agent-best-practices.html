@@ -266,7 +266,7 @@
 <!-- smec-favicon v1 -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <!-- smec-accuracy v1 -->
-<meta name="smec:last-accuracy-check" content="2026-09-24">
+<meta name="smec:last-accuracy-check" content="2026-10-29">
 <style>/* smec-back-btn v2 */
 .smec-back-btn { position: fixed; bottom: 16px; left: 16px; z-index: 9999;
   box-sizing: border-box;
@@ -530,7 +530,7 @@
         <div class="acc-header"><span>2 &nbsp; Minimize Data Source Scope</span><span class="chevron">&#9660;</span></div>
         <div class="acc-body"><div class="acc-body-inner">
           Include only the data sources, tables, and columns necessary to answer expected questions. A focused scope = more accurate and efficient queries.<br><br>
-          <strong>Tip:</strong> Limit to <strong>25 or fewer tables</strong> per data source for optimal results.
+          <strong>Tip:</strong> Select only the tables needed to answer questions in scope. A focused schema reduces ambiguity and improves query generation.
         </div></div>
       </div>
 
@@ -552,7 +552,7 @@
             <li><strong>Business terms:</strong> "quarter", "SKU", "NPS"</li>
             <li><strong>Abbreviations:</strong> "MAU" = Monthly Active Users</li>
           </ul><br>
-          <strong>Where:</strong> Cross-source definitions → agent-level instructions. Source-specific definitions → data-source instructions.
+          <strong>Where:</strong> Cross-source definitions → agent-level instructions. Source-specific definitions → data-source instructions when supported. For semantic models, use Prep for AI → AI Instructions.
         </div></div>
       </div>
 
@@ -599,14 +599,14 @@
             <li>Typical <strong>value formats</strong> (abbreviations vs. full names)</li>
             <li><strong>Example values:</strong> e.g., State uses "CA", "NY", "TX"</li>
           </ul><br>
-          <strong>Remember:</strong> The agent can't see individual row values before executing — include value examples to guide filtering.
+          <strong>Remember:</strong> If valid values aren't evident from the schema, document representative values to help the agent construct filters.
         </div></div>
       </div>
 
       <div class="acc-item">
         <div class="acc-header"><span>9 &nbsp; Use Example Queries for Complex Logic</span><span class="chevron">&#9660;</span></div>
         <div class="acc-body"><div class="acc-body-inner">
-          Example queries act as templates the agent generalizes from. For each user question, the agent retrieves the most relevant examples — typically the top four — and feeds them into query generation.<br><br>
+          For data sources that support example queries, they act as templates the agent generalizes from. The agent retrieves relevant examples to guide query generation.<br><br>
           Focus on queries involving:<br>
           <ul style="margin-top:8px;">
             <li>Filtering &amp; joins</li>
@@ -861,7 +861,7 @@ guidance (tone, formatting, routing).</code>
       <div class="check-item" data-key="c14"><div class="check-box"></div><div class="check-text">Report visuals have descriptive titles</div></div>
       <div class="check-item" data-key="c15"><div class="check-box"></div><div class="check-text">Agent-level instructions limited to cross-source guidance only</div></div>
       <div class="check-item" data-key="c16"><div class="check-box"></div><div class="check-text">Data source instructions include join logic, value formats, and examples</div></div>
-      <div class="check-item" data-key="c17"><div class="check-box"></div><div class="check-text">Example queries provided for complex logic</div></div>
+      <div class="check-item" data-key="c17"><div class="check-box"></div><div class="check-text">For supported data sources, example queries cover complex logic</div></div>
       <div class="check-item" data-key="c18"><div class="check-box"></div><div class="check-text">Generated DAX reviewed and validated during testing</div></div>
       <div class="check-item" data-key="c19"><div class="check-box"></div><div class="check-text">Stakeholders involved in validation</div></div>
       <div class="check-item" data-key="c20"><div class="check-box"></div><div class="check-text">Git integration &amp; deployment pipelines configured for ALM</div></div>
