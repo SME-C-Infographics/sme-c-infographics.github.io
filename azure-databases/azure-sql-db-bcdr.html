@@ -1428,7 +1428,7 @@ footer p { font-size: 14px; margin-bottom: 20px; max-width: 600px; margin-left: 
           </div>
           <ul class="feature-list">
             <li>Synchronous replication: every committed write exists on a replica before it completes, designed to deliver zero committed data loss on HA failover</li>
-            <li>This RPO of zero applies only to in-region HA failover. Backup-based recovery (PITR, geo-restore) always carries a data loss window equal to the time since the last log backup</li>
+            <li>This RPO of zero applies only to in-region HA failover. PITR restores to a chosen point within its retention window; geo-restore typically has an RPO of minutes or hours, depending on backup size</li>
             <li>Transparent failover within the region, with no app changes required</li>
             <li>Higher SLA than the default enterprise-class SLA</li>
             <li>Available across most Azure regions that support Availability Zones</li>
