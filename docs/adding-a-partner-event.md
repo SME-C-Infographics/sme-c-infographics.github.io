@@ -80,7 +80,9 @@ occurrence; give separate dates their own files.
 Upcoming and live events are shown by default. Once `end` has passed, an event
 moves to the **Past events** view automatically in the browser; it is not deleted.
 Past events appear newest first. Visitors can search, combine partner/format/topic
-filters, and filter by the event's starting month in their own timezone.
+filters, use the format shortcuts in the hero, and filter by the event's starting
+month in their own timezone. The hero counts summarize all submitted events and
+partners, with a separate upcoming/live count; they do not change with filters.
 With JavaScript disabled, all events remain readable with their original UTC
 offsets.
 

@@ -178,10 +178,10 @@ def render_event(event: dict) -> str:
     return f"""<article class="event-card" id="event-{event['id']}" {data}>
   <div class="card-eyebrow"><span>{esc(event['partner'])}</span><span class="tag">{esc(event['format'])}</span></div>
   <h3>{esc(event['title'])}</h3>
-  <p class="event-time"><time datetime="{esc(event['start'])}">{fallback_time(event['start_date'])}</time>
-    to <time datetime="{esc(event['end'])}">{fallback_time(event['end_date'])}</time></p>
-  <p class="event-location">{esc(event['location'])}</p>
-  <p class="event-cost">Cost: {esc(event['cost'])}</p>
+  <p class="event-time"><svg class="meta-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 11h18"/></svg><span><time datetime="{esc(event['start'])}">{fallback_time(event['start_date'])}</time>
+    to <time datetime="{esc(event['end'])}">{fallback_time(event['end_date'])}</time></span></p>
+  <p class="event-location"><svg class="meta-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg><span>{esc(event['location'])}</span></p>
+  <p class="event-cost"><svg class="meta-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3h7l11 11-7 7L3 10Z"/><circle cx="7.5" cy="7.5" r="1"/></svg><span>Cost: {esc(event['cost'])}</span></p>
   <div class="event-description">{render_description(event['body'])}</div>
   <div class="tags" aria-label="Topics">{tags}</div>
   <a class="register" href="{esc(event['registration_url'], quote=True)}" target="_blank" rel="noopener noreferrer">Register with {esc(event['partner'])}<span class="sr-only"> for {esc(event['title'])} (opens in a new tab)</span> &rarr;</a>

@@ -163,6 +163,15 @@ class PartnerEventTests(unittest.TestCase):
         self.assertIn("&amp;source=partner", output)
         self.assertIn('id="event-2026-12-10-contoso"', output)
 
+    def test_metadata_icons_preserve_readable_event_details(self):
+        output = generator.render_event(generator.parse_event(self.write_event()))
+        self.assertEqual(output.count('<svg class="meta-icon"'), 3)
+        self.assertEqual(output.count('viewBox="0 0 24 24" aria-hidden="true"'), 3)
+        self.assertIn("<span>Online</span>", output)
+        self.assertIn("<span>Cost: Free</span>", output)
+        self.assertIn('<time datetime="2026-12-10T10:00-06:00">', output)
+        self.assertIn("UTC-06:00</time>", output)
+
     def test_generation_is_idempotent_and_preserves_surrounding_chrome(self):
         event = generator.parse_event(self.write_event())
         prefix = '<head><!-- smec-meta v1 --></head>\n'
