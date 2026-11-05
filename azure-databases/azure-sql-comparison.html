@@ -542,7 +542,7 @@
 <!-- smec-favicon v1 -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <!-- smec-accuracy v1 -->
-<meta name="smec:last-accuracy-check" content="2026-10-01">
+<meta name="smec:last-accuracy-check" content="2026-11-05">
 <style>/* smec-back-btn v2 */
 .smec-back-btn { position: fixed; bottom: 16px; left: 16px; z-index: 9999;
   box-sizing: border-box;
@@ -648,7 +648,7 @@
         <ul>
           <li>Full SQL Server instance running on a Windows or Linux VM in Azure</li>
           <li>You manage the OS, patching, backups, HA, and the SQL Server engine</li>
-          <li>100% feature parity with on-premises SQL Server</li>
+          <li>Full SQL Server engine control; feature availability depends on the selected SQL Server version and edition</li>
         </ul>
 
         <h4 class="vm-accent">Best For</h4>
@@ -669,7 +669,7 @@
         <div class="meter-group">
           <div class="meter-label"><span>Your Management Effort</span><span>High</span></div>
           <div class="meter"><div class="meter-fill vm-fill" style="width:90%"></div></div>
-          <div class="meter-label"><span>SQL Compatibility</span><span>100%</span></div>
+          <div class="meter-label"><span>SQL Compatibility</span><span>Full SQL Server engine</span></div>
           <div class="meter"><div class="meter-fill vm-fill" style="width:100%"></div></div>
           <div class="meter-label"><span>Scaling Flexibility</span><span>Medium</span></div>
           <div class="meter"><div class="meter-fill vm-fill" style="width:55%"></div></div>
@@ -712,7 +712,7 @@
         <div class="meter-group">
           <div class="meter-label"><span>Your Management Effort</span><span>Low–Medium</span></div>
           <div class="meter"><div class="meter-fill mi-fill" style="width:35%"></div></div>
-          <div class="meter-label"><span>SQL Compatibility</span><span>Almost 100%</span></div>
+          <div class="meter-label"><span>SQL Compatibility</span><span>Near 100%</span></div>
           <div class="meter"><div class="meter-fill mi-fill" style="width:95%"></div></div>
           <div class="meter-label"><span>Scaling Flexibility</span><span>Medium</span></div>
           <div class="meter"><div class="meter-fill mi-fill" style="width:60%"></div></div>
@@ -781,8 +781,8 @@
         <tbody>
           <tr>
             <td>SQL Server Compatibility</td>
-            <td><span class="check">✔ 100%</span></td>
-            <td><span class="check">✔ Almost 100%</span></td>
+            <td><span class="check">✔ Full engine (version and edition dependent)</span></td>
+            <td><span class="check">✔ Near 100% with the latest SQL Server Enterprise Edition</span></td>
             <td><span class="partial">◐ Most database-scoped features</span></td>
           </tr>
           <tr>
@@ -801,12 +801,12 @@
             <td>Cross-Database Queries</td>
             <td><span class="check">✔ Yes</span></td>
             <td><span class="check">✔ Yes</span></td>
-            <td><span class="partial">◐ Elastic Query only</span></td>
+            <td><span class="partial">◐ Elastic Query (preview)</span></td>
           </tr>
           <tr>
             <td>Linked Servers</td>
             <td><span class="check">✔ Any provider</span></td>
-            <td><span class="partial">◐ SQL Server, Azure SQL &amp; Synapse only</span></td>
+            <td><span class="partial">◐ SQL Server and Azure SQL Database only</span></td>
             <td><span class="no">✘ No</span></td>
           </tr>
           <tr>
@@ -831,7 +831,7 @@
             <td>VNet Integration</td>
             <td><span class="check">✔ Yes</span></td>
             <td><span class="check">✔ Native</span></td>
-            <td><span class="partial">◐ Service endpoints &amp; private links</span></td>
+            <td><span class="partial">◐ Service endpoints &amp; private endpoints</span></td>
           </tr>
           <tr>
             <td>Automated Backups</td>
@@ -843,13 +843,13 @@
             <td>Auto-Tuning</td>
             <td><span class="no">✘ Manual</span></td>
             <td><span class="partial">◐ Limited</span></td>
-            <td><span class="check">✔ Automatic indexing &amp; plans</span></td>
+            <td><span class="check">✔ Automatic indexing &amp; plan correction</span></td>
           </tr>
           <tr>
             <td>High Availability</td>
             <td><span class="partial">◐ You build (FCI / AG)</span></td>
-            <td><span class="check">✔ Built-in (99.99% / 99.995% zone-redundant)</span></td>
-            <td><span class="check">✔ Built-in (99.99% / 99.995% zone-redundant)</span></td>
+            <td><span class="check">✔ Built-in; SLA varies by tier and zone-redundancy configuration</span></td>
+            <td><span class="check">✔ Built-in; SLA varies by tier and zone-redundancy configuration</span></td>
           </tr>
           <tr>
             <td>Serverless Tier</td>
