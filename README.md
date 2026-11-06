@@ -9,6 +9,7 @@ A single destination for infographics that help visualize and understand our pre
 1. [Creating HTML Infographics with CoWork](docs/creating-html-infographics-with-cowork.md)
 2. [Adding an Infographic to the Website](docs/adding-an-infographic-to-the-website.md)
 3. [Adding a Partner Event with Markdown](docs/adding-a-partner-event.md)
+4. [Submitting Partner Events with an AI Agent](docs/partner-event-agent-instructions.md)
 
 ## Partner Events
 

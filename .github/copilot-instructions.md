@@ -124,6 +124,15 @@ generators.
 
 ## Contributor flow (don't break this)
 
+For requests to submit partner events from pasted announcements or registration
+links, follow `docs/partner-event-agent-instructions.md`. Confirm missing event
+facts, show the proposed Markdown for approval, then use the contributor's fork
+and a new branch to open a PR to upstream `main`. Contributions change only
+`partner-events/*.md`; do not commit generated HTML or modify publishing
+automation. The current schema is in `partner-events/_template.md` and
+`scripts/generate-partner-events.py`. The manual web-only path remains documented
+in `docs/adding-a-partner-event.md`.
+
 The published contributor path is **fork → upload HTML through the GitHub web
 UI → open PR** (`docs/adding-an-infographic-to-the-website.md`). No CLI
 required. Changes that would force contributors to clone, run scripts, or
