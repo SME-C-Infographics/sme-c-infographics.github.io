@@ -64,7 +64,7 @@
   .event-card.card-hidden { display: none; }
   .event-card:hover { transform: translateY(-4px); box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
   .event-tag { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; padding: 5px 11px; border-radius: 4px; margin-bottom: 13px; align-self: flex-start; }
-  .tag-briefing{background:#deecf9;color:#004578}.tag-training{background:#dff6dd;color:#0b6a0b}.tag-workshop{background:#ede4f7;color:#5c2d91}.tag-conference{background:#fde7e9;color:#a4262c}.tag-ttt{background:#fff4ce;color:#835c00}.tag-diad{background:#cfe9e5;color:#0b6a5f}.tag-faiad{background:#d6e4ff;color:#1f3a8a}.tag-agiad{background:#f3ddf0;color:#8a2b7b}.tag-cdiad{background:#ffe4d6;color:#a4420f}.tag-aiad{background:#e2f0d9;color:#4a6d1f}.tag-rtiad{background:#dcecfb;color:#0a558c}.tag-ppiad{background:#ede1fb;color:#6b2fb3}.tag-sqlaiad{background:#ffe1ec;color:#9b1750}
+  .tag-briefing{background:#deecf9;color:#004578}.tag-training{background:#dff6dd;color:#0b6a0b}.tag-workshop{background:#ede4f7;color:#5c2d91}.tag-conference{background:#fde7e9;color:#a4262c}.tag-ttt{background:#fff4ce;color:#835c00}.tag-diad{background:#cfe9e5;color:#0b6a5f}.tag-faiad{background:#d6e4ff;color:#1f3a8a}.tag-agiad{background:#f3ddf0;color:#8a2b7b}.tag-cdiad{background:#ffe4d6;color:#a4420f}.tag-aiad{background:#e2f0d9;color:#4a6d1f}.tag-rtiad{background:#dcecfb;color:#0a558c}.tag-ppiad{background:#ede1fb;color:#6b2fb3}.tag-sqlaiad{background:#ffe1ec;color:#9b1750}.tag-auiad{background:#ffecc2;color:#7a4d00}
   .event-card h3 { font-size: 18.5px; font-weight: 600; color: #242424; margin-bottom: 11px; line-height: 1.35; }
   .event-meta { display: flex; align-items: center; color: #605e5c; font-size: 14px; margin-bottom: 8px; font-weight: 500; }
   .event-meta-sub { color: #797775; margin-bottom: 13px; }
@@ -115,6 +115,7 @@
   .iad--rtiad { --iad-c: #0a558c; --iad-bg: #e9f3fc; }
   .iad--ppiad { --iad-c: #6b2fb3; --iad-bg: #f4edfc; }
   .iad--sqlaiad { --iad-c: #9b1750; --iad-bg: #fdebf2; }
+  .iad--auiad { --iad-c: #8a5a00; --iad-bg: #fff6df; }
   .iad-intro { display: flex; align-items: center; gap: 28px; padding: 18px 22px; margin: 6px 0 18px; background: var(--iad-bg); border: 1px solid rgba(0,0,0,0.05); border-left: 4px solid var(--iad-c); border-radius: 12px; }
   .iad-intro-text { flex: 1 1 auto; min-width: 0; }
   .iad-intro .event-tag { margin-bottom: 8px; }
@@ -746,6 +747,7 @@
     .tag-rtiad, .tag-partner { background: rgba(20,110,180,0.24); color: #8cc8f5; }
     .tag-ppiad { background: rgba(130,70,210,0.22); color: #c9a4f5; }
     .tag-sqlaiad { background: rgba(190,40,100,0.22); color: #ff9cc2; }
+    .tag-auiad { background: rgba(220,150,20,0.22); color: #ffd27a; }
     .tag-industry { background: rgba(255,140,40,0.16); color: #ffbf80; }
     .tag-msconf { background: rgba(0,120,212,0.2); color: #8cc4ff; }
     .tag-spotlight { background: rgba(155,107,224,0.2); color: #d2b8f7; }
@@ -769,6 +771,7 @@
     .iad--rtiad { --iad-c: #8cc8f5; --iad-solid: #1268a8; --iad-bg: rgba(20,110,180,0.14); }
     .iad--ppiad { --iad-c: #c9a4f5; --iad-solid: #7a3fc4; --iad-bg: rgba(130,70,210,0.13); }
     .iad--sqlaiad { --iad-c: #ff9cc2; --iad-solid: #b0285f; --iad-bg: rgba(190,40,100,0.13); }
+    .iad--auiad { --iad-c: #ffd27a; --iad-solid: #9a6200; --iad-bg: rgba(220,150,20,0.13); }
     .iad-intro { border-color: rgba(255,255,255,0.07); }
     .iad-intro p { color: #d3d5d9; }
     .iad-facts span { color: #d3d5d9; background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.1); }
@@ -1059,6 +1062,8 @@ document.addEventListener('DOMContentLoaded', function () {
         <option value="Fabric Analyst in a Day">Fabric Analyst in a Day</option>
         <option value="Chat with Your Data in a Day">Chat with Your Data in a Day</option>
         <option value="App in a Day">App in a Day</option>
+        <option value="Automation in a Day">Automation in a Day</option>
+        <option value="Power Pages in a Day">Power Pages in a Day</option>
         <option value="Real-Time Intelligence in a Day">Real-Time Intelligence in a Day</option>
         <option value="SQL AI App in a Day">SQL AI App in a Day</option>
         </optgroup>
@@ -2011,7 +2016,7 @@ document.addEventListener('DOMContentLoaded', function () {
     <div class="groups">
 
       <div class="group" data-group="Dashboard in a Day">
-        <button type="button" class="group-head" aria-expanded="false"><span class="chev">▸</span><span class="group-title">Dashboard in a Day</span><span class="group-count">3 sessions</span></button>
+        <button type="button" class="group-head" aria-expanded="false"><span class="chev">▸</span><span class="group-title">Dashboard in a Day</span><span class="group-count">28 sessions</span></button>
         <div class="group-body">
           <div class="iad-panel iad--diad">
             <div class="iad-intro">
@@ -2020,40 +2025,302 @@ document.addEventListener('DOMContentLoaded', function () {
                 <p>A guided, hands-on day building a complete Power BI dashboard end to end — connecting and shaping data, modeling it, and designing rich, interactive reports that turn raw data into compelling analysis.</p>
                 <div class="iad-facts"><span>🧑‍🏫 Hands-on, partner-led</span><span>⏱️ Full day</span><span>💲 Free</span><span>💻 Live online</span></div>
               </div>
-              <div class="iad-stats" aria-live="polite"><strong class="iad-n">3</strong><span class="iad-n-lbl">upcoming dates</span><span class="iad-range">Oct 9 – Oct 14</span><span class="iad-np">1 partner</span></div>
+              <div class="iad-stats" aria-live="polite"><strong class="iad-n">28</strong><span class="iad-n-lbl">upcoming dates</span><span class="iad-range">Nov 11 – Jan 28</span><span class="iad-np">9 partners</span></div>
             </div>
-          <div class="iad-month" data-month="10">
-            <div class="iad-month-head"><span class="iad-month-name">October 2026</span><span class="iad-month-count">3 dates</span></div>
+          <div class="iad-month" data-month="11">
+            <div class="iad-month-head"><span class="iad-month-name">November 2026</span><span class="iad-month-count">9 dates</span></div>
             <div class="events iad-slots">
 
-      <div class="event-card iad-slot" data-type="Dashboard in a Day" data-modality="Virtual" data-month="10" data-partner="Pragmatic Works" data-search="dashboard in a day pragmatic works a guided, hands-on day building a complete power bi dashboard end to end — connecting and shaping data, modeling it, and designing rich, interactive reports that turn raw data into compelling analysis. dashboard in a day virtual">
-        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Oct</span><span class="iad-cal-d">9</span></div>
-        <div class="iad-info">
-          <span class="iad-day">Friday</span>
-          <span class="event-time iad-hours" data-start="2026-10-09T13:00:00Z" data-end="2026-10-09T21:00:00Z"></span>
-          <span class="iad-by">with <a class="partner-link" href="http://www.pragmaticworks.com/" target="_blank" rel="noopener">Pragmatic Works</a></span>
-        </div>
-        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D3497054735&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Dashboard%20in%20a%20Day&amp;utm_content=Dashboard-in-a-Day-Pragmatic-Works-2026-10-09" target="_blank" rel="noopener">Register</a>
-      </div>
-
-      <div class="event-card iad-slot" data-type="Dashboard in a Day" data-modality="Virtual" data-month="10" data-partner="Pragmatic Works" data-search="dashboard in a day pragmatic works a guided, hands-on day building a complete power bi dashboard end to end — connecting and shaping data, modeling it, and designing rich, interactive reports that turn raw data into compelling analysis. dashboard in a day virtual">
-        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Oct</span><span class="iad-cal-d">13</span></div>
-        <div class="iad-info">
-          <span class="iad-day">Tuesday</span>
-          <span class="event-time iad-hours" data-start="2026-10-13T15:00:00Z" data-end="2026-10-13T23:00:00Z"></span>
-          <span class="iad-by">with <a class="partner-link" href="http://www.pragmaticworks.com/" target="_blank" rel="noopener">Pragmatic Works</a></span>
-        </div>
-        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D3168500001&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Dashboard%20in%20a%20Day&amp;utm_content=Dashboard-in-a-Day-Pragmatic-Works-2026-10-13" target="_blank" rel="noopener">Register</a>
-      </div>
-
-      <div class="event-card iad-slot" data-type="Dashboard in a Day" data-modality="Virtual" data-month="10" data-partner="Pragmatic Works" data-search="dashboard in a day pragmatic works a guided, hands-on day building a complete power bi dashboard end to end — connecting and shaping data, modeling it, and designing rich, interactive reports that turn raw data into compelling analysis. dashboard in a day virtual">
-        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Oct</span><span class="iad-cal-d">14</span></div>
+      <div class="event-card iad-slot" data-type="Dashboard in a Day" data-modality="Virtual" data-month="11" data-partner="Pragmatic Works" data-search="dashboard in a day pragmatic works a guided, hands-on day building a complete power bi dashboard end to end — connecting and shaping data, modeling it, and designing rich, interactive reports that turn raw data into compelling analysis. dashboard in a day virtual">
+        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Nov</span><span class="iad-cal-d">11</span></div>
         <div class="iad-info">
           <span class="iad-day">Wednesday</span>
-          <span class="event-time iad-hours" data-start="2026-10-14T13:00:00Z" data-end="2026-10-14T21:00:00Z"></span>
+          <span class="event-time iad-hours" data-start="2026-11-11T14:00:00Z" data-end="2026-11-11T22:00:00Z"></span>
           <span class="iad-by">with <a class="partner-link" href="http://www.pragmaticworks.com/" target="_blank" rel="noopener">Pragmatic Works</a></span>
         </div>
-        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D2346072984&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Dashboard%20in%20a%20Day&amp;utm_content=Dashboard-in-a-Day-Pragmatic-Works-2026-10-14" target="_blank" rel="noopener">Register</a>
+        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D1285467579&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Dashboard%20in%20a%20Day&amp;utm_content=Dashboard-in-a-Day-Pragmatic-Works-2026-11-11" target="_blank" rel="noopener">Register</a>
+      </div>
+
+      <div class="event-card iad-slot" data-type="Dashboard in a Day" data-modality="Virtual" data-month="11" data-partner="Fresche Solutions" data-search="dashboard in a day fresche solutions a guided, hands-on day building a complete power bi dashboard end to end — connecting and shaping data, modeling it, and designing rich, interactive reports that turn raw data into compelling analysis. dashboard in a day virtual">
+        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Nov</span><span class="iad-cal-d">11</span></div>
+        <div class="iad-info">
+          <span class="iad-day">Wednesday</span>
+          <span class="event-time iad-hours" data-start="2026-11-11T17:00:00Z" data-end="2026-11-12T01:00:00Z"></span>
+          <span class="iad-by">with <a class="partner-link" href="https://freschesolutions.com/" target="_blank" rel="noopener">Fresche Solutions</a></span>
+        </div>
+        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D2707524372&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Dashboard%20in%20a%20Day&amp;utm_content=Dashboard-in-a-Day-Fresche-Solutions-2026-11-11" target="_blank" rel="noopener">Register</a>
+      </div>
+
+      <div class="event-card iad-slot" data-type="Dashboard in a Day" data-modality="Virtual" data-month="11" data-partner="Dimensional Strategies Inc" data-search="dashboard in a day dimensional strategies inc a guided, hands-on day building a complete power bi dashboard end to end — connecting and shaping data, modeling it, and designing rich, interactive reports that turn raw data into compelling analysis. dashboard in a day virtual">
+        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Nov</span><span class="iad-cal-d">12</span></div>
+        <div class="iad-info">
+          <span class="iad-day">Thursday</span>
+          <span class="event-time iad-hours" data-start="2026-11-12T15:00:00Z" data-end="2026-11-12T23:00:00Z"></span>
+          <span class="iad-by">with <a class="partner-link" href="http://www.dstrat.com/" target="_blank" rel="noopener">Dimensional Strategies Inc</a></span>
+        </div>
+        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D4201344281&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Dashboard%20in%20a%20Day&amp;utm_content=Dashboard-in-a-Day-Dimensional-Strategies-Inc-2026-11-12" target="_blank" rel="noopener">Register</a>
+      </div>
+
+      <div class="event-card iad-slot" data-type="Dashboard in a Day" data-modality="Virtual" data-month="11" data-partner="Fresche Solutions" data-search="dashboard in a day fresche solutions a guided, hands-on day building a complete power bi dashboard end to end — connecting and shaping data, modeling it, and designing rich, interactive reports that turn raw data into compelling analysis. dashboard in a day virtual">
+        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Nov</span><span class="iad-cal-d">18</span></div>
+        <div class="iad-info">
+          <span class="iad-day">Wednesday</span>
+          <span class="event-time iad-hours" data-start="2026-11-18T16:00:00Z" data-end="2026-11-19T00:00:00Z"></span>
+          <span class="iad-by">with <a class="partner-link" href="https://freschesolutions.com/" target="_blank" rel="noopener">Fresche Solutions</a></span>
+        </div>
+        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D3752346985&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Dashboard%20in%20a%20Day&amp;utm_content=Dashboard-in-a-Day-Fresche-Solutions-2026-11-18" target="_blank" rel="noopener">Register</a>
+      </div>
+
+      <div class="event-card iad-slot" data-type="Dashboard in a Day" data-modality="Virtual" data-month="11" data-partner="Pragmatic Works" data-search="dashboard in a day pragmatic works a guided, hands-on day building a complete power bi dashboard end to end — connecting and shaping data, modeling it, and designing rich, interactive reports that turn raw data into compelling analysis. dashboard in a day virtual">
+        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Nov</span><span class="iad-cal-d">19</span></div>
+        <div class="iad-info">
+          <span class="iad-day">Thursday</span>
+          <span class="event-time iad-hours" data-start="2026-11-19T14:00:00Z" data-end="2026-11-19T22:00:00Z"></span>
+          <span class="iad-by">with <a class="partner-link" href="http://www.pragmaticworks.com/" target="_blank" rel="noopener">Pragmatic Works</a></span>
+        </div>
+        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D265486721&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Dashboard%20in%20a%20Day&amp;utm_content=Dashboard-in-a-Day-Pragmatic-Works-2026-11-19" target="_blank" rel="noopener">Register</a>
+      </div>
+
+      <div class="event-card iad-slot" data-type="Dashboard in a Day" data-modality="Virtual" data-month="11" data-partner="NetCom Learning" data-search="dashboard in a day netcom learning a guided, hands-on day building a complete power bi dashboard end to end — connecting and shaping data, modeling it, and designing rich, interactive reports that turn raw data into compelling analysis. dashboard in a day virtual">
+        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Nov</span><span class="iad-cal-d">20</span></div>
+        <div class="iad-info">
+          <span class="iad-day">Friday</span>
+          <span class="event-time iad-hours" data-start="2026-11-20T14:00:00Z" data-end="2026-11-20T22:00:00Z"></span>
+          <span class="iad-by">with <a class="partner-link" href="https://www.netcomlearning.com/" target="_blank" rel="noopener">NetCom Learning</a></span>
+        </div>
+        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D4030841372&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Dashboard%20in%20a%20Day&amp;utm_content=Dashboard-in-a-Day-NetCom-Learning-2026-11-20" target="_blank" rel="noopener">Register</a>
+      </div>
+
+      <div class="event-card iad-slot" data-type="Dashboard in a Day" data-modality="Virtual" data-month="11" data-partner="Pragmatic Works" data-search="dashboard in a day pragmatic works a guided, hands-on day building a complete power bi dashboard end to end — connecting and shaping data, modeling it, and designing rich, interactive reports that turn raw data into compelling analysis. dashboard in a day virtual">
+        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Nov</span><span class="iad-cal-d">20</span></div>
+        <div class="iad-info">
+          <span class="iad-day">Friday</span>
+          <span class="event-time iad-hours" data-start="2026-11-20T15:00:00Z" data-end="2026-11-20T23:00:00Z"></span>
+          <span class="iad-by">with <a class="partner-link" href="http://www.pragmaticworks.com/" target="_blank" rel="noopener">Pragmatic Works</a></span>
+        </div>
+        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D4116933009&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Dashboard%20in%20a%20Day&amp;utm_content=Dashboard-in-a-Day-Pragmatic-Works-2026-11-20" target="_blank" rel="noopener">Register</a>
+      </div>
+
+      <div class="event-card iad-slot" data-type="Dashboard in a Day" data-modality="Virtual" data-month="11" data-partner="Koenig Solutions" data-search="dashboard in a day koenig solutions a guided, hands-on day building a complete power bi dashboard end to end — connecting and shaping data, modeling it, and designing rich, interactive reports that turn raw data into compelling analysis. dashboard in a day virtual">
+        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Nov</span><span class="iad-cal-d">23</span></div>
+        <div class="iad-info">
+          <span class="iad-day">Monday</span>
+          <span class="event-time iad-hours" data-start="2026-11-23T15:00:00Z" data-end="2026-11-23T23:00:00Z"></span>
+          <span class="iad-by">with <a class="partner-link" href="https://www.koenig-solutions.com/microsoft-training-certification-courses" target="_blank" rel="noopener">Koenig Solutions</a></span>
+        </div>
+        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D3180081918&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Dashboard%20in%20a%20Day&amp;utm_content=Dashboard-in-a-Day-Koenig-Solutions-2026-11-23" target="_blank" rel="noopener">Register</a>
+      </div>
+
+      <div class="event-card iad-slot" data-type="Dashboard in a Day" data-modality="Virtual" data-month="11" data-partner="OnPoint Insights LLC" data-search="dashboard in a day onpoint insights llc a guided, hands-on day building a complete power bi dashboard end to end — connecting and shaping data, modeling it, and designing rich, interactive reports that turn raw data into compelling analysis. dashboard in a day virtual">
+        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Nov</span><span class="iad-cal-d">24</span></div>
+        <div class="iad-info">
+          <span class="iad-day">Tuesday</span>
+          <span class="event-time iad-hours" data-start="2026-11-24T14:00:00Z" data-end="2026-11-24T22:00:00Z"></span>
+          <span class="iad-by">with <a class="partner-link" href="https://www.onpointinsights.us/" target="_blank" rel="noopener">OnPoint Insights LLC</a></span>
+        </div>
+        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D4261389186&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Dashboard%20in%20a%20Day&amp;utm_content=Dashboard-in-a-Day-OnPoint-Insights-LLC-2026-11-24" target="_blank" rel="noopener">Register</a>
+      </div>
+
+            </div>
+          </div>
+          <div class="iad-month" data-month="12">
+            <div class="iad-month-head"><span class="iad-month-name">December 2026</span><span class="iad-month-count">11 dates</span></div>
+            <div class="events iad-slots">
+
+      <div class="event-card iad-slot" data-type="Dashboard in a Day" data-modality="Virtual" data-month="12" data-partner="Kanerika Inc" data-search="dashboard in a day kanerika inc a guided, hands-on day building a complete power bi dashboard end to end — connecting and shaping data, modeling it, and designing rich, interactive reports that turn raw data into compelling analysis. dashboard in a day virtual">
+        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Dec</span><span class="iad-cal-d">1</span></div>
+        <div class="iad-info">
+          <span class="iad-day">Tuesday</span>
+          <span class="event-time iad-hours" data-start="2026-12-01T14:00:00Z" data-end="2026-12-01T22:00:00Z"></span>
+          <span class="iad-by">with <a class="partner-link" href="https://kanerika.com/" target="_blank" rel="noopener">Kanerika Inc</a></span>
+        </div>
+        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D1180348850&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Dashboard%20in%20a%20Day&amp;utm_content=Dashboard-in-a-Day-Kanerika-Inc-2026-12-01" target="_blank" rel="noopener">Register</a>
+      </div>
+
+      <div class="event-card iad-slot" data-type="Dashboard in a Day" data-modality="Virtual" data-month="12" data-partner="OnPoint Insights LLC" data-search="dashboard in a day onpoint insights llc a guided, hands-on day building a complete power bi dashboard end to end — connecting and shaping data, modeling it, and designing rich, interactive reports that turn raw data into compelling analysis. dashboard in a day virtual">
+        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Dec</span><span class="iad-cal-d">3</span></div>
+        <div class="iad-info">
+          <span class="iad-day">Thursday</span>
+          <span class="event-time iad-hours" data-start="2026-12-03T14:00:00Z" data-end="2026-12-03T22:00:00Z"></span>
+          <span class="iad-by">with <a class="partner-link" href="https://www.onpointinsights.us/" target="_blank" rel="noopener">OnPoint Insights LLC</a></span>
+        </div>
+        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D615242669&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Dashboard%20in%20a%20Day&amp;utm_content=Dashboard-in-a-Day-OnPoint-Insights-LLC-2026-12-03" target="_blank" rel="noopener">Register</a>
+      </div>
+
+      <div class="event-card iad-slot" data-type="Dashboard in a Day" data-modality="Virtual" data-month="12" data-partner="Pragmatic Works" data-search="dashboard in a day pragmatic works a guided, hands-on day building a complete power bi dashboard end to end — connecting and shaping data, modeling it, and designing rich, interactive reports that turn raw data into compelling analysis. dashboard in a day virtual">
+        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Dec</span><span class="iad-cal-d">3</span></div>
+        <div class="iad-info">
+          <span class="iad-day">Thursday</span>
+          <span class="event-time iad-hours" data-start="2026-12-03T15:00:00Z" data-end="2026-12-03T23:00:00Z"></span>
+          <span class="iad-by">with <a class="partner-link" href="http://www.pragmaticworks.com/" target="_blank" rel="noopener">Pragmatic Works</a></span>
+        </div>
+        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D3784972211&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Dashboard%20in%20a%20Day&amp;utm_content=Dashboard-in-a-Day-Pragmatic-Works-2026-12-03" target="_blank" rel="noopener">Register</a>
+      </div>
+
+      <div class="event-card iad-slot" data-type="Dashboard in a Day" data-modality="Virtual" data-month="12" data-partner="Pragmatic Works" data-search="dashboard in a day pragmatic works a guided, hands-on day building a complete power bi dashboard end to end — connecting and shaping data, modeling it, and designing rich, interactive reports that turn raw data into compelling analysis. dashboard in a day virtual">
+        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Dec</span><span class="iad-cal-d">9</span></div>
+        <div class="iad-info">
+          <span class="iad-day">Wednesday</span>
+          <span class="event-time iad-hours" data-start="2026-12-09T14:00:00Z" data-end="2026-12-09T22:00:00Z"></span>
+          <span class="iad-by">with <a class="partner-link" href="http://www.pragmaticworks.com/" target="_blank" rel="noopener">Pragmatic Works</a></span>
+        </div>
+        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D563202523&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Dashboard%20in%20a%20Day&amp;utm_content=Dashboard-in-a-Day-Pragmatic-Works-2026-12-09" target="_blank" rel="noopener">Register</a>
+      </div>
+
+      <div class="event-card iad-slot" data-type="Dashboard in a Day" data-modality="Virtual" data-month="12" data-partner="Fresche Solutions" data-search="dashboard in a day fresche solutions a guided, hands-on day building a complete power bi dashboard end to end — connecting and shaping data, modeling it, and designing rich, interactive reports that turn raw data into compelling analysis. dashboard in a day virtual">
+        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Dec</span><span class="iad-cal-d">9</span></div>
+        <div class="iad-info">
+          <span class="iad-day">Wednesday</span>
+          <span class="event-time iad-hours" data-start="2026-12-09T17:00:00Z" data-end="2026-12-10T01:00:00Z"></span>
+          <span class="iad-by">with <a class="partner-link" href="https://freschesolutions.com/" target="_blank" rel="noopener">Fresche Solutions</a></span>
+        </div>
+        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D3591855253&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Dashboard%20in%20a%20Day&amp;utm_content=Dashboard-in-a-Day-Fresche-Solutions-2026-12-09" target="_blank" rel="noopener">Register</a>
+      </div>
+
+      <div class="event-card iad-slot" data-type="Dashboard in a Day" data-modality="Virtual" data-month="12" data-partner="iLink Digital" data-search="dashboard in a day ilink digital a guided, hands-on day building a complete power bi dashboard end to end — connecting and shaping data, modeling it, and designing rich, interactive reports that turn raw data into compelling analysis. dashboard in a day virtual">
+        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Dec</span><span class="iad-cal-d">10</span></div>
+        <div class="iad-info">
+          <span class="iad-day">Thursday</span>
+          <span class="event-time iad-hours" data-start="2026-12-10T15:00:00Z" data-end="2026-12-10T23:00:00Z"></span>
+          <span class="iad-by">with <a class="partner-link" href="https://www.ilink-digital.com/" target="_blank" rel="noopener">iLink Digital</a></span>
+        </div>
+        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D3029019614&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Dashboard%20in%20a%20Day&amp;utm_content=Dashboard-in-a-Day-iLink-Digital-2026-12-10" target="_blank" rel="noopener">Register</a>
+      </div>
+
+      <div class="event-card iad-slot" data-type="Dashboard in a Day" data-modality="Virtual" data-month="12" data-partner="Imperium Dynamics LLC" data-search="dashboard in a day imperium dynamics llc a guided, hands-on day building a complete power bi dashboard end to end — connecting and shaping data, modeling it, and designing rich, interactive reports that turn raw data into compelling analysis. dashboard in a day virtual">
+        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Dec</span><span class="iad-cal-d">15</span></div>
+        <div class="iad-info">
+          <span class="iad-day">Tuesday</span>
+          <span class="event-time iad-hours" data-start="2026-12-15T14:00:00Z" data-end="2026-12-15T22:00:00Z"></span>
+          <span class="iad-by">with <a class="partner-link" href="https://imperiumdynamics.com" target="_blank" rel="noopener">Imperium Dynamics LLC</a></span>
+        </div>
+        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D2603043602&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Dashboard%20in%20a%20Day&amp;utm_content=Dashboard-in-a-Day-Imperium-Dynamics-LLC-2026-12-15" target="_blank" rel="noopener">Register</a>
+      </div>
+
+      <div class="event-card iad-slot" data-type="Dashboard in a Day" data-modality="Virtual" data-month="12" data-partner="Pragmatic Works" data-search="dashboard in a day pragmatic works a guided, hands-on day building a complete power bi dashboard end to end — connecting and shaping data, modeling it, and designing rich, interactive reports that turn raw data into compelling analysis. dashboard in a day virtual">
+        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Dec</span><span class="iad-cal-d">15</span></div>
+        <div class="iad-info">
+          <span class="iad-day">Tuesday</span>
+          <span class="event-time iad-hours" data-start="2026-12-15T15:00:00Z" data-end="2026-12-15T23:00:00Z"></span>
+          <span class="iad-by">with <a class="partner-link" href="http://www.pragmaticworks.com/" target="_blank" rel="noopener">Pragmatic Works</a></span>
+        </div>
+        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D1898253523&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Dashboard%20in%20a%20Day&amp;utm_content=Dashboard-in-a-Day-Pragmatic-Works-2026-12-15" target="_blank" rel="noopener">Register</a>
+      </div>
+
+      <div class="event-card iad-slot" data-type="Dashboard in a Day" data-modality="Virtual" data-month="12" data-partner="Pragmatic Works" data-search="dashboard in a day pragmatic works a guided, hands-on day building a complete power bi dashboard end to end — connecting and shaping data, modeling it, and designing rich, interactive reports that turn raw data into compelling analysis. dashboard in a day virtual">
+        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Dec</span><span class="iad-cal-d">16</span></div>
+        <div class="iad-info">
+          <span class="iad-day">Wednesday</span>
+          <span class="event-time iad-hours" data-start="2026-12-16T14:00:00Z" data-end="2026-12-16T22:00:00Z"></span>
+          <span class="iad-by">with <a class="partner-link" href="http://www.pragmaticworks.com/" target="_blank" rel="noopener">Pragmatic Works</a></span>
+        </div>
+        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D1037954056&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Dashboard%20in%20a%20Day&amp;utm_content=Dashboard-in-a-Day-Pragmatic-Works-2026-12-16" target="_blank" rel="noopener">Register</a>
+      </div>
+
+      <div class="event-card iad-slot" data-type="Dashboard in a Day" data-modality="Virtual" data-month="12" data-partner="NetCom Learning" data-search="dashboard in a day netcom learning a guided, hands-on day building a complete power bi dashboard end to end — connecting and shaping data, modeling it, and designing rich, interactive reports that turn raw data into compelling analysis. dashboard in a day virtual">
+        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Dec</span><span class="iad-cal-d">21</span></div>
+        <div class="iad-info">
+          <span class="iad-day">Monday</span>
+          <span class="event-time iad-hours" data-start="2026-12-21T14:00:00Z" data-end="2026-12-21T22:00:00Z"></span>
+          <span class="iad-by">with <a class="partner-link" href="https://www.netcomlearning.com/" target="_blank" rel="noopener">NetCom Learning</a></span>
+        </div>
+        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D613258801&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Dashboard%20in%20a%20Day&amp;utm_content=Dashboard-in-a-Day-NetCom-Learning-2026-12-21" target="_blank" rel="noopener">Register</a>
+      </div>
+
+      <div class="event-card iad-slot" data-type="Dashboard in a Day" data-modality="Virtual" data-month="12" data-partner="OnPoint Insights LLC" data-search="dashboard in a day onpoint insights llc a guided, hands-on day building a complete power bi dashboard end to end — connecting and shaping data, modeling it, and designing rich, interactive reports that turn raw data into compelling analysis. dashboard in a day virtual">
+        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Dec</span><span class="iad-cal-d">22</span></div>
+        <div class="iad-info">
+          <span class="iad-day">Tuesday</span>
+          <span class="event-time iad-hours" data-start="2026-12-22T14:00:00Z" data-end="2026-12-22T22:00:00Z"></span>
+          <span class="iad-by">with <a class="partner-link" href="https://www.onpointinsights.us/" target="_blank" rel="noopener">OnPoint Insights LLC</a></span>
+        </div>
+        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D1713905166&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Dashboard%20in%20a%20Day&amp;utm_content=Dashboard-in-a-Day-OnPoint-Insights-LLC-2026-12-22" target="_blank" rel="noopener">Register</a>
+      </div>
+
+            </div>
+          </div>
+          <div class="iad-month" data-month="1">
+            <div class="iad-month-head"><span class="iad-month-name">January 2027</span><span class="iad-month-count">8 dates</span></div>
+            <div class="events iad-slots">
+
+      <div class="event-card iad-slot" data-type="Dashboard in a Day" data-modality="Virtual" data-month="1" data-partner="Pragmatic Works" data-search="dashboard in a day pragmatic works a guided, hands-on day building a complete power bi dashboard end to end — connecting and shaping data, modeling it, and designing rich, interactive reports that turn raw data into compelling analysis. dashboard in a day virtual">
+        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Jan</span><span class="iad-cal-d">5</span></div>
+        <div class="iad-info">
+          <span class="iad-day">Tuesday</span>
+          <span class="event-time iad-hours" data-start="2027-01-05T14:00:00Z" data-end="2027-01-05T22:00:00Z"></span>
+          <span class="iad-by">with <a class="partner-link" href="http://www.pragmaticworks.com/" target="_blank" rel="noopener">Pragmatic Works</a></span>
+        </div>
+        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D377451646&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Dashboard%20in%20a%20Day&amp;utm_content=Dashboard-in-a-Day-Pragmatic-Works-2027-01-05" target="_blank" rel="noopener">Register</a>
+      </div>
+
+      <div class="event-card iad-slot" data-type="Dashboard in a Day" data-modality="Virtual" data-month="1" data-partner="Pragmatic Works" data-search="dashboard in a day pragmatic works a guided, hands-on day building a complete power bi dashboard end to end — connecting and shaping data, modeling it, and designing rich, interactive reports that turn raw data into compelling analysis. dashboard in a day virtual">
+        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Jan</span><span class="iad-cal-d">7</span></div>
+        <div class="iad-info">
+          <span class="iad-day">Thursday</span>
+          <span class="event-time iad-hours" data-start="2027-01-07T17:00:00Z" data-end="2027-01-08T01:00:00Z"></span>
+          <span class="iad-by">with <a class="partner-link" href="http://www.pragmaticworks.com/" target="_blank" rel="noopener">Pragmatic Works</a></span>
+        </div>
+        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D2407395771&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Dashboard%20in%20a%20Day&amp;utm_content=Dashboard-in-a-Day-Pragmatic-Works-2027-01-07" target="_blank" rel="noopener">Register</a>
+      </div>
+
+      <div class="event-card iad-slot" data-type="Dashboard in a Day" data-modality="Virtual" data-month="1" data-partner="OnPoint Insights LLC" data-search="dashboard in a day onpoint insights llc a guided, hands-on day building a complete power bi dashboard end to end — connecting and shaping data, modeling it, and designing rich, interactive reports that turn raw data into compelling analysis. dashboard in a day virtual">
+        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Jan</span><span class="iad-cal-d">8</span></div>
+        <div class="iad-info">
+          <span class="iad-day">Friday</span>
+          <span class="event-time iad-hours" data-start="2027-01-08T14:00:00Z" data-end="2027-01-08T22:00:00Z"></span>
+          <span class="iad-by">with <a class="partner-link" href="https://www.onpointinsights.us/" target="_blank" rel="noopener">OnPoint Insights LLC</a></span>
+        </div>
+        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D4285746748&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Dashboard%20in%20a%20Day&amp;utm_content=Dashboard-in-a-Day-OnPoint-Insights-LLC-2027-01-08" target="_blank" rel="noopener">Register</a>
+      </div>
+
+      <div class="event-card iad-slot" data-type="Dashboard in a Day" data-modality="Virtual" data-month="1" data-partner="Pragmatic Works" data-search="dashboard in a day pragmatic works a guided, hands-on day building a complete power bi dashboard end to end — connecting and shaping data, modeling it, and designing rich, interactive reports that turn raw data into compelling analysis. dashboard in a day virtual">
+        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Jan</span><span class="iad-cal-d">13</span></div>
+        <div class="iad-info">
+          <span class="iad-day">Wednesday</span>
+          <span class="event-time iad-hours" data-start="2027-01-13T14:00:00Z" data-end="2027-01-13T22:00:00Z"></span>
+          <span class="iad-by">with <a class="partner-link" href="http://www.pragmaticworks.com/" target="_blank" rel="noopener">Pragmatic Works</a></span>
+        </div>
+        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D1423827671&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Dashboard%20in%20a%20Day&amp;utm_content=Dashboard-in-a-Day-Pragmatic-Works-2027-01-13" target="_blank" rel="noopener">Register</a>
+      </div>
+
+      <div class="event-card iad-slot" data-type="Dashboard in a Day" data-modality="Virtual" data-month="1" data-partner="Pragmatic Works" data-search="dashboard in a day pragmatic works a guided, hands-on day building a complete power bi dashboard end to end — connecting and shaping data, modeling it, and designing rich, interactive reports that turn raw data into compelling analysis. dashboard in a day virtual">
+        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Jan</span><span class="iad-cal-d">15</span></div>
+        <div class="iad-info">
+          <span class="iad-day">Friday</span>
+          <span class="event-time iad-hours" data-start="2027-01-15T15:00:00Z" data-end="2027-01-15T23:00:00Z"></span>
+          <span class="iad-by">with <a class="partner-link" href="http://www.pragmaticworks.com/" target="_blank" rel="noopener">Pragmatic Works</a></span>
+        </div>
+        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D2543781600&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Dashboard%20in%20a%20Day&amp;utm_content=Dashboard-in-a-Day-Pragmatic-Works-2027-01-15" target="_blank" rel="noopener">Register</a>
+      </div>
+
+      <div class="event-card iad-slot" data-type="Dashboard in a Day" data-modality="Virtual" data-month="1" data-partner="Kanerika Inc" data-search="dashboard in a day kanerika inc a guided, hands-on day building a complete power bi dashboard end to end — connecting and shaping data, modeling it, and designing rich, interactive reports that turn raw data into compelling analysis. dashboard in a day virtual">
+        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Jan</span><span class="iad-cal-d">19</span></div>
+        <div class="iad-info">
+          <span class="iad-day">Tuesday</span>
+          <span class="event-time iad-hours" data-start="2027-01-19T14:00:00Z" data-end="2027-01-19T22:00:00Z"></span>
+          <span class="iad-by">with <a class="partner-link" href="https://kanerika.com/" target="_blank" rel="noopener">Kanerika Inc</a></span>
+        </div>
+        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D122231166&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Dashboard%20in%20a%20Day&amp;utm_content=Dashboard-in-a-Day-Kanerika-Inc-2027-01-19" target="_blank" rel="noopener">Register</a>
+      </div>
+
+      <div class="event-card iad-slot" data-type="Dashboard in a Day" data-modality="Virtual" data-month="1" data-partner="OnPoint Insights LLC" data-search="dashboard in a day onpoint insights llc a guided, hands-on day building a complete power bi dashboard end to end — connecting and shaping data, modeling it, and designing rich, interactive reports that turn raw data into compelling analysis. dashboard in a day virtual">
+        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Jan</span><span class="iad-cal-d">22</span></div>
+        <div class="iad-info">
+          <span class="iad-day">Friday</span>
+          <span class="event-time iad-hours" data-start="2027-01-22T14:00:00Z" data-end="2027-01-22T22:00:00Z"></span>
+          <span class="iad-by">with <a class="partner-link" href="https://www.onpointinsights.us/" target="_blank" rel="noopener">OnPoint Insights LLC</a></span>
+        </div>
+        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D590930613&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Dashboard%20in%20a%20Day&amp;utm_content=Dashboard-in-a-Day-OnPoint-Insights-LLC-2027-01-22" target="_blank" rel="noopener">Register</a>
+      </div>
+
+      <div class="event-card iad-slot" data-type="Dashboard in a Day" data-modality="Virtual" data-month="1" data-partner="Pragmatic Works" data-search="dashboard in a day pragmatic works a guided, hands-on day building a complete power bi dashboard end to end — connecting and shaping data, modeling it, and designing rich, interactive reports that turn raw data into compelling analysis. dashboard in a day virtual">
+        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Jan</span><span class="iad-cal-d">28</span></div>
+        <div class="iad-info">
+          <span class="iad-day">Thursday</span>
+          <span class="event-time iad-hours" data-start="2027-01-28T15:00:00Z" data-end="2027-01-28T23:00:00Z"></span>
+          <span class="iad-by">with <a class="partner-link" href="http://www.pragmaticworks.com/" target="_blank" rel="noopener">Pragmatic Works</a></span>
+        </div>
+        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D1054184913&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Dashboard%20in%20a%20Day&amp;utm_content=Dashboard-in-a-Day-Pragmatic-Works-2027-01-28" target="_blank" rel="noopener">Register</a>
       </div>
 
             </div>
@@ -2063,202 +2330,21 @@ document.addEventListener('DOMContentLoaded', function () {
       </div>
 
       <div class="group" data-group="Fabric Analyst in a Day">
-        <button type="button" class="group-head" aria-expanded="false"><span class="chev">▸</span><span class="group-title">Fabric Analyst in a Day</span><span class="group-count">28 sessions</span></button>
+        <button type="button" class="group-head" aria-expanded="false"><span class="chev">▸</span><span class="group-title">Fabric Analyst in a Day</span><span class="group-count">23 sessions</span></button>
         <div class="group-body">
           <div class="iad-panel iad--faiad">
             <div class="iad-intro">
               <div class="iad-intro-text">
                 <span class="event-tag tag-faiad">Fabric Analyst in a Day</span>
                 <p>Built for experienced Power BI analysts stepping into Microsoft Fabric — consolidate data, model it, and surface insights hands-on with Fabric&#x27;s integrated analytics tools.</p>
-                <div class="iad-facts"><span>🧑‍🏫 Hands-on, partner-led</span><span>⏱️ Full day</span><span>💲 Free</span><span>💻 Live online</span><span>📍 In-person option</span></div>
+                <div class="iad-facts"><span>🧑‍🏫 Hands-on, partner-led</span><span>⏱️ Full day</span><span>💲 Free</span><span>💻 Live online</span></div>
                 <div class="iad-audience"><strong>Best for:</strong> Experienced Power BI data analysts who are new to Microsoft Fabric.</div>
               </div>
-              <div class="iad-stats" aria-live="polite"><strong class="iad-n">28</strong><span class="iad-n-lbl">upcoming dates</span><span class="iad-range">Oct 6 – Dec 29</span><span class="iad-np">19 partners</span></div>
+              <div class="iad-stats" aria-live="polite"><strong class="iad-n">23</strong><span class="iad-n-lbl">upcoming dates</span><span class="iad-range">Nov 10 – Jan 27</span><span class="iad-np">16 partners</span></div>
             </div>
-          <div class="iad-month" data-month="10">
-            <div class="iad-month-head"><span class="iad-month-name">October 2026</span><span class="iad-month-count">13 dates</span></div>
-            <div class="events iad-slots">
-
-      <div class="event-card iad-slot" data-type="Fabric Analyst in a Day" data-modality="Virtual" data-month="10" data-partner="Key2 Consulting" data-search="fabric analyst in a day key2 consulting built for experienced power bi analysts stepping into microsoft fabric — consolidate data, model it, and surface insights hands-on with fabric&#x27;s integrated analytics tools. fabric analyst in a day virtual">
-        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Oct</span><span class="iad-cal-d">6</span></div>
-        <div class="iad-info">
-          <span class="iad-day">Tuesday</span>
-          <span class="event-time iad-hours" data-start="2026-10-06T13:00:00Z" data-end="2026-10-06T21:00:00Z"></span>
-          <span class="iad-by">with <a class="partner-link" href="https://key2consulting.com/" target="_blank" rel="noopener">Key2 Consulting</a></span>
-        </div>
-        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D394193581&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Fabric%20Analyst%20in%20a%20Day&amp;utm_content=Fabric-Analyst-in-a-Day-Key2-Consulting-2026-10-06" target="_blank" rel="noopener">Register</a>
-      </div>
-
-      <div class="event-card iad-slot" data-type="Fabric Analyst in a Day" data-modality="Virtual" data-month="10" data-partner="Pragmatic Works" data-search="fabric analyst in a day pragmatic works built for experienced power bi analysts stepping into microsoft fabric — consolidate data, model it, and surface insights hands-on with fabric&#x27;s integrated analytics tools. fabric analyst in a day virtual">
-        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Oct</span><span class="iad-cal-d">6</span></div>
-        <div class="iad-info">
-          <span class="iad-day">Tuesday</span>
-          <span class="event-time iad-hours" data-start="2026-10-06T14:00:00Z" data-end="2026-10-06T22:00:00Z"></span>
-          <span class="iad-by">with <a class="partner-link" href="http://www.pragmaticworks.com/" target="_blank" rel="noopener">Pragmatic Works</a></span>
-        </div>
-        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D2049057305&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Fabric%20Analyst%20in%20a%20Day&amp;utm_content=Fabric-Analyst-in-a-Day-Pragmatic-Works-2026-10-06" target="_blank" rel="noopener">Register</a>
-      </div>
-
-      <div class="event-card iad-slot" data-type="Fabric Analyst in a Day" data-modality="Virtual" data-month="10" data-partner="UB Technology Innovations, Inc." data-search="fabric analyst in a day ub technology innovations, inc. built for experienced power bi analysts stepping into microsoft fabric — consolidate data, model it, and surface insights hands-on with fabric&#x27;s integrated analytics tools. fabric analyst in a day virtual">
-        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Oct</span><span class="iad-cal-d">6</span></div>
-        <div class="iad-info">
-          <span class="iad-day">Tuesday</span>
-          <span class="event-time iad-hours" data-start="2026-10-06T16:00:00Z" data-end="2026-10-07T00:00:00Z"></span>
-          <span class="iad-by">with <a class="partner-link" href="https://ubtiinc.com/" target="_blank" rel="noopener">UB Technology Innovations, Inc.</a></span>
-        </div>
-        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D1561253218&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Fabric%20Analyst%20in%20a%20Day&amp;utm_content=Fabric-Analyst-in-a-Day-UB-Technology-Innovation-2026-10-06" target="_blank" rel="noopener">Register</a>
-      </div>
-
-      <div class="event-card iad-slot" data-type="Fabric Analyst in a Day" data-modality="Virtual" data-month="10" data-partner="Hare &amp; Turtle AI Solutions" data-search="fabric analyst in a day hare &amp; turtle ai solutions canada built for experienced power bi analysts stepping into microsoft fabric — consolidate data, model it, and surface insights hands-on with fabric&#x27;s integrated analytics tools. fabric analyst in a day virtual">
-        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Oct</span><span class="iad-cal-d">8</span></div>
-        <div class="iad-info">
-          <span class="iad-day">Thursday</span>
-          <span class="event-time iad-hours" data-start="2026-10-08T16:00:00Z" data-end="2026-10-09T00:00:00Z"></span>
-          <span class="iad-by">with <a class="partner-link" href="https://hareandturtle.ai/" target="_blank" rel="noopener">Hare &amp; Turtle AI Solutions</a></span>
-          <span class="iad-chip">🌎 Canada session</span>
-        </div>
-        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D1036863627&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Fabric%20Analyst%20in%20a%20Day&amp;utm_content=Fabric-Analyst-in-a-Day-Hare-Turtle-AI-Solutions-2026-10-08" target="_blank" rel="noopener">Register</a>
-      </div>
-
-      <div class="event-card iad-slot" data-type="Fabric Analyst in a Day" data-modality="Virtual" data-month="10" data-partner="Intellify Solutions LLC" data-search="fabric analyst in a day intellify solutions llc built for experienced power bi analysts stepping into microsoft fabric — consolidate data, model it, and surface insights hands-on with fabric&#x27;s integrated analytics tools. fabric analyst in a day virtual">
-        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Oct</span><span class="iad-cal-d">15</span></div>
-        <div class="iad-info">
-          <span class="iad-day">Thursday</span>
-          <span class="event-time iad-hours" data-start="2026-10-15T14:00:00Z" data-end="2026-10-15T22:00:00Z"></span>
-          <span class="iad-by">with <a class="partner-link" href="https://intellifysolutions.com/" target="_blank" rel="noopener">Intellify Solutions LLC</a></span>
-        </div>
-        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D1469422782&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Fabric%20Analyst%20in%20a%20Day&amp;utm_content=Fabric-Analyst-in-a-Day-Intellify-Solutions-LLC-2026-10-15" target="_blank" rel="noopener">Register</a>
-      </div>
-
-      <div class="event-card iad-slot" data-type="Fabric Analyst in a Day" data-modality="Virtual" data-month="10" data-partner="DataMartIn" data-search="fabric analyst in a day datamartin built for experienced power bi analysts stepping into microsoft fabric — consolidate data, model it, and surface insights hands-on with fabric&#x27;s integrated analytics tools. fabric analyst in a day virtual">
-        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Oct</span><span class="iad-cal-d">16</span></div>
-        <div class="iad-info">
-          <span class="iad-day">Friday</span>
-          <span class="event-time iad-hours" data-start="2026-10-16T13:00:00Z" data-end="2026-10-16T21:00:00Z"></span>
-          <span class="iad-by">with <a class="partner-link" href="https://www.datamartin.ca/" target="_blank" rel="noopener">DataMartIn</a></span>
-        </div>
-        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D3530866157&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Fabric%20Analyst%20in%20a%20Day&amp;utm_content=Fabric-Analyst-in-a-Day-DataMartIn-2026-10-16" target="_blank" rel="noopener">Register</a>
-      </div>
-
-      <div class="event-card iad-slot" data-type="Fabric Analyst in a Day" data-modality="Virtual" data-month="10" data-partner="Pragmatic Works" data-search="fabric analyst in a day pragmatic works built for experienced power bi analysts stepping into microsoft fabric — consolidate data, model it, and surface insights hands-on with fabric&#x27;s integrated analytics tools. fabric analyst in a day virtual">
-        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Oct</span><span class="iad-cal-d">20</span></div>
-        <div class="iad-info">
-          <span class="iad-day">Tuesday</span>
-          <span class="event-time iad-hours" data-start="2026-10-20T14:00:00Z" data-end="2026-10-20T22:00:00Z"></span>
-          <span class="iad-by">with <a class="partner-link" href="http://www.pragmaticworks.com/" target="_blank" rel="noopener">Pragmatic Works</a></span>
-        </div>
-        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D3793141383&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Fabric%20Analyst%20in%20a%20Day&amp;utm_content=Fabric-Analyst-in-a-Day-Pragmatic-Works-2026-10-20" target="_blank" rel="noopener">Register</a>
-      </div>
-
-      <div class="event-card iad-slot" data-type="Fabric Analyst in a Day" data-modality="Virtual" data-month="10" data-partner="Davyn Limited" data-search="fabric analyst in a day davyn limited trinidad and tobago built for experienced power bi analysts stepping into microsoft fabric — consolidate data, model it, and surface insights hands-on with fabric&#x27;s integrated analytics tools. fabric analyst in a day virtual">
-        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Oct</span><span class="iad-cal-d">22</span></div>
-        <div class="iad-info">
-          <span class="iad-day">Thursday</span>
-          <span class="event-time iad-hours" data-start="2026-10-22T13:00:00Z" data-end="2026-10-22T21:00:00Z"></span>
-          <span class="iad-by">with <a class="partner-link" href="https://davyntt.com/" target="_blank" rel="noopener">Davyn Limited</a></span>
-          <span class="iad-chip">🌎 Trinidad and Tobago session</span>
-        </div>
-        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D622125305&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Fabric%20Analyst%20in%20a%20Day&amp;utm_content=Fabric-Analyst-in-a-Day-Davyn-Limited-2026-10-22" target="_blank" rel="noopener">Register</a>
-      </div>
-
-      <div class="event-card iad-slot" data-type="Fabric Analyst in a Day" data-modality="In-Person" data-month="10" data-partner="Advaiya Solutions Inc" data-search="fabric analyst in a day advaiya solutions inc chicago, il built for experienced power bi analysts stepping into microsoft fabric — consolidate data, model it, and surface insights hands-on with fabric&#x27;s integrated analytics tools. fabric analyst in a day in-person">
-        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Oct</span><span class="iad-cal-d">26</span></div>
-        <div class="iad-info">
-          <span class="iad-day">Monday</span>
-          <span class="event-time iad-hours" data-start="2026-10-26T14:00:00Z" data-end="2026-10-26T22:00:00Z"></span>
-          <span class="iad-by">with <a class="partner-link" href="https://www.advaiya.com" target="_blank" rel="noopener">Advaiya Solutions Inc</a></span>
-          <span class="iad-chip">📍 Chicago, IL · in person</span>
-        </div>
-        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D631712146&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Fabric%20Analyst%20in%20a%20Day&amp;utm_content=Fabric-Analyst-in-a-Day-Advaiya-Solutions-Inc-2026-10-26" target="_blank" rel="noopener">Register</a>
-      </div>
-
-      <div class="event-card iad-slot" data-type="Fabric Analyst in a Day" data-modality="Virtual" data-month="10" data-partner="WinWire (Part of NTT DATA)" data-search="fabric analyst in a day winwire (part of ntt data) built for experienced power bi analysts stepping into microsoft fabric — consolidate data, model it, and surface insights hands-on with fabric&#x27;s integrated analytics tools. fabric analyst in a day virtual">
-        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Oct</span><span class="iad-cal-d">28</span></div>
-        <div class="iad-info">
-          <span class="iad-day">Wednesday</span>
-          <span class="event-time iad-hours" data-start="2026-10-28T13:00:00Z" data-end="2026-10-28T21:00:00Z"></span>
-          <span class="iad-by">with <a class="partner-link" href="https://www.winwire.com/" target="_blank" rel="noopener">WinWire (Part of NTT DATA)</a></span>
-        </div>
-        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D1569829975&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Fabric%20Analyst%20in%20a%20Day&amp;utm_content=Fabric-Analyst-in-a-Day-WinWire-Part-of-NTT-DATA-2026-10-28" target="_blank" rel="noopener">Register</a>
-      </div>
-
-      <div class="event-card iad-slot" data-type="Fabric Analyst in a Day" data-modality="Virtual" data-month="10" data-partner="Quadrant Technologies" data-search="fabric analyst in a day quadrant technologies built for experienced power bi analysts stepping into microsoft fabric — consolidate data, model it, and surface insights hands-on with fabric&#x27;s integrated analytics tools. fabric analyst in a day virtual">
-        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Oct</span><span class="iad-cal-d">28</span></div>
-        <div class="iad-info">
-          <span class="iad-day">Wednesday</span>
-          <span class="event-time iad-hours" data-start="2026-10-28T14:00:00Z" data-end="2026-10-28T22:00:00Z"></span>
-          <span class="iad-by">with <a class="partner-link" href="https://quadranttechnologies.com/" target="_blank" rel="noopener">Quadrant Technologies</a></span>
-        </div>
-        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D3510777732&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Fabric%20Analyst%20in%20a%20Day&amp;utm_content=Fabric-Analyst-in-a-Day-Quadrant-Technologies-2026-10-28" target="_blank" rel="noopener">Register</a>
-      </div>
-
-      <div class="event-card iad-slot" data-type="Fabric Analyst in a Day" data-modality="Virtual" data-month="10" data-partner="Convverge Inc." data-search="fabric analyst in a day convverge inc. canada built for experienced power bi analysts stepping into microsoft fabric — consolidate data, model it, and surface insights hands-on with fabric&#x27;s integrated analytics tools. fabric analyst in a day virtual">
-        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Oct</span><span class="iad-cal-d">28</span></div>
-        <div class="iad-info">
-          <span class="iad-day">Wednesday</span>
-          <span class="event-time iad-hours" data-start="2026-10-28T15:00:00Z" data-end="2026-10-28T23:00:00Z"></span>
-          <span class="iad-by">with <a class="partner-link" href="https://convverge.com/" target="_blank" rel="noopener">Convverge Inc.</a></span>
-          <span class="iad-chip">🌎 Canada session</span>
-        </div>
-        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D4022404512&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Fabric%20Analyst%20in%20a%20Day&amp;utm_content=Fabric-Analyst-in-a-Day-Convverge-Inc-2026-10-28" target="_blank" rel="noopener">Register</a>
-      </div>
-
-      <div class="event-card iad-slot" data-type="Fabric Analyst in a Day" data-modality="Virtual" data-month="10" data-partner="Pragmatic Works" data-search="fabric analyst in a day pragmatic works built for experienced power bi analysts stepping into microsoft fabric — consolidate data, model it, and surface insights hands-on with fabric&#x27;s integrated analytics tools. fabric analyst in a day virtual">
-        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Oct</span><span class="iad-cal-d">29</span></div>
-        <div class="iad-info">
-          <span class="iad-day">Thursday</span>
-          <span class="event-time iad-hours" data-start="2026-10-29T13:00:00Z" data-end="2026-10-29T21:00:00Z"></span>
-          <span class="iad-by">with <a class="partner-link" href="http://www.pragmaticworks.com/" target="_blank" rel="noopener">Pragmatic Works</a></span>
-        </div>
-        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D1524517344&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Fabric%20Analyst%20in%20a%20Day&amp;utm_content=Fabric-Analyst-in-a-Day-Pragmatic-Works-2026-10-29" target="_blank" rel="noopener">Register</a>
-      </div>
-
-            </div>
-          </div>
           <div class="iad-month" data-month="11">
-            <div class="iad-month-head"><span class="iad-month-name">November 2026</span><span class="iad-month-count">8 dates</span></div>
+            <div class="iad-month-head"><span class="iad-month-name">November 2026</span><span class="iad-month-count">5 dates</span></div>
             <div class="events iad-slots">
-
-      <div class="event-card iad-slot" data-type="Fabric Analyst in a Day" data-modality="Virtual" data-month="11" data-partner="Orion Systems Integrators LLC" data-search="fabric analyst in a day orion systems integrators llc canada built for experienced power bi analysts stepping into microsoft fabric — consolidate data, model it, and surface insights hands-on with fabric&#x27;s integrated analytics tools. fabric analyst in a day virtual">
-        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Nov</span><span class="iad-cal-d">3</span></div>
-        <div class="iad-info">
-          <span class="iad-day">Tuesday</span>
-          <span class="event-time iad-hours" data-start="2026-11-03T14:00:00Z" data-end="2026-11-03T22:00:00Z"></span>
-          <span class="iad-by">with <a class="partner-link" href="http://www.orioninc.com/" target="_blank" rel="noopener">Orion Systems Integrators LLC</a></span>
-          <span class="iad-chip">🌎 Canada session</span>
-        </div>
-        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D2639169698&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Fabric%20Analyst%20in%20a%20Day&amp;utm_content=Fabric-Analyst-in-a-Day-Orion-Systems-Integrator-2026-11-03" target="_blank" rel="noopener">Register</a>
-      </div>
-
-      <div class="event-card iad-slot" data-type="Fabric Analyst in a Day" data-modality="Virtual" data-month="11" data-partner="UB Technology Innovations, Inc." data-search="fabric analyst in a day ub technology innovations, inc. built for experienced power bi analysts stepping into microsoft fabric — consolidate data, model it, and surface insights hands-on with fabric&#x27;s integrated analytics tools. fabric analyst in a day virtual">
-        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Nov</span><span class="iad-cal-d">3</span></div>
-        <div class="iad-info">
-          <span class="iad-day">Tuesday</span>
-          <span class="event-time iad-hours" data-start="2026-11-03T15:00:00Z" data-end="2026-11-03T23:00:00Z"></span>
-          <span class="iad-by">with <a class="partner-link" href="https://ubtiinc.com/" target="_blank" rel="noopener">UB Technology Innovations, Inc.</a></span>
-        </div>
-        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D31478534&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Fabric%20Analyst%20in%20a%20Day&amp;utm_content=Fabric-Analyst-in-a-Day-UB-Technology-Innovation-2026-11-03" target="_blank" rel="noopener">Register</a>
-      </div>
-
-      <div class="event-card iad-slot" data-type="Fabric Analyst in a Day" data-modality="Virtual" data-month="11" data-partner="Pragmatic Works" data-search="fabric analyst in a day pragmatic works built for experienced power bi analysts stepping into microsoft fabric — consolidate data, model it, and surface insights hands-on with fabric&#x27;s integrated analytics tools. fabric analyst in a day virtual">
-        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Nov</span><span class="iad-cal-d">5</span></div>
-        <div class="iad-info">
-          <span class="iad-day">Thursday</span>
-          <span class="event-time iad-hours" data-start="2026-11-05T15:00:00Z" data-end="2026-11-05T23:00:00Z"></span>
-          <span class="iad-by">with <a class="partner-link" href="http://www.pragmaticworks.com/" target="_blank" rel="noopener">Pragmatic Works</a></span>
-        </div>
-        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D2090755273&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Fabric%20Analyst%20in%20a%20Day&amp;utm_content=Fabric-Analyst-in-a-Day-Pragmatic-Works-2026-11-05" target="_blank" rel="noopener">Register</a>
-      </div>
-
-      <div class="event-card iad-slot" data-type="Fabric Analyst in a Day" data-modality="Virtual" data-month="11" data-partner="Pragmatic Works" data-search="fabric analyst in a day pragmatic works built for experienced power bi analysts stepping into microsoft fabric — consolidate data, model it, and surface insights hands-on with fabric&#x27;s integrated analytics tools. fabric analyst in a day virtual">
-        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Nov</span><span class="iad-cal-d">6</span></div>
-        <div class="iad-info">
-          <span class="iad-day">Friday</span>
-          <span class="event-time iad-hours" data-start="2026-11-06T14:00:00Z" data-end="2026-11-06T22:00:00Z"></span>
-          <span class="iad-by">with <a class="partner-link" href="http://www.pragmaticworks.com/" target="_blank" rel="noopener">Pragmatic Works</a></span>
-        </div>
-        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D3843455520&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Fabric%20Analyst%20in%20a%20Day&amp;utm_content=Fabric-Analyst-in-a-Day-Pragmatic-Works-2026-11-06" target="_blank" rel="noopener">Register</a>
-      </div>
 
       <div class="event-card iad-slot" data-type="Fabric Analyst in a Day" data-modality="Virtual" data-month="11" data-partner="Fresche Solutions" data-search="fabric analyst in a day fresche solutions built for experienced power bi analysts stepping into microsoft fabric — consolidate data, model it, and surface insights hands-on with fabric&#x27;s integrated analytics tools. fabric analyst in a day virtual">
         <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Nov</span><span class="iad-cal-d">10</span></div>
@@ -2300,11 +2386,41 @@ document.addEventListener('DOMContentLoaded', function () {
         <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D2854416140&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Fabric%20Analyst%20in%20a%20Day&amp;utm_content=Fabric-Analyst-in-a-Day-Baker-Tilly-Advisory-Gro-2026-11-19" target="_blank" rel="noopener">Register</a>
       </div>
 
+      <div class="event-card iad-slot" data-type="Fabric Analyst in a Day" data-modality="Virtual" data-month="11" data-partner="Kanerika Inc" data-search="fabric analyst in a day kanerika inc built for experienced power bi analysts stepping into microsoft fabric — consolidate data, model it, and surface insights hands-on with fabric&#x27;s integrated analytics tools. fabric analyst in a day virtual">
+        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Nov</span><span class="iad-cal-d">20</span></div>
+        <div class="iad-info">
+          <span class="iad-day">Friday</span>
+          <span class="event-time iad-hours" data-start="2026-11-20T14:00:00Z" data-end="2026-11-20T22:00:00Z"></span>
+          <span class="iad-by">with <a class="partner-link" href="https://kanerika.com/" target="_blank" rel="noopener">Kanerika Inc</a></span>
+        </div>
+        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D617735272&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Fabric%20Analyst%20in%20a%20Day&amp;utm_content=Fabric-Analyst-in-a-Day-Kanerika-Inc-2026-11-20" target="_blank" rel="noopener">Register</a>
+      </div>
+
             </div>
           </div>
           <div class="iad-month" data-month="12">
-            <div class="iad-month-head"><span class="iad-month-name">December 2026</span><span class="iad-month-count">7 dates</span></div>
+            <div class="iad-month-head"><span class="iad-month-name">December 2026</span><span class="iad-month-count">12 dates</span></div>
             <div class="events iad-slots">
+
+      <div class="event-card iad-slot" data-type="Fabric Analyst in a Day" data-modality="Virtual" data-month="12" data-partner="Santor Technologies LLC" data-search="fabric analyst in a day santor technologies llc built for experienced power bi analysts stepping into microsoft fabric — consolidate data, model it, and surface insights hands-on with fabric&#x27;s integrated analytics tools. fabric analyst in a day virtual">
+        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Dec</span><span class="iad-cal-d">2</span></div>
+        <div class="iad-info">
+          <span class="iad-day">Wednesday</span>
+          <span class="event-time iad-hours" data-start="2026-12-02T14:00:00Z" data-end="2026-12-02T22:00:00Z"></span>
+          <span class="iad-by">with <a class="partner-link" href="https://santortech.com/" target="_blank" rel="noopener">Santor Technologies LLC</a></span>
+        </div>
+        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D209470531&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Fabric%20Analyst%20in%20a%20Day&amp;utm_content=Fabric-Analyst-in-a-Day-Santor-Technologies-LLC-2026-12-02" target="_blank" rel="noopener">Register</a>
+      </div>
+
+      <div class="event-card iad-slot" data-type="Fabric Analyst in a Day" data-modality="Virtual" data-month="12" data-partner="iLink Digital" data-search="fabric analyst in a day ilink digital built for experienced power bi analysts stepping into microsoft fabric — consolidate data, model it, and surface insights hands-on with fabric&#x27;s integrated analytics tools. fabric analyst in a day virtual">
+        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Dec</span><span class="iad-cal-d">2</span></div>
+        <div class="iad-info">
+          <span class="iad-day">Wednesday</span>
+          <span class="event-time iad-hours" data-start="2026-12-02T16:00:00Z" data-end="2026-12-03T00:00:00Z"></span>
+          <span class="iad-by">with <a class="partner-link" href="https://www.ilink-digital.com/" target="_blank" rel="noopener">iLink Digital</a></span>
+        </div>
+        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D3708341425&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Fabric%20Analyst%20in%20a%20Day&amp;utm_content=Fabric-Analyst-in-a-Day-iLink-Digital-2026-12-02" target="_blank" rel="noopener">Register</a>
+      </div>
 
       <div class="event-card iad-slot" data-type="Fabric Analyst in a Day" data-modality="Virtual" data-month="12" data-partner="Covenant Technology Partners" data-search="fabric analyst in a day covenant technology partners built for experienced power bi analysts stepping into microsoft fabric — consolidate data, model it, and surface insights hands-on with fabric&#x27;s integrated analytics tools. fabric analyst in a day virtual">
         <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Dec</span><span class="iad-cal-d">3</span></div>
@@ -2326,6 +2442,16 @@ document.addEventListener('DOMContentLoaded', function () {
         <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D1057172927&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Fabric%20Analyst%20in%20a%20Day&amp;utm_content=Fabric-Analyst-in-a-Day-Ryse-Technologies-2026-12-09" target="_blank" rel="noopener">Register</a>
       </div>
 
+      <div class="event-card iad-slot" data-type="Fabric Analyst in a Day" data-modality="Virtual" data-month="12" data-partner="Royal Cyber" data-search="fabric analyst in a day royal cyber built for experienced power bi analysts stepping into microsoft fabric — consolidate data, model it, and surface insights hands-on with fabric&#x27;s integrated analytics tools. fabric analyst in a day virtual">
+        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Dec</span><span class="iad-cal-d">10</span></div>
+        <div class="iad-info">
+          <span class="iad-day">Thursday</span>
+          <span class="event-time iad-hours" data-start="2026-12-10T14:00:00Z" data-end="2026-12-10T22:00:00Z"></span>
+          <span class="iad-by">with <a class="partner-link" href="https://www.royalcyber.com" target="_blank" rel="noopener">Royal Cyber</a></span>
+        </div>
+        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D2431459901&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Fabric%20Analyst%20in%20a%20Day&amp;utm_content=Fabric-Analyst-in-a-Day-Royal-Cyber-2026-12-10" target="_blank" rel="noopener">Register</a>
+      </div>
+
       <div class="event-card iad-slot" data-type="Fabric Analyst in a Day" data-modality="Virtual" data-month="12" data-partner="Real Impact Consulting" data-search="fabric analyst in a day real impact consulting built for experienced power bi analysts stepping into microsoft fabric — consolidate data, model it, and surface insights hands-on with fabric&#x27;s integrated analytics tools. fabric analyst in a day virtual">
         <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Dec</span><span class="iad-cal-d">10</span></div>
         <div class="iad-info">
@@ -2336,6 +2462,16 @@ document.addEventListener('DOMContentLoaded', function () {
         <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D1855234514&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Fabric%20Analyst%20in%20a%20Day&amp;utm_content=Fabric-Analyst-in-a-Day-Real-Impact-Consulting-2026-12-10" target="_blank" rel="noopener">Register</a>
       </div>
 
+      <div class="event-card iad-slot" data-type="Fabric Analyst in a Day" data-modality="Virtual" data-month="12" data-partner="Nextant" data-search="fabric analyst in a day nextant built for experienced power bi analysts stepping into microsoft fabric — consolidate data, model it, and surface insights hands-on with fabric&#x27;s integrated analytics tools. fabric analyst in a day virtual">
+        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Dec</span><span class="iad-cal-d">15</span></div>
+        <div class="iad-info">
+          <span class="iad-day">Tuesday</span>
+          <span class="event-time iad-hours" data-start="2026-12-15T14:00:00Z" data-end="2026-12-15T22:00:00Z"></span>
+          <span class="iad-by">with <a class="partner-link" href="https://www.nextant.com/" target="_blank" rel="noopener">Nextant</a></span>
+        </div>
+        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D3266866439&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Fabric%20Analyst%20in%20a%20Day&amp;utm_content=Fabric-Analyst-in-a-Day-Nextant-2026-12-15" target="_blank" rel="noopener">Register</a>
+      </div>
+
       <div class="event-card iad-slot" data-type="Fabric Analyst in a Day" data-modality="Virtual" data-month="12" data-partner="UB Technology Innovations, Inc." data-search="fabric analyst in a day ub technology innovations, inc. built for experienced power bi analysts stepping into microsoft fabric — consolidate data, model it, and surface insights hands-on with fabric&#x27;s integrated analytics tools. fabric analyst in a day virtual">
         <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Dec</span><span class="iad-cal-d">15</span></div>
         <div class="iad-info">
@@ -2344,6 +2480,16 @@ document.addEventListener('DOMContentLoaded', function () {
           <span class="iad-by">with <a class="partner-link" href="https://ubtiinc.com/" target="_blank" rel="noopener">UB Technology Innovations, Inc.</a></span>
         </div>
         <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D1264453404&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Fabric%20Analyst%20in%20a%20Day&amp;utm_content=Fabric-Analyst-in-a-Day-UB-Technology-Innovation-2026-12-15" target="_blank" rel="noopener">Register</a>
+      </div>
+
+      <div class="event-card iad-slot" data-type="Fabric Analyst in a Day" data-modality="Virtual" data-month="12" data-partner="Simform" data-search="fabric analyst in a day simform built for experienced power bi analysts stepping into microsoft fabric — consolidate data, model it, and surface insights hands-on with fabric&#x27;s integrated analytics tools. fabric analyst in a day virtual">
+        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Dec</span><span class="iad-cal-d">16</span></div>
+        <div class="iad-info">
+          <span class="iad-day">Wednesday</span>
+          <span class="event-time iad-hours" data-start="2026-12-16T14:00:00Z" data-end="2026-12-16T22:00:00Z"></span>
+          <span class="iad-by">with <a class="partner-link" href="https://www.simform.com/" target="_blank" rel="noopener">Simform</a></span>
+        </div>
+        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D2642651576&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Fabric%20Analyst%20in%20a%20Day&amp;utm_content=Fabric-Analyst-in-a-Day-Simform-2026-12-16" target="_blank" rel="noopener">Register</a>
       </div>
 
       <div class="event-card iad-slot" data-type="Fabric Analyst in a Day" data-modality="Virtual" data-month="12" data-partner="OnPoint Insights LLC" data-search="fabric analyst in a day onpoint insights llc built for experienced power bi analysts stepping into microsoft fabric — consolidate data, model it, and surface insights hands-on with fabric&#x27;s integrated analytics tools. fabric analyst in a day virtual">
@@ -2378,12 +2524,78 @@ document.addEventListener('DOMContentLoaded', function () {
 
             </div>
           </div>
+          <div class="iad-month" data-month="1">
+            <div class="iad-month-head"><span class="iad-month-name">January 2027</span><span class="iad-month-count">6 dates</span></div>
+            <div class="events iad-slots">
+
+      <div class="event-card iad-slot" data-type="Fabric Analyst in a Day" data-modality="Virtual" data-month="1" data-partner="Pragmatic Works" data-search="fabric analyst in a day pragmatic works built for experienced power bi analysts stepping into microsoft fabric — consolidate data, model it, and surface insights hands-on with fabric&#x27;s integrated analytics tools. fabric analyst in a day virtual">
+        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Jan</span><span class="iad-cal-d">6</span></div>
+        <div class="iad-info">
+          <span class="iad-day">Wednesday</span>
+          <span class="event-time iad-hours" data-start="2027-01-06T14:00:00Z" data-end="2027-01-06T22:00:00Z"></span>
+          <span class="iad-by">with <a class="partner-link" href="http://www.pragmaticworks.com/" target="_blank" rel="noopener">Pragmatic Works</a></span>
+        </div>
+        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D4133634833&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Fabric%20Analyst%20in%20a%20Day&amp;utm_content=Fabric-Analyst-in-a-Day-Pragmatic-Works-2027-01-06" target="_blank" rel="noopener">Register</a>
+      </div>
+
+      <div class="event-card iad-slot" data-type="Fabric Analyst in a Day" data-modality="Virtual" data-month="1" data-partner="Fresche Solutions" data-search="fabric analyst in a day fresche solutions built for experienced power bi analysts stepping into microsoft fabric — consolidate data, model it, and surface insights hands-on with fabric&#x27;s integrated analytics tools. fabric analyst in a day virtual">
+        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Jan</span><span class="iad-cal-d">6</span></div>
+        <div class="iad-info">
+          <span class="iad-day">Wednesday</span>
+          <span class="event-time iad-hours" data-start="2027-01-06T16:00:00Z" data-end="2027-01-07T00:00:00Z"></span>
+          <span class="iad-by">with <a class="partner-link" href="https://freschesolutions.com/" target="_blank" rel="noopener">Fresche Solutions</a></span>
+        </div>
+        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D380053776&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Fabric%20Analyst%20in%20a%20Day&amp;utm_content=Fabric-Analyst-in-a-Day-Fresche-Solutions-2027-01-06" target="_blank" rel="noopener">Register</a>
+      </div>
+
+      <div class="event-card iad-slot" data-type="Fabric Analyst in a Day" data-modality="Virtual" data-month="1" data-partner="OnPoint Insights LLC" data-search="fabric analyst in a day onpoint insights llc built for experienced power bi analysts stepping into microsoft fabric — consolidate data, model it, and surface insights hands-on with fabric&#x27;s integrated analytics tools. fabric analyst in a day virtual">
+        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Jan</span><span class="iad-cal-d">15</span></div>
+        <div class="iad-info">
+          <span class="iad-day">Friday</span>
+          <span class="event-time iad-hours" data-start="2027-01-15T14:00:00Z" data-end="2027-01-15T22:00:00Z"></span>
+          <span class="iad-by">with <a class="partner-link" href="https://www.onpointinsights.us/" target="_blank" rel="noopener">OnPoint Insights LLC</a></span>
+        </div>
+        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D4204845472&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Fabric%20Analyst%20in%20a%20Day&amp;utm_content=Fabric-Analyst-in-a-Day-OnPoint-Insights-LLC-2027-01-15" target="_blank" rel="noopener">Register</a>
+      </div>
+
+      <div class="event-card iad-slot" data-type="Fabric Analyst in a Day" data-modality="Virtual" data-month="1" data-partner="Key2 Consulting" data-search="fabric analyst in a day key2 consulting built for experienced power bi analysts stepping into microsoft fabric — consolidate data, model it, and surface insights hands-on with fabric&#x27;s integrated analytics tools. fabric analyst in a day virtual">
+        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Jan</span><span class="iad-cal-d">21</span></div>
+        <div class="iad-info">
+          <span class="iad-day">Thursday</span>
+          <span class="event-time iad-hours" data-start="2027-01-21T14:00:00Z" data-end="2027-01-21T22:00:00Z"></span>
+          <span class="iad-by">with <a class="partner-link" href="https://key2consulting.com/" target="_blank" rel="noopener">Key2 Consulting</a></span>
+        </div>
+        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D2972498154&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Fabric%20Analyst%20in%20a%20Day&amp;utm_content=Fabric-Analyst-in-a-Day-Key2-Consulting-2027-01-21" target="_blank" rel="noopener">Register</a>
+      </div>
+
+      <div class="event-card iad-slot" data-type="Fabric Analyst in a Day" data-modality="Virtual" data-month="1" data-partner="Pragmatic Works" data-search="fabric analyst in a day pragmatic works built for experienced power bi analysts stepping into microsoft fabric — consolidate data, model it, and surface insights hands-on with fabric&#x27;s integrated analytics tools. fabric analyst in a day virtual">
+        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Jan</span><span class="iad-cal-d">22</span></div>
+        <div class="iad-info">
+          <span class="iad-day">Friday</span>
+          <span class="event-time iad-hours" data-start="2027-01-22T15:00:00Z" data-end="2027-01-22T23:00:00Z"></span>
+          <span class="iad-by">with <a class="partner-link" href="http://www.pragmaticworks.com/" target="_blank" rel="noopener">Pragmatic Works</a></span>
+        </div>
+        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D3646926325&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Fabric%20Analyst%20in%20a%20Day&amp;utm_content=Fabric-Analyst-in-a-Day-Pragmatic-Works-2027-01-22" target="_blank" rel="noopener">Register</a>
+      </div>
+
+      <div class="event-card iad-slot" data-type="Fabric Analyst in a Day" data-modality="Virtual" data-month="1" data-partner="Quadrant Technologies" data-search="fabric analyst in a day quadrant technologies built for experienced power bi analysts stepping into microsoft fabric — consolidate data, model it, and surface insights hands-on with fabric&#x27;s integrated analytics tools. fabric analyst in a day virtual">
+        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Jan</span><span class="iad-cal-d">27</span></div>
+        <div class="iad-info">
+          <span class="iad-day">Wednesday</span>
+          <span class="event-time iad-hours" data-start="2027-01-27T15:00:00Z" data-end="2027-01-27T23:00:00Z"></span>
+          <span class="iad-by">with <a class="partner-link" href="https://quadranttechnologies.com/" target="_blank" rel="noopener">Quadrant Technologies</a></span>
+        </div>
+        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D3280671502&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Fabric%20Analyst%20in%20a%20Day&amp;utm_content=Fabric-Analyst-in-a-Day-Quadrant-Technologies-2027-01-27" target="_blank" rel="noopener">Register</a>
+      </div>
+
+            </div>
+          </div>
           </div>
         </div>
       </div>
 
       <div class="group" data-group="Chat with Your Data in a Day">
-        <button type="button" class="group-head" aria-expanded="false"><span class="chev">▸</span><span class="group-title">Chat with Your Data in a Day</span><span class="group-count">14 sessions</span></button>
+        <button type="button" class="group-head" aria-expanded="false"><span class="chev">▸</span><span class="group-title">Chat with Your Data in a Day</span><span class="group-count">9 sessions</span></button>
         <div class="group-body">
           <div class="iad-panel iad--cdiad">
             <div class="iad-intro">
@@ -2393,99 +2605,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 <div class="iad-facts"><span>🧑‍🏫 Hands-on, partner-led</span><span>⏱️ Full day</span><span>💲 Free</span><span>💻 Live online</span></div>
                 <div class="iad-audience"><strong>Best for:</strong> Power BI data analysts.</div>
               </div>
-              <div class="iad-stats" aria-live="polite"><strong class="iad-n">14</strong><span class="iad-n-lbl">upcoming dates</span><span class="iad-range">Oct 8 – Dec 21</span><span class="iad-np">10 partners</span></div>
+              <div class="iad-stats" aria-live="polite"><strong class="iad-n">9</strong><span class="iad-n-lbl">upcoming dates</span><span class="iad-range">Nov 17 – Jan 29</span><span class="iad-np">6 partners</span></div>
             </div>
-          <div class="iad-month" data-month="10">
-            <div class="iad-month-head"><span class="iad-month-name">October 2026</span><span class="iad-month-count">6 dates</span></div>
-            <div class="events iad-slots">
-
-      <div class="event-card iad-slot" data-type="Chat with Your Data in a Day" data-modality="Virtual" data-month="10" data-partner="Quadrant Technologies" data-search="chat with your data in a day quadrant technologies for power bi analysts: make your models chat-ready, query them in plain language, and tune your data so copilot returns fast, trustworthy answers. chat with your data in a day virtual">
-        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Oct</span><span class="iad-cal-d">8</span></div>
-        <div class="iad-info">
-          <span class="iad-day">Thursday</span>
-          <span class="event-time iad-hours" data-start="2026-10-08T16:00:00Z" data-end="2026-10-09T00:00:00Z"></span>
-          <span class="iad-by">with <a class="partner-link" href="https://quadranttechnologies.com/" target="_blank" rel="noopener">Quadrant Technologies</a></span>
-        </div>
-        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D2067396507&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Chat%20with%20Your%20Data%20in%20a%20Day&amp;utm_content=Chat-with-Your-Data-in-a-Day-Quadrant-Technologi-2026-10-08" target="_blank" rel="noopener">Register</a>
-      </div>
-
-      <div class="event-card iad-slot" data-type="Chat with Your Data in a Day" data-modality="Virtual" data-month="10" data-partner="CLA" data-search="chat with your data in a day cla for power bi analysts: make your models chat-ready, query them in plain language, and tune your data so copilot returns fast, trustworthy answers. chat with your data in a day virtual">
-        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Oct</span><span class="iad-cal-d">15</span></div>
-        <div class="iad-info">
-          <span class="iad-day">Thursday</span>
-          <span class="event-time iad-hours" data-start="2026-10-15T14:00:00Z" data-end="2026-10-15T22:00:00Z"></span>
-          <span class="iad-by">with <a class="partner-link" href="https://godigital.claconnect.com/digital-services/automation-integration/" target="_blank" rel="noopener">CLA</a></span>
-        </div>
-        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D868958945&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Chat%20with%20Your%20Data%20in%20a%20Day&amp;utm_content=Chat-with-Your-Data-in-a-Day-CLA-2026-10-15" target="_blank" rel="noopener">Register</a>
-      </div>
-
-      <div class="event-card iad-slot" data-type="Chat with Your Data in a Day" data-modality="Virtual" data-month="10" data-partner="Real Impact Consulting" data-search="chat with your data in a day real impact consulting for power bi analysts: make your models chat-ready, query them in plain language, and tune your data so copilot returns fast, trustworthy answers. chat with your data in a day virtual">
-        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Oct</span><span class="iad-cal-d">22</span></div>
-        <div class="iad-info">
-          <span class="iad-day">Thursday</span>
-          <span class="event-time iad-hours" data-start="2026-10-22T13:00:00Z" data-end="2026-10-22T21:00:00Z"></span>
-          <span class="iad-by">with <a class="partner-link" href="https://www.rlimpact.com/" target="_blank" rel="noopener">Real Impact Consulting</a></span>
-        </div>
-        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D1482521391&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Chat%20with%20Your%20Data%20in%20a%20Day&amp;utm_content=Chat-with-Your-Data-in-a-Day-Real-Impact-Consult-2026-10-22" target="_blank" rel="noopener">Register</a>
-      </div>
-
-      <div class="event-card iad-slot" data-type="Chat with Your Data in a Day" data-modality="Virtual" data-month="10" data-partner="Pragmatic Works" data-search="chat with your data in a day pragmatic works for power bi analysts: make your models chat-ready, query them in plain language, and tune your data so copilot returns fast, trustworthy answers. chat with your data in a day virtual">
-        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Oct</span><span class="iad-cal-d">28</span></div>
-        <div class="iad-info">
-          <span class="iad-day">Wednesday</span>
-          <span class="event-time iad-hours" data-start="2026-10-28T13:00:00Z" data-end="2026-10-28T21:00:00Z"></span>
-          <span class="iad-by">with <a class="partner-link" href="http://www.pragmaticworks.com/" target="_blank" rel="noopener">Pragmatic Works</a></span>
-        </div>
-        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D3407322889&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Chat%20with%20Your%20Data%20in%20a%20Day&amp;utm_content=Chat-with-Your-Data-in-a-Day-Pragmatic-Works-2026-10-28" target="_blank" rel="noopener">Register</a>
-      </div>
-
-      <div class="event-card iad-slot" data-type="Chat with Your Data in a Day" data-modality="Virtual" data-month="10" data-partner="OnPoint Insights LLC" data-search="chat with your data in a day onpoint insights llc canada for power bi analysts: make your models chat-ready, query them in plain language, and tune your data so copilot returns fast, trustworthy answers. chat with your data in a day virtual">
-        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Oct</span><span class="iad-cal-d">30</span></div>
-        <div class="iad-info">
-          <span class="iad-day">Friday</span>
-          <span class="event-time iad-hours" data-start="2026-10-30T13:00:00Z" data-end="2026-10-30T21:00:00Z"></span>
-          <span class="iad-by">with <a class="partner-link" href="https://www.onpointinsights.us/" target="_blank" rel="noopener">OnPoint Insights LLC</a></span>
-          <span class="iad-chip">🌎 Canada session</span>
-        </div>
-        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D970402219&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Chat%20with%20Your%20Data%20in%20a%20Day&amp;utm_content=Chat-with-Your-Data-in-a-Day-OnPoint-Insights-LL-2026-10-30" target="_blank" rel="noopener">Register</a>
-      </div>
-
-      <div class="event-card iad-slot" data-type="Chat with Your Data in a Day" data-modality="Virtual" data-month="10" data-partner="Koenig Solutions" data-search="chat with your data in a day koenig solutions canada for power bi analysts: make your models chat-ready, query them in plain language, and tune your data so copilot returns fast, trustworthy answers. chat with your data in a day virtual">
-        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Oct</span><span class="iad-cal-d">30</span></div>
-        <div class="iad-info">
-          <span class="iad-day">Friday</span>
-          <span class="event-time iad-hours" data-start="2026-10-30T14:00:00Z" data-end="2026-10-30T22:00:00Z"></span>
-          <span class="iad-by">with <a class="partner-link" href="https://www.koenig-solutions.com/microsoft-training-certification-courses" target="_blank" rel="noopener">Koenig Solutions</a></span>
-          <span class="iad-chip">🌎 Canada session</span>
-        </div>
-        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D983746216&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Chat%20with%20Your%20Data%20in%20a%20Day&amp;utm_content=Chat-with-Your-Data-in-a-Day-Koenig-Solutions-2026-10-30" target="_blank" rel="noopener">Register</a>
-      </div>
-
-            </div>
-          </div>
           <div class="iad-month" data-month="11">
-            <div class="iad-month-head"><span class="iad-month-name">November 2026</span><span class="iad-month-count">4 dates</span></div>
+            <div class="iad-month-head"><span class="iad-month-name">November 2026</span><span class="iad-month-count">3 dates</span></div>
             <div class="events iad-slots">
-
-      <div class="event-card iad-slot" data-type="Chat with Your Data in a Day" data-modality="Virtual" data-month="11" data-partner="Pragmatic Works" data-search="chat with your data in a day pragmatic works for power bi analysts: make your models chat-ready, query them in plain language, and tune your data so copilot returns fast, trustworthy answers. chat with your data in a day virtual">
-        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Nov</span><span class="iad-cal-d">3</span></div>
-        <div class="iad-info">
-          <span class="iad-day">Tuesday</span>
-          <span class="event-time iad-hours" data-start="2026-11-03T15:00:00Z" data-end="2026-11-03T23:00:00Z"></span>
-          <span class="iad-by">with <a class="partner-link" href="http://www.pragmaticworks.com/" target="_blank" rel="noopener">Pragmatic Works</a></span>
-        </div>
-        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D4075565759&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Chat%20with%20Your%20Data%20in%20a%20Day&amp;utm_content=Chat-with-Your-Data-in-a-Day-Pragmatic-Works-2026-11-03" target="_blank" rel="noopener">Register</a>
-      </div>
-
-      <div class="event-card iad-slot" data-type="Chat with Your Data in a Day" data-modality="Virtual" data-month="11" data-partner="Intellify Solutions LLC" data-search="chat with your data in a day intellify solutions llc for power bi analysts: make your models chat-ready, query them in plain language, and tune your data so copilot returns fast, trustworthy answers. chat with your data in a day virtual">
-        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Nov</span><span class="iad-cal-d">12</span></div>
-        <div class="iad-info">
-          <span class="iad-day">Thursday</span>
-          <span class="event-time iad-hours" data-start="2026-11-12T14:00:00Z" data-end="2026-11-12T22:00:00Z"></span>
-          <span class="iad-by">with <a class="partner-link" href="https://intellifysolutions.com/" target="_blank" rel="noopener">Intellify Solutions LLC</a></span>
-        </div>
-        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D3014983236&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Chat%20with%20Your%20Data%20in%20a%20Day&amp;utm_content=Chat-with-Your-Data-in-a-Day-Intellify-Solutions-2026-11-12" target="_blank" rel="noopener">Register</a>
-      </div>
 
       <div class="event-card iad-slot" data-type="Chat with Your Data in a Day" data-modality="Virtual" data-month="11" data-partner="Hare &amp; Turtle AI Solutions" data-search="chat with your data in a day hare &amp; turtle ai solutions for power bi analysts: make your models chat-ready, query them in plain language, and tune your data so copilot returns fast, trustworthy answers. chat with your data in a day virtual">
         <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Nov</span><span class="iad-cal-d">17</span></div>
@@ -2495,6 +2619,16 @@ document.addEventListener('DOMContentLoaded', function () {
           <span class="iad-by">with <a class="partner-link" href="https://hareandturtle.ai/" target="_blank" rel="noopener">Hare &amp; Turtle AI Solutions</a></span>
         </div>
         <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D2972850889&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Chat%20with%20Your%20Data%20in%20a%20Day&amp;utm_content=Chat-with-Your-Data-in-a-Day-Hare-Turtle-AI-Solu-2026-11-17" target="_blank" rel="noopener">Register</a>
+      </div>
+
+      <div class="event-card iad-slot" data-type="Chat with Your Data in a Day" data-modality="Virtual" data-month="11" data-partner="Koenig Solutions" data-search="chat with your data in a day koenig solutions for power bi analysts: make your models chat-ready, query them in plain language, and tune your data so copilot returns fast, trustworthy answers. chat with your data in a day virtual">
+        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Nov</span><span class="iad-cal-d">18</span></div>
+        <div class="iad-info">
+          <span class="iad-day">Wednesday</span>
+          <span class="event-time iad-hours" data-start="2026-11-18T16:00:00Z" data-end="2026-11-19T00:00:00Z"></span>
+          <span class="iad-by">with <a class="partner-link" href="https://www.koenig-solutions.com/microsoft-training-certification-courses" target="_blank" rel="noopener">Koenig Solutions</a></span>
+        </div>
+        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D2626978608&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Chat%20with%20Your%20Data%20in%20a%20Day&amp;utm_content=Chat-with-Your-Data-in-a-Day-Koenig-Solutions-2026-11-18" target="_blank" rel="noopener">Register</a>
       </div>
 
       <div class="event-card iad-slot" data-type="Chat with Your Data in a Day" data-modality="Virtual" data-month="11" data-partner="Pragmatic Works" data-search="chat with your data in a day pragmatic works for power bi analysts: make your models chat-ready, query them in plain language, and tune your data so copilot returns fast, trustworthy answers. chat with your data in a day virtual">
@@ -2555,35 +2689,422 @@ document.addEventListener('DOMContentLoaded', function () {
 
             </div>
           </div>
+          <div class="iad-month" data-month="1">
+            <div class="iad-month-head"><span class="iad-month-name">January 2027</span><span class="iad-month-count">2 dates</span></div>
+            <div class="events iad-slots">
+
+      <div class="event-card iad-slot" data-type="Chat with Your Data in a Day" data-modality="Virtual" data-month="1" data-partner="Pragmatic Works" data-search="chat with your data in a day pragmatic works for power bi analysts: make your models chat-ready, query them in plain language, and tune your data so copilot returns fast, trustworthy answers. chat with your data in a day virtual">
+        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Jan</span><span class="iad-cal-d">8</span></div>
+        <div class="iad-info">
+          <span class="iad-day">Friday</span>
+          <span class="event-time iad-hours" data-start="2027-01-08T14:00:00Z" data-end="2027-01-08T22:00:00Z"></span>
+          <span class="iad-by">with <a class="partner-link" href="http://www.pragmaticworks.com/" target="_blank" rel="noopener">Pragmatic Works</a></span>
+        </div>
+        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D2934559889&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Chat%20with%20Your%20Data%20in%20a%20Day&amp;utm_content=Chat-with-Your-Data-in-a-Day-Pragmatic-Works-2027-01-08" target="_blank" rel="noopener">Register</a>
+      </div>
+
+      <div class="event-card iad-slot" data-type="Chat with Your Data in a Day" data-modality="Virtual" data-month="1" data-partner="Nextant" data-search="chat with your data in a day nextant for power bi analysts: make your models chat-ready, query them in plain language, and tune your data so copilot returns fast, trustworthy answers. chat with your data in a day virtual">
+        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Jan</span><span class="iad-cal-d">29</span></div>
+        <div class="iad-info">
+          <span class="iad-day">Friday</span>
+          <span class="event-time iad-hours" data-start="2027-01-29T17:00:00Z" data-end="2027-01-30T01:00:00Z"></span>
+          <span class="iad-by">with <a class="partner-link" href="https://www.nextant.com/" target="_blank" rel="noopener">Nextant</a></span>
+        </div>
+        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D94572647&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Chat%20with%20Your%20Data%20in%20a%20Day&amp;utm_content=Chat-with-Your-Data-in-a-Day-Nextant-2027-01-29" target="_blank" rel="noopener">Register</a>
+      </div>
+
+            </div>
+          </div>
           </div>
         </div>
       </div>
 
       <div class="group" data-group="App in a Day">
-        <button type="button" class="group-head" aria-expanded="false"><span class="chev">▸</span><span class="group-title">App in a Day</span><span class="group-count">1 session</span></button>
+        <button type="button" class="group-head" aria-expanded="false"><span class="chev">▸</span><span class="group-title">App in a Day</span><span class="group-count">14 sessions</span></button>
         <div class="group-body">
           <div class="iad-panel iad--aiad">
             <div class="iad-intro">
               <div class="iad-intro-text">
                 <span class="event-tag tag-aiad">App in a Day</span>
                 <p>Build a working business app with no code — digitize a process, design the app, and automate the workflow end to end using Power Apps and Power Automate.</p>
-                <div class="iad-facts"><span>🧑‍🏫 Hands-on, partner-led</span><span>⏱️ Full day</span><span>💲 Free</span><span>📍 In person</span></div>
+                <div class="iad-facts"><span>🧑‍🏫 Hands-on, partner-led</span><span>⏱️ Full day</span><span>💲 Free</span><span>💻 Live online</span></div>
               </div>
-              <div class="iad-stats" aria-live="polite"><strong class="iad-n">1</strong><span class="iad-n-lbl">upcoming date</span><span class="iad-range">Oct 29</span><span class="iad-np">1 partner</span></div>
+              <div class="iad-stats" aria-live="polite"><strong class="iad-n">14</strong><span class="iad-n-lbl">upcoming dates</span><span class="iad-range">Nov 13 – Jan 29</span><span class="iad-np">3 partners</span></div>
             </div>
-          <div class="iad-month" data-month="10">
-            <div class="iad-month-head"><span class="iad-month-name">October 2026</span><span class="iad-month-count">1 date</span></div>
+          <div class="iad-month" data-month="11">
+            <div class="iad-month-head"><span class="iad-month-name">November 2026</span><span class="iad-month-count">5 dates</span></div>
             <div class="events iad-slots">
 
-      <div class="event-card iad-slot" data-type="App in a Day" data-modality="In-Person" data-month="10" data-partner="EPMPOINT" data-search="app in a day epmpoint reston, va build a working business app with no code — digitize a process, design the app, and automate the workflow end to end using power apps and power automate. app in a day in-person">
-        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Oct</span><span class="iad-cal-d">29</span></div>
+      <div class="event-card iad-slot" data-type="App in a Day" data-modality="Virtual" data-month="11" data-partner="MAQ Software" data-search="app in a day maq software build a working business app with no code — digitize a process, design the app, and automate the workflow end to end using power apps and power automate. app in a day virtual">
+        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Nov</span><span class="iad-cal-d">13</span></div>
+        <div class="iad-info">
+          <span class="iad-day">Friday</span>
+          <span class="event-time iad-hours" data-start="2026-11-13T15:00:00Z" data-end="2026-11-13T23:00:00Z"></span>
+          <span class="iad-by">with <a class="partner-link" href="https://maqsoftware.com/" target="_blank" rel="noopener">MAQ Software</a></span>
+        </div>
+        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D1920015548&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=App%20in%20a%20Day&amp;utm_content=App-in-a-Day-MAQ-Software-2026-11-13" target="_blank" rel="noopener">Register</a>
+      </div>
+
+      <div class="event-card iad-slot" data-type="App in a Day" data-modality="Virtual" data-month="11" data-partner="KAISPE" data-search="app in a day kaispe build a working business app with no code — digitize a process, design the app, and automate the workflow end to end using power apps and power automate. app in a day virtual">
+        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Nov</span><span class="iad-cal-d">17</span></div>
+        <div class="iad-info">
+          <span class="iad-day">Tuesday</span>
+          <span class="event-time iad-hours" data-start="2026-11-17T16:00:00Z" data-end="2026-11-18T00:00:00Z"></span>
+          <span class="iad-by">with <a class="partner-link" href="https://www.kaispe.com" target="_blank" rel="noopener">KAISPE</a></span>
+        </div>
+        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D2898460457&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=App%20in%20a%20Day&amp;utm_content=App-in-a-Day-KAISPE-2026-11-17" target="_blank" rel="noopener">Register</a>
+      </div>
+
+      <div class="event-card iad-slot" data-type="App in a Day" data-modality="Virtual" data-month="11" data-partner="Pragmatic Works" data-search="app in a day pragmatic works build a working business app with no code — digitize a process, design the app, and automate the workflow end to end using power apps and power automate. app in a day virtual">
+        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Nov</span><span class="iad-cal-d">18</span></div>
+        <div class="iad-info">
+          <span class="iad-day">Wednesday</span>
+          <span class="event-time iad-hours" data-start="2026-11-18T14:00:00Z" data-end="2026-11-18T22:00:00Z"></span>
+          <span class="iad-by">with <a class="partner-link" href="http://www.pragmaticworks.com/" target="_blank" rel="noopener">Pragmatic Works</a></span>
+        </div>
+        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D3771674103&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=App%20in%20a%20Day&amp;utm_content=App-in-a-Day-Pragmatic-Works-2026-11-18" target="_blank" rel="noopener">Register</a>
+      </div>
+
+      <div class="event-card iad-slot" data-type="App in a Day" data-modality="Virtual" data-month="11" data-partner="MAQ Software" data-search="app in a day maq software build a working business app with no code — digitize a process, design the app, and automate the workflow end to end using power apps and power automate. app in a day virtual">
+        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Nov</span><span class="iad-cal-d">27</span></div>
+        <div class="iad-info">
+          <span class="iad-day">Friday</span>
+          <span class="event-time iad-hours" data-start="2026-11-27T14:00:00Z" data-end="2026-11-27T22:00:00Z"></span>
+          <span class="iad-by">with <a class="partner-link" href="https://maqsoftware.com/" target="_blank" rel="noopener">MAQ Software</a></span>
+        </div>
+        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D2966569664&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=App%20in%20a%20Day&amp;utm_content=App-in-a-Day-MAQ-Software-2026-11-27" target="_blank" rel="noopener">Register</a>
+      </div>
+
+      <div class="event-card iad-slot" data-type="App in a Day" data-modality="Virtual" data-month="11" data-partner="Pragmatic Works" data-search="app in a day pragmatic works build a working business app with no code — digitize a process, design the app, and automate the workflow end to end using power apps and power automate. app in a day virtual">
+        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Nov</span><span class="iad-cal-d">30</span></div>
+        <div class="iad-info">
+          <span class="iad-day">Monday</span>
+          <span class="event-time iad-hours" data-start="2026-11-30T15:00:00Z" data-end="2026-11-30T23:00:00Z"></span>
+          <span class="iad-by">with <a class="partner-link" href="http://www.pragmaticworks.com/" target="_blank" rel="noopener">Pragmatic Works</a></span>
+        </div>
+        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D544738818&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=App%20in%20a%20Day&amp;utm_content=App-in-a-Day-Pragmatic-Works-2026-11-30" target="_blank" rel="noopener">Register</a>
+      </div>
+
+            </div>
+          </div>
+          <div class="iad-month" data-month="12">
+            <div class="iad-month-head"><span class="iad-month-name">December 2026</span><span class="iad-month-count">4 dates</span></div>
+            <div class="events iad-slots">
+
+      <div class="event-card iad-slot" data-type="App in a Day" data-modality="Virtual" data-month="12" data-partner="Pragmatic Works" data-search="app in a day pragmatic works build a working business app with no code — digitize a process, design the app, and automate the workflow end to end using power apps and power automate. app in a day virtual">
+        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Dec</span><span class="iad-cal-d">9</span></div>
+        <div class="iad-info">
+          <span class="iad-day">Wednesday</span>
+          <span class="event-time iad-hours" data-start="2026-12-09T14:00:00Z" data-end="2026-12-09T22:00:00Z"></span>
+          <span class="iad-by">with <a class="partner-link" href="http://www.pragmaticworks.com/" target="_blank" rel="noopener">Pragmatic Works</a></span>
+        </div>
+        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D1464083621&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=App%20in%20a%20Day&amp;utm_content=App-in-a-Day-Pragmatic-Works-2026-12-09" target="_blank" rel="noopener">Register</a>
+      </div>
+
+      <div class="event-card iad-slot" data-type="App in a Day" data-modality="Virtual" data-month="12" data-partner="Pragmatic Works" data-search="app in a day pragmatic works build a working business app with no code — digitize a process, design the app, and automate the workflow end to end using power apps and power automate. app in a day virtual">
+        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Dec</span><span class="iad-cal-d">9</span></div>
+        <div class="iad-info">
+          <span class="iad-day">Wednesday</span>
+          <span class="event-time iad-hours" data-start="2026-12-09T15:00:00Z" data-end="2026-12-09T23:00:00Z"></span>
+          <span class="iad-by">with <a class="partner-link" href="http://www.pragmaticworks.com/" target="_blank" rel="noopener">Pragmatic Works</a></span>
+        </div>
+        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D3089008772&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=App%20in%20a%20Day&amp;utm_content=App-in-a-Day-Pragmatic-Works-2026-12-09" target="_blank" rel="noopener">Register</a>
+      </div>
+
+      <div class="event-card iad-slot" data-type="App in a Day" data-modality="Virtual" data-month="12" data-partner="Pragmatic Works" data-search="app in a day pragmatic works build a working business app with no code — digitize a process, design the app, and automate the workflow end to end using power apps and power automate. app in a day virtual">
+        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Dec</span><span class="iad-cal-d">17</span></div>
         <div class="iad-info">
           <span class="iad-day">Thursday</span>
-          <span class="event-time iad-hours" data-start="2026-10-29T13:00:00Z" data-end="2026-10-29T21:00:00Z"></span>
-          <span class="iad-by">with <a class="partner-link" href="https://www.epmpoint.com" target="_blank" rel="noopener">EPMPOINT</a></span>
-          <span class="iad-chip">📍 Reston, VA · in person</span>
+          <span class="event-time iad-hours" data-start="2026-12-17T15:00:00Z" data-end="2026-12-17T23:00:00Z"></span>
+          <span class="iad-by">with <a class="partner-link" href="http://www.pragmaticworks.com/" target="_blank" rel="noopener">Pragmatic Works</a></span>
         </div>
-        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D162747747&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=App%20in%20a%20Day&amp;utm_content=App-in-a-Day-EPMPOINT-2026-10-29" target="_blank" rel="noopener">Register</a>
+        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D2632311772&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=App%20in%20a%20Day&amp;utm_content=App-in-a-Day-Pragmatic-Works-2026-12-17" target="_blank" rel="noopener">Register</a>
+      </div>
+
+      <div class="event-card iad-slot" data-type="App in a Day" data-modality="Virtual" data-month="12" data-partner="MAQ Software" data-search="app in a day maq software build a working business app with no code — digitize a process, design the app, and automate the workflow end to end using power apps and power automate. app in a day virtual">
+        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Dec</span><span class="iad-cal-d">18</span></div>
+        <div class="iad-info">
+          <span class="iad-day">Friday</span>
+          <span class="event-time iad-hours" data-start="2026-12-18T14:00:00Z" data-end="2026-12-18T22:00:00Z"></span>
+          <span class="iad-by">with <a class="partner-link" href="https://maqsoftware.com/" target="_blank" rel="noopener">MAQ Software</a></span>
+        </div>
+        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D2364450202&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=App%20in%20a%20Day&amp;utm_content=App-in-a-Day-MAQ-Software-2026-12-18" target="_blank" rel="noopener">Register</a>
+      </div>
+
+            </div>
+          </div>
+          <div class="iad-month" data-month="1">
+            <div class="iad-month-head"><span class="iad-month-name">January 2027</span><span class="iad-month-count">5 dates</span></div>
+            <div class="events iad-slots">
+
+      <div class="event-card iad-slot" data-type="App in a Day" data-modality="Virtual" data-month="1" data-partner="Pragmatic Works" data-search="app in a day pragmatic works build a working business app with no code — digitize a process, design the app, and automate the workflow end to end using power apps and power automate. app in a day virtual">
+        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Jan</span><span class="iad-cal-d">6</span></div>
+        <div class="iad-info">
+          <span class="iad-day">Wednesday</span>
+          <span class="event-time iad-hours" data-start="2027-01-06T14:00:00Z" data-end="2027-01-06T22:00:00Z"></span>
+          <span class="iad-by">with <a class="partner-link" href="http://www.pragmaticworks.com/" target="_blank" rel="noopener">Pragmatic Works</a></span>
+        </div>
+        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D3628612401&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=App%20in%20a%20Day&amp;utm_content=App-in-a-Day-Pragmatic-Works-2027-01-06" target="_blank" rel="noopener">Register</a>
+      </div>
+
+      <div class="event-card iad-slot" data-type="App in a Day" data-modality="Virtual" data-month="1" data-partner="Pragmatic Works" data-search="app in a day pragmatic works build a working business app with no code — digitize a process, design the app, and automate the workflow end to end using power apps and power automate. app in a day virtual">
+        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Jan</span><span class="iad-cal-d">7</span></div>
+        <div class="iad-info">
+          <span class="iad-day">Thursday</span>
+          <span class="event-time iad-hours" data-start="2027-01-07T15:00:00Z" data-end="2027-01-07T23:00:00Z"></span>
+          <span class="iad-by">with <a class="partner-link" href="http://www.pragmaticworks.com/" target="_blank" rel="noopener">Pragmatic Works</a></span>
+        </div>
+        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D3166037633&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=App%20in%20a%20Day&amp;utm_content=App-in-a-Day-Pragmatic-Works-2027-01-07" target="_blank" rel="noopener">Register</a>
+      </div>
+
+      <div class="event-card iad-slot" data-type="App in a Day" data-modality="Virtual" data-month="1" data-partner="MAQ Software" data-search="app in a day maq software build a working business app with no code — digitize a process, design the app, and automate the workflow end to end using power apps and power automate. app in a day virtual">
+        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Jan</span><span class="iad-cal-d">15</span></div>
+        <div class="iad-info">
+          <span class="iad-day">Friday</span>
+          <span class="event-time iad-hours" data-start="2027-01-15T14:00:00Z" data-end="2027-01-15T22:00:00Z"></span>
+          <span class="iad-by">with <a class="partner-link" href="https://maqsoftware.com/" target="_blank" rel="noopener">MAQ Software</a></span>
+        </div>
+        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D804938368&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=App%20in%20a%20Day&amp;utm_content=App-in-a-Day-MAQ-Software-2027-01-15" target="_blank" rel="noopener">Register</a>
+      </div>
+
+      <div class="event-card iad-slot" data-type="App in a Day" data-modality="Virtual" data-month="1" data-partner="Pragmatic Works" data-search="app in a day pragmatic works build a working business app with no code — digitize a process, design the app, and automate the workflow end to end using power apps and power automate. app in a day virtual">
+        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Jan</span><span class="iad-cal-d">22</span></div>
+        <div class="iad-info">
+          <span class="iad-day">Friday</span>
+          <span class="event-time iad-hours" data-start="2027-01-22T15:00:00Z" data-end="2027-01-22T23:00:00Z"></span>
+          <span class="iad-by">with <a class="partner-link" href="http://www.pragmaticworks.com/" target="_blank" rel="noopener">Pragmatic Works</a></span>
+        </div>
+        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D947219177&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=App%20in%20a%20Day&amp;utm_content=App-in-a-Day-Pragmatic-Works-2027-01-22" target="_blank" rel="noopener">Register</a>
+      </div>
+
+      <div class="event-card iad-slot" data-type="App in a Day" data-modality="Virtual" data-month="1" data-partner="MAQ Software" data-search="app in a day maq software build a working business app with no code — digitize a process, design the app, and automate the workflow end to end using power apps and power automate. app in a day virtual">
+        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Jan</span><span class="iad-cal-d">29</span></div>
+        <div class="iad-info">
+          <span class="iad-day">Friday</span>
+          <span class="event-time iad-hours" data-start="2027-01-29T14:00:00Z" data-end="2027-01-29T22:00:00Z"></span>
+          <span class="iad-by">with <a class="partner-link" href="https://maqsoftware.com/" target="_blank" rel="noopener">MAQ Software</a></span>
+        </div>
+        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D1790557477&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=App%20in%20a%20Day&amp;utm_content=App-in-a-Day-MAQ-Software-2027-01-29" target="_blank" rel="noopener">Register</a>
+      </div>
+
+            </div>
+          </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="group" data-group="Automation in a Day">
+        <button type="button" class="group-head" aria-expanded="false"><span class="chev">▸</span><span class="group-title">Automation in a Day</span><span class="group-count">10 sessions</span></button>
+        <div class="group-body">
+          <div class="iad-panel iad--auiad">
+            <div class="iad-intro">
+              <div class="iad-intro-text">
+                <span class="event-tag tag-auiad">Automation in a Day</span>
+                <p>Learn to automate business processes with Power Automate — build desktop and cloud flows, add AI Builder form processing, and orchestrate an end-to-end invoice scenario in a single day, with no coding required.</p>
+                <div class="iad-facts"><span>🧑‍🏫 Hands-on, partner-led</span><span>⏱️ Full day</span><span>💲 Free</span><span>💻 Live online</span></div>
+                <div class="iad-audience"><strong>Best for:</strong> Anyone new to automation — business experts and IT developers alike.</div>
+              </div>
+              <div class="iad-stats" aria-live="polite"><strong class="iad-n">10</strong><span class="iad-n-lbl">upcoming dates</span><span class="iad-range">Nov 17 – Jan 21</span><span class="iad-np">4 partners</span></div>
+            </div>
+          <div class="iad-month" data-month="11">
+            <div class="iad-month-head"><span class="iad-month-name">November 2026</span><span class="iad-month-count">1 date</span></div>
+            <div class="events iad-slots">
+
+      <div class="event-card iad-slot" data-type="Automation in a Day" data-modality="Virtual" data-month="11" data-partner="UB Technology Innovations, Inc." data-search="automation in a day ub technology innovations, inc. learn to automate business processes with power automate — build desktop and cloud flows, add ai builder form processing, and orchestrate an end-to-end invoice scenario in a single day, with no coding required. automation in a day virtual">
+        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Nov</span><span class="iad-cal-d">17</span></div>
+        <div class="iad-info">
+          <span class="iad-day">Tuesday</span>
+          <span class="event-time iad-hours" data-start="2026-11-17T16:00:00Z" data-end="2026-11-18T00:00:00Z"></span>
+          <span class="iad-by">with <a class="partner-link" href="https://ubtiinc.com/" target="_blank" rel="noopener">UB Technology Innovations, Inc.</a></span>
+        </div>
+        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D511574367&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Automation%20in%20a%20Day&amp;utm_content=Automation-in-a-Day-UB-Technology-Innovations-In-2026-11-17" target="_blank" rel="noopener">Register</a>
+      </div>
+
+            </div>
+          </div>
+          <div class="iad-month" data-month="12">
+            <div class="iad-month-head"><span class="iad-month-name">December 2026</span><span class="iad-month-count">6 dates</span></div>
+            <div class="events iad-slots">
+
+      <div class="event-card iad-slot" data-type="Automation in a Day" data-modality="Virtual" data-month="12" data-partner="Pragmatic Works" data-search="automation in a day pragmatic works learn to automate business processes with power automate — build desktop and cloud flows, add ai builder form processing, and orchestrate an end-to-end invoice scenario in a single day, with no coding required. automation in a day virtual">
+        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Dec</span><span class="iad-cal-d">3</span></div>
+        <div class="iad-info">
+          <span class="iad-day">Thursday</span>
+          <span class="event-time iad-hours" data-start="2026-12-03T15:00:00Z" data-end="2026-12-03T23:00:00Z"></span>
+          <span class="iad-by">with <a class="partner-link" href="http://www.pragmaticworks.com/" target="_blank" rel="noopener">Pragmatic Works</a></span>
+        </div>
+        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D4038273754&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Automation%20in%20a%20Day&amp;utm_content=Automation-in-a-Day-Pragmatic-Works-2026-12-03" target="_blank" rel="noopener">Register</a>
+      </div>
+
+      <div class="event-card iad-slot" data-type="Automation in a Day" data-modality="Virtual" data-month="12" data-partner="Pragmatic Works" data-search="automation in a day pragmatic works learn to automate business processes with power automate — build desktop and cloud flows, add ai builder form processing, and orchestrate an end-to-end invoice scenario in a single day, with no coding required. automation in a day virtual">
+        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Dec</span><span class="iad-cal-d">7</span></div>
+        <div class="iad-info">
+          <span class="iad-day">Monday</span>
+          <span class="event-time iad-hours" data-start="2026-12-07T14:00:00Z" data-end="2026-12-07T22:00:00Z"></span>
+          <span class="iad-by">with <a class="partner-link" href="http://www.pragmaticworks.com/" target="_blank" rel="noopener">Pragmatic Works</a></span>
+        </div>
+        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D1729838884&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Automation%20in%20a%20Day&amp;utm_content=Automation-in-a-Day-Pragmatic-Works-2026-12-07" target="_blank" rel="noopener">Register</a>
+      </div>
+
+      <div class="event-card iad-slot" data-type="Automation in a Day" data-modality="Virtual" data-month="12" data-partner="Pragmatic Works" data-search="automation in a day pragmatic works learn to automate business processes with power automate — build desktop and cloud flows, add ai builder form processing, and orchestrate an end-to-end invoice scenario in a single day, with no coding required. automation in a day virtual">
+        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Dec</span><span class="iad-cal-d">7</span></div>
+        <div class="iad-info">
+          <span class="iad-day">Monday</span>
+          <span class="event-time iad-hours" data-start="2026-12-07T15:00:00Z" data-end="2026-12-07T23:00:00Z"></span>
+          <span class="iad-by">with <a class="partner-link" href="http://www.pragmaticworks.com/" target="_blank" rel="noopener">Pragmatic Works</a></span>
+        </div>
+        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D3007068123&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Automation%20in%20a%20Day&amp;utm_content=Automation-in-a-Day-Pragmatic-Works-2026-12-07" target="_blank" rel="noopener">Register</a>
+      </div>
+
+      <div class="event-card iad-slot" data-type="Automation in a Day" data-modality="Virtual" data-month="12" data-partner="Lumovy Technology Solutions" data-search="automation in a day lumovy technology solutions learn to automate business processes with power automate — build desktop and cloud flows, add ai builder form processing, and orchestrate an end-to-end invoice scenario in a single day, with no coding required. automation in a day virtual">
+        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Dec</span><span class="iad-cal-d">9</span></div>
+        <div class="iad-info">
+          <span class="iad-day">Wednesday</span>
+          <span class="event-time iad-hours" data-start="2026-12-09T14:00:00Z" data-end="2026-12-09T22:00:00Z"></span>
+          <span class="iad-by">with <a class="partner-link" href="https://www.lumovy.com/" target="_blank" rel="noopener">Lumovy Technology Solutions</a></span>
+        </div>
+        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D894603830&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Automation%20in%20a%20Day&amp;utm_content=Automation-in-a-Day-Lumovy-Technology-Solutions-2026-12-09" target="_blank" rel="noopener">Register</a>
+      </div>
+
+      <div class="event-card iad-slot" data-type="Automation in a Day" data-modality="Virtual" data-month="12" data-partner="Pragmatic Works" data-search="automation in a day pragmatic works learn to automate business processes with power automate — build desktop and cloud flows, add ai builder form processing, and orchestrate an end-to-end invoice scenario in a single day, with no coding required. automation in a day virtual">
+        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Dec</span><span class="iad-cal-d">11</span></div>
+        <div class="iad-info">
+          <span class="iad-day">Friday</span>
+          <span class="event-time iad-hours" data-start="2026-12-11T14:00:00Z" data-end="2026-12-11T22:00:00Z"></span>
+          <span class="iad-by">with <a class="partner-link" href="http://www.pragmaticworks.com/" target="_blank" rel="noopener">Pragmatic Works</a></span>
+        </div>
+        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D860111101&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Automation%20in%20a%20Day&amp;utm_content=Automation-in-a-Day-Pragmatic-Works-2026-12-11" target="_blank" rel="noopener">Register</a>
+      </div>
+
+      <div class="event-card iad-slot" data-type="Automation in a Day" data-modality="Virtual" data-month="12" data-partner="Koenig Solutions" data-search="automation in a day koenig solutions learn to automate business processes with power automate — build desktop and cloud flows, add ai builder form processing, and orchestrate an end-to-end invoice scenario in a single day, with no coding required. automation in a day virtual">
+        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Dec</span><span class="iad-cal-d">16</span></div>
+        <div class="iad-info">
+          <span class="iad-day">Wednesday</span>
+          <span class="event-time iad-hours" data-start="2026-12-16T16:00:00Z" data-end="2026-12-17T00:00:00Z"></span>
+          <span class="iad-by">with <a class="partner-link" href="https://www.koenig-solutions.com/microsoft-training-certification-courses" target="_blank" rel="noopener">Koenig Solutions</a></span>
+        </div>
+        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D3157580907&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Automation%20in%20a%20Day&amp;utm_content=Automation-in-a-Day-Koenig-Solutions-2026-12-16" target="_blank" rel="noopener">Register</a>
+      </div>
+
+            </div>
+          </div>
+          <div class="iad-month" data-month="1">
+            <div class="iad-month-head"><span class="iad-month-name">January 2027</span><span class="iad-month-count">3 dates</span></div>
+            <div class="events iad-slots">
+
+      <div class="event-card iad-slot" data-type="Automation in a Day" data-modality="Virtual" data-month="1" data-partner="Pragmatic Works" data-search="automation in a day pragmatic works learn to automate business processes with power automate — build desktop and cloud flows, add ai builder form processing, and orchestrate an end-to-end invoice scenario in a single day, with no coding required. automation in a day virtual">
+        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Jan</span><span class="iad-cal-d">8</span></div>
+        <div class="iad-info">
+          <span class="iad-day">Friday</span>
+          <span class="event-time iad-hours" data-start="2027-01-08T14:00:00Z" data-end="2027-01-08T22:00:00Z"></span>
+          <span class="iad-by">with <a class="partner-link" href="http://www.pragmaticworks.com/" target="_blank" rel="noopener">Pragmatic Works</a></span>
+        </div>
+        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D3898893840&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Automation%20in%20a%20Day&amp;utm_content=Automation-in-a-Day-Pragmatic-Works-2027-01-08" target="_blank" rel="noopener">Register</a>
+      </div>
+
+      <div class="event-card iad-slot" data-type="Automation in a Day" data-modality="Virtual" data-month="1" data-partner="Pragmatic Works" data-search="automation in a day pragmatic works learn to automate business processes with power automate — build desktop and cloud flows, add ai builder form processing, and orchestrate an end-to-end invoice scenario in a single day, with no coding required. automation in a day virtual">
+        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Jan</span><span class="iad-cal-d">13</span></div>
+        <div class="iad-info">
+          <span class="iad-day">Wednesday</span>
+          <span class="event-time iad-hours" data-start="2027-01-13T15:00:00Z" data-end="2027-01-13T23:00:00Z"></span>
+          <span class="iad-by">with <a class="partner-link" href="http://www.pragmaticworks.com/" target="_blank" rel="noopener">Pragmatic Works</a></span>
+        </div>
+        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D4267854888&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Automation%20in%20a%20Day&amp;utm_content=Automation-in-a-Day-Pragmatic-Works-2027-01-13" target="_blank" rel="noopener">Register</a>
+      </div>
+
+      <div class="event-card iad-slot" data-type="Automation in a Day" data-modality="Virtual" data-month="1" data-partner="Pragmatic Works" data-search="automation in a day pragmatic works learn to automate business processes with power automate — build desktop and cloud flows, add ai builder form processing, and orchestrate an end-to-end invoice scenario in a single day, with no coding required. automation in a day virtual">
+        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Jan</span><span class="iad-cal-d">21</span></div>
+        <div class="iad-info">
+          <span class="iad-day">Thursday</span>
+          <span class="event-time iad-hours" data-start="2027-01-21T14:00:00Z" data-end="2027-01-21T22:00:00Z"></span>
+          <span class="iad-by">with <a class="partner-link" href="http://www.pragmaticworks.com/" target="_blank" rel="noopener">Pragmatic Works</a></span>
+        </div>
+        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D509711934&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Automation%20in%20a%20Day&amp;utm_content=Automation-in-a-Day-Pragmatic-Works-2027-01-21" target="_blank" rel="noopener">Register</a>
+      </div>
+
+            </div>
+          </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="group" data-group="Power Pages in a Day">
+        <button type="button" class="group-head" aria-expanded="false"><span class="chev">▸</span><span class="group-title">Power Pages in a Day</span><span class="group-count">5 sessions</span></button>
+        <div class="group-body">
+          <div class="iad-panel iad--ppiad">
+            <div class="iad-intro">
+              <div class="iad-intro-text">
+                <span class="event-tag tag-ppiad">Power Pages in a Day</span>
+                <p>Build a secure, data-driven business website with Power Pages — design and customize the pages and create the Dataverse tables and security behind them, using low-code tools from end to end.</p>
+                <div class="iad-facts"><span>🧑‍🏫 Hands-on, partner-led</span><span>⏱️ Full day</span><span>💲 Free</span><span>💻 Live online</span></div>
+                <div class="iad-audience"><strong>Best for:</strong> Beginners — no prior website, app-building or Power Platform experience needed.</div>
+              </div>
+              <div class="iad-stats" aria-live="polite"><strong class="iad-n">5</strong><span class="iad-n-lbl">upcoming dates</span><span class="iad-range">Nov 19 – Jan 15</span><span class="iad-np">4 partners</span></div>
+            </div>
+          <div class="iad-month" data-month="11">
+            <div class="iad-month-head"><span class="iad-month-name">November 2026</span><span class="iad-month-count">2 dates</span></div>
+            <div class="events iad-slots">
+
+      <div class="event-card iad-slot" data-type="Power Pages in a Day" data-modality="Virtual" data-month="11" data-partner="2toLead" data-search="power pages in a day 2tolead build a secure, data-driven business website with power pages — design and customize the pages and create the dataverse tables and security behind them, using low-code tools from end to end. power pages in a day virtual">
+        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Nov</span><span class="iad-cal-d">19</span></div>
+        <div class="iad-info">
+          <span class="iad-day">Thursday</span>
+          <span class="event-time iad-hours" data-start="2026-11-19T14:00:00Z" data-end="2026-11-19T22:00:00Z"></span>
+          <span class="iad-by">with <a class="partner-link" href="https://www.2tolead.com/" target="_blank" rel="noopener">2toLead</a></span>
+        </div>
+        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D249635711&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Power%20Pages%20in%20a%20Day&amp;utm_content=Power-Pages-in-a-Day-2toLead-2026-11-19" target="_blank" rel="noopener">Register</a>
+      </div>
+
+      <div class="event-card iad-slot" data-type="Power Pages in a Day" data-modality="Virtual" data-month="11" data-partner="Upzoids" data-search="power pages in a day upzoids build a secure, data-driven business website with power pages — design and customize the pages and create the dataverse tables and security behind them, using low-code tools from end to end. power pages in a day virtual">
+        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Nov</span><span class="iad-cal-d">30</span></div>
+        <div class="iad-info">
+          <span class="iad-day">Monday</span>
+          <span class="event-time iad-hours" data-start="2026-11-30T16:00:00Z" data-end="2026-12-01T00:00:00Z"></span>
+          <span class="iad-by">with <a class="partner-link" href="https://www.upzoids.com/" target="_blank" rel="noopener">Upzoids</a></span>
+        </div>
+        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D1961569647&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Power%20Pages%20in%20a%20Day&amp;utm_content=Power-Pages-in-a-Day-Upzoids-2026-11-30" target="_blank" rel="noopener">Register</a>
+      </div>
+
+            </div>
+          </div>
+          <div class="iad-month" data-month="12">
+            <div class="iad-month-head"><span class="iad-month-name">December 2026</span><span class="iad-month-count">2 dates</span></div>
+            <div class="events iad-slots">
+
+      <div class="event-card iad-slot" data-type="Power Pages in a Day" data-modality="Virtual" data-month="12" data-partner="Pragmatic Works" data-search="power pages in a day pragmatic works build a secure, data-driven business website with power pages — design and customize the pages and create the dataverse tables and security behind them, using low-code tools from end to end. power pages in a day virtual">
+        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Dec</span><span class="iad-cal-d">10</span></div>
+        <div class="iad-info">
+          <span class="iad-day">Thursday</span>
+          <span class="event-time iad-hours" data-start="2026-12-10T14:00:00Z" data-end="2026-12-10T22:00:00Z"></span>
+          <span class="iad-by">with <a class="partner-link" href="http://www.pragmaticworks.com/" target="_blank" rel="noopener">Pragmatic Works</a></span>
+        </div>
+        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D507429523&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Power%20Pages%20in%20a%20Day&amp;utm_content=Power-Pages-in-a-Day-Pragmatic-Works-2026-12-10" target="_blank" rel="noopener">Register</a>
+      </div>
+
+      <div class="event-card iad-slot" data-type="Power Pages in a Day" data-modality="Virtual" data-month="12" data-partner="Koenig Solutions" data-search="power pages in a day koenig solutions build a secure, data-driven business website with power pages — design and customize the pages and create the dataverse tables and security behind them, using low-code tools from end to end. power pages in a day virtual">
+        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Dec</span><span class="iad-cal-d">28</span></div>
+        <div class="iad-info">
+          <span class="iad-day">Monday</span>
+          <span class="event-time iad-hours" data-start="2026-12-28T16:00:00Z" data-end="2026-12-29T00:00:00Z"></span>
+          <span class="iad-by">with <a class="partner-link" href="https://www.koenig-solutions.com/microsoft-training-certification-courses" target="_blank" rel="noopener">Koenig Solutions</a></span>
+        </div>
+        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D1793144608&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Power%20Pages%20in%20a%20Day&amp;utm_content=Power-Pages-in-a-Day-Koenig-Solutions-2026-12-28" target="_blank" rel="noopener">Register</a>
+      </div>
+
+            </div>
+          </div>
+          <div class="iad-month" data-month="1">
+            <div class="iad-month-head"><span class="iad-month-name">January 2027</span><span class="iad-month-count">1 date</span></div>
+            <div class="events iad-slots">
+
+      <div class="event-card iad-slot" data-type="Power Pages in a Day" data-modality="Virtual" data-month="1" data-partner="Pragmatic Works" data-search="power pages in a day pragmatic works build a secure, data-driven business website with power pages — design and customize the pages and create the dataverse tables and security behind them, using low-code tools from end to end. power pages in a day virtual">
+        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Jan</span><span class="iad-cal-d">15</span></div>
+        <div class="iad-info">
+          <span class="iad-day">Friday</span>
+          <span class="event-time iad-hours" data-start="2027-01-15T14:00:00Z" data-end="2027-01-15T22:00:00Z"></span>
+          <span class="iad-by">with <a class="partner-link" href="http://www.pragmaticworks.com/" target="_blank" rel="noopener">Pragmatic Works</a></span>
+        </div>
+        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D341253874&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Power%20Pages%20in%20a%20Day&amp;utm_content=Power-Pages-in-a-Day-Pragmatic-Works-2027-01-15" target="_blank" rel="noopener">Register</a>
       </div>
 
             </div>
@@ -2593,7 +3114,7 @@ document.addEventListener('DOMContentLoaded', function () {
       </div>
 
       <div class="group" data-group="Real-Time Intelligence in a Day">
-        <button type="button" class="group-head" aria-expanded="false"><span class="chev">▸</span><span class="group-title">Real-Time Intelligence in a Day</span><span class="group-count">10 sessions</span></button>
+        <button type="button" class="group-head" aria-expanded="false"><span class="chev">▸</span><span class="group-title">Real-Time Intelligence in a Day</span><span class="group-count">7 sessions</span></button>
         <div class="group-body">
           <div class="iad-panel iad--rtiad">
             <div class="iad-intro">
@@ -2602,65 +3123,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 <p>Turn streaming data into action with Microsoft Fabric Real-Time Intelligence — ingest live events, analyze them with KQL, and trigger alerts and insights across the organization.</p>
                 <div class="iad-facts"><span>🧑‍🏫 Hands-on, partner-led</span><span>⏱️ Full day</span><span>💲 Free</span><span>💻 Live online</span></div>
               </div>
-              <div class="iad-stats" aria-live="polite"><strong class="iad-n">10</strong><span class="iad-n-lbl">upcoming dates</span><span class="iad-range">Oct 7 – Dec 11</span><span class="iad-np">7 partners</span></div>
+              <div class="iad-stats" aria-live="polite"><strong class="iad-n">7</strong><span class="iad-n-lbl">upcoming dates</span><span class="iad-range">Nov 12 – Jan 29</span><span class="iad-np">4 partners</span></div>
             </div>
-          <div class="iad-month" data-month="10">
-            <div class="iad-month-head"><span class="iad-month-name">October 2026</span><span class="iad-month-count">5 dates</span></div>
-            <div class="events iad-slots">
-
-      <div class="event-card iad-slot" data-type="Real-Time Intelligence in a Day" data-modality="Virtual" data-month="10" data-partner="ADASTRA" data-search="real-time intelligence in a day adastra canada turn streaming data into action with microsoft fabric real-time intelligence — ingest live events, analyze them with kql, and trigger alerts and insights across the organization. real-time intelligence in a day virtual">
-        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Oct</span><span class="iad-cal-d">7</span></div>
-        <div class="iad-info">
-          <span class="iad-day">Wednesday</span>
-          <span class="event-time iad-hours" data-start="2026-10-07T13:00:00Z" data-end="2026-10-07T21:00:00Z"></span>
-          <span class="iad-by">with <a class="partner-link" href="https://adastracorp.com/" target="_blank" rel="noopener">ADASTRA</a></span>
-          <span class="iad-chip">🌎 Canada session</span>
-        </div>
-        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D3708983475&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Real-Time%20Intelligence%20in%20a%20Day&amp;utm_content=Real-Time-Intelligence-in-a-Day-ADASTRA-2026-10-07" target="_blank" rel="noopener">Register</a>
-      </div>
-
-      <div class="event-card iad-slot" data-type="Real-Time Intelligence in a Day" data-modality="Virtual" data-month="10" data-partner="Koenig Solutions" data-search="real-time intelligence in a day koenig solutions turn streaming data into action with microsoft fabric real-time intelligence — ingest live events, analyze them with kql, and trigger alerts and insights across the organization. real-time intelligence in a day virtual">
-        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Oct</span><span class="iad-cal-d">8</span></div>
-        <div class="iad-info">
-          <span class="iad-day">Thursday</span>
-          <span class="event-time iad-hours" data-start="2026-10-08T15:00:00Z" data-end="2026-10-08T23:00:00Z"></span>
-          <span class="iad-by">with <a class="partner-link" href="https://www.koenig-solutions.com/microsoft-training-certification-courses" target="_blank" rel="noopener">Koenig Solutions</a></span>
-        </div>
-        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D1019534901&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Real-Time%20Intelligence%20in%20a%20Day&amp;utm_content=Real-Time-Intelligence-in-a-Day-Koenig-Solutions-2026-10-08" target="_blank" rel="noopener">Register</a>
-      </div>
-
-      <div class="event-card iad-slot" data-type="Real-Time Intelligence in a Day" data-modality="Virtual" data-month="10" data-partner="Intellify Solutions LLC" data-search="real-time intelligence in a day intellify solutions llc turn streaming data into action with microsoft fabric real-time intelligence — ingest live events, analyze them with kql, and trigger alerts and insights across the organization. real-time intelligence in a day virtual">
-        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Oct</span><span class="iad-cal-d">9</span></div>
-        <div class="iad-info">
-          <span class="iad-day">Friday</span>
-          <span class="event-time iad-hours" data-start="2026-10-09T13:00:00Z" data-end="2026-10-09T21:00:00Z"></span>
-          <span class="iad-by">with <a class="partner-link" href="https://intellifysolutions.com/" target="_blank" rel="noopener">Intellify Solutions LLC</a></span>
-        </div>
-        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D3212908785&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Real-Time%20Intelligence%20in%20a%20Day&amp;utm_content=Real-Time-Intelligence-in-a-Day-Intellify-Soluti-2026-10-09" target="_blank" rel="noopener">Register</a>
-      </div>
-
-      <div class="event-card iad-slot" data-type="Real-Time Intelligence in a Day" data-modality="Virtual" data-month="10" data-partner="OnPoint Insights LLC" data-search="real-time intelligence in a day onpoint insights llc turn streaming data into action with microsoft fabric real-time intelligence — ingest live events, analyze them with kql, and trigger alerts and insights across the organization. real-time intelligence in a day virtual">
-        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Oct</span><span class="iad-cal-d">21</span></div>
-        <div class="iad-info">
-          <span class="iad-day">Wednesday</span>
-          <span class="event-time iad-hours" data-start="2026-10-21T14:00:00Z" data-end="2026-10-21T22:00:00Z"></span>
-          <span class="iad-by">with <a class="partner-link" href="https://www.onpointinsights.us/" target="_blank" rel="noopener">OnPoint Insights LLC</a></span>
-        </div>
-        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D4071510644&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Real-Time%20Intelligence%20in%20a%20Day&amp;utm_content=Real-Time-Intelligence-in-a-Day-OnPoint-Insights-2026-10-21" target="_blank" rel="noopener">Register</a>
-      </div>
-
-      <div class="event-card iad-slot" data-type="Real-Time Intelligence in a Day" data-modality="Virtual" data-month="10" data-partner="Kanerika Inc" data-search="real-time intelligence in a day kanerika inc turn streaming data into action with microsoft fabric real-time intelligence — ingest live events, analyze them with kql, and trigger alerts and insights across the organization. real-time intelligence in a day virtual">
-        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Oct</span><span class="iad-cal-d">30</span></div>
-        <div class="iad-info">
-          <span class="iad-day">Friday</span>
-          <span class="event-time iad-hours" data-start="2026-10-30T13:00:00Z" data-end="2026-10-30T21:00:00Z"></span>
-          <span class="iad-by">with <a class="partner-link" href="https://kanerika.com/" target="_blank" rel="noopener">Kanerika Inc</a></span>
-        </div>
-        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D853457259&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Real-Time%20Intelligence%20in%20a%20Day&amp;utm_content=Real-Time-Intelligence-in-a-Day-Kanerika-Inc-2026-10-30" target="_blank" rel="noopener">Register</a>
-      </div>
-
-            </div>
-          </div>
           <div class="iad-month" data-month="11">
             <div class="iad-month-head"><span class="iad-month-name">November 2026</span><span class="iad-month-count">3 dates</span></div>
             <div class="events iad-slots">
@@ -2698,7 +3162,7 @@ document.addEventListener('DOMContentLoaded', function () {
             </div>
           </div>
           <div class="iad-month" data-month="12">
-            <div class="iad-month-head"><span class="iad-month-name">December 2026</span><span class="iad-month-count">2 dates</span></div>
+            <div class="iad-month-head"><span class="iad-month-name">December 2026</span><span class="iad-month-count">3 dates</span></div>
             <div class="events iad-slots">
 
       <div class="event-card iad-slot" data-type="Real-Time Intelligence in a Day" data-modality="Virtual" data-month="12" data-partner="Pragmatic Works" data-search="real-time intelligence in a day pragmatic works turn streaming data into action with microsoft fabric real-time intelligence — ingest live events, analyze them with kql, and trigger alerts and insights across the organization. real-time intelligence in a day virtual">
@@ -2721,6 +3185,32 @@ document.addEventListener('DOMContentLoaded', function () {
         <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D303365724&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Real-Time%20Intelligence%20in%20a%20Day&amp;utm_content=Real-Time-Intelligence-in-a-Day-OnPoint-Insights-2026-12-11" target="_blank" rel="noopener">Register</a>
       </div>
 
+      <div class="event-card iad-slot" data-type="Real-Time Intelligence in a Day" data-modality="Virtual" data-month="12" data-partner="Koenig Solutions" data-search="real-time intelligence in a day koenig solutions turn streaming data into action with microsoft fabric real-time intelligence — ingest live events, analyze them with kql, and trigger alerts and insights across the organization. real-time intelligence in a day virtual">
+        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Dec</span><span class="iad-cal-d">17</span></div>
+        <div class="iad-info">
+          <span class="iad-day">Thursday</span>
+          <span class="event-time iad-hours" data-start="2026-12-17T15:00:00Z" data-end="2026-12-17T23:00:00Z"></span>
+          <span class="iad-by">with <a class="partner-link" href="https://www.koenig-solutions.com/microsoft-training-certification-courses" target="_blank" rel="noopener">Koenig Solutions</a></span>
+        </div>
+        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D2898345767&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Real-Time%20Intelligence%20in%20a%20Day&amp;utm_content=Real-Time-Intelligence-in-a-Day-Koenig-Solutions-2026-12-17" target="_blank" rel="noopener">Register</a>
+      </div>
+
+            </div>
+          </div>
+          <div class="iad-month" data-month="1">
+            <div class="iad-month-head"><span class="iad-month-name">January 2027</span><span class="iad-month-count">1 date</span></div>
+            <div class="events iad-slots">
+
+      <div class="event-card iad-slot" data-type="Real-Time Intelligence in a Day" data-modality="Virtual" data-month="1" data-partner="OnPoint Insights LLC" data-search="real-time intelligence in a day onpoint insights llc turn streaming data into action with microsoft fabric real-time intelligence — ingest live events, analyze them with kql, and trigger alerts and insights across the organization. real-time intelligence in a day virtual">
+        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Jan</span><span class="iad-cal-d">29</span></div>
+        <div class="iad-info">
+          <span class="iad-day">Friday</span>
+          <span class="event-time iad-hours" data-start="2027-01-29T14:00:00Z" data-end="2027-01-29T22:00:00Z"></span>
+          <span class="iad-by">with <a class="partner-link" href="https://www.onpointinsights.us/" target="_blank" rel="noopener">OnPoint Insights LLC</a></span>
+        </div>
+        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D3771344266&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=Real-Time%20Intelligence%20in%20a%20Day&amp;utm_content=Real-Time-Intelligence-in-a-Day-OnPoint-Insights-2027-01-29" target="_blank" rel="noopener">Register</a>
+      </div>
+
             </div>
           </div>
           </div>
@@ -2728,7 +3218,7 @@ document.addEventListener('DOMContentLoaded', function () {
       </div>
 
       <div class="group" data-group="SQL AI App in a Day">
-        <button type="button" class="group-head" aria-expanded="false"><span class="chev">▸</span><span class="group-title">SQL AI App in a Day</span><span class="group-count">3 sessions</span></button>
+        <button type="button" class="group-head" aria-expanded="false"><span class="chev">▸</span><span class="group-title">SQL AI App in a Day</span><span class="group-count">4 sessions</span></button>
         <div class="group-body">
           <div class="iad-panel iad--sqlaiad">
             <div class="iad-intro">
@@ -2738,37 +3228,37 @@ document.addEventListener('DOMContentLoaded', function () {
                 <div class="iad-facts"><span>🧑‍🏫 Hands-on, partner-led</span><span>⏱️ Full day</span><span>💲 Free</span><span>💻 Live online</span></div>
                 <div class="iad-audience"><strong>Best for:</strong> SQL developers and DBAs.</div>
               </div>
-              <div class="iad-stats" aria-live="polite"><strong class="iad-n">3</strong><span class="iad-n-lbl">upcoming dates</span><span class="iad-range">Oct 6 – Dec 10</span><span class="iad-np">2 partners</span></div>
+              <div class="iad-stats" aria-live="polite"><strong class="iad-n">4</strong><span class="iad-n-lbl">upcoming dates</span><span class="iad-range">Nov 17 – Jan 20</span><span class="iad-np">4 partners</span></div>
             </div>
-          <div class="iad-month" data-month="10">
-            <div class="iad-month-head"><span class="iad-month-name">October 2026</span><span class="iad-month-count">2 dates</span></div>
+          <div class="iad-month" data-month="11">
+            <div class="iad-month-head"><span class="iad-month-name">November 2026</span><span class="iad-month-count">1 date</span></div>
             <div class="events iad-slots">
 
-      <div class="event-card iad-slot" data-type="SQL AI App in a Day" data-modality="Virtual" data-month="10" data-partner="MAQ Software" data-search="sql ai app in a day maq software for sql developers and dbas: build secure, ai-powered apps on trusted sql data with t-sql — bringing vector search and intelligent features to the database you already run. sql ai app in a day virtual">
-        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Oct</span><span class="iad-cal-d">6</span></div>
+      <div class="event-card iad-slot" data-type="SQL AI App in a Day" data-modality="Virtual" data-month="11" data-partner="NetCom Learning" data-search="sql ai app in a day netcom learning for sql developers and dbas: build secure, ai-powered apps on trusted sql data with t-sql — bringing vector search and intelligent features to the database you already run. sql ai app in a day virtual">
+        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Nov</span><span class="iad-cal-d">17</span></div>
         <div class="iad-info">
           <span class="iad-day">Tuesday</span>
-          <span class="event-time iad-hours" data-start="2026-10-06T13:00:00Z" data-end="2026-10-06T21:00:00Z"></span>
-          <span class="iad-by">with <a class="partner-link" href="https://maqsoftware.com/" target="_blank" rel="noopener">MAQ Software</a></span>
+          <span class="event-time iad-hours" data-start="2026-11-17T14:00:00Z" data-end="2026-11-17T21:00:00Z"></span>
+          <span class="iad-by">with <a class="partner-link" href="https://www.netcomlearning.com/" target="_blank" rel="noopener">NetCom Learning</a></span>
         </div>
-        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D4070661066&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=SQL%20AI%20App%20in%20a%20Day&amp;utm_content=SQL-AI-App-in-a-Day-MAQ-Software-2026-10-06" target="_blank" rel="noopener">Register</a>
-      </div>
-
-      <div class="event-card iad-slot" data-type="SQL AI App in a Day" data-modality="Virtual" data-month="10" data-partner="Koenig Solutions" data-search="sql ai app in a day koenig solutions for sql developers and dbas: build secure, ai-powered apps on trusted sql data with t-sql — bringing vector search and intelligent features to the database you already run. sql ai app in a day virtual">
-        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Oct</span><span class="iad-cal-d">30</span></div>
-        <div class="iad-info">
-          <span class="iad-day">Friday</span>
-          <span class="event-time iad-hours" data-start="2026-10-30T15:00:00Z" data-end="2026-10-30T23:00:00Z"></span>
-          <span class="iad-by">with <a class="partner-link" href="https://www.koenig-solutions.com/microsoft-training-certification-courses" target="_blank" rel="noopener">Koenig Solutions</a></span>
-        </div>
-        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D1513049915&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=SQL%20AI%20App%20in%20a%20Day&amp;utm_content=SQL-AI-App-in-a-Day-Koenig-Solutions-2026-10-30" target="_blank" rel="noopener">Register</a>
+        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D2973611742&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=SQL%20AI%20App%20in%20a%20Day&amp;utm_content=SQL-AI-App-in-a-Day-NetCom-Learning-2026-11-17" target="_blank" rel="noopener">Register</a>
       </div>
 
             </div>
           </div>
           <div class="iad-month" data-month="12">
-            <div class="iad-month-head"><span class="iad-month-name">December 2026</span><span class="iad-month-count">1 date</span></div>
+            <div class="iad-month-head"><span class="iad-month-name">December 2026</span><span class="iad-month-count">2 dates</span></div>
             <div class="events iad-slots">
+
+      <div class="event-card iad-slot" data-type="SQL AI App in a Day" data-modality="Virtual" data-month="12" data-partner="HexaCorp LLC" data-search="sql ai app in a day hexacorp llc for sql developers and dbas: build secure, ai-powered apps on trusted sql data with t-sql — bringing vector search and intelligent features to the database you already run. sql ai app in a day virtual">
+        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Dec</span><span class="iad-cal-d">9</span></div>
+        <div class="iad-info">
+          <span class="iad-day">Wednesday</span>
+          <span class="event-time iad-hours" data-start="2026-12-09T14:00:00Z" data-end="2026-12-09T22:00:00Z"></span>
+          <span class="iad-by">with <a class="partner-link" href="https://www.hexacorp.com" target="_blank" rel="noopener">HexaCorp LLC</a></span>
+        </div>
+        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D3999092399&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=SQL%20AI%20App%20in%20a%20Day&amp;utm_content=SQL-AI-App-in-a-Day-HexaCorp-LLC-2026-12-09" target="_blank" rel="noopener">Register</a>
+      </div>
 
       <div class="event-card iad-slot" data-type="SQL AI App in a Day" data-modality="Virtual" data-month="12" data-partner="MAQ Software" data-search="sql ai app in a day maq software for sql developers and dbas: build secure, ai-powered apps on trusted sql data with t-sql — bringing vector search and intelligent features to the database you already run. sql ai app in a day virtual">
         <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Dec</span><span class="iad-cal-d">10</span></div>
@@ -2778,6 +3268,22 @@ document.addEventListener('DOMContentLoaded', function () {
           <span class="iad-by">with <a class="partner-link" href="https://maqsoftware.com/" target="_blank" rel="noopener">MAQ Software</a></span>
         </div>
         <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D1652707947&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=SQL%20AI%20App%20in%20a%20Day&amp;utm_content=SQL-AI-App-in-a-Day-MAQ-Software-2026-12-10" target="_blank" rel="noopener">Register</a>
+      </div>
+
+            </div>
+          </div>
+          <div class="iad-month" data-month="1">
+            <div class="iad-month-head"><span class="iad-month-name">January 2027</span><span class="iad-month-count">1 date</span></div>
+            <div class="events iad-slots">
+
+      <div class="event-card iad-slot" data-type="SQL AI App in a Day" data-modality="Virtual" data-month="1" data-partner="Pragmatic Works" data-search="sql ai app in a day pragmatic works for sql developers and dbas: build secure, ai-powered apps on trusted sql data with t-sql — bringing vector search and intelligent features to the database you already run. sql ai app in a day virtual">
+        <div class="iad-cal" aria-hidden="true"><span class="iad-cal-m">Jan</span><span class="iad-cal-d">20</span></div>
+        <div class="iad-info">
+          <span class="iad-day">Wednesday</span>
+          <span class="event-time iad-hours" data-start="2027-01-20T14:00:00Z" data-end="2027-01-20T22:00:00Z"></span>
+          <span class="iad-by">with <a class="partner-link" href="http://www.pragmaticworks.com/" target="_blank" rel="noopener">Pragmatic Works</a></span>
+        </div>
+        <a class="btn btn--sm iad-reg" href="https://sme-c-infographics.github.io/redirect.htm?url=https%3A%2F%2Fmsevents.microsoft.com%2Fevent%3Fid%3D2480668921&amp;utm_source=azure-events-august-october-2026-collapsible&amp;utm_medium=email&amp;utm_campaign=PolePosition&amp;utm_term=SQL%20AI%20App%20in%20a%20Day&amp;utm_content=SQL-AI-App-in-a-Day-Pragmatic-Works-2027-01-20" target="_blank" rel="noopener">Register</a>
       </div>
 
             </div>
