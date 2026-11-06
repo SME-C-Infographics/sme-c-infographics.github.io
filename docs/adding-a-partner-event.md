@@ -5,6 +5,10 @@ lists **partner-hosted events for customers**. Each event comes from one Markdow
 (`.md`) file in [`partner-events/`](../partner-events/). Add or edit a file through
 a pull request; no HTML editing, command line, or local tools are required.
 
+Prefer AI assistance? Use the
+[copy-and-paste partner event agent instructions](partner-event-agent-instructions.md)
+to prepare the file, create your fork, and open a PR from pasted event details.
+
 ## 1. Fork and copy the template
 
 1. Fork this repository on GitHub (or **Sync fork** if you already have a fork).
