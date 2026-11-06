@@ -3119,6 +3119,31 @@ window.smecSessions = {
 </script>
 
 <script>
+/* 2c) "In a Day" workshops expire on their own (evaluated on every page load), the way Discovery Sessions do: a tile is
+   removed once its workshop has ended, a month block or workshop type left with no dates goes with it (and its Type filter
+   option), and the section disappears once every workshop is over. Unchecking "Hide past events" can't bring them back. */
+(function () {
+  var now = new Date(), secs = [];
+  Array.from(document.querySelectorAll('.iad-slot')).forEach(function (card) {
+    var sec = card.closest('.section');
+    if (sec && secs.indexOf(sec) === -1) secs.push(sec);
+    var t = card.querySelector('.event-time[data-start]');
+    var end = t ? new Date(t.dataset.end || t.dataset.start) : null;
+    if (end && !isNaN(end.getTime()) && end < now) card.remove();
+  });
+  secs.forEach(function (sec) {
+    Array.from(sec.querySelectorAll('.iad-month')).forEach(function (m) { if (!m.querySelector('.iad-slot')) m.remove(); });
+    Array.from(sec.querySelectorAll('.group')).forEach(function (g) {
+      if (!g.querySelector('.iad-panel') || g.querySelector('.iad-slot')) return;
+      Array.from(document.querySelectorAll('#f-type option')).forEach(function (o) { if (o.value === g.dataset.group) o.remove(); });
+      g.remove();
+    });
+    if (!sec.querySelector('.group')) sec.remove();
+  });
+})();
+</script>
+
+<script>
 /* 2a) Discovery Sessions expire on their own (evaluated on every page load): each date drops off its tile once the
    session ends, tiles with no dates left are removed, and the section plus its filter options disappear once all are over */
 (function () {
