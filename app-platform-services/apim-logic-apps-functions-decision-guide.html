@@ -774,8 +774,8 @@
           <ul class="bullet-list warn" aria-label="APIM watch-outs">
             <li><strong>Premium v2 does not support multi-region deployment</strong> — only classic Premium does (12 units/region). Do not position v2 for geo-redundant gateway scenarios.</li>
             <li>No automated migration path from classic tiers to v2; must redeploy.</li>
-            <li>Basic v2 has no VNet support (no outbound integration, no private endpoint). Standard v2 adds outbound VNet integration and inbound private endpoints, but the gateway remains publicly accessible — full VNet injection requires Premium v2.</li>
-            <li><strong>Trusted service connectivity was retired March 15, 2026.</strong> Private Link or VNet line-of-sight is now required — audit any flows still relying on the old shortcut.</li>
+            <li>Basic v2 has no VNet support (no outbound integration, no private endpoint). Standard v2 adds outbound VNet integration and inbound private endpoints; public gateway access can be disabled after configuring a private endpoint. Full VNet injection requires Premium v2.</li>
+            <li><strong>Trusted service connectivity was retired March 15, 2026.</strong> Establish alternative network access, such as Private Link or appropriate network rules, for affected gateway-to-backend flows.</li>
           </ul>
 
           <div class="card-section-title">SKU / Networking Summary</div>
@@ -854,7 +854,7 @@
         <div class="card-body">
           <div class="card-section-title">Strengths</div>
           <ul class="bullet-list" aria-label="Logic Apps strengths">
-            <li>1,400+ managed connectors — SaaS, enterprise systems, databases, and messaging</li>
+            <li>1,400+ connectors — SaaS, enterprise systems, databases, and messaging</li>
             <li>Visual designer + code view; local development and CI/CD in Standard</li>
             <li>B2B integration: EDI, AS2, X12, EDIFACT, XML transformation</li>
             <li>Stateful workflows with run history, retry policies, and compensating logic</li>
@@ -882,7 +882,7 @@
           <div class="card-section-title">Auth Default</div>
           <div class="auth-pill">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-            Managed Identity (system or user-assigned)
+            Managed Identity (system or user-assigned; not supported in Hybrid)
           </div>
 
           <div class="card-section-title">Conversation Trigger</div>
@@ -904,7 +904,7 @@
           </div>
           <div class="agent-feature">
             <span class="badge badge-prev">Preview</span>
-            <span class="agent-feature-text"><span class="agent-feature-name">Remote MCP Servers (Standard):</span> Expose Standard logic app workflows as MCP tool endpoints. OAuth 2.0 via Easy Auth. 1,400+ connectors as MCP tools.</span>
+            <span class="agent-feature-text"><span class="agent-feature-name">Remote MCP Servers (Standard):</span> Expose Standard logic app workflows as MCP tool endpoints. Configure OAuth 2.0 via Easy Auth. Build workflows using available connectors for use as MCP tools.</span>
           </div>
           <div class="agent-feature">
             <span class="badge badge-prev">Preview</span>
@@ -936,7 +936,7 @@
         <div class="card-body">
           <div class="card-section-title">Strengths</div>
           <ul class="bullet-list" aria-label="Functions strengths">
-            <li>Full language support: C#, JavaScript, TypeScript, Python, Java, PowerShell — plus Go as a first-class language (public preview), and other languages (Rust) via custom handlers</li>
+            <li>Language support: C#, JavaScript, TypeScript, Python, Java, PowerShell, and Go (GA on Flex Consumption) — plus other languages (Rust) via custom handlers</li>
             <li>Rich trigger &amp; binding ecosystem: HTTP, Timer, Blob, Queue, Event Hubs, Cosmos DB, and more</li>
             <li>Flex Consumption: VNet-integrated serverless at consumption pricing — per-function scaling</li>
             <li>Durable Functions: stateful orchestration, fan-out/fan-in, external events, long-running workflows</li>
@@ -944,7 +944,7 @@
 
           <div class="card-section-title">Watch-outs</div>
           <ul class="bullet-list warn" aria-label="Functions watch-outs">
-            <li><strong>.NET in-process model support ends November 10, 2026.</strong> .NET 10 is isolated-worker only. Flex Consumption requires isolated-worker. Migrate now.</li>
+            <li><strong>.NET in-process model support ended November 10, 2026.</strong> .NET 10 is isolated-worker only. Flex Consumption requires isolated-worker. Migrate now.</li>
             <li>Consumption plan has no VNet integration and classic cold-start behavior. Flex Consumption is the recommended replacement for new serverless builds.</li>
             <li>Plan selection materially changes cost, cold-start, VNet, and AZ behavior — “Functions” alone is not a sufficient architecture spec.</li>
             <li><strong>Build 2026 — Cobalt 200 Arm VMs:</strong> Microsoft’s next-gen Arm processor (~50% perf gain over Cobalt 100, fully optimized for agentic workloads) is launching in preview. Track Functions plan availability for cost/perf rebalancing.</li>
@@ -957,7 +957,7 @@
               <tr><td><span class="sku-name">Consumption</span></td><td>None</td><td>Yes</td><td>Simplest entry; event-driven</td></tr>
               <tr><td><span class="sku-name">Flex Consumption</span></td><td>Yes (included)</td><td>Optional (always-ready, add'l cost)</td><td><strong>Recommended new serverless</strong></td></tr>
               <tr><td><span class="sku-name">Premium (EP)</span></td><td>Yes</td><td>None (warm)</td><td>Latency-sensitive, high-throughput</td></tr>
-              <tr><td><span class="sku-name">Dedicated (ASP)</span></td><td>Yes</td><td>None</td><td>Predictable cost, App Service features</td></tr>
+              <tr><td><span class="sku-name">Dedicated (ASP)</span></td><td>Yes</td><td>Use Always On</td><td>Predictable cost, App Service features</td></tr>
               <tr><td><span class="sku-name">Container Apps (ACA)</span></td><td>Yes</td><td>Configurable</td><td>KEDA, Dapr, GPU, microservices</td></tr>
             </tbody>
           </table>
@@ -979,11 +979,11 @@
           </div>
           <div class="agent-feature">
             <span class="badge badge-ga">GA</span>
-            <span class="agent-feature-text"><span class="agent-feature-name">MCP Tool Trigger (McpToolTrigger):</span> Expose individual functions as MCP tool endpoints for LLMs and agents. Supports C#, Java, JavaScript, Python, TypeScript. Entra ID / OAuth built-in via Easy Auth. Scales to zero on Flex Consumption.</span>
+            <span class="agent-feature-text"><span class="agent-feature-name">MCP Tool Trigger (McpToolTrigger):</span> Expose individual functions as MCP tool endpoints for LLMs and agents. Supports C#, Java, JavaScript, Python, TypeScript. Configure Entra ID / OAuth via Easy Auth. Scales to zero on Flex Consumption.</span>
           </div>
           <div class="agent-feature">
             <span class="badge badge-prev">Preview</span>
-            <span class="agent-feature-text"><span class="agent-feature-name">Self-hosted MCP Server (SDK):</span> Host a full MCP server using the Functions MCP SDK — custom tool discovery, resource endpoints, and MCP protocol handling. Public Preview. Isolated-worker model only.</span>
+            <span class="agent-feature-text"><span class="agent-feature-name">Self-hosted MCP Server (SDK):</span> Host a server built with an official MCP SDK as a Functions custom handler. Public Preview.</span>
           </div>
           <div class="agent-feature">
             <span class="badge badge-prev">Preview</span>
@@ -995,7 +995,7 @@
           </div>
           <div class="agent-feature">
             <span class="badge badge-ga">GA</span>
-            <span class="agent-feature-text"><span class="agent-feature-name">OpenTelemetry:</span> First-class distributed tracing and metrics export across all hosting plans.</span>
+            <span class="agent-feature-text"><span class="agent-feature-name">OpenTelemetry:</span> Configure host and worker log and trace export; C# in-process apps are not supported.</span>
           </div>
         </div>
 
@@ -1055,7 +1055,7 @@
           </div>
           <div class="dt-comp-card" style="border:2px solid var(--blue)">
             <div class="dt-comp-services">All Three — Canonical Pattern</div>
-            <div class="dt-comp-use">APIM AI Gateway → Logic Apps Agent Loop → Functions MCP Tools. See Pattern C.</div>
+            <div class="dt-comp-use">Logic Apps Agent Loop → Functions MCP Tools, with APIM governing model calls. See Pattern C.</div>
           </div>
         </div>
       </div>
@@ -1114,7 +1114,7 @@
           <tr>
             <td><span class="dim-label">Connector richness</span></td>
             <td>N/A — backends, not connectors</td>
-            <td>1,400+ managed connectors</td>
+            <td>1,400+ connectors</td>
             <td>Triggers &amp; bindings (focused, not a connector hub)</td>
           </tr>
           <tr>
@@ -1138,13 +1138,13 @@
           <tr>
             <td><span class="dim-label">Managed identity</span></td>
             <td>Yes — system &amp; user-assigned</td>
-            <td>Yes — system &amp; user-assigned (Standard); system-assigned (Consumption)</td>
+            <td>System &amp; user-assigned (Consumption and Standard); connector restrictions apply. Hybrid: not supported</td>
             <td>Yes — system &amp; user-assigned</td>
           </tr>
           <tr>
             <td><span class="dim-label">VNet integration</span></td>
             <td>Standard v2: outbound; Premium v2: full injection; Classic Premium: full injection + multi-region</td>
-            <td>Standard only (WS1+, ASE v3, Hybrid); Consumption: none</td>
+            <td>Standard supports VNet integration (WS1+, ASE v3); Hybrid runs on-premises. Consumption: none</td>
             <td>Flex Consumption, Premium, Dedicated, ACA: yes; Consumption plan: none</td>
           </tr>
           <tr>
@@ -1211,12 +1211,7 @@
           <div class="arch-card-use">Autonomous loan processing, order fulfillment, incident response automation</div>
         </div>
         <div class="arch-card-body">
-          <div class="arch-diagram" role="img" aria-label="Architecture diagram: APIM AI Gateway to Logic Apps Standard Agent Loop to connectors and enterprise systems">
-            <div class="arch-node arch-node-blue">
-              APIM — AI Gateway
-              <span class="arch-node-sub">Model access governance + BYOM routing</span>
-            </div>
-            <div class="arch-arrow" aria-hidden="true">↓</div>
+          <div class="arch-diagram" role="img" aria-label="Architecture diagram: Logic Apps Standard Agent Loop to connectors and enterprise systems">
             <div class="arch-node arch-node-teal" style="border-color:#0F6CBD;background:#E3F2FF;color:#093964">
               Logic Apps Standard — Agent Loop
               <span class="arch-node-sub">Autonomous orchestrator (GA in Standard)</span>
@@ -1228,7 +1223,7 @@
             </div>
           </div>
           <div class="arch-key">
-            <strong>Key capability:</strong> Agent Loop uses tools built from connector actions. APIM fronts model calls for token governance and model portability (swap models without changing workflow code).
+            <strong>Key capability:</strong> Agent Loop uses tools built from connector actions. Its separate model path can use Agent Loop → APIM → LLM API (preview) for token governance and model portability.
           </div>
           <div class="arch-sku-note">
             <strong>Key SKUs:</strong> Logic Apps Standard WS1+ (VNet, Agent Loop GA) + APIM Standard v2 for AI Gateway
@@ -1243,12 +1238,7 @@
           <div class="arch-card-use">Multi-agent enterprise AI with governed model access, connector-rich tooling, custom code tools</div>
         </div>
         <div class="arch-card-body">
-          <div class="arch-diagram" role="img" aria-label="Architecture diagram: APIM AI Gateway to Logic Apps Agent Loop to Functions Flex MCP Tools with Service Bus and Event Grid async">
-            <div class="arch-node arch-node-blue">
-              APIM — AI Gateway
-              <span class="arch-node-sub">Governs all LLM traffic into the composition</span>
-            </div>
-            <div class="arch-arrow" aria-hidden="true">↓</div>
+          <div class="arch-diagram" role="img" aria-label="Architecture diagram: Logic Apps Agent Loop to Functions Flex MCP Tools with Service Bus and Event Grid async">
             <div class="arch-node arch-node-teal" style="border-color:#0F6CBD;background:#E3F2FF;color:#093964">
               Logic Apps Standard — Agent Loop
               <span class="arch-node-sub">Orchestrator — calls connector tools + MCP tools</span>
@@ -1265,7 +1255,7 @@
             </div>
           </div>
           <div class="arch-key">
-            <strong>The new canonical pattern.</strong> APIM governs model access. Logic Apps orchestrates the agentic business process using connectors + MCP tools. Functions hosts the MCP tools that require custom code.
+            <strong>Composed pattern.</strong> Logic Apps orchestrates the process using connectors + MCP tools; Functions hosts custom code tools. Separately, Agent Loop can call an LLM API through APIM (preview) for model governance.
           </div>
           <div class="arch-sku-note">
             <strong>Key SKUs:</strong> APIM Standard v2 or Premium v2 + Logic Apps Standard WS1+ + Functions Flex Consumption
@@ -1283,11 +1273,11 @@
       </div>
       <div class="comp-grid">
         <div class="comp-item"><strong>Auth: APIM → Functions</strong>Managed identity preferred. Function keys acceptable for dev/test only. Entra ID (Easy Auth) for production MCP tool endpoints.</div>
-        <div class="comp-item"><strong>Networking Tier Matching</strong>APIM Standard v2 (outbound VNet) + Functions Flex (VNet included) gives private connectivity at sub-Premium cost. No Premium plan required for most scenarios.</div>
-        <div class="comp-item"><strong>Cold Start Mitigation</strong>Flex Consumption Always Ready instances mitigate cold starts for critical paths. Use Premium plan only when sub-50ms p99 latency is required.</div>
-        <div class="comp-item"><strong>Agent Loop Model Access</strong>Always route Logic Apps Agent Loop model calls through APIM AI Gateway — required for token governance, monitoring, model portability, and BYOM. Direct wiring to endpoints loses visibility.</div>
-        <div class="comp-item"><strong>Managed Identity Throughout</strong>Every service-to-service hop in a composition should use managed identity. Keys and secrets in connection strings are an architecture review failure point.</div>
-        <div class="comp-item"><strong>Trusted Service Connectivity — Retired</strong>March 15, 2026 (past): Trusted connectivity from the APIM gateway to Storage, Key Vault, Service Bus, and Event Hubs is retired. If not yet migrated to Private Link or VNet line-of-sight, connectivity is already failing — act immediately.</div>
+        <div class="comp-item"><strong>Networking Tier Matching</strong>APIM Standard v2 outbound VNet integration and a Functions private endpoint can provide private backend connectivity when configured with appropriate DNS and access settings.</div>
+        <div class="comp-item"><strong>Cold Start Mitigation</strong>Flex Consumption always-ready instances mitigate cold starts. Premium also offers always-ready and prewarmed instances; benchmark the complete workload against its latency goals.</div>
+        <div class="comp-item"><strong>Agent Loop Model Access</strong>Standard Agent Loop can use an Azure OpenAI resource directly or an APIM LLM API as a preview model source. Consider APIM for centralized model governance and monitoring.</div>
+        <div class="comp-item"><strong>Managed Identity Throughout</strong>Prefer managed identity where supported; verify each service and connector. Standard Hybrid uses an app registration instead.</div>
+        <div class="comp-item"><strong>Trusted Service Connectivity — Retired</strong>March 15, 2026 (past): Affected APIM gateway-to-backend flows require alternative network access, such as Private Link or appropriate network rules.</div>
       </div>
     </div>
   </section>
@@ -1365,7 +1355,7 @@
             <li class="no">No automated migration to v2</li>
             <li class="no">Legacy platform</li>
           </ul>
-          <span class="sku-pill" style="background:var(--warn-bg);color:var(--preview)">Use only for multi-region requirements</span>
+          <span class="sku-pill" style="background:var(--warn-bg);color:var(--preview)">For multi-region or classic-only features</span>
         </div>
       </div>
     </div>
@@ -1419,7 +1409,7 @@
           <ul class="sku-feature-list">
             <li class="yes">On-premises deployment</li>
             <li class="yes">Arc-connected</li>
-            <li class="yes">Managed identity</li>
+            <li class="no">Managed identity not supported; use app registration</li>
             <li class="no">No cloud-native auto-scale</li>
           </ul>
           <span class="sku-pill" style="background:var(--card-bg);color:var(--text-sec)">On-prem / regulated edge</span>
@@ -1450,7 +1440,7 @@
             <li class="no">No VNet integration</li>
             <li class="yes">Managed identity</li>
             <li class="no">Classic cold starts</li>
-            <li class="no">In-process model: retires Nov 2026</li>
+            <li class="no">In-process model: support ended Nov 2026</li>
             <li class="yes">Simple event processing</li>
           </ul>
           <span class="sku-pill" style="background:var(--card-bg);color:var(--text-sec)">Basic entry; plan migration ahead</span>
@@ -1545,13 +1535,13 @@
         <div class="anti-icon" aria-hidden="true">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--error)" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
         </div>
-        <div class="anti-text"><strong>Picking a SKU without validating networking requirements first.</strong> The #1 architecture review failure. APIM Standard v2 + Functions Flex delivers private connectivity for well under half the cost of classic Premium + Premium plan Functions.</div>
+        <div class="anti-text"><strong>Picking a SKU without validating networking requirements first.</strong> Compare networking features and estimate costs for the actual region, configuration, and workload.</div>
       </div>
       <div class="anti-item" role="listitem">
         <div class="anti-icon" aria-hidden="true">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--error)" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
         </div>
-        <div class="anti-text"><strong>Wiring Agent Loop directly to model endpoints.</strong> Bypassing APIM AI Gateway loses token governance, usage monitoring, semantic caching, and model portability. Route model traffic through APIM AI Gateway.</div>
+        <div class="anti-text"><strong>Overlooking model governance requirements.</strong> Direct model connections are supported; consider APIM as a preview model source when centralized token governance and monitoring are needed.</div>
       </div>
       <div class="anti-item" role="listitem">
         <div class="anti-icon" aria-hidden="true">
@@ -1607,7 +1597,7 @@
           <tr>
             <td><span class="customer-says">"We need to expose APIs to partners."</span></td>
             <td><span class="lead-with">APIM</span></td>
-            <td><span class="sku-note-small">Standard v2 for private endpoints and VNet; Premium v2 for AZs and workspaces; Classic Premium only if multi-region is required.</span></td>
+            <td><span class="sku-note-small">Standard v2 for private endpoints and VNet; Premium v2 for full gateway VNet injection; Classic Premium for multi-region or classic-only features.</span></td>
           </tr>
           <tr>
             <td><span class="customer-says">"We need to connect SaaS apps and automate a business process."</span></td>
@@ -1617,17 +1607,17 @@
           <tr>
             <td><span class="customer-says">"We need to run custom logic on events."</span></td>
             <td><span class="lead-with">Azure Functions</span></td>
-            <td><span class="sku-note-small">Default to Flex Consumption for new serverless builds. Premium only if sub-50ms p99 latency required or always-warm non-negotiable.</span></td>
+            <td><span class="sku-note-small">Default to Flex Consumption for new serverless builds. Consider Premium for prewarmed instances, custom containers, or larger compute; benchmark latency.</span></td>
           </tr>
           <tr>
             <td><span class="customer-says">"We're building AI agents."</span></td>
             <td><span class="lead-with">Depends on agent shape — connector-heavy, compute-heavy, or full stack</span></td>
-            <td><span class="sku-note-small"><strong>Connector-heavy</strong> (SaaS, CRM, ERP, M365): Logic Apps Standard Agent Loop (GA, WS1+) + APIM AI Gateway. <strong>Compute/code-heavy</strong> (custom logic, tight latency): Functions Flex MCP tools + APIM AI Gateway. <strong>Full governed architecture</strong> (both): Pattern C — APIM Standard v2 + Logic Apps Standard + Functions Flex. In all cases: always route model calls through APIM AI Gateway; never wire directly to model endpoints.</span></td>
+            <td><span class="sku-note-small"><strong>Connector-heavy</strong> (SaaS, CRM, ERP, M365): Logic Apps Standard Agent Loop (GA, WS1+). <strong>Compute/code-heavy</strong> (custom logic, tight latency): Functions Flex MCP tools. <strong>Full governed architecture</strong> (both): Pattern C — APIM Standard v2 + Logic Apps Standard + Functions Flex. Consider APIM for model governance; its Agent Loop model source is preview.</span></td>
           </tr>
           <tr>
             <td><span class="customer-says">"We need private networking everywhere."</span></td>
             <td><span class="lead-with">The v2 stack: APIM Standard v2 + Logic Apps Standard + Functions Flex</span></td>
-            <td><span class="sku-note-small">All support VNet at sub-Premium cost. Premium tiers required only for multi-region (APIM Classic Premium) or latency-critical paths (Functions Premium plan).</span></td>
+            <td><span class="sku-note-small">Configure private endpoints, VNet integration, DNS, and public-access settings as needed. Check each service endpoint and tier for its networking requirements.</span></td>
           </tr>
           <tr>
             <td><span class="customer-says">"We have BizTalk and need to modernize."</span></td>
@@ -1642,7 +1632,7 @@
           <tr>
             <td><span class="customer-says">"We need to host MCP tools for agents."</span></td>
             <td><span class="lead-with">Azure Functions (Flex Consumption) with MCP tool trigger</span></td>
-            <td><span class="sku-note-small">GA. Entra / OAuth built-in via Easy Auth. Scales to zero. C#, Java, JavaScript, Python, TypeScript. Also: Logic Apps Standard as MCP server (preview).</span></td>
+            <td><span class="sku-note-small">GA. Configure Entra / OAuth via Easy Auth. Scales to zero. C#, Java, JavaScript, Python, TypeScript. Also: Logic Apps Standard as MCP server (preview).</span></td>
           </tr>
           <tr>
             <td><span class="customer-says">"We need a chatbot backend."</span></td>
@@ -1690,9 +1680,9 @@
 
       <div class="tl-item" role="listitem">
         <div class="tl-dot tl-dot-red" aria-hidden="true"></div>
-        <div class="tl-date">November 10, 2026</div>
+        <div class="tl-date">November 10, 2026 — Passed</div>
         <div class="tl-title">Azure Functions — .NET In-Process Model Retirement</div>
-        <div class="tl-desc">.NET in-process model support ends. After this date: no security updates, no bug fixes, new features isolated-worker only. Apps may continue running but are unsupported. .NET 10 and Flex Consumption require isolated-worker today. Migrate using the Azure Functions migration guide. Check for in-process apps via Azure PowerShell: apps with runtime "dotnet" (not "dotnet-isolated").</div>
+        <div class="tl-desc">.NET in-process model support ended. After this date: no security updates, no bug fixes, new features isolated-worker only. Apps may continue running but are unsupported. .NET 10 and Flex Consumption require isolated-worker today. Migrate using the Azure Functions migration guide. Check for in-process apps via Azure PowerShell: apps with runtime "dotnet" (not "dotnet-isolated").</div>
       </div>
 
       <div class="tl-item" role="listitem">
@@ -1720,7 +1710,7 @@
             <li><strong>Logic Apps multi-agent handoff (Standard):</strong> Preview. Watch for GA alongside broader Agent Loop feature graduation.</li>
             <li><strong>Durable Task for Microsoft Agent Framework:</strong> Preview. Multi-agent orchestration with OpenAI SDK. Watch for GA alongside Agent Framework GA.</li>
             <li><strong>Durable Task Scheduler — SKU availability:</strong> Check current Dedicated and Consumption availability and regional support in the <a href="https://learn.microsoft.com/en-us/azure/durable-task/scheduler/durable-task-scheduler" target="_blank" rel="noopener">scheduler documentation</a>; don't infer release status from the billing model.</li>
-            <li><strong>APIM AI Gateway tier:</strong> Public preview — a dedicated, fully managed APIM gateway resource for models and MCP tools (runtime access keys, self-service catalog, token/request limits, content safety). Preview regions: East US 2 and Sweden Central; pricing not yet announced.</li>
+            <li><strong>AI Gateway:</strong> Public preview — a separate managed product for model and MCP traffic, distinct from API Management's AI gateway capabilities. Preview regions: East US 2 and Sweden Central.</li>
             <li><strong>APIM v2 feature parity gaps:</strong> Multi-region deployment, backup/restore, self-hosted gateway, and static IP remain unavailable in the v2 tiers. Multiple custom domain names for the gateway are now supported in Premium v2 (still unavailable in Basic v2 and Standard v2). Monitor Azure updates for roadmap items.</li>
           </ul>
         </div>
@@ -1773,7 +1763,7 @@
     </div>
 
     <div class="summary-hero-note" role="note" aria-label="Key takeaway: the v2 SKU generation">
-      <strong>The v2 SKU generation changes the cost equation.</strong> APIM Standard v2 + Logic Apps Standard + Functions Flex Consumption delivers the composed architecture with full private networking at significantly lower cost and complexity than the classic Premium stack. For most new production designs, the v2/Flex generation is the right starting point — escalating to classic Premium or Functions Premium only when multi-region (APIM), full management plane isolation (classic Premium), or sub-50ms cold-start guarantees (Functions Premium) are genuine requirements.
+      <strong>The v2 SKU generation offers more options.</strong> APIM Standard v2 + Logic Apps Standard + Functions Flex Consumption can support a composed architecture with private connectivity when appropriately configured. Compare costs and networking for the workload; consider classic Premium for multi-region or classic-only features and Functions Premium for prewarmed instances, custom containers, or larger compute.
     </div>
   </section>
 
