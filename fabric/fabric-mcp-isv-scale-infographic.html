@@ -417,7 +417,7 @@ h2.sec-title{font-size:30px; font-weight:850; letter-spacing:-.02em; line-height
   <div class="wrap">
     <span class="sec-tag"><span class="n">1</span> The challenge</span>
     <h2 class="sec-title">Per-tenant analytics doesn't scale by hand</h2>
-    <p class="sec-lede">An ISV embedding analytics must give <em>every</em> customer their own semantic model, reports, refresh schedule, security boundary, and branding. Multiply that by thousands of tenants and the manual approach collapses under its own weight.</p>
+    <p class="sec-lede">An ISV embedding analytics must protect each customer's data. This example uses a separate workspace, semantic model, reports, refresh schedule, and branding per customer; other designs can share resources with appropriate security. Multiply per-customer resources by thousands of tenants and the manual approach becomes difficult to manage.</p>
     <div class="problem-grid">
       <div class="fanout">
         <span class="src">◆ One ISV analytics product</span>
@@ -443,7 +443,7 @@ h2.sec-title{font-size:30px; font-weight:850; letter-spacing:-.02em; line-height
 <section>
   <div class="wrap">
     <span class="sec-tag"><span class="n">2</span> The platform stack</span>
-    <h2 class="sec-title">Six first-party capabilities, each precisely scoped</h2>
+    <h2 class="sec-title">Six capabilities and patterns, each precisely scoped</h2>
     <p class="sec-lede">Generic talk of "Power BI &amp; Fabric MCP" hides important distinctions. Each component below is a distinct, documented Microsoft capability with its own scope, transport, and auth model — and they compose.</p>
 
     <div class="blocks">
@@ -453,9 +453,9 @@ h2.sec-title{font-size:30px; font-weight:850; letter-spacing:-.02em; line-height
         <div class="bk-head"><span class="bk-ic">⬡</span>
           <div><span class="kx">The semantic-model engine</span><h3>Power BI Authoring MCP Server<span class="flag local">LOCAL · STDIO · GA</span><span class="flag prev">HOSTED · PREVIEW</span></h3></div>
         </div>
-        <p>A local MCP server (<code>@microsoft/powerbi-modeling-mcp</code>), now generally available, that connects AI agents to Power BI semantic models in Desktop, a Fabric workspace, or PBIP files. A separate Microsoft-hosted (preview) deployment of the same server covers Fabric-workspace models without a local install. Executes <strong>modeling operations only</strong> — tables, columns, measures, DAX, relationships, RLS, calculation groups, translations — with <strong>bulk, transactional</strong> edits across hundreds of objects. It cannot author report pages or visuals.</p>
+        <p>A local MCP server (<code>@microsoft/powerbi-modeling-mcp</code>), now generally available, that connects AI agents to Power BI semantic models in Desktop, a Fabric workspace, or PBIP files. A Microsoft-hosted (preview) deployment of the same server covers Fabric-workspace models without a local install. Both support bulk modeling edits; <strong>transactions are local-only</strong>. The server cannot author report pages or visuals. Local workspace authoring requires a read-write XMLA endpoint; model changes require Write permission.</p>
         <div class="meta-row">
-          <span class="mtag">Auth: <b>interactive · service principal</b></span>
+          <span class="mtag">Auth: <b>local: interactive or service principal · hosted: signed-in user</b></span>
           <span class="mtag">Modes: <b>readwrite · readonly</b></span>
         </div>
         <div class="tags"><span class="tag">Create / edit models</span><span class="tag">DAX measures</span><span class="tag">Bulk + transactions</span><span class="tag">Deploy &amp; refresh</span></div>
@@ -466,7 +466,7 @@ h2.sec-title{font-size:30px; font-weight:850; letter-spacing:-.02em; line-height
         <div class="bk-head"><span class="bk-ic">◎</span>
           <div><span class="kx">The platform-control plane</span><h3>Fabric Core MCP Server<span class="flag ga">GA</span><span class="flag remote">REMOTE</span></h3></div>
         </div>
-        <p>A <strong>remote endpoint</strong> at <code>api.fabric.microsoft.com/v1/mcp/core</code> that turns prompts into Fabric REST API calls — respecting your RBAC and writing audit logs. Tools cover <strong>catalog search, workspace CRUD, item management</strong> (lakehouses, semantic models, notebooks, pipelines), <strong>permission &amp; folder</strong> management, and <strong>capacity</strong> info.</p>
+        <p>A <strong>remote endpoint</strong> at <code>api.fabric.microsoft.com/v1/mcp/core</code> that turns prompts into Fabric REST API calls — respecting your RBAC and logging supported operations. Tools cover <strong>catalog search, workspace CRUD, item management</strong> (lakehouses, semantic models, notebooks, pipelines), <strong>permission &amp; folder</strong> management, and <strong>capacity</strong> info.</p>
         <div class="meta-row">
           <span class="mtag">Auth: <b>OAuth 2.0 · Entra ID</b></span>
           <span class="mtag">Respects: <b>Fabric RBAC + audit</b></span>
@@ -477,13 +477,13 @@ h2.sec-title{font-size:30px; font-weight:850; letter-spacing:-.02em; line-height
       <!-- Power BI authoring plugin skills -->
       <div class="block b-skill">
         <div class="bk-head"><span class="bk-ic">◈</span>
-          <div><span class="kx">Skills for Fabric — PowerBI authoring plugin</span><h3>Semantic Model &amp; Report Authoring skills<span class="flag prev">PREVIEW</span></h3></div>
+          <div><span class="kx">Skills for Fabric — Power BI authoring plugin</span><h3>Semantic Model Authoring &amp; Report skills<span class="flag prev">PREVIEW</span></h3></div>
         </div>
-        <p>Reusable, open-source agent instructions (<code>microsoft/skills-for-fabric</code>, MIT). The <strong>Power BI Semantic Model Authoring skill</strong> routes model work to the Authoring MCP Server first. The <strong>Power BI Report Authoring skill</strong> (<code>powerbi-report-authoring</code>) authors the report layer — pages, visuals, slicers, themes — in <strong>PBIR/PBIP</strong>, paired with the Report Design &amp; Report Planner skills.</p>
+        <p>Reusable, open-source agent instructions (<code>microsoft/skills-for-fabric</code>, MIT). The <strong>Power BI Semantic Model Authoring skill</strong> routes model work to the Authoring MCP Server first. The unified <strong>Power BI Report skill</strong> (<code>powerbi-report-cli</code>) plans, designs, authors, validates, and manages reports, including <strong>PBIR/PBIP</strong> definitions.</p>
         <div class="meta-row">
           <span class="mtag">Tools: <b>Copilot CLI · VS Code · Claude · Cursor</b></span>
         </div>
-        <div class="tags"><span class="tag">semantic-model-authoring</span><span class="tag">powerbi-report-authoring</span><span class="tag">report-design · planner</span></div>
+        <div class="tags"><span class="tag">semantic-model-authoring</span><span class="tag">powerbi-report-cli</span><span class="tag">planning · design · authoring</span></div>
       </div>
 
       <!-- Fabric REST APIs -->
@@ -491,7 +491,7 @@ h2.sec-title{font-size:30px; font-weight:850; letter-spacing:-.02em; line-height
         <div class="bk-head"><span class="bk-ic">{ }</span>
           <div><span class="kx">The foundational surface</span><h3>Fabric REST APIs</h3></div>
         </div>
-        <p>The programmable foundation <em>every</em> layer above ultimately calls. Direct REST gives you <strong>maximum control</strong>: item-definition CRUD, <strong>deployment pipelines</strong>, <strong>Git integration</strong>, capacities, and long-running operations — drivable by the <strong>Fabric CLI</strong>, the <strong>fabric-cicd</strong> Python library, or the <strong>Terraform provider for Fabric</strong> in your own CI/CD.</p>
+        <p>A programmable surface for Fabric automation. Direct REST gives you control over supported operations: item-definition CRUD, <strong>deployment pipelines</strong>, <strong>Git integration</strong>, capacities, and long-running operations — drivable by the <strong>Fabric CLI</strong>, the <strong>fabric-cicd</strong> Python library, or the <strong>Terraform provider for Fabric</strong> in your own CI/CD. Other workflows use Power BI REST APIs, XMLA, or local files.</p>
         <div class="meta-row">
           <span class="mtag">CI/CD: <b>fabric-cicd · Terraform · CLI</b></span>
         </div>
@@ -507,17 +507,17 @@ h2.sec-title{font-size:30px; font-weight:850; letter-spacing:-.02em; line-height
         <div class="meta-row">
           <span class="mtag">You own: <b>tools · guardrails · naming</b></span>
         </div>
-        <div class="tags"><span class="tag">Tailored tools</span><span class="tag">Built-in guardrails</span><span class="tag">Multi-agent reuse</span></div>
+        <div class="tags"><span class="tag">Tailored tools</span><span class="tag">Custom guardrails</span><span class="tag">Multi-agent reuse</span></div>
       </div>
 
       <!-- Service principal profiles -->
       <div class="block b-embed">
         <div class="bk-head"><span class="bk-ic">⌘</span>
-          <div><span class="kx">Multi-tenant delivery</span><h3>Service principal profiles</h3></div>
+          <div><span class="kx">Multi-tenant delivery</span><h3>Customer identities</h3></div>
         </div>
-        <p>Power BI embedding's scale feature: one app identity spins up isolated <strong>per-tenant profiles</strong>, giving each customer a clean security boundary while sharing capacity. Microsoft's guidance: profiles support solutions of <strong>tens of thousands of tenants</strong> serving <strong>100,000+ users</strong>.</p>
+        <p>For new multitenant solutions, Microsoft recommends <strong>dedicated customer service principals</strong>, with managed identity and federated credentials where appropriate. Power BI service principal profiles remain an optional alternative under a shared parent. Profiles aren't independent Entra identities and aren't supported by Fabric REST APIs; use a supported identity for Fabric operations. Customer separation requires correct routing, resource permissions, and scoped embed tokens.</p>
         <div class="meta-row">
-          <span class="mtag">Recommended above: <b>1,000+ app users</b></span>
+          <span class="mtag">Choose by: <b>API support · identity limits · governance</b></span>
         </div>
         <div class="tags"><span class="tag">Tenant isolation</span><span class="tag">Capacity efficiency</span><span class="tag">Embedded</span></div>
       </div>
@@ -531,7 +531,7 @@ h2.sec-title{font-size:30px; font-weight:850; letter-spacing:-.02em; line-height
   <div class="wrap">
     <span class="sec-tag"><span class="n">3</span> Architecture &amp; ownership</span>
     <h2 class="sec-title">Skills teach. MCP servers do. REST is the floor.</h2>
-    <p class="sec-lede">Straight from Microsoft's documentation: skills supply the expertise; MCP servers supply the live data connection; the REST APIs are what both ultimately drive.</p>
+    <p class="sec-lede">Straight from Microsoft's documentation: skills supply the expertise; MCP servers supply the live data connection. Agents can also use REST APIs, XMLA, query endpoints, or local files as appropriate.</p>
 
     <div class="svm-grid">
       <div class="svm-card skills">
@@ -550,7 +550,7 @@ h2.sec-title{font-size:30px; font-weight:850; letter-spacing:-.02em; line-height
         <p class="tagline">Live data access — executable servers run as separate processes</p>
         <ul>
           <li>Actually <em>do</em> the operation against your model/tenant</li>
-          <li>Strongly typed, deterministic, mapped 1:1 to Fabric concepts</li>
+          <li>Expose tools for supported model and platform operations</li>
           <li>Respect your existing RBAC &amp; permissions</li>
           <li>Authoring MCP (local) &amp; Core MCP (remote) are complementary</li>
         </ul>
@@ -562,9 +562,9 @@ h2.sec-title{font-size:30px; font-weight:850; letter-spacing:-.02em; line-height
     <div class="lmap">
       <div class="lrow l-model"><div class="ltool"><span class="lic">⬡</span><span class="lname">Power BI Authoring MCP Server</span></div><div class="lresp">Semantic model — create &amp; update tables, columns, measures, DAX, RLS</div></div>
       <div class="lrow l-query"><div class="ltool"><span class="lic">⌕</span><span class="lname">Power BI Consumption MCP Server</span></div><div class="lresp">Data queries &amp; insights — generate and execute DAX against the model (preview; Fabric IQ is Microsoft's primary path for new consumption scenarios)</div></div>
-      <div class="lrow l-report"><div class="ltool"><span class="lic">◈</span><span class="lname">Power BI Report Authoring skill</span></div><div class="lresp">Report layer (PBIR/PBIP) — pages, visuals, filters, formatting, themes</div></div>
+      <div class="lrow l-report"><div class="ltool"><span class="lic">◈</span><span class="lname">Power BI Report skill</span></div><div class="lresp">Report layer (PBIR/PBIP) — pages, visuals, filters, formatting, themes</div></div>
       <div class="lrow l-items"><div class="ltool"><span class="lic">◎</span><span class="lname">Fabric Core MCP Server</span></div><div class="lresp">Workspaces, items, permissions, folders &amp; capacities across the platform</div></div>
-      <div class="lrow l-rest"><div class="ltool"><span class="lic">{ }</span><span class="lname">Fabric REST APIs</span></div><div class="lresp">The foundation — item definitions, deployment pipelines, Git, CI/CD automation</div></div>
+      <div class="lrow l-rest"><div class="ltool"><span class="lic">{ }</span><span class="lname">Fabric REST APIs</span></div><div class="lresp">Platform automation — item definitions, deployment pipelines, Git, CI/CD</div></div>
     </div>
   </div>
 </section>
@@ -586,18 +586,18 @@ h2.sec-title{font-size:30px; font-weight:850; letter-spacing:-.02em; line-height
         <div class="best"><b>Best for</b>Common authoring &amp; lifecycle tasks where Microsoft's patterns fit.</div>
       </div>
       <div class="scol s2">
-        <div class="snum">LAYER 2</div><h4>Prebuilt MCP servers</h4><p class="swho">Deterministic · governed</p>
-        <p>Authoring MCP &amp; Core MCP expose typed, safe tools that map 1:1 to Fabric concepts and honor RBAC.</p>
+        <div class="snum">LAYER 2</div><h4>Prebuilt MCP servers</h4><p class="swho">Tools · permissions</p>
+        <p>Authoring MCP &amp; Core MCP expose tools for supported operations and honor permissions. Review proposed changes and configure approvals.</p>
         <div class="best"><b>Best for</b>Precise, auditable model &amp; platform operations at scale.</div>
       </div>
       <div class="scol s3">
-        <div class="snum">LAYER 3</div><h4>Fabric REST APIs</h4><p class="swho">Full surface · you orchestrate</p>
-        <p>Call any endpoint directly — item definitions, deployment pipelines, Git — from fabric-cicd, Terraform, or your own code.</p>
+        <div class="snum">LAYER 3</div><h4>Fabric REST APIs</h4><p class="swho">Supported operations · you orchestrate</p>
+        <p>Call supported endpoints directly — item definitions, deployment pipelines, Git — from fabric-cicd, Terraform, or your own code.</p>
         <div class="best"><b>Best for</b>Edge cases, CI/CD, and anything the higher layers don't cover yet.</div>
       </div>
       <div class="scol s4">
         <div class="snum">LAYER 4</div><h4>Custom MCP server</h4><p class="swho">Your tools · your guardrails</p>
-        <p>Wrap REST + your provisioning logic into reusable, tenant-shaped tools — REST-level control, MCP-level safety &amp; reuse.</p>
+        <p>Wrap REST + your provisioning logic into reusable, tenant-shaped tools with controls you implement and maintain.</p>
         <div class="best"><b>Best for</b>Productizing a repeatable, governed multi-tenant factory.</div>
       </div>
     </div>
@@ -615,7 +615,7 @@ h2.sec-title{font-size:30px; font-weight:850; letter-spacing:-.02em; line-height
           <p class="cl">The Fabric Core MCP Server already proves the pattern: an MCP server that "calls the Fabric REST API on your behalf." An ISV can build the same kind of server — tuned to <em>their</em> product, their tenant model, and their guardrails.</p>
           <ul class="cwhy">
             <li><span class="ci">▤</span><div><b>Domain-shaped tools</b><span>Expose <code>onboard_tenant</code>, <code>apply_branding</code>, <code>rotate_keys</code> — not raw endpoints.</span></div></li>
-            <li><span class="ci">⛨</span><div><b>Guardrails by construction</b><span>Bake in least-privilege auth, naming rules, and destructive-action blocks the agent can't bypass.</span></div></li>
+            <li><span class="ci">⛨</span><div><b>Guardrails by construction</b><span>Implement least-privilege auth, naming rules, approvals, and destructive-action controls; validate them across all access paths.</span></div></li>
             <li><span class="ci">♻</span><div><b>Write once, reuse everywhere</b><span>The same tools serve every agent, CLI, and pipeline across your org.</span></div></li>
             <li><span class="ci">⚖</span><div><b>Composable</b><span>Run it alongside the Authoring &amp; Core MCP servers — agents pick the right tool per job.</span></div></li>
           </ul>
@@ -640,7 +640,7 @@ h2.sec-title{font-size:30px; font-weight:850; letter-spacing:-.02em; line-height
   <div class="wrap">
     <span class="sec-tag"><span class="n">6</span> The factory pattern</span>
     <h2 class="sec-title">An automated lifecycle, repeated per tenant</h2>
-    <p class="sec-lede">Wrap the layers in an agent + CI/CD loop and onboarding a customer becomes a parameterized pipeline run, not a project. Each step names the tool that owns it.</p>
+    <p class="sec-lede">Wrap the layers in an agent + CI/CD loop to make onboarding a parameterized pipeline. Choose supported identities for each API; Core MCP uses interactive Entra sign-in, while unattended automation can use supported service-principal API operations.</p>
 
     <div class="pipe">
       <div class="pstep"><div class="pic">📐</div><h4>Template</h4><p>Author one golden PBIP model &amp; report</p><span class="by pbi">Authoring MCP + Report skill</span></div>
@@ -648,14 +648,14 @@ h2.sec-title{font-size:30px; font-weight:850; letter-spacing:-.02em; line-height
       <div class="pstep"><div class="pic">🎛️</div><h4>Parameterize</h4><p>Inject tenant data source &amp; branding</p><span class="by ag">Agent + Skills</span></div>
       <div class="pstep"><div class="pic">⬡</div><h4>Author</h4><p>Build model, measures &amp; DAX in bulk</p><span class="by pbi">Authoring MCP Server</span></div>
       <div class="pstep"><div class="pic">🚀</div><h4>Deploy &amp; refresh</h4><p>Publish &amp; bind sources per tenant</p><span class="by az">REST / pipelines</span></div>
-      <div class="pstep"><div class="pic">🛡️</div><h4>Govern</h4><p>Validate best practices &amp; isolation</p><span class="by ag">Skills + RBAC</span></div>
+      <div class="pstep"><div class="pic">🛡️</div><h4>Govern</h4><p>Validate routing, permissions &amp; scoped embed tokens; test cross-tenant access</p><span class="by ag">Skills + RBAC</span></div>
     </div>
 
     <div class="pipe-flow-note">
       <span class="chip">New tenant signs up</span><span class="arrow">→</span>
       <span class="chip">Pipeline runs</span><span class="arrow">→</span>
       <span class="chip">Tenant analytics live</span>
-      <span class="desc">Onboarding measured in minutes, not weeks — every object created the same governed way.</span>
+      <span class="desc">Automate repeatable steps, then measure onboarding time and verify the resulting objects and permissions.</span>
     </div>
   </div>
 </section>
@@ -664,8 +664,8 @@ h2.sec-title{font-size:30px; font-weight:850; letter-spacing:-.02em; line-height
 <section class="mult">
   <div class="wrap">
     <span class="sec-tag"><span class="n">7</span> Why it scales</span>
-    <h2 class="sec-title">Define once, multiply infinitely</h2>
-    <p class="sec-lede">The economics flip: instead of effort growing linearly with every customer, cost concentrates in <strong>one template and one pipeline</strong> — then machines replicate it, and service principal profiles isolate it.</p>
+    <h2 class="sec-title">Define once, replicate per tenant</h2>
+    <p class="sec-lede">Invest in <strong>one template and one pipeline</strong> to automate repeated work. Customer isolation still depends on identity selection, resource permissions, and correct application routing.</p>
     <div class="mult-grid">
       <div class="mult-visual">
         <div class="mult-eq">
@@ -675,13 +675,13 @@ h2.sec-title{font-size:30px; font-weight:850; letter-spacing:-.02em; line-height
           <span class="mult-op">=</span>
           <div class="meq many"><div class="box">N tenants</div><div class="cap">auto-generated</div></div>
         </div>
-        <div class="mult-foot">Effort no longer scales with customer count — the pipeline absorbs it.</div>
+        <div class="mult-foot">The pipeline reduces repeated work; capacity, monitoring, and identity lifecycle still need planning.</div>
       </div>
       <div class="mult-points">
-        <div class="mpoint y"><span class="mic">∑</span><div><b>Consistency for free</b><span>One fix to the template propagates to every tenant on the next pipeline run — drift becomes structurally impossible.</span></div></div>
-        <div class="mpoint g"><span class="mic">⚡</span><div><b>Minutes to onboard</b><span>A new customer is a parameter set, not a project. Provision a full analytics stack on demand.</span></div></div>
-        <div class="mpoint"><span class="mic">⌘</span><div><b>Isolated yet efficient</b><span>Service principal profiles keep each tenant's data separate while sharing capacity — tens of thousands of tenants, 100k+ users.</span></div></div>
-        <div class="mpoint g"><span class="mic">✓</span><div><b>Governed &amp; auditable</b><span>Core MCP honors RBAC and writes audit logs; service-principal auth enables unattended, least-privilege automation.</span></div></div>
+        <div class="mpoint y"><span class="mic">∑</span><div><b>Repeatable changes</b><span>Roll out template fixes through the pipeline and check each deployment for failures or drift.</span></div></div>
+        <div class="mpoint g"><span class="mic">⚡</span><div><b>Automated onboarding</b><span>Use customer parameters to provision an analytics stack; measure performance in your environment.</span></div></div>
+        <div class="mpoint"><span class="mic">⌘</span><div><b>Customer separation</b><span>Use customer-scoped identities or profiles with correct routing and permissions while sharing capacity.</span></div></div>
+        <div class="mpoint g"><span class="mic">✓</span><div><b>Governed &amp; auditable</b><span>Core MCP honors RBAC and logs supported operations; use supported service-principal API operations for unattended automation.</span></div></div>
       </div>
     </div>
   </div>
@@ -693,11 +693,11 @@ h2.sec-title{font-size:30px; font-weight:850; letter-spacing:-.02em; line-height
     <span class="sec-tag"><span class="n">8</span> Executive summary</span>
     <h2 class="sec-title">Six decisions that define a Fabric-scale ISV</h2>
     <div class="tk-grid">
-      <div class="tk"><div class="num">01</div><h4>Name the layers precisely</h4><p>Authoring MCP Server (model), Core MCP Server (platform), Report Authoring skill (visuals), REST APIs (foundation) — each has a distinct job.</p></div>
+      <div class="tk"><div class="num">01</div><h4>Name the layers precisely</h4><p>Authoring MCP Server (model), Core MCP Server (platform), Report skill (visuals), REST APIs (automation) — each has a distinct job.</p></div>
       <div class="tk"><div class="num">02</div><h4>Skills teach, MCP does</h4><p>Skills carry the expertise; MCP servers execute against your data. Use them together, not interchangeably.</p></div>
-      <div class="tk"><div class="num">03</div><h4>Drop to REST for control</h4><p>When higher layers don't fit, the Fabric REST APIs — via fabric-cicd, Terraform, or the CLI — give you the full surface.</p></div>
-      <div class="tk"><div class="num">04</div><h4>Wrap it in a custom MCP</h4><p>Package REST + your provisioning logic into tenant-shaped tools for REST-level control with MCP-level safety and reuse.</p></div>
-      <div class="tk"><div class="num">05</div><h4>Profiles do the scaling</h4><p>Service principal profiles isolate each tenant while sharing capacity — reaching tens of thousands of tenants.</p></div>
+      <div class="tk"><div class="num">03</div><h4>Drop to REST for control</h4><p>Use supported Fabric REST operations through fabric-cicd, Terraform, the CLI, or your own code; check identity and item support.</p></div>
+      <div class="tk"><div class="num">04</div><h4>Wrap it in a custom MCP</h4><p>Package REST + your provisioning logic into reusable tenant-shaped tools with controls you implement.</p></div>
+      <div class="tk"><div class="num">05</div><h4>Choose customer identities</h4><p>Start with dedicated customer service principals for new solutions; evaluate profiles when their API and identity limitations fit.</p></div>
       <div class="tk"><div class="num">06</div><h4>The pipeline absorbs growth</h4><p>One template × one pipeline = N tenants. Consistency and governance become structural, not heroic.</p></div>
     </div>
   </div>
@@ -721,8 +721,8 @@ h2.sec-title{font-size:30px; font-weight:850; letter-spacing:-.02em; line-height
       <a class="res" href="https://learn.microsoft.com/en-us/power-bi/developer/agentic/semantic-model-authoring-skill-overview">
         <span class="ric">⊞</span><div><p class="rt">Power BI Semantic Model Authoring skill</p><div class="ru">learn.microsoft.com/power-bi/developer/agentic</div><div class="rd">How the skill routes to the Authoring MCP Server, end-to-end examples.</div></div>
       </a>
-      <a class="res" href="https://learn.microsoft.com/en-us/power-bi/developer/agentic/power-bi-report-authoring-skill-overview">
-        <span class="ric">▦</span><div><p class="rt">Power BI Report Authoring skill</p><div class="ru">learn.microsoft.com/power-bi/developer/agentic</div><div class="rd">Authoring report visuals, pages &amp; themes in PBIR/PBIP; the layer map.</div></div>
+      <a class="res" href="https://learn.microsoft.com/en-us/power-bi/developer/agentic/power-bi-report-skill-overview">
+        <span class="ric">▦</span><div><p class="rt">Power BI Report skill</p><div class="ru">learn.microsoft.com/power-bi/developer/agentic</div><div class="rd">Planning, designing, authoring, validating &amp; managing reports.</div></div>
       </a>
       <a class="res" href="https://learn.microsoft.com/en-us/rest/api/fabric/articles/">
         <span class="ric">{ }</span><div><p class="rt">Microsoft Fabric REST API references</p><div class="ru">learn.microsoft.com/rest/api/fabric/articles</div><div class="rd">Automate item management, deployment pipelines, Git, capacities; CLI &amp; fabric-cicd.</div></div>
@@ -731,7 +731,7 @@ h2.sec-title{font-size:30px; font-weight:850; letter-spacing:-.02em; line-height
         <span class="ric">⌕</span><div><p class="rt">Power BI MCP servers documentation</p><div class="ru">learn.microsoft.com/power-bi/developer/mcp</div><div class="rd">Local &amp; remote Power BI MCP servers, tool reference, getting started.</div></div>
       </a>
       <a class="res" href="https://learn.microsoft.com/en-us/power-bi/guidance/develop-scalable-multitenancy-apps-with-powerbi-embedding">
-        <span class="ric">⌘</span><div><p class="rt">Scalable multitenancy with Power BI embedding</p><div class="ru">learn.microsoft.com/power-bi/guidance</div><div class="rd">Service principal profiles for tens of thousands of tenants &amp; 100k+ users.</div></div>
+        <span class="ric">⌘</span><div><p class="rt">Scalable multitenancy with Power BI embedding</p><div class="ru">learn.microsoft.com/power-bi/guidance</div><div class="rd">Customer identity options, workspace scale, isolation &amp; credentials.</div></div>
       </a>
     </div>
   </div>
