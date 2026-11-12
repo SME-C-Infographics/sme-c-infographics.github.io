@@ -1183,7 +1183,7 @@ footer p { font-size: 14px; margin-bottom: 20px; max-width: 600px; margin-left: 
 <!-- smec-favicon v1 -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <!-- smec-accuracy v1 -->
-<meta name="smec:last-accuracy-check" content="2026-09-24">
+<meta name="smec:last-accuracy-check" content="2026-11-12">
 <style>/* smec-back-btn v2 */
 .smec-back-btn { position: fixed; bottom: 16px; left: 16px; z-index: 9999;
   box-sizing: border-box;
@@ -1276,7 +1276,7 @@ footer p { font-size: 14px; margin-bottom: 20px; max-width: 600px; margin-left: 
     </div>
     <div class="hero-stats">
       <div class="hero-stat">
-        <div class="hero-stat-value">&lt;30s</div>
+        <div class="hero-stat-value">Typically &lt;30s</div>
         <div class="hero-stat-label">HA Recovery (RTO)</div>
       </div>
       <div class="hero-stat">
@@ -1380,12 +1380,12 @@ footer p { font-size: 14px; margin-bottom: 20px; max-width: 600px; margin-left: 
       </div>
       <div class="table-row">
         <div class="label">High Availability<small>Zone-redundant configuration</small></div>
-        <div><span class="pill pill-fast">&lt; 30 seconds</span></div>
+        <div><span class="pill pill-fast">Typically &lt; 30 seconds</span></div>
         <div><span class="pill pill-fast">Zero</span></div>
       </div>
       <div class="table-row">
-        <div class="label">Disaster Recovery<small>Failover groups / Active geo-replication</small></div>
-        <div><span class="pill pill-fast">&lt; 60 seconds</span></div>
+        <div class="label">Disaster Recovery<small>Customer-managed failover groups / Active geo-replication</small></div>
+        <div><span class="pill pill-fast">Typically &lt; 60 seconds</span></div>
         <div><span class="pill pill-med">Potential data loss (async)</span></div>
       </div>
       <div class="table-row">
@@ -1420,18 +1420,18 @@ footer p { font-size: 14px; margin-bottom: 20px; max-width: 600px; margin-left: 
       <div class="feature-showcase">
         <div class="feature-text">
           <h3>High Availability with Zone Redundancy</h3>
-          <p>Availability Zones are physically separate datacenters inside a single Azure region, each with independent power, cooling, and networking. Zone redundancy uses <strong>synchronous</strong> replication across availability zones within the region. When a zone fails, a continuously synchronized replica takes over automatically.</p>
+          <p>Availability Zones are separated groups of datacenters inside a single Azure region, each with independent power, cooling, and networking. Zone redundancy uses <strong>synchronous</strong> replication across availability zones within the region. When a zone fails, a continuously synchronized replica takes over automatically.</p>
           <div class="feature-metrics">
-            <div class="metric-chip"><div class="m-label">RTO</div><div class="m-value">&lt; 30s</div></div>
+            <div class="metric-chip"><div class="m-label">RTO</div><div class="m-value">Typically &lt; 30s</div></div>
             <div class="metric-chip"><div class="m-label">RPO</div><div class="m-value">0</div></div>
             <div class="metric-chip"><div class="m-label">Scope</div><div class="m-value">Zone</div></div>
           </div>
           <ul class="feature-list">
             <li>Synchronous replication: every committed write exists on a replica before it completes, designed to deliver zero committed data loss on HA failover</li>
             <li>This RPO of zero applies only to in-region HA failover. PITR restores to a chosen point within its retention window; geo-restore typically has an RPO of minutes or hours, depending on backup size</li>
-            <li>Transparent failover within the region, with no app changes required</li>
-            <li>Higher SLA than the default enterprise-class SLA</li>
-            <li>Available across most Azure regions that support Availability Zones</li>
+            <li>Failover is transparent to the application, but use retry logic to recover from transient connection drops</li>
+            <li>Zone redundancy can provide a higher availability SLA</li>
+            <li>Available in supported regions and service tiers</li>
           </ul>
         </div>
         <div class="diagram">
@@ -1451,21 +1451,21 @@ footer p { font-size: 14px; margin-bottom: 20px; max-width: 600px; margin-left: 
       <div class="feature-showcase">
         <div class="feature-text">
           <h3>Automated Backups</h3>
-          <p>Backups are taken continuously and automatically. You can't turn them off, and you don't need to configure them. The service balances the backup schedule against your workload.</p>
+          <p>Backups are created automatically on a schedule. You can't turn them off, and you don't need to configure them.</p>
           <div class="feature-metrics">
             <div class="metric-chip"><div class="m-label">Full</div><div class="m-value">Weekly</div></div>
             <div class="metric-chip"><div class="m-label">Differential</div><div class="m-value">12 / 24h</div></div>
             <div class="metric-chip"><div class="m-label">Log</div><div class="m-value">~10 min</div></div>
           </div>
           <ul class="feature-list">
-            <li>Geo-redundant storage (GRS) by default, replicated to a paired region</li>
-            <li>Options for LRS, ZRS, GRS, GZRS to match your compliance needs</li>
+            <li>New databases use geo-redundant storage (GRS) by default, replicated to a paired region</li>
+            <li>Backup storage options include LRS, ZRS, GRS, and GZRS, subject to service-tier and region support</li>
             <li>Business Critical tier: backups taken from a secondary replica</li>
             <li>Hyperscale uses storage snapshots for near-instant backup regardless of size</li>
           </ul>
         </div>
         <div class="diagram">
-          <span class="diagram-title">Continuous Backup Chain</span>
+          <span class="diagram-title">Traditional Backup Schedule (except Hyperscale)</span>
           <div class="backup-timeline">
             <div class="backup-timeline-bar">
               <div class="backup-dot full" style="left: 0%"><span class="backup-dot-label">Full</span></div>
@@ -1573,7 +1573,7 @@ footer p { font-size: 14px; margin-bottom: 20px; max-width: 600px; margin-left: 
           <h3>Failover Groups</h3>
           <p>A declarative layer built on top of Active Geo-Replication. It groups one or many databases on a server and manages them as a single failover unit, with stable listener endpoints that survive failover. Your application connection strings remain constant across failovers.</p>
           <div class="feature-metrics">
-            <div class="metric-chip"><div class="m-label">RTO</div><div class="m-value">&lt; 60s</div></div>
+            <div class="metric-chip"><div class="m-label">RTO</div><div class="m-value">Typically &lt; 60s</div></div>
             <div class="metric-chip"><div class="m-label">Endpoints</div><div class="m-value">Stable</div></div>
             <div class="metric-chip"><div class="m-label">Databases</div><div class="m-value">Many</div></div>
           </div>
@@ -1664,7 +1664,7 @@ footer p { font-size: 14px; margin-bottom: 20px; max-width: 600px; margin-left: 
           <div class="redundancy-dot">2</div>
           <div class="redundancy-dot">3</div>
         </div>
-        <p>3 synchronous copies in one physical location. Cheapest, but no resiliency to regional outages. Good for dev/test.</p>
+        <p>Three synchronous copies in one physical location. Lowest cost, but no resiliency to regional outages. Good for dev/test.</p>
       </div>
       <div class="redundancy-card">
         <h4>ZRS<small>Zone-Redundant Storage</small></h4>
@@ -1673,7 +1673,7 @@ footer p { font-size: 14px; margin-bottom: 20px; max-width: 600px; margin-left: 
           <div class="redundancy-dot">Z2</div>
           <div class="redundancy-dot">Z3</div>
         </div>
-        <p>3 synchronous copies across 3 availability zones in one region. Survives zone failures. Geo-restore disabled.</p>
+        <p>Three synchronous copies across three availability zones in one region. Survives zone failures. Geo-restore disabled.</p>
       </div>
       <div class="redundancy-card">
         <h4>GRS<small>Geo-Redundant Storage · DEFAULT</small></h4>
@@ -1685,7 +1685,7 @@ footer p { font-size: 14px; margin-bottom: 20px; max-width: 600px; margin-left: 
           <div class="redundancy-dot remote">R2</div>
           <div class="redundancy-dot remote">R3</div>
         </div>
-        <p>LRS locally + 3 async copies in a paired secondary region. Default for new databases. Enables geo-restore.</p>
+        <p>Three local copies plus three copies in a paired region, with data copied asynchronously between regions. Default for new databases. Enables geo-restore.</p>
       </div>
       <div class="redundancy-card recommended">
         <h4>GZRS<small>Geo-Zone-Redundant Storage</small></h4>
@@ -1736,7 +1736,7 @@ footer p { font-size: 14px; margin-bottom: 20px; max-width: 600px; margin-left: 
       <div class="table-row">
         <div class="label">RTO (downtime)</div>
         <div><span class="pill pill-slow">Minutes to hours</span></div>
-        <div><span class="pill pill-fast">&lt; 60 seconds</span></div>
+        <div><span class="pill pill-fast">Typically &lt; 60 seconds</span></div>
       </div>
       <div class="table-row">
         <div class="label">RPO (data loss)</div>
@@ -1770,7 +1770,7 @@ footer p { font-size: 14px; margin-bottom: 20px; max-width: 600px; margin-left: 
       <div class="enhance-card">
         <div class="enhance-icon">🔗</div>
         <h4>Connection strings that survive failover</h4>
-        <p>Geo-Replication alone changes your connection string after failover because the new primary is on a different logical server. Failover Groups layer DNS CNAME records on top, so <span class="mono">myfog.database.windows.net</span> routes to the current primary. No redeploys, no config changes, no downtime from a stale endpoint.</p>
+        <p>Geo-Replication alone changes your connection string after failover because the new primary is on a different logical server. Failover Groups layer DNS CNAME records on top, so <span class="mono">myfog.database.windows.net</span> routes to the current primary. No connection-string changes are needed, but clients must reconnect and retry after failover.</p>
       </div>
       <div class="enhance-card">
         <div class="enhance-icon">📦</div>
@@ -1785,17 +1785,17 @@ footer p { font-size: 14px; margin-bottom: 20px; max-width: 600px; margin-left: 
       <div class="enhance-card">
         <div class="enhance-icon">🎛️</div>
         <h4>You decide when to fail over</h4>
-        <p>Customer-managed failover policy (the recommended default) means a regional incident never triggers an automatic failover without your say. When you are ready, one command moves everything. Microsoft-managed policy is available for teams that want to delegate the decision.</p>
+        <p>Customer-managed failover policy (recommended) keeps the failover decision with you. Microsoft-managed policy can trigger a forced failover only during a widespread regional outage, after a grace period of at least one hour; forced failover can lose unreplicated data.</p>
       </div>
       <div class="enhance-card">
         <div class="enhance-icon">📐</div>
         <h4>Zero-touch secondary provisioning</h4>
-        <p>Add a database to the group and the secondary replica is created automatically in the right region, at the right service tier, and at the right compute size. One abstraction to manage instead of individual per-database replication links.</p>
+        <p>When you add a database to the group, Azure automatically creates its secondary on the configured secondary server using the primary's service tier and compute size. One abstraction to manage instead of individual per-database replication links.</p>
       </div>
       <div class="enhance-card">
         <div class="enhance-icon">⚡</div>
         <h4>All the speed, none of the complexity</h4>
-        <p>Underneath, it is still Geo-Replication doing the heavy lifting. You get the same sub-60-second RTO with asynchronous replication, but with the app-facing stability and operational structure that a production DR plan actually demands.</p>
+        <p>Underneath, it is still Geo-Replication doing the heavy lifting. RTO is typically under 60 seconds for customer-managed failover, but asynchronous replication can lose unreplicated data. Failover Groups add stable endpoints and coordinated failover management.</p>
       </div>
     </div>
   </div>
@@ -1846,7 +1846,7 @@ footer p { font-size: 14px; margin-bottom: 20px; max-width: 600px; margin-left: 
           <div class="wizard-q-num">4</div>
           <div class="wizard-q-title">How do you want to manage replication?<span class="wizard-q-hint">Unlocks when Q3 needs active regional DR or Q6 needs read-scale offload.</span></div>
           <div class="wizard-options">
-            <label class="wizard-option"><input type="radio" name="fgstyle" value="group"><span>Need any of: multi-database failover, stable connection string, or automatic failover after a grace period</span></label>
+            <label class="wizard-option"><input type="radio" name="fgstyle" value="group"><span>Need multi-database failover, a stable connection string, or Microsoft-managed failover after a minimum one-hour grace period</span></label>
             <label class="wizard-option"><input type="radio" name="fgstyle" value="isolated"><span>Prefer fully isolated per-database replication management</span></label>
           </div>
         </div>
@@ -2003,7 +2003,7 @@ function buildRecommendations() {
   if (a.downtime === 'seconds' || a.downtime === 'minute' || a.dataloss === 'zero') {
     recs.zoneRedundancy = {
       ...featureCatalog.zoneRedundancy,
-      why: 'Zone redundancy uses synchronous replication across availability zones within the region. When a zone fails, the database switches to a continuously synchronized replica. Note: this zero RPO guarantee applies only to in-region HA failover, not to backup-based recovery like PITR or geo-restore.'
+      why: 'Zone redundancy uses synchronous replication across availability zones within the region. When a zone fails, the database switches to a continuously synchronized replica. Use retry logic to recover from transient connection drops. This zero RPO guarantee applies only to in-region HA failover, not to backup-based recovery like PITR or geo-restore.'
     };
   }
 
@@ -2012,7 +2012,7 @@ function buildRecommendations() {
   if (hasReplicationDriver && wantsFG) {
     recs.failoverGroups = {
       ...featureCatalog.failoverGroups,
-      why: 'Failover Groups bundle multi-database failover, stable listener endpoints, and optional policy-driven automatic failover on top of Active Geo-Replication.'
+      why: 'Failover Groups bundle multi-database failover and stable listener endpoints on top of Active Geo-Replication. Microsoft-managed failover is only for widespread regional outages and has a minimum one-hour grace period.'
     };
   } else if (hasReplicationDriver && wantsIsolated) {
     recs.geoReplication = {
