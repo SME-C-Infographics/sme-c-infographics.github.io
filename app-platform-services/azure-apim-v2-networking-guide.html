@@ -517,7 +517,7 @@ section{padding:80px 20px}
 <!-- smec-favicon v1 -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <!-- smec-accuracy v1 -->
-<meta name="smec:last-accuracy-check" content="2026-10-08">
+<meta name="smec:last-accuracy-check" content="2026-11-12">
 <style>/* smec-back-btn v2 */
 .smec-back-btn { position: fixed; bottom: 16px; left: 16px; z-index: 9999;
   box-sizing: border-box;
@@ -978,7 +978,7 @@ section{padding:80px 20px}
             <p class="steps-sub">Result: a Premium v2 instance whose gateway traffic is isolated through your VNet, with NSG rules and a DNS record for its private IP.</p>
             <div class="step-list">
               <div class="step"><div class="step-num-circle">1</div><div class="step-body"><strong>Create a Virtual Network and injection subnet</strong><p>Create <code>demo-vnet2</code> in the same region/subscription as your APIM, address space <code>10.1.0.0/16</code>.</p>
-              <p class="step-detail"><strong>Subnet — <code>apim-injection-subnet</code></strong>: <code>10.1.0.0/24</code> (min /27, /24 recommended). Delegate to <strong><code>Microsoft.Web/hostingEnvironments</code></strong> (different from the integration scenario).</p>
+              <p class="step-detail"><strong>Subnet — <code>apim-injection-subnet</code></strong>: <code>10.1.0.0/24</code> (min /27, /24 recommended). Delegate to <strong><code>Microsoft.ApiManagement/service</code></strong>.</p>
               <p class="step-detail">The injection subnet can only be used by <strong>one</strong> APIM instance and cannot be shared.</p></div></div>
 
               <div class="step"><div class="step-num-circle">2</div><div class="step-body"><strong>Create an NSG for the injection subnet</strong><p>Name it <code>apim-injection-nsg</code> in the same region.</p></div></div>
@@ -1038,8 +1038,8 @@ curl https://demo-apim-injected.azure-api.net/echo/resource</pre>
           <tr><td>Outbound VNet integration</td><td><span class="check">✓</span></td><td><span class="check">✓</span></td></tr>
           <tr><td>Inbound Private Endpoint</td><td><span class="check">✓</span></td><td><span class="check">✓</span></td></tr>
           <tr><td>Full VNet injection</td><td><span class="cross">✕</span></td><td><span class="check">✓</span> <span class="partial">(creation time only)</span></td></tr>
-          <tr><td>Integration subnet delegation</td><td><code>Microsoft.Web/serverFarms</code></td><td><code>Microsoft.Web/serverFarms</code></td></tr>
-          <tr><td>Injection subnet delegation</td><td>N/A</td><td><code>Microsoft.Web/hostingEnvironments</code></td></tr>
+          <tr><td>Integration subnet delegation</td><td><code>Microsoft.Web/serverFarms</code></td><td><code>Microsoft.ApiManagement/service</code></td></tr>
+          <tr><td>Injection subnet delegation</td><td>N/A</td><td><code>Microsoft.ApiManagement/service</code></td></tr>
           <tr><td>Switch injection ↔ integration</td><td>N/A</td><td><span class="cross">✕</span> <span class="partial">cannot switch</span></td></tr>
           <tr><td>Inbound NSG enforcement (integration)</td><td><span class="cross">✕</span></td><td><span class="cross">✕</span></td></tr>
           <tr><td>Inbound NSG enforcement (injection)</td><td>N/A</td><td><span class="check">✓</span></td></tr>
