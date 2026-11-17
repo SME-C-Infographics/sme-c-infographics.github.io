@@ -769,7 +769,7 @@ footer a:hover{text-decoration:underline}
     <div class="reveal" style="text-align:center">
       <div class="section-label">At a Glance</div>
       <div class="section-title" style="text-align:center">Windows 365 vs. Azure Virtual Desktop</div>
-      <div class="section-subtitle" style="margin:0 auto 24px;text-align:center">One identity plane. One endpoint management plane. One security perimeter.</div>
+      <div class="section-subtitle" style="margin:0 auto 24px;text-align:center">Shared identity, endpoint management, and security controls across both platforms.</div>
       <div class="compare-header">
         <span class="compare-badge w365">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="2" y="3" width="20" height="14" rx="2" stroke="currentColor" stroke-width="2"/><path d="M8 21h8M12 17v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
@@ -822,10 +822,10 @@ footer a:hover{text-decoration:underline}
       <div class="together-col reveal-right">
         <h3><span class="dot avd-dot"></span> AVD wins when&hellip;</h3>
         <ul class="together-list avd-list">
-          <li><span class="check">&#10003;</span> Usage is variable — autoscale drives real savings</li>
-          <li><span class="check">&#10003;</span> Supported GPU VM sizes or &gt;16 vCPU are required (imaging, analytics, dev)</li>
-          <li><span class="check">&#10003;</span> Custom golden images or complex app layering is needed</li>
-          <li><span class="check">&#10003;</span> Multi-session density lowers $/user for light workloads</li>
+          <li><span class="check">&#10003;</span> Usage is variable — autoscale can reduce costs</li>
+          <li><span class="check">&#10003;</span> Specific supported GPU VM sizes or hardware configurations are required (imaging, analytics, dev)</li>
+          <li><span class="check">&#10003;</span> VM-level control or complex app layering is needed</li>
+          <li><span class="check">&#10003;</span> Multi-session density can lower $/user for light workloads</li>
           <li><span class="check">&#10003;</span> Azure maturity is already in place (landing zone, ExpressRoute)</li>
         </ul>
       </div>
@@ -999,7 +999,7 @@ footer a:hover{text-decoration:underline}
     <div class="reveal">
       <div class="section-label">Architecture</div>
       <div class="section-title">Three deployment models</div>
-      <div class="section-subtitle">From fully Microsoft-managed to a hybrid strategy that covers every persona.</div>
+      <div class="section-subtitle">From Microsoft-managed infrastructure to a hybrid strategy that covers every persona.</div>
     </div>
     <div class="arch-tabs reveal">
       <button class="arch-tab active" data-arch="a">A — W365 Managed</button>
@@ -1031,6 +1031,7 @@ footer a:hover{text-decoration:underline}
             <small>ExpressRoute / VPN</small>
           </div>
         </div>
+        <div class="arch-desc">RDP Shortpath can also use direct or relayed UDP between the client and Cloud PC.</div>
         <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:28px;justify-content:center">
           <span class="flow-node node-security" style="min-width:auto;padding:8px 14px;font-size:12px">Entra ID</span>
           <span class="flow-node node-security" style="min-width:auto;padding:8px 14px;font-size:12px">Intune</span>
@@ -1062,8 +1063,9 @@ footer a:hover{text-decoration:underline}
             <small>Host Pool &middot; Session Hosts &middot; App Groups</small>
           </div>
         </div>
+        <div class="arch-desc">RDP Shortpath can also use direct or relayed UDP between the client and session host.</div>
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:24px">
-          <div class="flow-node node-azure" style="min-width:auto;padding:10px 14px;font-size:12px">FSLogix Profiles<small>HIPAA-scoped</small></div>
+          <div class="flow-node node-azure" style="min-width:auto;padding:10px 14px;font-size:12px">FSLogix Profiles<small>Protect profile data</small></div>
           <div class="flow-node node-azure" style="min-width:auto;padding:10px 14px;font-size:12px">Azure Files / ANF<small>Premium encrypted</small></div>
           <div class="flow-node node-azure" style="min-width:auto;padding:10px 14px;font-size:12px">Custom Images<small>Clinical / claims client</small></div>
           <div class="flow-node node-onprem" style="min-width:auto;padding:10px 14px;font-size:12px">On-Prem<small>ExpressRoute / VPN</small></div>
@@ -1104,7 +1106,7 @@ footer a:hover{text-decoration:underline}
         <div class="hybrid-bar">
           <div class="bar-title">Shared Identity &amp; Security Plane</div>
           <div class="bar-items">
-            <span>Entra ID</span><span>Intune</span><span>Defender</span><span>Conditional Access</span><span>Purview DLP</span><span>HIPAA / HITRUST</span>
+            <span>Entra ID</span><span>Intune</span><span>Defender</span><span>Conditional Access</span><span>Purview DLP</span><span>Assess HIPAA / HITRUST obligations</span>
           </div>
         </div>
       </div>
@@ -1118,7 +1120,7 @@ footer a:hover{text-decoration:underline}
     <div class="reveal" style="text-align:center">
       <div class="section-label">Interactive Tool</div>
       <div class="section-title">Find the right model for your persona</div>
-      <div class="section-subtitle" style="margin:0 auto 48px;text-align:center">Answer five questions to get a delivery-model recommendation for any user population.</div>
+      <div class="section-subtitle" style="margin:0 auto 48px;text-align:center">Answer five questions for a starting point; validate app support, security, licensing, availability, and costs.</div>
     </div>
     <div class="decision-tool reveal" id="decisionTool">
       <!-- Step indicators -->
@@ -1132,11 +1134,11 @@ footer a:hover{text-decoration:underline}
 
       <!-- Q1 -->
       <div class="decision-step active" id="step-0">
-        <h3>1. Is persistence required?</h3>
-        <p>Does the user need a dedicated desktop that retains state between sessions?</p>
+        <h3>1. Is a dedicated desktop required?</h3>
+        <p>Does the user need the same dedicated desktop between sessions? Pooled desktops can retain user profiles with FSLogix.</p>
         <div class="decision-btns">
-          <button class="decision-btn" onclick="answerQ(0,'yes')"><div class="btn-label">Yes</div><div class="btn-desc">User needs persistent state</div></button>
-          <button class="decision-btn" onclick="answerQ(0,'no')"><div class="btn-label">No</div><div class="btn-desc">Stateless / pooled is fine</div></button>
+          <button class="decision-btn" onclick="answerQ(0,'yes')"><div class="btn-label">Yes</div><div class="btn-desc">Dedicated desktop needed</div></button>
+          <button class="decision-btn" onclick="answerQ(0,'no')"><div class="btn-label">No</div><div class="btn-desc">Pooled desktop is fine</div></button>
         </div>
       </div>
       <!-- Q2 -->
@@ -1160,9 +1162,9 @@ footer a:hover{text-decoration:underline}
       <!-- Q4 -->
       <div class="decision-step" id="step-3">
         <h3>4. GPU or high compute needed?</h3>
-        <p>Does the workload need custom GPU VM profiles or more than 16 vCPU?</p>
+        <p>Does the workload need GPU acceleration or high CPU capacity?</p>
         <div class="decision-btns">
-          <button class="decision-btn" onclick="answerQ(3,'yes')"><div class="btn-label">Yes</div><div class="btn-desc">Custom GPU or &gt;16 vCPU required</div></button>
+          <button class="decision-btn" onclick="answerQ(3,'yes')"><div class="btn-label">Yes</div><div class="btn-desc">GPU or high CPU needed</div></button>
           <button class="decision-btn" onclick="answerQ(3,'no')"><div class="btn-label">No</div><div class="btn-desc">Standard compute is fine</div></button>
         </div>
       </div>
@@ -1193,8 +1195,8 @@ footer a:hover{text-decoration:underline}
       <div class="message-card">
         <div class="message-icon">&#128274;</div>
         <div class="message-body">
-          <h3>One Security Perimeter</h3>
-          <p>Entra ID + Conditional Access + Defender + Purview can apply across W365 and AVD. Redirection controls help keep PHI in Azure instead of on endpoints.</p>
+          <h3>Shared Security Controls</h3>
+          <p>Entra ID + Conditional Access + Defender + Purview can apply across W365 and AVD. Redirection controls help reduce PHI exposure on endpoints; validate policies and compliance obligations for each deployment.</p>
         </div>
       </div>
       <div class="message-card">
@@ -1332,13 +1334,13 @@ function showResult() {
   let rec, cls, desc;
 
   if (gpu === 'yes') {
-    rec = 'AVD Personal or Windows 365 GPU';
+    rec = 'AVD Personal or Windows 365';
     cls = 'result-avd';
-    desc = 'GPU workloads can use either platform: Windows 365 offers GPU Cloud PCs, while AVD offers supported Azure GPU VM sizes and hardware-profile control. Use workload testing to choose the fit.';
+    desc = 'Both platforms offer GPU and high-CPU options. Windows 365 offers preconfigured Cloud PC sizes, including 32 vCPU; AVD offers supported Azure VM sizes and hardware-profile control. Validate workload, region, and availability.';
   } else if (persist === 'no' && admin === 'no') {
     rec = 'AVD Pooled (Multi-Session)';
     cls = 'result-avd';
-    desc = 'Stateless users without admin needs get the lowest cost per user on high-density pooled hosts. FSLogix handles profile roaming.';
+    desc = 'Pooled hosts can reduce costs for users without dedicated desktops or admin needs. FSLogix can roam profiles; compare total costs and validate workload performance.';
   } else if (predict === 'yes' && lean === 'yes') {
     rec = 'Windows 365 Enterprise';
     cls = 'result-w365';
