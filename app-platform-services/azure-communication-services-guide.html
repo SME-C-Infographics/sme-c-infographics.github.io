@@ -1694,6 +1694,7 @@
       Enterprise-grade voice, video, chat, SMS, email and Teams interoperability —
       delivered as composable APIs on the same global network that powers Microsoft Teams.
     </p>
+    <p class="lead">ACS retires as a standalone offering on September 30, 2028. Some services retire, while others require migration to a supported Teams-aligned scenario. <a href="https://learn.microsoft.com/en-us/azure/communication-services/acs-retirement-and-breaking-changes-guide">Review the transition guidance</a>.</p>
 
     <div class="hero-cta">
       <a class="btn btn-primary" href="#get-started">
@@ -1735,7 +1736,7 @@
       <div class="tile t-accent-forest">
         <div class="tile-head"><span class="tile-icon"><svg><use href="#i-shield"/></svg></span>Uptime SLA</div>
         <div class="tile-num"><span class="grad">99.9%</span></div>
-        <div class="tile-label">Across every channel</div>
+        <div class="tile-label">ACS SLA; WhatsApp has separate terms</div>
       </div>
 
       <div class="tile t-accent-peach">
@@ -1751,7 +1752,7 @@
         <div class="tile-head"><span class="tile-icon"><svg><use href="#i-ai"/></svg></span>AI Call Intelligence</div>
         <div>
           <div class="tile-num">Real-time</div>
-          <div class="tile-label">Transcription · Sentiment · Summary</div>
+          <div class="tile-label">Transcription · Sentiment &amp; summary (preview)</div>
         </div>
         <span class="tile-live"><span class="live-dot"></span>Live</span>
       </div>
@@ -1801,7 +1802,7 @@
       <div class="kpi-tile reveal">
         <span class="kpi-tag">SLA</span>
         <div class="kpi-num" data-target="99.9" data-suffix="%">0%</div>
-        <div class="kpi-label">Service-level agreement across every channel</div>
+        <div class="kpi-label">ACS service-level agreement; WhatsApp has separate terms</div>
       </div>
       <div class="kpi-tile reveal d1">
         <span class="kpi-tag">Channels</span>
@@ -1811,7 +1812,7 @@
       <div class="kpi-tile reveal d2">
         <span class="kpi-tag">Pricing</span>
         <div class="kpi-num">PAYG</div>
-        <div class="kpi-label">Pay-as-you-go · no per-seat licensing</div>
+        <div class="kpi-label">Pay-as-you-go · additional licensing may apply</div>
       </div>
       <div class="kpi-tile reveal d3">
         <span class="kpi-tag">Microsoft</span>
@@ -1861,7 +1862,7 @@
         <div>
           <div class="bento-stat">100+</div>
           <h3>Enterprise trust</h3>
-          <p>HIPAA, SOC 2, ISO 27001, PCI DSS, GDPR and the EU Data Boundary — with end-to-end encryption in transit.</p>
+          <p>HIPAA, SOC 2, ISO 27001, PCI DSS, GDPR and the EU Data Boundary — with encryption in transit. WhatsApp has separate terms.</p>
         </div>
       </div>
     </div>
@@ -1886,7 +1887,7 @@
           <h3>One cloud. One contract. One SLA.</h3>
           <p>Replace a patchwork of SMS gateways, email senders, video SDKs and telephony providers with a single Microsoft-backed platform.</p>
           <ul>
-            <li>Unified identity across channels</li>
+            <li>Bring your own identity for calling and chat</li>
             <li>Single Microsoft commercial relationship</li>
             <li>One invoice, one support desk</li>
           </ul>
@@ -1902,7 +1903,7 @@
           <h3>Ship in weeks, not quarters.</h3>
           <p>Drop-in UI Library components and prebuilt workflows let product teams deliver customer-facing communication in weeks — freeing engineering for differentiation.</p>
           <ul>
-            <li>Production-ready React, iOS and Android components</li>
+            <li>React, iOS and Android components; mobile chat is preview</li>
             <li>Quickstarts for every channel</li>
             <li>Prebuilt Call Automation workflows</li>
           </ul>
@@ -1916,7 +1917,7 @@
         <div>
           <span class="f-kicker">Usage-aligned economics</span>
           <h3>Pay only for what you use.</h3>
-          <p>Scale with demand without committing to per-seat licenses or capacity you don't consume. No floor. No ceiling.</p>
+          <p>Scale with demand using consumption-based pricing. Phone number leases, service limits and additional licensing can apply.</p>
           <ul>
             <li>Per-message, per-minute, per-transaction</li>
             <li>No seat minimums or ramp commitments</li>
@@ -1932,7 +1933,7 @@
         <div>
           <span class="f-kicker">Enterprise-grade trust</span>
           <h3>Security baked in — not bolted on.</h3>
-          <p>Microsoft Entra ID integration, end-to-end encryption in transit and a compliance portfolio aligned to Microsoft's Zero Trust security principles.</p>
+          <p>Microsoft Entra ID integration, encryption in transit and a compliance portfolio aligned to Microsoft's Zero Trust security principles.</p>
           <ul>
             <li>HIPAA, SOC 2, ISO 27001, PCI DSS, GDPR</li>
             <li>EU Data Boundary for EU customers</li>
@@ -1948,11 +1949,11 @@
         <div>
           <span class="f-kicker">Teams as a channel</span>
           <h3>Bring Teams to your customers.</h3>
-          <p>Extend Microsoft Teams into your own customer-facing apps — no bridging vendors, no media duplication, no separate directory to govern.</p>
+          <p>Extend Microsoft Teams into your own customer-facing apps using Teams interoperability.</p>
           <ul>
             <li>Join Teams meetings from a custom app</li>
             <li>Federate chat between Teams and your app</li>
-            <li>One identity surface to manage</li>
+            <li>Map your users to ACS identities</li>
           </ul>
         </div>
         <div class="f-visual">
@@ -1967,8 +1968,8 @@
           <p>Combine Call Automation with Azure AI for live transcription, sentiment, summarization and intent — turning every conversation into structured insight.</p>
           <ul>
             <li>Real-time transcription &amp; translation</li>
-            <li>Sentiment and intent detection</li>
-            <li>Automatic call summarization</li>
+            <li>Sentiment analysis (preview) and intent detection</li>
+            <li>Mid-call summarization (preview)</li>
           </ul>
         </div>
         <div class="f-visual">
@@ -2020,7 +2021,7 @@
           <div class="tl-item t-orange">
             <span class="tl-date">Evolving</span>
             <h4>UI Library Composites</h4>
-            <p>Plug-and-play calling and chat components for React, Web, iOS and Android — ship UI in hours, not sprints.</p>
+            <p>Calling and chat components for Web, iOS and Android; mobile chat composites are in preview.</p>
           </div>
         </div>
       </div>
@@ -2028,11 +2029,11 @@
       <div class="reveal d2">
         <div class="why-panel">
           <h3>Why it matters</h3>
-          <p>Communication is no longer a silo. ACS lets you unify every channel — voice, video, chat, SMS, email and Teams — behind a single identity model and one billing surface.</p>
+          <p>Communication is no longer a silo. ACS supports voice, video, chat, SMS, email and Teams interoperability; applications map their users to ACS identities for calling and chat.</p>
           <div class="why-grid">
             <div class="why-cell"><div class="v">99.9%</div><small>SLA uptime</small></div>
             <div class="why-cell"><div class="v">30+</div><small>Countries for voice/SMS</small></div>
-            <div class="why-cell"><div class="v">PAYG</div><small>No per-user licensing</small></div>
+            <div class="why-cell"><div class="v">PAYG</div><small>Additional licenses may apply</small></div>
             <div class="why-cell"><div class="v">Teams</div><small>Native interop</small></div>
           </div>
         </div>
@@ -2047,7 +2048,7 @@
     <div class="section-head reveal">
       <span class="kicker">Get started</span>
       <h2>From zero to<br/><span class="grad-word">"hello world"</span> in four steps.</h2>
-      <p>A consistent onboarding path whether you're adding SMS, email, calling or chat.</p>
+      <p>Start with these steps, then check the requirements and retirement guidance for your chosen scenario.</p>
     </div>
 
     <div class="steps">
@@ -2069,7 +2070,7 @@
       <div class="step reveal d3">
         <div class="step-num"></div>
         <h4>Authenticate &amp; send</h4>
-        <p>Issue an identity token or use a connection string, then send your first message or make your first call.</p>
+        <p>Use scoped user tokens for client calling or chat, and keep service credentials on a trusted server. Email also requires a linked email domain.</p>
       </div>
     </div>
   </div>
@@ -2119,7 +2120,7 @@
         <div class="channel-panel" data-panel="sms">
           <div>
             <h3>SMS that just works.</h3>
-            <p>Toll-free numbers, short codes or long codes — for alerts, 2FA, reminders and two-way conversations at global scale.</p>
+            <p>Use supported toll-free numbers, short codes or sender IDs for alerts, 2FA, reminders and conversations. Capabilities vary by geography and number type.</p>
             <ul>
               <li>Toll-free, short-code and alphanumeric sender IDs</li>
               <li>Opt-out handling and delivery reports</li>
@@ -2159,12 +2160,12 @@
         <div class="channel-panel" data-panel="chat">
           <div>
             <h3>Persistent group chat.</h3>
-            <p>Multi-party chat threads with typing indicators, read receipts, message history and file or image support.</p>
+            <p>Multi-party chat threads with typing indicators, read receipts and message history. Teams meeting interoperability has different capabilities.</p>
             <ul>
               <li>Group threads with up to 250 participants</li>
               <li>Message history with edit and delete semantics</li>
               <li>Typing indicators &amp; read receipts up to 20 participants</li>
-              <li>Pairs with Teams interop for hybrid threads</li>
+              <li>Teams meeting chat: receive, but not send, images and attachments; no read receipts</li>
             </ul>
             <div class="pill-row">
               <span class="pill">.NET</span><span class="pill">Java</span><span class="pill">Python</span><span class="pill">JavaScript</span><span class="pill">iOS</span><span class="pill">Android</span>
@@ -2199,10 +2200,10 @@
         <div class="channel-panel" data-panel="messaging">
           <div>
             <h3>Beyond SMS &amp; email.</h3>
-            <p>Send and receive WhatsApp Business messages through Azure Communication Services Advanced Messaging. This service is scheduled to retire on September 30, 2028; review Microsoft's <a href="https://learn.microsoft.com/en-us/azure/communication-services/acs-retirement-and-breaking-changes-guide" target="_blank" rel="noopener">retirement guidance</a>.</p>
+            <p>Send and receive WhatsApp Business messages through Azure Communication Services Advanced Messaging. This service is scheduled to retire on September 30, 2028; review Microsoft's <a href="https://learn.microsoft.com/en-us/azure/communication-services/acs-retirement-and-breaking-changes-guide" target="_blank" rel="noopener">retirement guidance</a>. <a href="https://learn.microsoft.com/en-us/azure/communication-services/concepts/advanced-messaging/whatsapp/whatsapp-terms-of-service" target="_blank" rel="noopener">Meta's terms</a> govern WhatsApp data and service levels; EU Data Boundary commitments and HIPAA compliance may not apply.</p>
             <ul>
               <li>WhatsApp Business: templates, media, two-way</li>
-              <li>Single identity across channels</li>
+              <li>Connect a WhatsApp Business Account</li>
               <li>Delivery receipts and analytics</li>
               <li>Roadmap includes additional OTT channels</li>
             </ul>
@@ -2243,7 +2244,7 @@
       <div class="ind-card retail reveal d1">
         <div class="ind-icon"><svg><use href="#i-bag"/></svg></div>
         <h4>Retail &amp; consumer</h4>
-        <p>Abandoned-cart SMS, WhatsApp order updates and live video shopping — orchestrated across channels from one customer identity.</p>
+        <p>Abandoned-cart SMS, WhatsApp order updates and live video shopping — orchestrated across channels by your application.</p>
         <div class="ind-stats">
           <span class="ind-stat">Omnichannel</span>
           <span class="ind-stat">WhatsApp</span>
@@ -2297,7 +2298,7 @@
       <div class="service reveal d2">
         <div class="s-icon"><svg><use href="#i-palette"/></svg></div>
         <h4>UI Library</h4>
-        <p>Production-ready, accessible React, iOS and Android components for calling and chat — ship a polished UX fast.</p>
+        <p>React, iOS and Android components for calling and chat; mobile chat composites are in preview.</p>
         <a class="s-link" href="https://learn.microsoft.com/en-us/azure/communication-services/concepts/ui-library/ui-library-overview" target="_blank" rel="noopener">Learn more</a>
       </div>
       <div class="service reveal d3">
@@ -2328,7 +2329,7 @@
     <div class="section-head reveal">
       <span class="kicker">Reference</span>
       <h2>Built for <span class="grad-word">every stack</span>.</h2>
-      <p>Every capability is accessible through both native SDKs and language-neutral REST — in the language and platform you already use.</p>
+      <p>Use SDKs and REST APIs where available. The Calling SDK uses proprietary transport rather than a REST API.</p>
     </div>
 
     <div class="ref-wrap">
@@ -2348,13 +2349,12 @@
       </div>
       <div class="ref-card reveal d2">
         <h3><svg><use href="#i-docs"/></svg>REST API</h3>
-        <p>Language-neutral HTTP/JSON APIs for every channel, versioned with stable and preview contracts.</p>
+        <p>Language-neutral HTTP/JSON APIs for supported services, versioned with stable and preview contracts.</p>
         <div class="chips">
           <span class="chip">Identity</span>
           <span class="chip">Email</span>
           <span class="chip">SMS</span>
           <span class="chip">Chat</span>
-          <span class="chip">Calling</span>
           <span class="chip">Call Automation</span>
           <span class="chip">Job Router</span>
           <span class="chip">Advanced Messaging</span>
@@ -2376,10 +2376,10 @@
 
     <div class="training">
       <a class="train-card reveal" href="https://learn.microsoft.com/en-us/training/modules/intro-azure-communication-services/" target="_blank" rel="noopener">
-        <span class="train-tag">Learning path</span>
+        <span class="train-tag">Module</span>
         <h4>Introduction to Azure Communication Services</h4>
         <p>Understand what ACS is, how it fits alongside Microsoft Teams and where each channel shines.</p>
-        <div class="train-meta"><svg><use href="#i-clock"/></svg>~45 min · Beginner</div>
+        <div class="train-meta"><svg><use href="#i-clock"/></svg>~24 min · Beginner</div>
       </a>
       <a class="train-card reveal d1" href="https://learn.microsoft.com/en-us/azure/communication-services/quickstarts/email/send-email" target="_blank" rel="noopener">
         <span class="train-tag">Module</span>
