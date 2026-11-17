@@ -1049,14 +1049,14 @@
           <span>&#9878;</span>
         </div>
         <h3>ACID Compliance</h3>
-        <p>Built on Delta Lake, every transaction guarantees Atomicity, Consistency, Isolation, and Durability — preventing data corruption at scale.</p>
+        <p>Delta Lake tables support Atomicity, Consistency, Isolation, and Durability (ACID) transactions for reliable data processing.</p>
       </div>
       <div class="concept-card">
         <div class="concept-icon" style="background:rgba(212,175,55,0.12);">
           <span>&#10070;</span>
         </div>
         <h3>Separation of Concerns</h3>
-        <p>Each layer lives in its own lakehouse or workspace. Data engineers own Bronze/Silver; analysts and BI teams own Gold.</p>
+        <p>Separate layers by purpose and access needs. One option is a lakehouse or workspace per layer; ownership depends on your team.</p>
       </div>
     </div>
   </div>
@@ -1082,7 +1082,7 @@
             <svg viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6z"/></svg>
           </div>
         </div>
-        <p class="layer-summary">Store everything exactly as it arrives. No changes allowed — preserve the source of truth.</p>
+        <p class="layer-summary">Preserve source data with minimal changes, such as adding ingestion metadata.</p>
         <div class="layer-details">
           <div class="details-inner">
             <div class="detail-grid">
@@ -1117,7 +1117,7 @@
               <div class="detail-item">
                 <h4>Best Practices</h4>
                 <ul>
-                  <li>Never delete bronze data</li>
+                  <li>Set retention to meet business and compliance needs</li>
                   <li>Avoid partitioning by default</li>
                   <li>Add audit columns (_ingestion_ts)</li>
                   <li>Use shortcuts instead of copying</li>
@@ -1177,7 +1177,7 @@
                   <li>Delta tables (recommended)</li>
                   <li>V-Order only for Direct Lake tables</li>
                   <li>Liquid Clustering preferred</li>
-                  <li>OPTIMIZE &amp; VACUUM maintenance</li>
+                  <li>Compatible OPTIMIZE &amp; VACUUM maintenance</li>
                 </ul>
               </div>
               <div class="detail-item">
@@ -1405,7 +1405,7 @@
       <div class="tool-tile">
         <span class="tool-emoji">&#128065;</span>
         <h4>Materialized Lake Views</h4>
-        <p>Declarative SQL transforms with auto-refresh and dependency management.</p>
+        <p>Declarative SQL transforms with scheduled refresh and dependency management.</p>
       </div>
       <div class="tool-tile">
         <span class="tool-emoji">&#127919;</span>
@@ -1421,11 +1421,11 @@
   <div class="reveal">
     <span class="section-label">New in Fabric</span>
     <h2 class="section-title">Materialized Lake Views</h2>
-    <p class="section-subtitle" style="margin-left:auto;margin-right:auto;">Replace complex pipeline orchestration with declarative SQL definitions that Fabric refreshes automatically.</p>
+    <p class="section-subtitle" style="margin-left:auto;margin-right:auto;">Simplify pipeline orchestration with declarative SQL definitions and scheduled refreshes.</p>
 
     <div class="mlv-card">
       <h3>Simplify Your Medallion Pipelines</h3>
-      <p>Rather than building manual pipelines to move data between Bronze, Silver, and Gold layers, define materialized lake views that automatically manage transformations and refresh orchestration.</p>
+      <p>Define materialized lake views for transformations between layers, then schedule refreshes; Fabric orchestrates their dependencies.</p>
       <div class="mlv-benefits">
         <div class="mlv-benefit">
           <h4>Declarative SQL</h4>
@@ -1441,7 +1441,7 @@
         </div>
         <div class="mlv-benefit">
           <h4>Smart Refresh</h4>
-          <p>Incremental, full, or no-refresh — the system decides what's optimal.</p>
+          <p>For supported SQL views, optimal refresh selects incremental, full, or no refresh. Incremental refresh requires change data feed on source tables.</p>
         </div>
         <div class="mlv-benefit">
           <h4>Lineage Tracking</h4>
@@ -1474,7 +1474,7 @@
       </div>
       <div class="security-item">
         <h4><span style="color:#FF9800">&#9679;</span> Row-Level Security</h4>
-        <p>Filter data dynamically by user role — each user sees only what they should.</p>
+        <p>Filter rows by role. Power BI semantic-model RLS applies to workspace Viewers, not Admins, Members, or Contributors.</p>
       </div>
       <div class="security-item">
         <h4><span style="color:#9C27B0">&#9679;</span> Object-Level Security</h4>
@@ -1482,7 +1482,7 @@
       </div>
       <div class="security-item">
         <h4><span style="color:#00BCD4">&#9679;</span> Data Lineage</h4>
-        <p>Track every transformation from source to Bronze to Silver to Gold with full visibility.</p>
+        <p>Use lineage views to trace supported dependencies across data items and layers.</p>
       </div>
       <div class="security-item">
         <h4><span style="color:#F44336">&#9679;</span> Sensitivity Labels</h4>
@@ -1490,7 +1490,7 @@
       </div>
       <div class="security-item">
         <h4><span style="color:#8BC34A">&#9679;</span> Delta Time Travel</h4>
-        <p>Roll back to any previous state for audit, compliance, and debugging purposes.</p>
+        <p>Query available historical snapshots for audit or debugging; use RESTORE to roll back. Availability depends on log and file retention.</p>
       </div>
       <div class="security-item">
         <h4><span style="color:#FF5722">&#9679;</span> Domains (Data Mesh)</h4>
@@ -1512,25 +1512,25 @@
         <div class="practice-number">01</div>
         <div class="practice-icon">&#128230;</div>
         <h3>Optimize File Sizes</h3>
-        <p>Keep Fabric Spark's adaptive target file size enabled — it selects a target between 128 MB and 1 GB per table. Use moderate sizes in Silver, larger files and row groups in Gold; smaller files are fine in Bronze. Prefer auto compaction, and run OPTIMIZE for existing small-file backlogs.</p>
+        <p>Enable Fabric Spark's adaptive target file size — it selects a target between 128 MB and 1 GB per table. Use moderate sizes in Silver, larger files and row groups in Gold; smaller files are fine in Bronze. Prefer auto compaction for Spark-written tables; use OPTIMIZE for compatible small-file backlogs. Dataflow Gen2 incremental-refresh lakehouse destinations don't support OPTIMIZE.</p>
       </div>
       <div class="practice-card">
         <div class="practice-number">02</div>
         <div class="practice-icon">&#128218;</div>
         <h3>Use Liquid Clustering</h3>
-        <p>Prefer Liquid Clustering over partitioning in Silver/Gold layers for better file skipping. Avoid partitioning by default — in Bronze it's acceptable but discouraged for new implementations.</p>
+        <p>Consider Liquid Clustering for Silver/Gold tables when recurring predicates benefit from file skipping. Avoid partitioning by default — in Bronze it's acceptable but discouraged for new implementations.</p>
       </div>
       <div class="practice-card">
         <div class="practice-number">03</div>
         <div class="practice-icon">&#128279;</div>
         <h3>Shortcuts Over Copies</h3>
-        <p>When source data is in ADLS Gen2, S3, or Google Cloud, create shortcuts in the Bronze layer instead of copying data across.</p>
+        <p>When source data is in ADLS Gen2, S3, or Google Cloud, consider shortcuts in Bronze instead of copies. Shortcuts reference the source, so plan separately for historical retention.</p>
       </div>
       <div class="practice-card">
         <div class="practice-number">04</div>
         <div class="practice-icon">&#128336;</div>
         <h3>Manage History Retention</h3>
-        <p>Use VACUUM to clean up old Delta history. Default 7-day retention prevents accidental data loss while controlling storage costs.</p>
+        <p>Use VACUUM to remove unreferenced data files; its default retention is 7 days. Choose retention based on recovery, time-travel, and concurrent workload needs.</p>
       </div>
       <div class="practice-card">
         <div class="practice-number">05</div>
@@ -1554,7 +1554,7 @@
     <div class="mesh-callout">
       <span class="section-label" style="margin-bottom:1rem;">Advanced Pattern</span>
       <h3>Scale with Data Mesh</h3>
-      <p style="margin-top:0.75rem;">For massive, decentralized organizations, implement medallion architecture within Fabric Domains — mapping to your business areas (Marketing, Sales, HR). Each domain gets its own Bronze &rarr; Silver &rarr; Gold pipeline with federated governance.</p>
+      <p style="margin-top:0.75rem;">For massive, decentralized organizations, consider medallion architecture within Fabric Domains — mapping to your business areas (Marketing, Sales, HR). Domains can have their own Bronze &rarr; Silver &rarr; Gold pipelines with federated governance.</p>
     </div>
   </div>
 </section>
@@ -1575,7 +1575,7 @@
           <button class="quiz-option" data-idx="1" onclick="checkAnswer(this)">Bronze Layer</button>
           <button class="quiz-option" data-idx="2" onclick="checkAnswer(this)">Gold Layer</button>
         </div>
-        <div class="quiz-explanation correct-explain">Correct! The Bronze layer stores raw data exactly as it arrives — no transformations allowed.</div>
+        <div class="quiz-explanation correct-explain">Correct! The Bronze layer preserves raw source data, with minimal changes such as ingestion metadata.</div>
         <div class="quiz-explanation wrong-explain">Not quite. The Bronze layer is the raw data landing zone where data is stored exactly as it arrives.</div>
       </div>
 
@@ -1611,7 +1611,7 @@
           <button class="quiz-option" data-idx="1" onclick="checkAnswer(this)">Liquid Clustering</button>
           <button class="quiz-option" data-idx="2" onclick="checkAnswer(this)">Bucketing</button>
         </div>
-        <div class="quiz-explanation correct-explain">Correct! Liquid Clustering optimizes query performance in Silver and Gold layers better than traditional partitioning.</div>
+        <div class="quiz-explanation correct-explain">Correct! Liquid Clustering can improve file skipping when query patterns benefit from it.</div>
         <div class="quiz-explanation wrong-explain">Not quite. Liquid Clustering is Fabric's recommended approach for optimizing query performance in Silver and Gold layers.</div>
       </div>
 
@@ -1623,8 +1623,8 @@
           <button class="quiz-option" data-idx="1" onclick="checkAnswer(this)">Dynamic Views</button>
           <button class="quiz-option" data-idx="2" onclick="checkAnswer(this)">Materialized Lake Views</button>
         </div>
-        <div class="quiz-explanation correct-explain">Correct! Materialized Lake Views let you define transforms as SQL with automatic dependency management and refresh.</div>
-        <div class="quiz-explanation wrong-explain">Not quite. Materialized Lake Views are the new Fabric feature for declarative medallion architecture with auto-refresh.</div>
+        <div class="quiz-explanation correct-explain">Correct! Materialized Lake Views define SQL transforms with dependency-aware, scheduled refresh.</div>
+        <div class="quiz-explanation wrong-explain">Not quite. Materialized Lake Views support declarative medallion architecture with scheduled refresh.</div>
       </div>
     </div>
 
