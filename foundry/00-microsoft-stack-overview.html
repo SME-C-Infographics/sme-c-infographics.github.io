@@ -679,14 +679,14 @@
             <li>Outlook &middot; Teams &middot; Word &middot; Excel &middot; PowerPoint</li>
             <li>Dynamics 365 &middot; Power Apps &middot; Power Automate &middot; Power Pages</li>
             <li>Custom apps on App Service / Container Apps / AKS</li>
-            <li>Powered by GPT-5, grounded via Microsoft Graph and Dataverse</li>
+            <li>Microsoft 365 Copilot uses LLMs and Microsoft Graph data</li>
           </ul>
         </div>
         <div class="next">
           <div class="next-title">Go deeper</div>
           <a href="microsoft-ai-decision-guide.html">Microsoft AI Decision Guide &rarr;</a>
           <a href="frontier-firm-playbook.html">Frontier Firm Playbook &rarr;</a>
-          <div class="learn">Docs: <a href="https://learn.microsoft.com/en-us/microsoft-365/copilot/" target="_blank">Microsoft 365 Copilot</a></div>
+          <div class="learn">Docs: <a href="https://learn.microsoft.com/en-us/copilot/plan/copilot-overview" target="_blank">Microsoft 365 Copilot</a></div>
         </div>
       </div>
 
@@ -847,7 +847,7 @@
       <div class="trace-step t3 reveal">
         <div class="num">3</div>
         <h5>The gateway</h5>
-        <p>Every model call passes through AI Gateway in APIM &mdash; <code>llm-token-limit</code> caps spend, Content Safety screens prompts, <code>llm-emit-token-metric</code> emits per-user telemetry.</p>
+        <p>In this example, model calls use a configured AI Gateway in APIM &mdash; <code>llm-token-limit</code> limits token usage, Content Safety screens prompts, and <code>llm-emit-token-metric</code> emits telemetry configured for the consumer.</p>
         <div class="meta">Layer 3 &middot; Governance rail</div>
       </div>
       <div class="trace-step t4 reveal">
@@ -859,7 +859,7 @@
       <div class="trace-step t5 reveal">
         <div class="num">5</div>
         <h5>The grounding</h5>
-        <p>RAG retrieves CRM data from a Fabric semantic model over OneLake, filtered by Purview sensitivity labels so only deals she may see come back.</p>
+        <p>RAG retrieves CRM data from a Fabric semantic model over OneLake. With the user's identity, Viewer permissions, and a correctly configured row-level security role, the model filters the deals she can see. Purview sensitivity labels classify data but do not restrict access in the Power BI service.</p>
         <div class="meta">Layer 2 &middot; Governance rail</div>
       </div>
       <div class="trace-step t6 reveal">
@@ -871,7 +871,7 @@
     </div>
 
     <div class="trace-net reveal">
-      One prompt touches all five layers in under a second. The Identity rail ensures every hop has an owner; the Governance rail ensures every hop has policy. That is the Microsoft stack working as designed.
+      In this example, one prompt touches all five layers. Identity and governance controls must be configured across the journey.
     </div>
   </div>
 </section>
@@ -977,7 +977,7 @@
       <details class="gl" data-cat="agent">
         <summary><span class="term-cat">Agent</span> A2A (Agent2Agent)</summary>
         <div class="body">
-          Microsoft's protocol for agent-to-agent communication, letting multiple agents collaborate on a single workflow. Available in Azure API Management as a standard capability (announced at Ignite 2025).
+          An open protocol for agent-to-agent communication, letting multiple agents collaborate on a single workflow. Azure API Management can manage A2A agent APIs.
           <div class="where">See: <a href="ai-gateway-apim.html">AI Gateway in APIM</a> (timeline section)</div>
         </div>
       </details>
@@ -1001,7 +1001,7 @@
       <details class="gl" data-cat="ai">
         <summary><span class="term-cat">AI</span> PTU (Provisioned Throughput Units)</summary>
         <div class="body">
-          Reserved model capacity priced per unit per month. Predictable cost and latency &mdash; the opposite of pay-as-you-go. AI Gateway's priority-based load balancing keeps PTU saturated first and overflows to PAYGO.
+          Reserved model capacity billed per deployed unit per hour, with discounted one-month or one-year Azure Reservations available. AI Gateway can prioritize provisioned capacity and route overflow to PAYGO.
           <div class="where">See: <a href="ai-gateway-apim.html">AI Gateway in APIM</a> (Cost pillar)</div>
         </div>
       </details>
@@ -1041,7 +1041,7 @@
       <details class="gl" data-cat="data">
         <summary><span class="term-cat">Data</span> Web IQ</summary>
         <div class="body">
-          The open-web grounding layer for every agent &mdash; model-agnostic, MCP-native search built for the AI era. Announced at Build 2026; Public Preview.
+          The open-web grounding layer for agents &mdash; model-agnostic search accessible via REST or MCP. Announced at Build 2026; core APIs are generally available, while some capabilities remain in preview.
           <div class="where">See: <a href="microsoft-iq-platforms-guide.html">IQ Platforms Guide</a> &middot; <a href="https://webiq.microsoft.ai/" target="_blank">webiq.microsoft.ai</a></div>
         </div>
       </details>
@@ -1049,7 +1049,7 @@
       <details class="gl" data-cat="platform">
         <summary><span class="term-cat">Platform</span> Microsoft Foundry</summary>
         <div class="body">
-          Microsoft's unified AI development platform (rebranded from Azure AI Foundry). 10,000+ models including GPT-5.5, GPT-5.4 family, Claude Opus 4.8, the new Microsoft <strong>MAI</strong> family, Mistral, Llama, Phi, plus open-weight models via the Fireworks AI partnership (Build 2026). Fine-tuning &mdash; including new <strong>Frontier Tuning</strong> with RLEs &mdash; evaluation, observability, and Agent Service all in one control plane.
+          Microsoft's unified AI development platform (rebranded from Azure AI Foundry). 10,000+ models including GPT-5.5, GPT-5.4 family, Claude Opus 4.8, the new Microsoft <strong>MAI</strong> family, Mistral, Llama, Phi, plus open-weight models via the Fireworks AI partnership. Fine-tuning &mdash; including new <strong>Frontier Tuning</strong> with RLEs &mdash; evaluation, observability, and Agent Service all in one control plane.
           <div class="where">Docs: <a href="https://learn.microsoft.com/en-us/azure/foundry/" target="_blank">Microsoft Foundry</a> &middot; <a href="https://devblogs.microsoft.com/foundry/whats-new-in-microsoft-foundry-build-2026/" target="_blank">What’s New @ Build 2026</a></div>
         </div>
       </details>
@@ -1065,7 +1065,7 @@
       <details class="gl" data-cat="platform">
         <summary><span class="term-cat">Platform</span> Power Platform</summary>
         <div class="body">
-          Microsoft's low-code family in Layer 5 (Apps &amp; Surfaces): <strong>Power Apps</strong> (canvas and model-driven apps), <strong>Power Automate</strong> (workflow automation), and <strong>Power Pages</strong> (external-facing sites). All three share <strong>Dataverse</strong> as their data backbone and can host or consume agents built in Copilot Studio &mdash; making it the fastest path from a business idea to a working app that uses the same models, tools, and governance as everything else in the stack.
+          Microsoft's low-code family in Layer 5 (Apps &amp; Surfaces): <strong>Power Apps</strong> (canvas and model-driven apps), <strong>Power Automate</strong> (workflow automation), and <strong>Power Pages</strong> (external-facing sites). They integrate with <strong>Dataverse</strong> and can host or consume agents built in Copilot Studio; Power Apps can also use other data sources.
           <div class="where">Docs: <a href="https://learn.microsoft.com/en-us/power-platform/" target="_blank">Power Platform</a></div>
         </div>
       </details>
@@ -1081,7 +1081,7 @@
       <details class="gl" data-cat="security">
         <summary><span class="term-cat">Security</span> Content Safety</summary>
         <div class="body">
-          Azure AI Content Safety &mdash; the multi-modal moderation service for prompts, completions, images, and AI-generated content. Wired into AI Gateway as a built-in policy so every prompt is screened before reaching the model.
+          Azure AI Content Safety &mdash; the multi-modal moderation service for prompts, completions, images, and AI-generated content. AI Gateway can be configured with a policy to screen prompts before they reach the model.
           <div class="where">Docs: <a href="https://learn.microsoft.com/en-us/azure/ai-services/content-safety/" target="_blank">Azure AI Content Safety</a></div>
         </div>
       </details>
